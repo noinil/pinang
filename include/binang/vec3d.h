@@ -1,5 +1,8 @@
 // -*-c++-*-
 
+#ifndef BINANG_VEC3D_H
+#define BINANG_VEC3D_H
+
 #include <iostream>
 #include <iomanip>
 #include <cassert>
@@ -16,12 +19,12 @@ namespace binang{
         double y() const {return _z2;}
         double z() const {return _z3;}
 
-        Vec3d operator+(const Vec3d &other) const
+        Vec3d operator+(const Vec3d& other) const
         {
             return Vec3d(_z1+other._z1,_z2+other._z2,_z3+other._z3);
         }
 
-        Vec3d operator-(const Vec3d &other) const
+        Vec3d operator-(const Vec3d& other) const
         {
             return Vec3d(_z1-other._z1,_z2-other._z2,_z3-other._z3);
         }
@@ -31,12 +34,12 @@ namespace binang{
             return Vec3d(_z1*x,_z2*x,_z3*x);
         }
 
-        double operator*(const Vec3d &other) const
+        double operator*(const Vec3d& other) const
         {
             return (_z1*other._z1+_z2*other._z2+_z3*other._z3);
         }
 
-        Vec3d operator^(const Vec3d &other) const
+        Vec3d operator^(const Vec3d& other) const
         {
             return Vec3d(_z2*other._z3 - _z3*other._z2,
                          _z3*other._z1 - _z1*other._z3,
@@ -64,7 +67,7 @@ namespace binang{
         double _z1, _z2, _z3;
     };
 
-    inline std::ostream &operator<<(std::ostream &o, const Vec3d &v)
+    inline std::ostream& operator<<(std::ostream& o, const Vec3d& v)
     {
         o << std::setw(5) << v.x() << " "
           << std::setw(5) << v.y() << " "
@@ -72,7 +75,7 @@ namespace binang{
         return o;
     }
 
-    inline std::istream &operator>>(std::istream &i, Vec3d &v)
+    inline std::istream& operator>>(std::istream& i, Vec3d& v)
     {
         double x,y,z;
         i >> x >> y >> z;
@@ -81,10 +84,11 @@ namespace binang{
         return i;
     }
 
-    inline double Vec_distance (Vec3d &v1, Vec3d &v2)
+    inline double Vec_distance (Vec3d& v1, Vec3d& v2)
     {
         Vec3d v3 = v1-v2;
         return v3.norm();
     }
 
 }
+#endif

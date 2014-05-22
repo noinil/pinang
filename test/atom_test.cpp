@@ -1,6 +1,6 @@
 #include <iostream>
 #include "binang/atom.h"
-// #include "binang/vec3d.h"
+ #include "binang/vec3d.h"
 
 using namespace std;
 
@@ -16,6 +16,11 @@ int main(int argc, char *argv[])
     std::string sid("LOS");
     double o;
     int i = 0;
+
+    cout << "serials:" << endl;
+    cout << "a: " << a.serial() << endl;
+    cout << "b: " << b.serial() << endl;
+    cout << "c: " << c.serial() << endl;
 
     a.set_serial(i+1);
     b.set_serial(2);
@@ -36,16 +41,28 @@ int main(int argc, char *argv[])
     cout << "b: " << b.occupancy() << endl;
     cout << "c: " << c.occupancy() << endl;
 
-    a.set_segment_id(sid);
-    b.set_segment_id("TST");
-    c.set_segment_id("aaa");
+    cout << "seg_ID:" << endl;
+    cout << "a: " << a.segment_ID() << endl;
+    cout << "b: " << b.segment_ID() << endl;
+    cout << "c: " << c.segment_ID() << endl;
+    c.segment_ID() = "bbb";
+    cout << "c: " << c.segment_ID() << endl;
+
+    a.set_segment_ID(sid);
+    b.set_segment_ID("TST");
+    c.set_segment_ID("aaa");
 
     cout << "seg_ID:" << endl;
-    cout << "a: " << a.segment_id() << endl;
-    cout << "b: " << b.segment_id() << endl;
-    cout << "c: " << c.segment_id() << endl;
-    c.segment_id() = "bbb";
-    cout << "c: " << c.segment_id() << endl;
+    cout << "a: " << a.segment_ID() << endl;
+    cout << "b: " << b.segment_ID() << endl;
+    cout << "c: " << c.segment_ID() << endl;
+    c.segment_ID() = "bbb";
+    cout << "c: " << c.segment_ID() << endl;
+
+    cout << "coordinates:" << endl;
+    cout << "a: " << a.coordinates() << endl;
+    cout << "b: " << b.coordinates() << endl;
+    cout << "c: " << c.coordinates() << endl;
 
     a.set_coords(ca);
     b.set_coords(cb);

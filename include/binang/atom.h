@@ -1,5 +1,8 @@
 // -*-c++-*-
 
+#ifndef BINANG_ATOM_H
+#define BINANG_ATOM_H
+
 #include <iostream>
 #include "vec3d.h"
 
@@ -13,23 +16,52 @@ namespace binang {
         inline unsigned int serial() const;
         inline void set_serial(unsigned int i);
 
+        inline std::string atom_name() const;
+        inline void set_atom_name(const std::string& s);
+
+        inline char alt_loc() const;
+        inline void set_alt_loc(char a);
+
+        inline std::string resid_name() const;
+        inline void set_resid_name(const std::string& s);
+
+        inline char chain_ID() const;
+        inline void set_chain_ID(char a);
+
+        inline unsigned int resid_index() const;
+        inline void set_resid_index(unsigned int i);
+
+        inline char icode() const;
+        inline void set_icode(char a);
+
+        inline const Vec3d& coordinates() const;
+        inline void set_coords(const Vec3d& coors);
+
+        inline const Vec3d& velocities() const;
+        inline void set_velocities(const Vec3d& velos);
+
         inline double occupancy() const ;
         inline void set_occupancy(double o);
+
         inline double temperature_factor() const;
         inline void set_temperature_factor(double f);
 
-        inline std::string segment_id() const;
-        inline void set_segment_id(const std::string s);
+        inline std::string segment_ID() const;
+        inline void set_segment_ID(const std::string& s);
 
-        inline const Vec3d &coordinates() const;
-        inline void set_coords(const Vec3d &coors);
+        inline std::string element() const;
+        inline void set_element(const std::string& s);
+
+        inline std::string charge() const;
+        inline void set_charge(const std::string& s);
+
     protected:
         unsigned int _serial;
         std::string _atom_name;
         char _alt_loc;
         std::string _resid_name;
         char _chain_ID;
-        unsigned int _res_index;
+        unsigned int _resid_index;
         char _insert_code;
         Vec3d _coordinate;
         Vec3d _velocity;
@@ -41,6 +73,12 @@ namespace binang {
         std::string _charge;
     };
 
+    /*                _       _
+    //  ___  ___ _ __(_) __ _| |
+    // / __|/ _ \ '__| |/ _` | |
+    // \__ \  __/ |  | | (_| | |
+    // |___/\___|_|  |_|\__,_|_|
+    */
     inline unsigned int Atom::serial() const
     {
         return _serial;
@@ -50,6 +88,132 @@ namespace binang {
         _serial = i;
     }
 
+    /*        _
+    //   __ _| |_ ___  _ __ ___    _ __   __ _ _ __ ___   ___
+    //  / _` | __/ _ \| '_ ` _ \  | '_ \ / _` | '_ ` _ \ / _ \
+    // | (_| | || (_) | | | | | | | | | | (_| | | | | | |  __/
+    //  \__,_|\__\___/|_| |_| |_| |_| |_|\__,_|_| |_| |_|\___|
+    */
+    inline std::string Atom::atom_name() const
+    {
+        return _atom_name;
+    }
+    inline void Atom::set_atom_name(const std::string& s)
+    {
+        _atom_name = s;
+    }
+
+    /*        _ _     _
+    //   __ _| | |_  | | ___   ___
+    //  / _` | | __| | |/ _ \ / __|
+    // | (_| | | |_  | | (_) | (__
+    //  \__,_|_|\__| |_|\___/ \___|
+    */
+    inline char Atom::alt_loc() const
+    {
+        return _alt_loc;
+    }
+    inline void Atom::set_alt_loc(char a)
+    {
+        _alt_loc = a;
+    }
+
+    /*                _     _
+    //  _ __ ___  ___(_) __| |  _ __   __ _ _ __ ___   ___
+    // | '__/ _ \/ __| |/ _` | | '_ \ / _` | '_ ` _ \ / _ \
+    // | | |  __/\__ \ | (_| | | | | | (_| | | | | | |  __/
+    // |_|  \___||___/_|\__,_| |_| |_|\__,_|_| |_| |_|\___|
+    */
+    inline std::string Atom::resid_name() const
+    {
+        return _resid_name;
+    }
+    inline void Atom::set_resid_name(const std::string& s)
+    {
+        _resid_name = s;
+    }
+
+    /*      _           _         ___ ____
+    //  ___| |__   __ _(_)_ __   |_ _|  _ \
+    // / __| '_ \ / _` | | '_ \   | || | | |
+    //| (__| | | | (_| | | | | |  | || |_| |
+    // \___|_| |_|\__,_|_|_| |_| |___|____/
+    */
+    inline char Atom::chain_ID() const
+    {
+        return _chain_ID;
+    }
+    inline void Atom::set_chain_ID(char a)
+    {
+        _chain_ID = a;
+    }
+
+    /*                _     _   _           _
+    //  _ __ ___  ___(_) __| | (_)_ __   __| | _____  __
+    // | '__/ _ \/ __| |/ _` | | | '_ \ / _` |/ _ \ \/ /
+    // | | |  __/\__ \ | (_| | | | | | | (_| |  __/>  <
+    // |_|  \___||___/_|\__,_| |_|_| |_|\__,_|\___/_/\_\
+    */
+    inline unsigned int Atom::resid_index() const
+    {
+        return _resid_index;
+    }
+    inline void Atom::set_resid_index(unsigned int i)
+    {
+        _resid_index = i;
+    }
+
+    /*  _               _
+    // (_) ___ ___   __| | ___
+    // | |/ __/ _ \ / _` |/ _ \
+    // | | (_| (_) | (_| |  __/
+    // |_|\___\___/ \__,_|\___|
+    */
+    inline char Atom::icode() const
+    {
+        return _insert_code;
+    }
+    inline void Atom::set_icode(char a)
+    {
+        _insert_code = a;
+    }
+
+    /*                          _ _             _
+    //   ___ ___   ___  _ __ __| (_)_ __   __ _| |_ ___  ___
+    //  / __/ _ \ / _ \| '__/ _` | | '_ \ / _` | __/ _ \/ __|
+    // | (_| (_) | (_) | | | (_| | | | | | (_| | ||  __/\__ \
+    //  \___\___/ \___/|_|  \__,_|_|_| |_|\__,_|\__\___||___/
+    */
+    inline const Vec3d& Atom::coordinates() const
+    {
+        return _coordinate;
+    }
+    inline void Atom::set_coords(const Vec3d& coors)
+    {
+        _coordinate = coors;
+    }
+
+    /*            _            _ _   _
+    // __   _____| | ___   ___(_) |_(_) ___  ___
+    // \ \ / / _ \ |/ _ \ / __| | __| |/ _ \/ __|
+    //  \ V /  __/ | (_) | (__| | |_| |  __/\__ \
+    //   \_/ \___|_|\___/ \___|_|\__|_|\___||___/
+    */
+    inline const Vec3d& Atom::velocities() const
+    {
+        return _velocity;
+    }
+    inline void Atom::set_velocities(const Vec3d& velos)
+    {
+        _velocity = velos;
+    }
+
+    /*   ___   ___ ___ _   _ _ __   __ _ _ __   ___ _   _
+    //  / _ \ / __/ __| | | | '_ \ / _` | '_ \ / __| | | |
+    // | (_) | (_| (__| |_| | |_) | (_| | | | | (__| |_| |
+    //  \___/ \___\___|\__,_| .__/ \__,_|_| |_|\___|\__, |
+    //                      |_|                     |___/
+    */
     inline double Atom::occupancy() const
     {
         return _occupancy;
@@ -58,6 +222,14 @@ namespace binang {
     {
         _occupancy = o;
     }
+
+    /*  _                          __            _
+    // | |_ ___ _ __ ___  _ __    / _| __ _  ___| |_ ___  _ __
+    // | __/ _ \ '_ ` _ \| '_ \  | |_ / _` |/ __| __/ _ \| '__|
+    // | ||  __/ | | | | | |_) | |  _| (_| | (__| || (_) | |
+    //  \__\___|_| |_| |_| .__/  |_|  \__,_|\___|\__\___/|_|
+    //                   |_|
+    */
     inline double Atom::temperature_factor() const
     {
         return _temp_factor;
@@ -67,26 +239,67 @@ namespace binang {
         _temp_factor = f;
     }
 
-    inline std::string Atom::segment_id() const
+    /*                                      _     ___ ____
+    //  ___  ___  __ _ _ __ ___   ___ _ __ | |_  |_ _|  _ \
+    // / __|/ _ \/ _` | '_ ` _ \ / _ \ '_ \| __|  | || | | |
+    // \__ \  __/ (_| | | | | | |  __/ | | | |_   | || |_| |
+    // |___/\___|\__, |_| |_| |_|\___|_| |_|\__| |___|____/
+    //           |___/
+    */
+    inline std::string Atom::segment_ID() const
     {
         return _seg_ID;
     }
-    inline void Atom::set_segment_id(const std::string s)
+    inline void Atom::set_segment_ID(const std::string& s)
     {
         _seg_ID = s;
     }
 
-    inline const Vec3d & Atom::coordinates() const
+    /*       _                           _
+    //   ___| | ___ _ __ ___   ___ _ __ | |_
+    //  / _ \ |/ _ \ '_ ` _ \ / _ \ '_ \| __|
+    // |  __/ |  __/ | | | | |  __/ | | | |_
+    //  \___|_|\___|_| |_| |_|\___|_| |_|\__|
+    */
+    inline std::string Atom::element() const
     {
-        return _coordinate;
+        return _element;
     }
-    inline void Atom::set_coords(const Vec3d &coors)
+    inline void Atom::set_element(const std::string& s)
     {
-        _coordinate = coors;
+        _element = s;
+    }
+
+    /*       _
+    //   ___| |__   __ _ _ __ __ _  ___
+    //  / __| '_ \ / _` | '__/ _` |/ _ \
+    // | (__| | | | (_| | | | (_| |  __/
+    //  \___|_| |_|\__,_|_|  \__, |\___|
+    //                       |___/
+    */
+    inline std::string Atom::charge() const
+    {
+        return _charge;
+    }
+    inline void Atom::set_charge(const std::string& s)
+    {
+        _charge = s;
     }
 
     inline Atom::Atom()
     {
+        _serial = 0;
+        _atom_name = "";
+        _resid_name = "";
+        _chain_ID = 0;
+        _resid_index = 0;
+        _coordinate = Vec3d(0, 0, 0);
+        _velocity = Vec3d(0, 0, 0);
         _occupancy = 0;
+        _temp_factor = 0;
+        _seg_ID = "";
+        _element = "";
+        _charge = "";
     }
 }
+#endif
