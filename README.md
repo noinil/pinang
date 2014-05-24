@@ -1,7 +1,7 @@
-binang
+pinang
 ======
 
-BINANG Is Not AMBER, NAMD, or GROMACS.
+PINANG Is Not AMBER, NAMD, or GROMACS.
 
 
 The coarse grained model for molecular dynamics (mainly Go-like model) written in

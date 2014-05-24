@@ -1,14 +1,14 @@
 // -*-c++-*-
 
-#ifndef BINANG_VEC3D_H
-#define BINANG_VEC3D_H
+#ifndef PINANG_VEC3D_H_
+#define PINANG_VEC3D_H_
 
 #include <iostream>
 #include <iomanip>
 #include <cassert>
 #include <cmath>
 
-namespace binang{
+namespace pinang{
     class Vec3d
     {
     public:

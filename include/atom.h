@@ -1,12 +1,12 @@
 // -*-c++-*-
 
-#ifndef BINANG_ATOM_H
-#define BINANG_ATOM_H
+#ifndef PINANG_ATOM_H_
+#define PINANG_ATOM_H_
 
 #include <iostream>
 #include "vec3d.h"
 
-namespace binang {
+namespace pinang {
     class Atom
     {
     public:

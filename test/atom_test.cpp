@@ -1,17 +1,17 @@
 #include <iostream>
-#include "binang/atom.h"
- #include "binang/vec3d.h"
+#include "atom.h"
+#include "vec3d.h"
 
 using namespace std;
 
 int main(int argc, char *argv[])
 {
-    binang::Atom a, b, c;
-    binang::Vec3d ca, cb, cc, dd;
+    pinang::Atom a, b, c;
+    pinang::Vec3d ca, cb, cc, dd;
 
-    ca = binang::Vec3d(1, 2, 3);
-    cb = binang::Vec3d(1, 0, 0);
-    cc = binang::Vec3d(0, 1, 0);
+    ca = pinang::Vec3d(1, 2, 3);
+    cb = pinang::Vec3d(1, 0, 0);
+    cc = pinang::Vec3d(0, 1, 0);
 
     std::string sid("LOS");
     double o;

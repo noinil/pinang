@@ -1,15 +1,15 @@
 #include <iostream>
 #include <cmath>
-#include "binang/vec3d.h"
+#include "vec3d.h"
 
 using namespace std;
 
 int main(int argc, char *argv[])
 {
-    binang::Vec3d a(1,0,0);
-    binang::Vec3d b(0,1,0);
-    binang::Vec3d c(0,1,1);
-    binang::Vec3d d;
+    pinang::Vec3d a(1,0,0);
+    pinang::Vec3d b(0,1,0);
+    pinang::Vec3d c(0,1,1);
+    pinang::Vec3d d;
     double m;
 
     std::cout << "a = " << a << endl;
@@ -37,5 +37,6 @@ int main(int argc, char *argv[])
     d = b^c;
     cout << "b x c = " << d << endl;
 
+    cout << endl << "test operator[]: a[0] = " << a[0] << endl;
     return 0;
 }

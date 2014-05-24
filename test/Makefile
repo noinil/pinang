@@ -1,12 +1,15 @@
 default:
 
-all: test1 test2
+all: test1 test2 test3
 
 test1:
-	g++ -Wall -I../include/ -o t1 vec3d_test.cpp
+	icpc -Wall -I../include/ -o t1 vec3d_test.cpp
 	./t1
 test2:
-	g++ -Wall -I../include/ -o t2 atom_test.cpp
+	icpc -Wall -I../include/ -o t2 atom_test.cpp
 	./t2
+test3:
+	icpc -Wall -I../include/ -o t3 resid_test.cpp
+	./t3
 clean:
-	rm -f t1 t2
+	rm -f t1 t2 t3
