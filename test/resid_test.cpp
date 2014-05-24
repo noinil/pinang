@@ -53,12 +53,24 @@ int main(int argc, char *argv[])
               << r_0.m_atom(0).atom_name()
               << endl;
 
-    std::cout << "the first atom of residue: "
+    std::cout << "the second atom of residue: "
               << r_0.m_atom(1).atom_name()
               << endl;
 
-    std::cout << "the first atom of residue: "
+    std::cout << "the third atom of residue: "
               << r_0.m_atom(2).atom_name()
+              << endl;
+
+    r_0.m_atom(1).set_atom_name("P2'");
+    std::cout << endl << "the seond atom of residue: "
+              << r_0.m_atom(1).atom_name() << endl
+              << "and the b atom is:"
+              << b.atom_name()
+              << endl;
+
+    r_0.m_atom(1) = c;
+    std::cout << endl << "the second atom of residue: "
+              << r_0.m_atom(1).atom_name()
               << endl;
 
     return 0;

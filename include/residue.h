@@ -26,7 +26,7 @@ namespace pinang {
         inline unsigned int resid_index() const;
         inline void set_resid_index(unsigned int i);
 
-        inline const Atom& m_atom(unsigned int n) const;
+        inline Atom& m_atom(unsigned int n);
         inline void add_atom(const Atom& a);
 
         inline const Vec3d& pos_Ca() const;
@@ -34,6 +34,7 @@ namespace pinang {
         inline void update_pos_Ca(double dt);
 
         inline const Vec3d& vel_Ca() const;
+        inline void set_vel_Ca();
         inline void update_vel_Ca(double dt, const Vec3d& acceleration);
 
     protected:
@@ -98,16 +99,17 @@ namespace pinang {
     // |_| |_| |_|___\__,_|\__\___/|_| |_| |_|
     //          |_____|
     */
-    inline const Atom& Residue::m_atom(unsigned int n) const
+    inline Atom& Residue::m_atom(unsigned int n)
     {
         if (_atoms.empty())
         {
-            std::cout << "No Atoms found in Residue: " << _resid_index << std::endl;
+            std::cerr << "ERROR: No Atoms found in Residue: "
+                      << _resid_index << std::endl;
             exit(EXIT_SUCCESS);
         } else {
             if (n < 0 || n >= _atoms.size())
             {
-                std::cout << "Atom index out of range in Residue: "
+                std::cerr << "ERROR: Atom index out of range in Residue: "
                           << _resid_index << std::endl;
                 exit(EXIT_SUCCESS);
             } else {
@@ -118,6 +120,51 @@ namespace pinang {
     inline void Residue::add_atom(const Atom& a)
     {
         _atoms.push_back(a);
+        if (a.atom_name() == "CA")
+        {
+            _pos_Ca = a.coordinates();
+            _vel_Ca = a.velocities();
+        }
+    }
+
+    /*                      _ _   _
+    //      _ __   ___  ___(_) |_(_) ___  _ __
+    //     | '_ \ / _ \/ __| | __| |/ _ \| '_ \
+    //     | |_) | (_) \__ \ | |_| | (_) | | | |
+    //     | .__/ \___/|___/_|\__|_|\___/|_| |_|
+    //     |_|
+    */
+    inline const Vec3d& Residue::pos_Ca() const
+    {
+        return _pos_Ca;
+    }
+    inline void Residue::set_pos_Ca()
+    {
+        // Find C_alpha and set the coordinates?
+    }
+    inline void Residue::update_pos_Ca(double dt)
+    {
+        _pos_Ca = _pos_Ca + _vel_Ca * dt;
+    }
+
+    /*            _            _ _
+    // __   _____| | ___   ___(_) |_ _   _
+    // \ \ / / _ \ |/ _ \ / __| | __| | | |
+    //  \ V /  __/ | (_) | (__| | |_| |_| |
+    //   \_/ \___|_|\___/ \___|_|\__|\__, |
+    //                               |___/
+    */
+    inline const Vec3d& Residue::vel_Ca() const
+    {
+        return _vel_Ca;
+    }
+    inline void Residue::set_vel_Ca()
+    {
+        // Find C_alpha and set the velocities?
+    }
+    inline void Residue::update_vel_Ca(double dt, const Vec3d& acceleration)
+    {
+        _vel_Ca = _vel_Ca + acceleration * dt;
     }
 
     // Residue------------------------------------------------------------------

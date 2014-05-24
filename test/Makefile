@@ -1,6 +1,6 @@
 default:
 
-all: test1 test2 test3
+all: test1 test2 test3 test4
 
 test1:
 	icpc -Wall -I../include/ -o t1 vec3d_test.cpp
@@ -11,5 +11,8 @@ test2:
 test3:
 	icpc -Wall -I../include/ -o t3 resid_test.cpp
 	./t3
+test4:
+	icpc -Wall -I../include/ -o t4 pdb_read_test.cpp
+	./t4 aa.pdb
 clean:
-	rm -f t1 t2 t3
+	rm -f t1 t2 t3 t4

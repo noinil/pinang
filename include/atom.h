@@ -3,7 +3,6 @@
 #ifndef PINANG_ATOM_H_
 #define PINANG_ATOM_H_
 
-#include <iostream>
 #include "vec3d.h"
 
 namespace pinang {
@@ -286,6 +285,7 @@ namespace pinang {
         _charge = s;
     }
 
+    // Atom::Atom ==============================================================
     inline Atom::Atom()
     {
         _serial = 0;

@@ -5,7 +5,6 @@
 
 #include <iostream>
 #include <iomanip>
-#include <cassert>
 #include <cmath>
 
 namespace pinang{
@@ -54,8 +53,8 @@ namespace pinang{
             case 1: return _z2;
             case 2: return _z3;
             default:
-                assert(i < 3);
-                return -1;
+                std::cerr << "ERROR: 3D Vector index out of range!" << std::endl;
+                exit(EXIT_SUCCESS);
             }
         }
 
