@@ -5,6 +5,9 @@
 
 #include "vec3d.h"
 
+#include <string>
+#include <sstream>
+
 namespace pinang {
     class Atom
     {
@@ -289,7 +292,7 @@ namespace pinang {
     inline Atom::Atom()
     {
         _serial = 0;
-        _atom_name = "";
+        _atom_name = "NULL";
         _alt_loc = ' ';
         _resid_name = "";
         _chain_ID = ' ';
@@ -322,6 +325,102 @@ namespace pinang {
           << std::setw(2) << a.element()
           << std::setw(2) << a.charge();
         return o;
+    }
+
+    std::istream& operator>>(std::istream& i, Atom& a)
+    {
+        std::istringstream tmp_sstr;
+        std::string pdb_line;
+
+        unsigned int _tmp_ui;
+        std::string _tmp_str0;
+        std::string _tmp_str;
+        char _tmp_char;
+        pinang::Vec3d _tmp_coordinates;
+        double _tmp_d;
+
+        std::getline( i, pdb_line);
+        pdb_line.resize(80, ' ');
+        _tmp_str0 = pdb_line.substr(0,6);
+
+        a.set_atom_name("NULL");
+        if (_tmp_str0 == "ATOM  " || _tmp_str0 == "HETATM")
+        {
+            tmp_sstr.str ( pdb_line.substr(6,5));
+            tmp_sstr >> _tmp_ui;
+            a.set_serial(_tmp_ui);
+            tmp_sstr.clear();
+
+            tmp_sstr.str ( pdb_line.substr(12,4));
+            tmp_sstr >> _tmp_str;
+            a.set_atom_name(_tmp_str);
+            tmp_sstr.clear();
+            _tmp_str.clear();
+
+            tmp_sstr.str ( pdb_line.substr(16,1));
+            tmp_sstr.get(_tmp_char);
+            a.set_alt_loc(_tmp_char);
+            tmp_sstr.clear();
+
+            tmp_sstr.str ( pdb_line.substr(17,3));
+            tmp_sstr >> _tmp_str;
+            a.set_resid_name(_tmp_str);
+            tmp_sstr.clear();
+            _tmp_str.clear();
+
+            tmp_sstr.str ( pdb_line.substr(21,1));
+            tmp_sstr >> _tmp_char;
+            a.set_chain_ID(_tmp_char);
+            tmp_sstr.clear();
+
+            tmp_sstr.str ( pdb_line.substr(22,4));
+            tmp_sstr >> _tmp_ui;
+            a.set_resid_index(_tmp_ui);
+            tmp_sstr.clear();
+
+            tmp_sstr.str ( pdb_line.substr(26,1));
+            tmp_sstr.get(_tmp_char);
+            a.set_icode(_tmp_char);
+            tmp_sstr.clear();
+
+            tmp_sstr.str ( pdb_line.substr(30,24));
+            tmp_sstr >> _tmp_coordinates;
+            a.set_coords(_tmp_coordinates);
+            tmp_sstr.clear();
+
+            tmp_sstr.str ( pdb_line.substr(54,6));
+            tmp_sstr >> _tmp_d;
+            a.set_occupancy(_tmp_d);
+            tmp_sstr.clear();
+
+            tmp_sstr.str ( pdb_line.substr(60,6));
+            tmp_sstr >> _tmp_d;
+            a.set_temperature_factor(_tmp_d);
+            tmp_sstr.clear();
+
+            tmp_sstr.str ( pdb_line.substr(72,4));
+            tmp_sstr >> _tmp_str;
+            a.set_segment_ID(_tmp_str);
+            tmp_sstr.clear();
+            _tmp_str.clear();
+
+            tmp_sstr.str ( pdb_line.substr(76,2));
+            tmp_sstr >> _tmp_str;
+            a.set_element(_tmp_str);
+            tmp_sstr.clear();
+            _tmp_str.clear();
+
+            tmp_sstr.str ( pdb_line.substr(78,2));
+            tmp_sstr >> _tmp_str;
+            a.set_charge(_tmp_str);
+            tmp_sstr.clear();
+            _tmp_str.clear();
+        } else {
+            // std::cerr << "ERROR: Wrong format!" << std::endl;
+        }
+
+        if (!i) return i;
+        return i;
     }
 
 }
