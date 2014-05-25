@@ -68,9 +68,12 @@ namespace pinang{
 
     inline std::ostream& operator<<(std::ostream& o, const Vec3d& v)
     {
-        o << std::setw(5) << v.x() << " "
-          << std::setw(5) << v.y() << " "
-          << std::setw(5) << v.z();
+        o << std::setiosflags(std::ios_base::fixed) << std::setprecision(3)
+          << std::setw(8) << v.x()
+          << std::setw(8) << v.y()
+          << std::setw(8) << v.z();
+        // std::cout.unsetf(std::ios::floatfield);
+        // std::cout.precision(6);
         return o;
     }
 

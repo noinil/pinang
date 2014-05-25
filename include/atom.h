@@ -290,9 +290,11 @@ namespace pinang {
     {
         _serial = 0;
         _atom_name = "";
+        _alt_loc = ' ';
         _resid_name = "";
-        _chain_ID = 0;
+        _chain_ID = ' ';
         _resid_index = 0;
+        _insert_code = ' ';
         _coordinate = Vec3d(0, 0, 0);
         _velocity = Vec3d(0, 0, 0);
         _occupancy = 0;
@@ -301,5 +303,26 @@ namespace pinang {
         _element = "";
         _charge = "";
     }
+
+    inline std::ostream& operator<<(std::ostream& o, const Atom& a)
+    {
+        o << "ATOM  "
+          << std::setw(5) << a.serial() << " "
+          << std::setw(4) << a.atom_name()
+          << std::setw(1) << a.alt_loc()
+          << std::setw(3) << a.resid_name() << " "
+          << std::setw(1) << a.chain_ID()
+          << std::setw(4) << a.resid_index()
+          << std::setw(1) << a.icode() << "   "
+          << a.coordinates()
+          << std::setiosflags(std::ios_base::fixed) << std::setprecision(2)
+          << std::setw(6) << a.occupancy()
+          << std::setw(6) << a.temperature_factor() << "      "
+          << std::setw(4) << a.segment_ID()
+          << std::setw(2) << a.element()
+          << std::setw(2) << a.charge();
+        return o;
+    }
+
 }
 #endif
