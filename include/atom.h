@@ -15,6 +15,9 @@ namespace pinang {
         inline Atom();
         // virtual ~Atom();
 
+        inline std::string atom_flag() const;
+        inline void set_atom_flag(const std::string& s);
+
         inline unsigned int serial() const;
         inline void set_serial(unsigned int i);
 
@@ -58,6 +61,7 @@ namespace pinang {
         inline void set_charge(const std::string& s);
 
     protected:
+        std::string _atom_flag;
         unsigned int _serial;
         std::string _atom_name;
         char _alt_loc;
@@ -74,6 +78,15 @@ namespace pinang {
         std::string _element;
         std::string _charge;
     };
+
+    inline std::string Atom::atom_flag() const
+    {
+        return _atom_flag;
+    }
+    inline void Atom::set_atom_flag(const std::string& s)
+    {
+        _atom_flag = s;
+    }
 
     /*                _       _
     //  ___  ___ _ __(_) __ _| |
@@ -291,8 +304,9 @@ namespace pinang {
     // Atom::Atom ==============================================================
     inline Atom::Atom()
     {
+        _atom_flag = "";
         _serial = 0;
-        _atom_name = "NULL";
+        _atom_name = "";
         _alt_loc = ' ';
         _resid_name = "";
         _chain_ID = ' ';
@@ -309,21 +323,26 @@ namespace pinang {
 
     inline std::ostream& operator<<(std::ostream& o, const Atom& a)
     {
-        o << "ATOM  "
-          << std::setw(5) << a.serial() << " "
-          << std::setw(4) << a.atom_name()
-          << std::setw(1) << a.alt_loc()
-          << std::setw(3) << a.resid_name() << " "
-          << std::setw(1) << a.chain_ID()
-          << std::setw(4) << a.resid_index()
-          << std::setw(1) << a.icode() << "   "
-          << a.coordinates()
-          << std::setiosflags(std::ios_base::fixed) << std::setprecision(2)
-          << std::setw(6) << a.occupancy()
-          << std::setw(6) << a.temperature_factor() << "      "
-          << std::setw(4) << a.segment_ID()
-          << std::setw(2) << a.element()
-          << std::setw(2) << a.charge();
+        if (a.atom_flag() == "ATOM  " || a.atom_flag() == "HETATM")
+        {
+            o << std::setw(6) << a.atom_flag()
+              << std::setw(5) << a.serial() << " "
+              << std::setw(4) << a.atom_name()
+              << std::setw(1) << a.alt_loc()
+              << std::setw(3) << a.resid_name() << " "
+              << std::setw(1) << a.chain_ID()
+              << std::setw(4) << a.resid_index()
+              << std::setw(1) << a.icode() << "   "
+              << a.coordinates()
+              << std::setiosflags(std::ios_base::fixed) << std::setprecision(2)
+              << std::setw(6) << a.occupancy()
+              << std::setw(6) << a.temperature_factor() << "      "
+              << std::setw(4) << a.segment_ID()
+              << std::setw(2) << a.element()
+              << std::setw(2) << a.charge();
+        } else {
+            o << a.atom_flag();
+        }
         return o;
     }
 
@@ -333,7 +352,6 @@ namespace pinang {
         std::string pdb_line;
 
         unsigned int _tmp_ui;
-        std::string _tmp_str0;
         std::string _tmp_str;
         char _tmp_char;
         pinang::Vec3d _tmp_coordinates;
@@ -341,10 +359,11 @@ namespace pinang {
 
         std::getline( i, pdb_line);
         pdb_line.resize(80, ' ');
-        _tmp_str0 = pdb_line.substr(0,6);
+        _tmp_str = pdb_line.substr(0,6);
+        a.set_atom_flag(_tmp_str);
 
-        a.set_atom_name("NULL");
-        if (_tmp_str0 == "ATOM  " || _tmp_str0 == "HETATM")
+        // a.set_atom_name("NULL");
+        if (a.atom_flag() == "ATOM  " || a.atom_flag() == "HETATM")
         {
             tmp_sstr.str ( pdb_line.substr(6,5));
             tmp_sstr >> _tmp_ui;

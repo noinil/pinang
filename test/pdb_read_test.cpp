@@ -46,10 +46,10 @@ int main(int argc, char *argv[])
         //     std::cout << atom_tmp << std::endl;
         //     tmp_sstr.clear();
         // }
-        if (atom_tmp.atom_name() != "NULL")
-        {
+        // if (atom_tmp.atom_flag() != "ATOM  ")
+        // {
             std::cout << atom_tmp << std::endl;
-        }
+        // }
     }
 
     return 0;
