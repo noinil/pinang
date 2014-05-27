@@ -20,9 +20,12 @@ namespace pinang {
         inline Chain& m_chain(unsigned int n);
         inline void add_chain(const Chain& c);
 
+        inline int m_model_size() const;
+
     protected:
         int _model_ID;
         std::vector<Chain> _chains;
+        int _n_chain;
     };
 
     inline int Model::model_ID() const
@@ -61,6 +64,12 @@ namespace pinang {
     inline void Model::add_chain(const Chain& c)
     {
         _chains.push_back(c);
+        _n_chain++;
+    }
+
+    inline int m_model_size() const
+    {
+        return _n_chain;
     }
 
     // Model ===================================================================
@@ -68,6 +77,7 @@ namespace pinang {
     {
         _model_ID = -1;
         _chains.clear();
+        _n_chain = 0;
     }
 }
 

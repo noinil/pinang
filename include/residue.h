@@ -29,6 +29,8 @@ namespace pinang {
         inline Atom& m_atom(unsigned int n);
         inline void add_atom(const Atom& a);
 
+        inline int m_residue_size() const;
+
         inline const Vec3d& pos_Ca() const;
         inline void set_pos_Ca();
         inline void update_pos_Ca(double dt);
@@ -42,6 +44,7 @@ namespace pinang {
         char _chain_ID;
         unsigned int _resid_index;
         std::vector<Atom> _atoms;
+        int _n_atom;
         Vec3d _pos_Ca;          // position of C_alpha;
         Vec3d _vel_Ca;          // velocity of C_alpha;
     };
@@ -125,6 +128,12 @@ namespace pinang {
             _pos_Ca = a.coordinates();
             _vel_Ca = a.velocities();
         }
+        _n_atom++;
+    }
+
+    inline int Residue::m_residue_size() const
+    {
+        return _n_atom;
     }
 
     /*                      _ _   _
@@ -174,6 +183,7 @@ namespace pinang {
         _chain_ID = 0;
         _resid_index = 0;
         _atoms.clear();
+        _n_atom = 0;
         _pos_Ca = Vec3d(0, 0, 0);
         _vel_Ca = Vec3d(0, 0, 0);
     }

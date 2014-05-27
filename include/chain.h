@@ -19,8 +19,11 @@ namespace pinang {
         inline Residue& m_residue(unsigned int n);
         inline void add_residue(const Residue& r);
 
+        inline int m_chain_length() const;
+
     protected:
         char _chain_ID;
+        int _n_residue;
         std::vector<Residue> _residues;
     };
 
@@ -67,6 +70,12 @@ namespace pinang {
     inline void Chain::add_residue(const Residue& r)
     {
         _residues.push_back(r);
+        _n_residue++;
+    }
+
+    inline int m_chain_length() const
+    {
+        return _n_residue;
     }
 
     // Chain -------------------------------------------------------------------
@@ -74,6 +83,7 @@ namespace pinang {
     {
         _chain_ID = 0;
         _residues.clear();
+        _n_residue = 0;
     }
 
 }

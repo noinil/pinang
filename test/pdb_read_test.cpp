@@ -49,6 +49,10 @@ int main(int argc, char *argv[])
         // if (atom_tmp.atom_flag() != "ATOM  ")
         // {
             std::cout << atom_tmp << std::endl;
+            if (atom_tmp.atom_flag() == "ATOM  " || atom_tmp.atom_flag() == "HETATM")
+            {
+                std::cout << "Atom name: " << atom_tmp.atom_name() << std::endl;
+            }
         // }
     }
 
