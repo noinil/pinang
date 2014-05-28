@@ -13,6 +13,9 @@ test3:
 	./t3
 test4:
 	icpc -Wall -I../include/ -o t4 pdb_read_test.cpp
-	./t4 aa.pdb
+	./t4 ../data/aa.pdb
+test5:
+	icpc -Wall -I../include/ -o t5 pdb_read_test2.cpp
+	./t5 ../data/1UN6.pdb
 clean:
-	rm -f t1 t2 t3 t4
+	rm -f t1 t2 t3 t4 t5

@@ -17,6 +17,8 @@ namespace pinang {
         Residue();
         virtual ~Residue() {_atoms.clear();}
 
+        inline void reset();
+
         inline std::string resid_name() const;
         inline void set_resid_name(const std::string& s);
 
@@ -27,7 +29,7 @@ namespace pinang {
         inline void set_resid_index(unsigned int i);
 
         inline Atom& m_atom(unsigned int n);
-        inline void add_atom(const Atom& a);
+        inline int add_atom(const Atom& a);
 
         inline int m_residue_size() const;
 
@@ -120,8 +122,12 @@ namespace pinang {
             }
         }
     }
-    inline void Residue::add_atom(const Atom& a)
+    inline int Residue::add_atom(const Atom& a)
     {
+        if (a.resid_index() != _resid_index)
+        {
+            return 1;
+        }
         _atoms.push_back(a);
         if (a.atom_name() == "CA")
         {
@@ -129,6 +135,7 @@ namespace pinang {
             _vel_Ca = a.velocities();
         }
         _n_atom++;
+        return 0;
     }
 
     inline int Residue::m_residue_size() const
@@ -180,12 +187,35 @@ namespace pinang {
     inline Residue::Residue()
     {
         _resid_name = "";
-        _chain_ID = 0;
-        _resid_index = 0;
+        _chain_ID = -1;
+        _resid_index = -1;
         _atoms.clear();
         _n_atom = 0;
         _pos_Ca = Vec3d(0, 0, 0);
         _vel_Ca = Vec3d(0, 0, 0);
+    }
+
+    inline void Residue::reset()
+    {
+        _resid_name = "";
+        _chain_ID = -1;
+        _resid_index = -1;
+        _atoms.clear();
+        _n_atom = 0;
+        _pos_Ca = Vec3d(0, 0, 0);
+        _vel_Ca = Vec3d(0, 0, 0);
+    }
+
+    inline std::ostream& operator<<(std::ostream& o, Residue& r)
+    {
+        o << "Residue "
+          << std::setw(4) << r.resid_index() << ":  "
+          << std::setw(3) << r.resid_name() << std::endl;
+        int i = 0;
+        for (i = 0; i < r.m_residue_size(); i++) {
+            o << r.m_atom(i) << std::endl;
+        }
+        return o;
     }
 
 }

@@ -35,25 +35,12 @@ int main(int argc, char *argv[])
         {
             break;
         }
-        // pdb_line.resize(80, ' ');
-        // atom_flag = pdb_line.substr(0,6);
 
-        // if (atom_flag == "ATOM  ")
-        // {
-        //     tmp_sstr.str (pdb_line);
-        //     tmp_sstr >> atom_tmp;
-
-        //     std::cout << atom_tmp << std::endl;
-        //     tmp_sstr.clear();
-        // }
-        // if (atom_tmp.atom_flag() != "ATOM  ")
-        // {
-            std::cout << atom_tmp << std::endl;
-            if (atom_tmp.atom_flag() == "ATOM  " || atom_tmp.atom_flag() == "HETATM")
-            {
-                std::cout << "Atom name: " << atom_tmp.atom_name() << std::endl;
-            }
-        // }
+        std::cout << atom_tmp << std::endl;
+        if (atom_tmp.atom_flag() == "ATOM  " || atom_tmp.atom_flag() == "HETATM")
+        {
+            std::cout << "Atom name: " << atom_tmp.atom_name() << std::endl;
+        }
     }
 
     return 0;

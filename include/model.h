@@ -14,6 +14,8 @@ namespace pinang {
         Model();
         virtual ~Model() {_chains.clear();}
 
+        inline void reset();
+
         inline int model_ID() const;
         inline void set_model_ID(int n);
 
@@ -67,7 +69,7 @@ namespace pinang {
         _n_chain++;
     }
 
-    inline int m_model_size() const
+    inline int Model::m_model_size() const
     {
         return _n_chain;
     }
@@ -79,6 +81,23 @@ namespace pinang {
         _chains.clear();
         _n_chain = 0;
     }
+
+    inline void Model::reset()
+    {
+        _model_ID = -1;
+        _chains.clear();
+        _n_chain = 0;
+    }
+
+    inline std::ostream& operator<<(std::ostream& o, Model& m)
+    {
+        int i = 0;
+        for (i = 0; i < m.m_model_size(); i++) {
+            o << m.m_chain(i) << std::endl;
+        }
+        return o;
+    }
+
 }
 
 #endif

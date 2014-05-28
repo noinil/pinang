@@ -13,11 +13,13 @@ namespace pinang {
         Chain();
         virtual ~Chain() {_residues.clear();}
 
+        inline void reset();
+
         inline char chain_ID() const;
         inline void set_chain_ID(char a);
 
         inline Residue& m_residue(unsigned int n);
-        inline void add_residue(const Residue& r);
+        inline int add_residue(const Residue& r);
 
         inline int m_chain_length() const;
 
@@ -67,13 +69,18 @@ namespace pinang {
             }
         }
     }
-    inline void Chain::add_residue(const Residue& r)
+    inline int Chain::add_residue(const Residue& r)
     {
+        // if (r.chain_ID() != _chain_ID)
+        // {
+        //     return 1;
+        // }
         _residues.push_back(r);
         _n_residue++;
+        return 0;
     }
 
-    inline int m_chain_length() const
+    inline int Chain::m_chain_length() const
     {
         return _n_residue;
     }
@@ -81,9 +88,28 @@ namespace pinang {
     // Chain -------------------------------------------------------------------
     inline Chain::Chain()
     {
-        _chain_ID = 0;
+        _chain_ID = -1;
         _residues.clear();
         _n_residue = 0;
+    }
+
+    inline void Chain::reset()
+    {
+        _chain_ID = -1;
+        _residues.clear();
+        _n_residue = 0;
+    }
+
+    inline std::ostream& operator<<(std::ostream& o, Chain& c)
+    {
+        o << "Chain "
+          << std::setw(4) << c.chain_ID() << ":  "
+          << std::endl;
+        int i = 0;
+        for (i = 0; i < c.m_chain_length(); i++) {
+            o << c.m_residue(i) << std::endl;
+        }
+        return o;
     }
 
 }

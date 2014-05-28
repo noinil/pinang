@@ -13,7 +13,9 @@ namespace pinang {
     {
     public:
         inline Atom();
-        // virtual ~Atom();
+        virtual ~Atom() {};
+
+        inline void reset();
 
         inline std::string atom_flag() const;
         inline void set_atom_flag(const std::string& s);
@@ -321,6 +323,31 @@ namespace pinang {
         _charge = "";
     }
 
+    inline void Atom::reset()
+    {
+        _atom_flag = "";
+        _serial = 0;
+        _atom_name = "";
+        _alt_loc = ' ';
+        _resid_name = "";
+        _chain_ID = ' ';
+        _resid_index = 0;
+        _insert_code = ' ';
+        _coordinate = Vec3d(0, 0, 0);
+        _velocity = Vec3d(0, 0, 0);
+        _occupancy = 0;
+        _temp_factor = 0;
+        _seg_ID = "";
+        _element = "";
+        _charge = "";
+    }
+
+    /*   ___        _              _____                 _   _
+    //  / _ \ _   _| |_ ___ _ __  |  ___|   _ _ __   ___| |_(_) ___  _ __  ___
+    // | | | | | | | __/ _ \ '__| | |_ | | | | '_ \ / __| __| |/ _ \| '_ \/ __|
+    // | |_| | |_| | ||  __/ |    |  _|| |_| | | | | (__| |_| | (_) | | | \__ \
+    //  \___/ \__,_|\__\___|_|    |_|   \__,_|_| |_|\___|\__|_|\___/|_| |_|___/
+    */
     inline std::ostream& operator<<(std::ostream& o, const Atom& a)
     {
         if (a.atom_flag() == "ATOM  " || a.atom_flag() == "HETATM")
