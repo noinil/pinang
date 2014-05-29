@@ -23,7 +23,7 @@ namespace pinang{
         inline Model& m_model(unsigned int n);
         inline int n_models() const;
 
-        int native_contact_number() const;
+        void contact_map(double cutoff);
 
     protected:
         std::string _PDB_file_name;
@@ -162,14 +162,29 @@ namespace pinang{
     }
 
 
-    int PDB::native_contact_number() const
+    void PDB::contact_map(double cutoff = 5.0)
     {
-        int nc = 0;             // native contact number;
-        int i = 0;
+        int cn = 0;             // contact number;
+        int i = 0, j = 0;
+        int k = 0, m = 0, n = 0;
+        double d = 0;           // tmp distance
         for (i = 0; i < _n_model ; i++) {
+            std::cout << "Model " << std::setw(4) << i << std::endl;
+            for (j = 0; j < _models[i].m_model_size(); j++) {
+                Chain& c = _models[i].m_chain(j);
+                std::cout << "    - Chain "
+                          << std::setw(4) << c.chain_ID() << " : " ;
+                nc = 0;
+                k = c.m_chain_length();
+                for (m = 0; m < k; m++) {
+                    for (n = 0; n < k; n++) {
+                        d = resid_min_distance(c.m_residue(m), c.m_residue(n));
+                    }
 
+                }
+
+            }
         }
-        return nc;
     }
 
 }

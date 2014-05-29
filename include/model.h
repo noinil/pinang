@@ -93,7 +93,7 @@ namespace pinang {
     {
         int i = 0;
         for (i = 0; i < m.m_model_size(); i++) {
-            o << m.m_chain(i) << std::endl;
+            o << m.m_chain(i) ;
         }
         return o;
     }

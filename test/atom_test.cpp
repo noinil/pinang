@@ -78,6 +78,9 @@ int main(int argc, char *argv[])
     cout << "d: " << dd << endl;
     cout << "c: " << c.coordinates() << endl;
 
+    std::cout << "   " << std::endl;
+    std::cout << "Distance between a and b: "
+              << pinang::atom_distance(a, b) << std::endl;
     // a = b;
     // cout << "a: " << a.coordinates() << endl;
     // cout << "b: " << b.coordinates() << endl;

@@ -107,7 +107,7 @@ namespace pinang {
           << std::endl;
         int i = 0;
         for (i = 0; i < c.m_chain_length(); i++) {
-            o << c.m_residue(i) << std::endl;
+            o << c.m_residue(i) ;
         }
         return o;
     }

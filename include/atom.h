@@ -469,5 +469,11 @@ namespace pinang {
         return i;
     }
 
+    inline double atom_distance (Atom& a1, Atom& a2)
+    {
+        Vec3d v3 = a1.coordinates() - a2.coordinates();
+        return v3.norm();
+    }
+
 }
 #endif

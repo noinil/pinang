@@ -33,13 +33,7 @@ namespace pinang {
 
         inline int m_residue_size() const;
 
-        inline const Vec3d& pos_Ca() const;
-        inline void set_pos_Ca();
-        inline void update_pos_Ca(double dt);
-
-        inline const Vec3d& vel_Ca() const;
-        inline void set_vel_Ca();
-        inline void update_vel_Ca(double dt, const Vec3d& acceleration);
+        inline Atom& m_C_alpha();
 
     protected:
         std::string _resid_name;
@@ -47,8 +41,8 @@ namespace pinang {
         unsigned int _resid_index;
         std::vector<Atom> _atoms;
         int _n_atom;
-        Vec3d _pos_Ca;          // position of C_alpha;
-        Vec3d _vel_Ca;          // velocity of C_alpha;
+
+        Atom _C_alpha;
     };
 
     /*                _     _
@@ -131,56 +125,20 @@ namespace pinang {
         _atoms.push_back(a);
         if (a.atom_name() == "CA")
         {
-            _pos_Ca = a.coordinates();
-            _vel_Ca = a.velocities();
+            _C_alpha = a;
         }
         _n_atom++;
         return 0;
     }
 
+    inline Atom& Residue::m_C_alpha()
+    {
+        return _C_alpha;
+    }
+
     inline int Residue::m_residue_size() const
     {
         return _n_atom;
-    }
-
-    /*                      _ _   _
-    //      _ __   ___  ___(_) |_(_) ___  _ __
-    //     | '_ \ / _ \/ __| | __| |/ _ \| '_ \
-    //     | |_) | (_) \__ \ | |_| | (_) | | | |
-    //     | .__/ \___/|___/_|\__|_|\___/|_| |_|
-    //     |_|
-    */
-    inline const Vec3d& Residue::pos_Ca() const
-    {
-        return _pos_Ca;
-    }
-    inline void Residue::set_pos_Ca()
-    {
-        // Find C_alpha and set the coordinates?
-    }
-    inline void Residue::update_pos_Ca(double dt)
-    {
-        _pos_Ca = _pos_Ca + _vel_Ca * dt;
-    }
-
-    /*            _            _ _
-    // __   _____| | ___   ___(_) |_ _   _
-    // \ \ / / _ \ |/ _ \ / __| | __| | | |
-    //  \ V /  __/ | (_) | (__| | |_| |_| |
-    //   \_/ \___|_|\___/ \___|_|\__|\__, |
-    //                               |___/
-    */
-    inline const Vec3d& Residue::vel_Ca() const
-    {
-        return _vel_Ca;
-    }
-    inline void Residue::set_vel_Ca()
-    {
-        // Find C_alpha and set the velocities?
-    }
-    inline void Residue::update_vel_Ca(double dt, const Vec3d& acceleration)
-    {
-        _vel_Ca = _vel_Ca + acceleration * dt;
     }
 
     // Residue------------------------------------------------------------------
@@ -191,8 +149,7 @@ namespace pinang {
         _resid_index = -1;
         _atoms.clear();
         _n_atom = 0;
-        _pos_Ca = Vec3d(0, 0, 0);
-        _vel_Ca = Vec3d(0, 0, 0);
+        _C_alpha.reset();
     }
 
     inline void Residue::reset()
@@ -202,8 +159,7 @@ namespace pinang {
         _resid_index = -1;
         _atoms.clear();
         _n_atom = 0;
-        _pos_Ca = Vec3d(0, 0, 0);
-        _vel_Ca = Vec3d(0, 0, 0);
+        _C_alpha.reset();
     }
 
     inline std::ostream& operator<<(std::ostream& o, Residue& r)
@@ -216,6 +172,23 @@ namespace pinang {
             o << r.m_atom(i) << std::endl;
         }
         return o;
+    }
+
+    inline double resid_min_distance (Residue& r1, Residue& r2)
+    {
+        int i, j;
+        double d = -1;           // distance;
+        double f = 0;           // tmp distance;
+        for (i = 0; i < r1.m_residue_size(); i++) {
+            for (j = 0; j < r2.m_residue_size(); j++) {
+                f = atom_distance(r1.m_atom(i), r2.m_atom(j));
+                if (d < 0 || d > f)
+                {
+                    d = f;
+                }
+            }
+        }
+        return d;
     }
 
 }

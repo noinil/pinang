@@ -6,6 +6,7 @@
 #include <iostream>
 #include <iomanip>
 #include <cmath>
+#include <cstdlib>
 
 namespace pinang{
     class Vec3d
@@ -86,7 +87,7 @@ namespace pinang{
         return i;
     }
 
-    inline double Vec_distance (Vec3d& v1, Vec3d& v2)
+    inline double vec_distance (Vec3d& v1, Vec3d& v2)
     {
         Vec3d v3 = v1-v2;
         return v3.norm();
