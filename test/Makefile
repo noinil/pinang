@@ -16,6 +16,6 @@ test4:
 	./t4 ../data/aa.pdb
 test5:
 	icpc -Wall -I../include/ -o t5 pdb_read_test2.cpp
-	./t5 ../data/1UN6.pdb
+	./t5 ../data/aa.pdb
 clean:
 	rm -f t1 t2 t3 t4 t5

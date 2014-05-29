@@ -8,6 +8,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <cstdlib>
 
 namespace pinang{
 
@@ -19,9 +20,10 @@ namespace pinang{
 
         inline std::string pdb_name() const;
 
-        inline int output();
+        inline Model& m_model(unsigned int n);
+        inline int n_models() const;
 
-
+        int native_contact_number() const;
 
     protected:
         std::string _PDB_file_name;
@@ -37,6 +39,8 @@ namespace pinang{
         Model model_tmp;
         unsigned int tmp_ri = 0;
         _PDB_file_name = s;
+        _n_model = 0;
+        _models.clear();
 
         std::ifstream ifile(_PDB_file_name.c_str());
         if (!ifile.is_open())
@@ -119,20 +123,53 @@ namespace pinang{
         ifile.close();
     }
 
+    inline Model& PDB::m_model(unsigned int n)
+    {
+        if (_models.empty())
+        {
+            std::cerr << "ERROR: No Model found in this PDB: "
+                      << _PDB_file_name << std::endl;
+            exit(EXIT_SUCCESS);
+        } else {
+            if (n < 0 || n >= _models.size())
+            {
+                std::cerr << "ERROR: Model number out of range in PDB: "
+                          << _PDB_file_name << std::endl;
+                exit(EXIT_SUCCESS);
+            } else {
+                return _models[n];
+            }
+        }
+    }
+
     inline std::string PDB::pdb_name() const
     {
         return _PDB_file_name;
     }
-
-    inline int PDB::output()
+    inline int PDB::n_models() const
     {
-        std::cout << "PDB entry: " << _PDB_file_name << std::endl;
+        return _n_model;
+    }
+
+    inline std::ostream& operator<<(std::ostream& o, PDB& p)
+    {
         int i = 0;
-        for (i = 0; i < _models.size(); i++) {
-            std::cout << "MODEL: " << i << std::endl;
-            std::cout << _models[i] << std::endl;
+        for (i = 0; i < p.n_models(); i++) {
+            o << "MODEL: " << i << std::endl;
+            o << p.m_model(i) << std::endl;
         }
-        return 0;
+        return o;
+    }
+
+
+    int PDB::native_contact_number() const
+    {
+        int nc = 0;             // native contact number;
+        int i = 0;
+        for (i = 0; i < _n_model ; i++) {
+
+        }
+        return nc;
     }
 
 }

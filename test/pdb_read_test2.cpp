@@ -10,7 +10,7 @@ int main(int argc, char *argv[])
     std::string infilename = argv[1];
 
     pinang::PDB pdb1(infilename);
-    pdb1.output();
+    std::cout << pdb1 << std::endl;
 
     return 0;
 }
