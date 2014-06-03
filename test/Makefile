@@ -17,5 +17,8 @@ test4:
 test5:
 	icpc -Wall -I../include/ -o t5 pdb_read_test2.cpp
 	./t5 ../data/aa.pdb
+test6:
+	icpc -Wall -I../include/ -o t6 constants_test.cpp
+	./t6
 clean:
 	rm -f t1 t2 t3 t4 t5

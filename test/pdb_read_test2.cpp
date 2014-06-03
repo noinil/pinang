@@ -12,5 +12,7 @@ int main(int argc, char *argv[])
     pinang::PDB pdb1(infilename);
     std::cout << pdb1 << std::endl;
 
+    pdb1.contact_map();
+
     return 0;
 }

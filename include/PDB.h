@@ -174,7 +174,7 @@ namespace pinang{
                 Chain& c = _models[i].m_chain(j);
                 std::cout << "    - Chain "
                           << std::setw(4) << c.chain_ID() << " : " ;
-                nc = 0;
+                cn = 0;
                 k = c.m_chain_length();
                 for (m = 0; m < k; m++) {
                     for (n = 0; n < k; n++) {
@@ -182,7 +182,7 @@ namespace pinang{
                     }
 
                 }
-
+                std::cout << "test 0" << std::endl;
             }
         }
     }
