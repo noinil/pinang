@@ -18,6 +18,8 @@ namespace pinang{
 
         inline void set(int a, int b, double c);
 
+        inline int id_1() const {return _res_id_1;}
+        inline int id_2() const {return _res_id_2;}
         inline int is_contact() const;
 
     protected:
