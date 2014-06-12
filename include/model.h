@@ -51,12 +51,18 @@ namespace pinang {
     {
         if (_chains.empty())
         {
+            std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
+            std::cout << " ~              PINANG :: Model               ~ " << std::endl;
+            std::cout << " ============================================== " << std::endl;
             std::cerr << "ERROR: No Chains found in Model: "
                       << _model_ID << std::endl;
             exit(EXIT_SUCCESS);
         } else {
             if (n < 0 || n >= _chains.size())
             {
+                std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
+                std::cout << " ~              PINANG :: Model               ~ " << std::endl;
+                std::cout << " ============================================== " << std::endl;
                 std::cerr << "ERROR: Chain number out of range in Model: "
                           << _model_ID << std::endl;
                 exit(EXIT_SUCCESS);
@@ -82,7 +88,9 @@ namespace pinang {
     {
         int i = 0;
         for (i = 0; i < _n_chain; i++) {
-            std::cout << " - Chain " << _chains[i].chain_ID() << std::endl;
+            std::cout << " - Chain " << _chains[i].chain_ID()
+                      << " : " << _chains[i].m_chain_length()
+                      << std::endl;
             _chains[i].pr_seq(n);
         }
 

@@ -103,6 +103,8 @@ namespace pinang {
         if (_resid_name == "RG") _short_name = 'G';
 
         if (_resid_name == "CA") _short_name = 'c';
+        if (_resid_name == "ZN") _short_name = 'z';
+        if (_resid_name == "HOH") _short_name = 'w';
     }
 
     /*      _           _         ___ ____
@@ -146,12 +148,18 @@ namespace pinang {
     {
         if (_atoms.empty())
         {
+            std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
+            std::cout << " ~             PINANG :: Residue              ~ " << std::endl;
+            std::cout << " ============================================== " << std::endl;
             std::cerr << "ERROR: No Atoms found in Residue: "
                       << _resid_index << std::endl;
             exit(EXIT_SUCCESS);
         } else {
             if (n < 0 || n >= _atoms.size())
             {
+                std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
+                std::cout << " ~             PINANG :: Residue              ~ " << std::endl;
+                std::cout << " ============================================== " << std::endl;
                 std::cerr << "ERROR: Atom index out of range in Residue: "
                           << _resid_index << std::endl;
                 exit(EXIT_SUCCESS);

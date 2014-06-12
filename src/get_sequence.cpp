@@ -2,15 +2,28 @@
 
 #include <iostream>
 #include <fstream>
+#include <cstdlib>
 
 using namespace std;
 
 int main(int argc, char *argv[])
 {
+    if (argc < 2 || argc >=3)
+    {
+        std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
+        std::cout << " ~           PINANG sequence print            ~ " << std::endl;
+        std::cout << " ============================================== " << std::endl;
+        std::cerr << " ERROR: too few or too many arguments!" << std::endl;
+        std::cerr << " Usage: p_seq some.pdb" << std::endl;
+        exit(EXIT_FAILURE);
+    }
+
     std::string infilename = argv[1];
 
     pinang::PDB pdb1(infilename);
 
+    std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
+    std::cout << " ~           PINANG sequence print            ~ " << std::endl;
     std::cout << " ============================================== "
               << std::endl
               << " Sequence of PDB "

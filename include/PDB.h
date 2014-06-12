@@ -47,8 +47,11 @@ namespace pinang{
         std::ifstream ifile(_PDB_file_name.c_str());
         if (!ifile.is_open())
         {
-            std::cerr << "ERROR: Cannot read file: " << s << std::endl;
-            std::cerr << "Program terminating." << std::endl;
+            std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
+            std::cout << " ~               PINANG :: PDB                ~ " << std::endl;
+            std::cout << " ============================================== " << std::endl;
+            std::cerr << " ERROR: Cannot read file: " << s << std::endl;
+            std::cerr << " Program terminating." << std::endl;
             exit(EXIT_FAILURE);
         }
 
@@ -102,7 +105,13 @@ namespace pinang{
             }
             if (atom_tmp.atom_flag() == "END   ")
             {
-                // std::cout << "model_tmp.size(): " << model_tmp.m_model_size() << std::endl;
+                if (resid_tmp.m_residue_size() != 0)
+                {
+                    chain_tmp.add_residue(resid_tmp);
+                    chain_tmp.set_chain_ID(resid_tmp.chain_ID());
+                    model_tmp.add_chain(chain_tmp);
+                }
+
                 if (model_tmp.m_model_size() != 0)
                 {
                     _models.push_back(model_tmp);
@@ -125,7 +134,12 @@ namespace pinang{
                     }
                     tmp_ri = atom_tmp.resid_index();
                     resid_tmp.set_resid_name(atom_tmp.resid_name());
-                    resid_tmp.set_chain_ID(atom_tmp.chain_ID());
+                    if (atom_tmp.atom_flag() == "HETATM")
+                    {
+                        resid_tmp.set_chain_ID('+');
+                    } else {
+                        resid_tmp.set_chain_ID(atom_tmp.chain_ID());
+                    }
                     resid_tmp.set_resid_index(atom_tmp.resid_index());
 
                     resid_tmp.add_atom(atom_tmp);
@@ -140,12 +154,18 @@ namespace pinang{
     {
         if (_models.empty())
         {
+            std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
+            std::cout << " ~               PINANG :: PDB                ~ " << std::endl;
+            std::cout << " ============================================== " << std::endl;
             std::cerr << "ERROR: No Model found in this PDB: "
                       << _PDB_file_name << std::endl;
             exit(EXIT_SUCCESS);
         } else {
             if (n < 0 || n >= _models.size())
             {
+                std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
+                std::cout << " ~               PINANG :: PDB                ~ " << std::endl;
+                std::cout << " ============================================== " << std::endl;
                 std::cerr << "ERROR: Model number out of range in PDB: "
                           << _PDB_file_name << std::endl;
                 exit(EXIT_SUCCESS);
@@ -175,7 +195,10 @@ namespace pinang{
     {
         if (n != 1 && n != 3)
         {
-            std::cerr << "Usage: PINANG::PDB.print_sequence(): \n"
+            std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
+            std::cout << " ~               PINANG :: PDB                ~ " << std::endl;
+            std::cout << " ============================================== " << std::endl;
+            std::cerr << " Usage: PINANG::PDB.print_sequence(): \n"
                  << "       n = 1: 1-char residue name;\n"
                  << "       n = 3: 3-char residue name.\n"
                  << std::endl;

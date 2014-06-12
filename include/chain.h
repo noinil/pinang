@@ -57,12 +57,18 @@ namespace pinang {
     {
         if (_residues.empty())
         {
+            std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
+            std::cout << " ~              PINANG :: Chain               ~ " << std::endl;
+            std::cout << " ============================================== " << std::endl;
             std::cerr << "ERROR: No Residues found in Chain: "
                       << _chain_ID << std::endl;
             exit(EXIT_SUCCESS);
         } else {
             if (n < 0 || n >= _residues.size())
             {
+                std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
+                std::cout << " ~              PINANG :: Chain               ~ " << std::endl;
+                std::cout << " ============================================== " << std::endl;
                 std::cerr << "ERROR: Residue index out of range in Chain: "
                           << _chain_ID << std::endl;
                 exit(EXIT_SUCCESS);
