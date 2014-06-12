@@ -11,9 +11,6 @@ test2:
 test3:
 	icpc -Wall -I../include/ -o t3 resid_test.cpp
 	./t3
-test4:
-	icpc -Wall -I../include/ -o t4 pdb_read_test.cpp
-	./t4 ../data/aa.pdb
 test5:
 	icpc -Wall -I../include/ -o t5 pdb_read_test2.cpp
 	./t5 ../data/1J7O.pdb
