@@ -16,7 +16,7 @@ test4:
 	./t4 ../data/aa.pdb
 test5:
 	icpc -Wall -I../include/ -o t5 pdb_read_test2.cpp
-	./t5 ../data/aa.pdb
+	./t5 ../data/1J7O.pdb
 test6:
 	icpc -Wall -I../include/ -o t6 constants_test.cpp
 	./t6

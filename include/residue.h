@@ -20,6 +20,7 @@ namespace pinang {
         inline void reset();
 
         inline std::string resid_name() const;
+        inline char short_name() const;
         inline void set_resid_name(const std::string& s);
 
         inline char chain_ID() const;
@@ -37,6 +38,7 @@ namespace pinang {
 
     protected:
         std::string _resid_name;
+        char _short_name;
         char _chain_ID;
         unsigned int _resid_index;
         std::vector<Atom> _atoms;
@@ -55,11 +57,43 @@ namespace pinang {
     {
         return _resid_name;
     }
+    inline char Residue::short_name() const
+    {
+        return _short_name;
+    }
     inline void Residue::set_resid_name(const std::string& s)
     {
         _resid_name = s;
-    }
+        if (_resid_name == "ARG") _short_name = 'R';
+        if (_resid_name == "HIS") _short_name = 'H';
+        if (_resid_name == "LYS") _short_name = 'K';
+        if (_resid_name == "ASP") _short_name = 'D';
+        if (_resid_name == "GLU") _short_name = 'E';
+        if (_resid_name == "SER") _short_name = 'S';
+        if (_resid_name == "THR") _short_name = 'T';
+        if (_resid_name == "ASN") _short_name = 'N';
+        if (_resid_name == "GLN") _short_name = 'Q';
+        if (_resid_name == "CYS") _short_name = 'C';
+        if (_resid_name == "SEC") _short_name = 'U';
+        if (_resid_name == "GLY") _short_name = 'G';
+        if (_resid_name == "PRO") _short_name = 'P';
+        if (_resid_name == "ALA") _short_name = 'A';
+        if (_resid_name == "VAL") _short_name = 'V';
+        if (_resid_name == "ILE") _short_name = 'I';
+        if (_resid_name == "LEU") _short_name = 'L';
+        if (_resid_name == "MET") _short_name = 'M';
+        if (_resid_name == "PHE") _short_name = 'F';
+        if (_resid_name == "TYR") _short_name = 'Y';
+        if (_resid_name == "TRP") _short_name = 'W';
 
+        if (_resid_name == "A") _short_name = 'A';
+        if (_resid_name == "U") _short_name = 'U';
+        if (_resid_name == "C") _short_name = 'C';
+        if (_resid_name == "G") _short_name = 'G';
+        if (_resid_name == "T") _short_name = 'T';
+
+        if (_resid_name == "CA") _short_name = 'c';
+    }
 
     /*      _           _         ___ ____
     //  ___| |__   __ _(_)_ __   |_ _|  _ \
@@ -145,6 +179,7 @@ namespace pinang {
     inline Residue::Residue()
     {
         _resid_name = "";
+        _short_name = '0';
         _chain_ID = -1;
         _resid_index = -1;
         _atoms.clear();
@@ -155,6 +190,7 @@ namespace pinang {
     inline void Residue::reset()
     {
         _resid_name = "";
+        _short_name = '0';
         _chain_ID = -1;
         _resid_index = -1;
         _atoms.clear();
@@ -164,9 +200,9 @@ namespace pinang {
 
     inline std::ostream& operator<<(std::ostream& o, Residue& r)
     {
-        o << "Residue "
-          << std::setw(4) << r.resid_index() << ":  "
-          << std::setw(3) << r.resid_name() << std::endl;
+        // o << "Residue "
+        //   << std::setw(4) << r.resid_index() << ":  "
+        //   << std::setw(3) << r.resid_name() << std::endl;
         int i = 0;
         for (i = 0; i < r.m_residue_size(); i++) {
             o << r.m_atom(i) << std::endl;

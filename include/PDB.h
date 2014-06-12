@@ -23,7 +23,9 @@ namespace pinang{
         inline Model& m_model(unsigned int n);
         inline int n_models() const;
 
-        void contact_map(double cutoff);
+        inline void print_sequence(int n) const;
+
+        // void contact_map(double c);
 
     protected:
         std::string _PDB_file_name;
@@ -63,10 +65,13 @@ namespace pinang{
             if (atom_tmp.atom_flag() == "MODEL ")
             {
                 model_tmp.reset();
+                tmp_ri = atom_tmp.serial();
+                model_tmp.set_model_ID(tmp_ri);
+
+                tmp_ri = 0;
                 chain_tmp.reset();
                 resid_tmp.reset();
                 atom_tmp.reset();
-                tmp_ri = 0;
             }
             if (atom_tmp.atom_flag() == "TER   ")
             {
@@ -79,8 +84,16 @@ namespace pinang{
             }
             if (atom_tmp.atom_flag() == "ENDMDL")
             {
-                _models.push_back(model_tmp);
+                if (resid_tmp.m_residue_size() != 0)
+                {
+                    chain_tmp.add_residue(resid_tmp);
+                    chain_tmp.set_chain_ID(resid_tmp.chain_ID());
+                    model_tmp.add_chain(chain_tmp);
+                }
+
+                _models.push_back(model_tmp); // push back tmp model;
                 _n_model++;
+
                 model_tmp.reset();
                 chain_tmp.reset();
                 resid_tmp.reset();
@@ -101,7 +114,7 @@ namespace pinang{
                 atom_tmp.reset();
                 tmp_ri = 0;
             }
-            if (atom_tmp.atom_flag() == "ATOM  ")
+            if (atom_tmp.atom_flag() == "ATOM  " || atom_tmp.atom_flag() == "HETATM")
             {
                 if (resid_tmp.add_atom(atom_tmp))
                 {
@@ -151,40 +164,35 @@ namespace pinang{
         return _n_model;
     }
 
+    /*             _       _
+    //  _ __  _ __(_)_ __ | |_   ___  ___  __ _
+    // | '_ \| '__| | '_ \| __| / __|/ _ \/ _` |
+    // | |_) | |  | | | | | |_  \__ \  __/ (_| |
+    // | .__/|_|  |_|_| |_|\__| |___/\___|\__, |
+    // |_|                                   |_|
+    */
+    inline void PDB::print_sequence(int n) const
+    {
+        if (n != 1 && n != 3)
+        {
+            std::cerr << "Usage: PINANG::PDB.print_sequence(): \n"
+                 << "       n = 1: 1-char residue name;\n"
+                 << "       n = 3: 3-char residue name.\n"
+                 << std::endl;
+            exit(EXIT_SUCCESS);
+        }
+        _models[0].print_sequence(n);
+        // std::cout << std::endl;
+    }
+
+
     inline std::ostream& operator<<(std::ostream& o, PDB& p)
     {
         int i = 0;
         for (i = 0; i < p.n_models(); i++) {
-            o << "MODEL: " << i << std::endl;
             o << p.m_model(i) << std::endl;
         }
         return o;
-    }
-
-
-    void PDB::contact_map(double cutoff = 5.0)
-    {
-        int cn = 0;             // contact number;
-        int i = 0, j = 0;
-        int k = 0, m = 0, n = 0;
-        double d = 0;           // tmp distance
-        for (i = 0; i < _n_model ; i++) {
-            std::cout << "Model " << std::setw(4) << i << std::endl;
-            for (j = 0; j < _models[i].m_model_size(); j++) {
-                Chain& c = _models[i].m_chain(j);
-                std::cout << "    - Chain "
-                          << std::setw(4) << c.chain_ID() << " : " ;
-                cn = 0;
-                k = c.m_chain_length();
-                for (m = 0; m < k; m++) {
-                    for (n = 0; n < k; n++) {
-                        d = resid_min_distance(c.m_residue(m), c.m_residue(n));
-                    }
-
-                }
-                std::cout << "test 0" << std::endl;
-            }
-        }
     }
 
 }

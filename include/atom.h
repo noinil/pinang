@@ -461,6 +461,12 @@ namespace pinang {
             a.set_charge(_tmp_str);
             tmp_sstr.clear();
             _tmp_str.clear();
+        } else if (a.atom_flag() == "MODEL ") {
+            // std::cout << "----------------" << std::endl;
+            tmp_sstr.str ( pdb_line.substr(10,4));
+            tmp_sstr >> _tmp_ui;
+            a.set_serial(_tmp_ui);
+            tmp_sstr.clear();
         } else {
             // std::cerr << "ERROR: Wrong format!" << std::endl;
         }

@@ -3,10 +3,11 @@
 #ifndef PINANG_CONTACT_H_
 #define PINANG_CONTACT_H_
 
+#include "constants.h"
+
 #include <iostream>
 #include <iomanip>
 #include <cstdlib>
-#include "constants.h"
 
 namespace pinang{
     class Contact
@@ -33,7 +34,7 @@ namespace pinang{
         _res_id_1 = a;
         _res_id_2 = b;
         _distance = c;
-        if (_distance < cutoff)
+        if (_distance < g_cutoff)
         {
             _flag = 1;
         } else {
@@ -46,7 +47,7 @@ namespace pinang{
         _res_id_1 = a;
         _res_id_2 = b;
         _distance = c;
-        if (_distance < cutoff)
+        if (_distance < g_cutoff)
         {
             _flag = 1;
         } else {

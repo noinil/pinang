@@ -5,7 +5,7 @@
 
 namespace pinang {
 
-    double cutoff = 10.0;
+    double g_cutoff = 10.0;
 }
 
 #endif

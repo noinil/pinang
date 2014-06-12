@@ -7,9 +7,9 @@ using namespace std;
 
 int main(int argc, char *argv[])
 {
-    // pinang::cutoff = 1.0;
+    // pinang::g_cutoff = 1.0;
 
-    // std::cout << "PINANG::cutoff = " << pinang::cutoff << std::endl;
+    // std::cout << "PINANG::CUTOFF = " << pinang::g_cutoff << std::endl;
 
     pinang::Vec3d a0(0,0,0);
     pinang::Vec3d a1(1,0,0);
