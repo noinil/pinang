@@ -92,6 +92,16 @@ namespace pinang {
         if (_resid_name == "G") _short_name = 'G';
         if (_resid_name == "T") _short_name = 'T';
 
+        if (_resid_name == "DA") _short_name = 'A';
+        if (_resid_name == "DC") _short_name = 'C';
+        if (_resid_name == "DG") _short_name = 'G';
+        if (_resid_name == "DT") _short_name = 'T';
+
+        if (_resid_name == "RA") _short_name = 'A';
+        if (_resid_name == "RU") _short_name = 'U';
+        if (_resid_name == "RC") _short_name = 'C';
+        if (_resid_name == "RG") _short_name = 'G';
+
         if (_resid_name == "CA") _short_name = 'c';
     }
 
