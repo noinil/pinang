@@ -1,6 +1,6 @@
 default:
 
-all: 		seq
+all: 		seq pdb_output
 
 seq:
 	icpc -Wall -I../include/ -o p_seq get_sequence.cpp

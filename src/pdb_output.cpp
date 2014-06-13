@@ -2,6 +2,8 @@
 
 #include <iostream>
 #include <fstream>
+#include <cstdlib>
+#include <unistd.h>
 
 using namespace std;
 
@@ -10,23 +12,53 @@ int main(int argc, char *argv[])
     std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
     std::cout << " ~         PINANG PDB output/extract          ~ " << std::endl;
     std::cout << " ============================================== " << std::endl;
-    // std::cerr << " ERROR: too few or too many arguments!" << std::endl;
-    std::cout << " Usage: p_pdb_extract some.pdb" << std::endl;
-    // exit(EXIT_FAILURE);
+    std::cout << " Usage: "
+              << argv[0]
+              << " -f some.pdb [-o output.pdb] [-m module]" << std::endl;
+    std::cout << " ============================================== " << std::endl;
 
-    std::string infilename = argv[1];
+    int opt, mod_index = 0;
+    int mod_flag = 0;
+    int in_flag = 0;
 
+    std::string infilename = "some.pdb";
+    std::string outfilename = "out.pdb";
+
+    while ((opt = getopt(argc, argv, "o:m:f:")) != -1) {
+        switch (opt) {
+        case 'o':
+            outfilename = optarg;
+            break;
+        case 'm':
+            mod_index = atoi(optarg);
+            mod_flag = 1;
+            break;
+        case 'f':
+            infilename = optarg;
+            in_flag = 1;
+            break;
+        default: /* '?' */
+            std::cout << " Usage: "
+                      << argv[0]
+                      << " -f some.pdb [-o output.pdb] [-m module]" << std::endl;
+            exit(EXIT_FAILURE);
+        }
+    }
+
+    if (!in_flag)
+    {
+        std::cout << " Usage: "
+                  << argv[0]
+                  << " -f some.pdb [-o output.pdb] [-m module]" << std::endl;
+        exit(EXIT_FAILURE);
+    }
     pinang::PDB pdb1(infilename);
 
-    int i = pdb1.n_models();
-
-    if (i > 1)
-    {
-        std::cout << " Please input Module No. :" << std::endl;
-        std::cin >> i;
-        std::cout << pdb1.m_model(i) << std::endl;
+    std::ofstream ofile(outfilename.c_str());
+    if (mod_flag == 1) {
+        ofile << pdb1.m_model(mod_index - 1) << std::endl;
     } else {
-        std::cout << pdb1 << std::endl;
+        ofile << pdb1 << std::endl;
     }
 
     return 0;

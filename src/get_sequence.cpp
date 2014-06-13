@@ -14,7 +14,9 @@ int main(int argc, char *argv[])
         std::cout << " ~           PINANG sequence print            ~ " << std::endl;
         std::cout << " ============================================== " << std::endl;
         std::cerr << " ERROR: too few or too many arguments!" << std::endl;
-        std::cerr << " Usage: p_seq some.pdb" << std::endl;
+        std::cerr << " Usage: "
+                  << argv[0]
+                  << " some.pdb" << std::endl;
         exit(EXIT_FAILURE);
     }
 
