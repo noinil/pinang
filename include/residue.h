@@ -21,13 +21,16 @@ namespace pinang {
 
         inline std::string resid_name() const;
         inline char short_name() const;
-        inline void set_resid_name(const std::string& s);
+        void set_resid_name(const std::string& s);
 
         inline char chain_ID() const;
         inline void set_chain_ID(char a);
 
         inline unsigned int resid_index() const;
         inline void set_resid_index(unsigned int i);
+
+        inline double resid_charge() const;
+        inline void set_resid_charge(double c);
 
         inline Atom& m_atom(unsigned int n);
         inline int add_atom(const Atom& a);
@@ -43,6 +46,7 @@ namespace pinang {
         unsigned int _resid_index;
         std::vector<Atom> _atoms;
         int _n_atom;
+        double _charge;         // actually not used yet!
 
         Atom _C_alpha;
     };
@@ -61,50 +65,80 @@ namespace pinang {
     {
         return _short_name;
     }
-    inline void Residue::set_resid_name(const std::string& s)
+    void Residue::set_resid_name(const std::string& s)
     {
         _resid_name = s;
-        if (_resid_name == "ARG") _short_name = 'R';
-        if (_resid_name == "HIS") _short_name = 'H';
-        if (_resid_name == "LYS") _short_name = 'K';
-        if (_resid_name == "ASP") _short_name = 'D';
-        if (_resid_name == "GLU") _short_name = 'E';
-        if (_resid_name == "SER") _short_name = 'S';
-        if (_resid_name == "THR") _short_name = 'T';
-        if (_resid_name == "ASN") _short_name = 'N';
-        if (_resid_name == "GLN") _short_name = 'Q';
-        if (_resid_name == "CYS") _short_name = 'C';
-        if (_resid_name == "SEC") _short_name = 'U';
-        if (_resid_name == "GLY") _short_name = 'G';
-        if (_resid_name == "PRO") _short_name = 'P';
-        if (_resid_name == "ALA") _short_name = 'A';
-        if (_resid_name == "VAL") _short_name = 'V';
-        if (_resid_name == "ILE") _short_name = 'I';
-        if (_resid_name == "LEU") _short_name = 'L';
-        if (_resid_name == "MET") _short_name = 'M';
-        if (_resid_name == "PHE") _short_name = 'F';
-        if (_resid_name == "TYR") _short_name = 'Y';
-        if (_resid_name == "TRP") _short_name = 'W';
+        char c = s[0];
 
-        if (_resid_name == "A") _short_name = 'A';
-        if (_resid_name == "U") _short_name = 'U';
-        if (_resid_name == "C") _short_name = 'C';
-        if (_resid_name == "G") _short_name = 'G';
-        if (_resid_name == "T") _short_name = 'T';
+        switch (c) {
+        case 'A':
+            if (_resid_name == "ARG") _short_name = 'R';
+            else if (_resid_name == "ASP") _short_name = 'D';
+            else if (_resid_name == "ASN") _short_name = 'N';
+            else if (_resid_name == "ALA") _short_name = 'A';
+            else if (_resid_name == "A") _short_name = 'A';
+            break;
+        case 'C':
+            if (_resid_name == "CYS") _short_name = 'C';
+            else if (_resid_name == "C") _short_name = 'C';
+            else if (_resid_name == "CA") _short_name = 'c';
+            break;
+        case 'D':
+            if (_resid_name == "DA") _short_name = 'A';
+            else if (_resid_name == "DC") _short_name = 'C';
+            else if (_resid_name == "DG") _short_name = 'G';
+            else if (_resid_name == "DT") _short_name = 'T';
+            break;
+        case 'G':
+            if (_resid_name == "GLU") _short_name = 'E';
+            else if (_resid_name == "GLN") _short_name = 'Q';
+            else if (_resid_name == "GLY") _short_name = 'G';
+            else if (_resid_name == "G") _short_name = 'G';
+            break;
+        case 'H':
+            if (_resid_name == "HIS") _short_name = 'H';
+            else if (_resid_name == "HOH") _short_name = 'w';
+            break;
+        case 'I':
+            if (_resid_name == "ILE") _short_name = 'I';
+            break;
+        case 'L':
+            if (_resid_name == "LYS") _short_name = 'K';
+            else if (_resid_name == "LEU") _short_name = 'L';
+            break;
+        case 'M':
+            if (_resid_name == "MET") _short_name = 'M';
+            break;
+        case 'P':
+            if (_resid_name == "PRO") _short_name = 'P';
+            else if (_resid_name == "PHE") _short_name = 'F';
+            break;
+        case 'R':
+            if (_resid_name == "RA") _short_name = 'A';
+            else if (_resid_name == "RU") _short_name = 'U';
+            else if (_resid_name == "RC") _short_name = 'C';
+            else if (_resid_name == "RG") _short_name = 'G';
+            break;
+        case 'S':
+            if (_resid_name == "SER") _short_name = 'S';
+            else if (_resid_name == "SEC") _short_name = 'U';
+            break;
+        case 'T':
+            if (_resid_name == "TYR") _short_name = 'Y';
+            else if (_resid_name == "TRP") _short_name = 'W';
+            else if (_resid_name == "THR") _short_name = 'T';
+            else if (_resid_name == "T") _short_name = 'T';
+            break;
+        case 'U':
+            if (_resid_name == "U") _short_name = 'U';
+            break;
+        case 'V':
+            if (_resid_name == "VAL") _short_name = 'V';
+            break;
+        default:
+            if (_resid_name == "ZN") _short_name = 'z';
+        }
 
-        if (_resid_name == "DA") _short_name = 'A';
-        if (_resid_name == "DC") _short_name = 'C';
-        if (_resid_name == "DG") _short_name = 'G';
-        if (_resid_name == "DT") _short_name = 'T';
-
-        if (_resid_name == "RA") _short_name = 'A';
-        if (_resid_name == "RU") _short_name = 'U';
-        if (_resid_name == "RC") _short_name = 'C';
-        if (_resid_name == "RG") _short_name = 'G';
-
-        if (_resid_name == "CA") _short_name = 'c';
-        if (_resid_name == "ZN") _short_name = 'z';
-        if (_resid_name == "HOH") _short_name = 'w';
     }
 
     /*      _           _         ___ ____
@@ -135,6 +169,22 @@ namespace pinang {
     inline void Residue::set_resid_index(unsigned int i)
     {
         _resid_index = i;
+    }
+
+    /*                _     _        _
+    //  _ __ ___  ___(_) __| |   ___| |__   __ _ _ __ __ _  ___
+    // | '__/ _ \/ __| |/ _` |  / __| '_ \ / _` | '__/ _` |/ _ \
+    // | | |  __/\__ \ | (_| | | (__| | | | (_| | | | (_| |  __/
+    // |_|  \___||___/_|\__,_|  \___|_| |_|\__,_|_|  \__, |\___|
+    //                                               |___/
+    */
+    inline double Residue::resid_charge() const
+    {
+        return _charge;
+    }
+    inline void Residue::set_resid_charge(double c)
+    {
+        _charge = c;
     }
 
     /*                     _
@@ -202,6 +252,8 @@ namespace pinang {
         _resid_index = -1;
         _atoms.clear();
         _n_atom = 0;
+        _charge = 0.0;
+
         _C_alpha.reset();
     }
 
@@ -213,6 +265,8 @@ namespace pinang {
         _resid_index = -1;
         _atoms.clear();
         _n_atom = 0;
+        _charge = 0.0;
+
         _C_alpha.reset();
     }
 
