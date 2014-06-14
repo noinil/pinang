@@ -100,12 +100,16 @@ namespace pinang {
     void Model::output_ca_pos(std::ostream& o)
     {
         int i = 0;
+        int n = 0;
         for (i = 0; i < _n_chain; i++) {
+            // if (_chains[i].chain_ID() == '+')
+            //     continue;
             o << " - Chain " << _chains[i].chain_ID()
               << " : " << _chains[i].m_chain_length()
               << std::endl;
-            _chains[i].output_ca_pos(o);
+            _chains[i].output_ca_pos(o, n);
             o << "   " << std::endl;
+            n += _chains[i].m_chain_length();
         }
     }
 

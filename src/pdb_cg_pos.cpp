@@ -60,6 +60,7 @@ int main(int argc, char *argv[])
                   << " of " << infilename
                   << " to " << outfilename
                   << std::endl;
+        ofile << " # CG positions for PDB " << infilename << std::endl;
         pdb1.m_model(mod_index - 1).output_ca_pos(ofile);
     } else {
         std::cout << " Extracting C-alpha coordinates of MODULE "
@@ -67,6 +68,7 @@ int main(int argc, char *argv[])
                   << " of " << infilename
                   << " to " << outfilename
                   << std::endl;
+        ofile << " # CG positions for PDB " << infilename << std::endl;
         pdb1.m_model(0).output_ca_pos(ofile);
     }
 
