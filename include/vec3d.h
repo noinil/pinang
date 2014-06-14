@@ -3,6 +3,8 @@
 #ifndef PINANG_VEC3D_H_
 #define PINANG_VEC3D_H_
 
+#include "constants.h"
+
 #include <iostream>
 #include <iomanip>
 #include <cmath>
@@ -59,10 +61,16 @@ namespace pinang{
             }
         }
 
-        double norm() const
+        inline double norm() const
         {
             return sqrt(_z1*_z1+_z2*_z2+_z3*_z3);
         }
+
+        inline double sqr_norm() const
+        {
+            return (_z1*_z1+_z2*_z2+_z3*_z3);
+        }
+
     protected:
         double _z1, _z2, _z3;
     };
@@ -89,8 +97,20 @@ namespace pinang{
 
     inline double vec_distance (Vec3d& v1, Vec3d& v2)
     {
+        // Actually this is not the distance between two Vectors,
+        // but the distance between two Points!
         Vec3d v3 = v1-v2;
         return v3.norm();
+    }
+
+    double vec_angle (Vec3d& v1, Vec3d& v2)
+    {
+        return acos((v1*v2)/(v1.norm()*v2.norm()));
+    }
+    double vec_angle_deg (Vec3d& v1, Vec3d& v2)
+    {
+        double ang = acos((v1*v2)/(v1.norm()*v2.norm()));
+        return (180 * ang / g_pi);
     }
 
 }
