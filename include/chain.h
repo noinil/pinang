@@ -29,6 +29,9 @@ namespace pinang {
         void output_top_bond(std::ostream& o, int n);
         void output_top_angle(std::ostream& o, int n);
         void output_top_dihedral(std::ostream& o, int n);
+        void output_top_native(std::ostream& o);
+
+        Chain operator+(Chain& other);
 
     protected:
         char _chain_ID;
@@ -107,13 +110,24 @@ namespace pinang {
     */
     inline void Chain::pr_seq(int n) const
     {
+        if (_residues[0].resid_name() == "HOH")
+        {
+            return;
+        }
+
         int i = 0;
         int j = 0;
+
+        std::cout << " - Chain " << _chain_ID
+                  << " : " << _n_residue
+                  << std::endl;
 
         if (n == 1)
         {
             std::cout << " ";
             for (i = 0; i < _n_residue; i++) {
+                // if (_residues[i].resid_name() == "HOH")
+                //     continue;
                 std::cout << std::setw(1) << _residues[i].short_name();
                 j++;
                 if (j%10 == 5)
@@ -130,6 +144,8 @@ namespace pinang {
         } else if (n == 3)
         {
             for (i = 0; i < _n_residue; i++) {
+                // if (_residues[i].resid_name() == "HOH")
+                //     continue;
                 std::cout << std::setw(4) << _residues[i].resid_name() ;
                 j++;
                 if (j%10 == 0)
@@ -143,79 +159,121 @@ namespace pinang {
 
     void Chain::output_ca_pos(std::ostream& o, int n)
     {
+        if (_residues[0].resid_name() == "HOH")
+        {
+            return;
+        }
+        o << " - Chain " << _chain_ID
+          << " : " << _n_residue
+          << std::endl;
+
         int i = 0;
         for (i = 0; i < _n_residue; i++) {
-            if (_residues[i].resid_name() != "HOH")
-            {
-                o << std::setw(6) << i+1+n
-                  << std::setw(5) << _residues[i].resid_name()
-                  << _residues[i].m_C_alpha().coordinates()
-                  << std::endl;
-            }
+            o << std::setw(6) << i+1+n
+              << std::setw(5) << _residues[i].resid_name()
+              << _residues[i].m_C_alpha().coordinates()
+              << std::endl;
         }
+        o << std::endl;
     }
 
     void Chain::output_top_mass(std::ostream& o, int n)
     {
+        if (_residues[0].resid_name() == "HOH")
+        {
+            return;
+        }
+
         int i = 0;
         for (i = 0; i < _n_residue; i++) {
-            if (_residues[i].resid_name() != "HOH")
-            {
                 o << std::setw(11) << i+1+n
                   << std::setw(10) << _residues[i].resid_mass()
-                  << std::setw(8) << _residues[i].resid_charge()
+                  << std::setw(8)
+                  << _residues[i].resid_charge()
                   << std::endl;
-            }
         }
     }
 
     void Chain::output_top_bond(std::ostream& o, int n)
     {
+        if (_residues[0].resid_name() == "HOH")
+        {
+            return;
+        }
+
         int i = 0;
-        for (i = 0; i < _n_residue-1; i++) {
-            if (_residues[i].resid_name() != "HOH")
-            {
-                o << std::setw(8) << i+1+n
-                  << std::setw(6) << i+2+n
-                  << std::setw(8) << p_K_bond
-                  << std::endl;
-            }
+        for (i = 0; i < _n_residue - 1; i++) {
+            o << std::setw(8) << i+1+n
+              << std::setw(6) << i+2+n
+              << std::setw(8) << p_K_bond
+              << std::endl;
         }
     }
 
     void Chain::output_top_angle(std::ostream& o, int n)
     {
+        if (_residues[0].resid_name() == "HOH")
+        {
+            return;
+        }
+
         int i = 0;
         for (i = 0; i < _n_residue-2; i++) {
-            if (_residues[i].resid_name() != "HOH")
-            {
-                o << std::setw(8) << i+1+n
-                  << std::setw(6) << i+2+n
-                  << std::setw(6) << i+3+n
-                  << std::setw(8) << p_K_angle
-                  << std::endl;
-            }
+            o << std::setw(8) << i+1+n
+              << std::setw(6) << i+2+n
+              << std::setw(6) << i+3+n
+              << std::setw(8) << p_K_angle
+              << std::endl;
         }
     }
 
     void Chain::output_top_dihedral(std::ostream& o, int n)
     {
+        if (_residues[0].resid_name() == "HOH")
+        {
+            return;
+        }
+
         int i = 0;
         for (i = 0; i < _n_residue-3; i++) {
-            if (_residues[i].resid_name() != "HOH")
-            {
-                o << std::setw(8) << i+1+n
-                  << std::setw(6) << i+2+n
-                  << std::setw(6) << i+3+n
-                  << std::setw(6) << i+4+n
-                  << std::setw(8) << p_K_dihedral_1
-                  << std::setw(8) << p_K_dihedral_3
-                  << std::endl;
+            o << std::setw(8) << i+1+n
+              << std::setw(6) << i+2+n
+              << std::setw(6) << i+3+n
+              << std::setw(6) << i+4+n
+              << std::setw(8) << p_K_dihedral_1
+              << std::setw(8) << p_K_dihedral_3
+              << std::endl;
+        }
+    }
+
+    void Chain::output_top_native(std::ostream& o)
+    {
+        int i = 0, j = 0;
+        double d = -1, f = -1;
+        for (i = 0; i < _n_residue-4; i++) {
+            if (_residues[i].resid_name() == "HOH")
+                continue;
+            for (j = i + 4; j < _n_residue; j++) {
+                if (_residues[j].resid_name() == "HOH")
+                    continue;
+                d = resid_min_distance(_residues[i], _residues[j]);
+                if ( d < g_cutoff)
+                {
+                    f = resid_ca_distance(_residues[i], _residues[j]);
+                    o << std::setw(8) << i+1
+                      << std::setw(6) << j+1
+                      << std::setw(8) << p_K_native
+                      << std::setiosflags(std::ios_base::fixed)
+                      << std::setprecision(2)
+                      << std::setw(8) << f
+                      << std::setw(8) << d
+                      << std::endl;
+                }
             }
         }
     }
 
-    // Chain -------------------------------------------------------------------
+// Chain -------------------------------------------------------------------
     inline Chain::Chain()
     {
         _chain_ID = -1;
@@ -228,6 +286,26 @@ namespace pinang {
         _chain_ID = -1;
         _residues.clear();
         _n_residue = 0;
+    }
+
+    Chain Chain::operator+(Chain& other)
+    {
+        int i = 0;
+        Chain c1;
+        c1.set_chain_ID(other._chain_ID);
+        if (_n_residue > 0)
+        {
+            for (i = 0; i < _n_residue; i++) {
+                c1._residues.push_back(_residues[i]);
+                c1._n_residue++;
+            }
+        }
+        for (i = 0; i < other._n_residue; i++) {
+            c1._residues.push_back(other._residues[i]);
+            c1._n_residue++;
+        }
+
+        return c1;
     }
 
     inline std::ostream& operator<<(std::ostream& o, Chain& c)

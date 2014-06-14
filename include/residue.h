@@ -242,6 +242,14 @@ namespace pinang {
         {
             _C_alpha = a;
         }
+        if (a.atom_name() == "C3'")
+        {
+            _C_alpha = a;
+        }
+        if (a.atom_flag() == "HETATM")
+        {
+            _C_alpha = a;
+        }
         _n_atom++;
         return 0;
     }
@@ -285,6 +293,12 @@ namespace pinang {
         _C_alpha.reset();
     }
 
+    /*              _               __
+    //   ___  _   _| |_ ___ _ __   / _|_   _ _ __   ___
+    //  / _ \| | | | __/ _ \ '__| | |_| | | | '_ \ / __|
+    // | (_) | |_| | ||  __/ |    |  _| |_| | | | | (__
+    //  \___/ \__,_|\__\___|_|    |_|  \__,_|_| |_|\___|
+    */
     inline std::ostream& operator<<(std::ostream& o, Residue& r)
     {
         // o << "Residue "
@@ -311,6 +325,13 @@ namespace pinang {
                 }
             }
         }
+        return d;
+    }
+
+    inline double resid_ca_distance (Residue& r1, Residue& r2)
+    {
+        double d = -1;           // distance;
+        d = atom_distance(r1.m_C_alpha(), r2.m_C_alpha());
         return d;
     }
 

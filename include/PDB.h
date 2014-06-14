@@ -39,7 +39,7 @@ namespace pinang{
         Residue resid_tmp;
         Chain chain_tmp;
         Model model_tmp;
-        unsigned int tmp_ri = 0;
+
         _PDB_file_name = s;
         _n_model = 0;
         _models.clear();
@@ -68,22 +68,24 @@ namespace pinang{
             if (atom_tmp.atom_flag() == "MODEL ")
             {
                 model_tmp.reset();
-                tmp_ri = atom_tmp.serial();
-                model_tmp.set_model_ID(tmp_ri);
+                model_tmp.set_model_ID(atom_tmp.serial());
 
-                tmp_ri = 0;
                 chain_tmp.reset();
                 resid_tmp.reset();
                 atom_tmp.reset();
             }
             if (atom_tmp.atom_flag() == "TER   ")
             {
-                chain_tmp.add_residue(resid_tmp);
-                chain_tmp.set_chain_ID(resid_tmp.chain_ID());
+                if (resid_tmp.m_residue_size() != 0)
+                {
+                    chain_tmp.add_residue(resid_tmp);
+                    chain_tmp.set_chain_ID(resid_tmp.chain_ID());
+                }
                 model_tmp.add_chain(chain_tmp);
+
                 chain_tmp.reset();
                 resid_tmp.reset();
-                tmp_ri = 0;
+                atom_tmp.reset();
             }
             if (atom_tmp.atom_flag() == "ENDMDL")
             {
@@ -91,9 +93,11 @@ namespace pinang{
                 {
                     chain_tmp.add_residue(resid_tmp);
                     chain_tmp.set_chain_ID(resid_tmp.chain_ID());
+                }
+                if (chain_tmp.m_chain_length() != 0)
+                {
                     model_tmp.add_chain(chain_tmp);
                 }
-
                 _models.push_back(model_tmp); // push back tmp model;
                 _n_model++;
 
@@ -101,7 +105,6 @@ namespace pinang{
                 chain_tmp.reset();
                 resid_tmp.reset();
                 atom_tmp.reset();
-                tmp_ri = 0;
             }
             if (atom_tmp.atom_flag() == "END   ")
             {
@@ -109,39 +112,61 @@ namespace pinang{
                 {
                     chain_tmp.add_residue(resid_tmp);
                     chain_tmp.set_chain_ID(resid_tmp.chain_ID());
+                }
+                if (chain_tmp.m_chain_length() != 0)
+                {
                     model_tmp.add_chain(chain_tmp);
                 }
-
                 if (model_tmp.m_model_size() != 0)
                 {
                     _models.push_back(model_tmp);
                     _n_model++;
                 }
+
                 model_tmp.reset();
                 chain_tmp.reset();
                 resid_tmp.reset();
                 atom_tmp.reset();
-                tmp_ri = 0;
             }
-            if (atom_tmp.atom_flag() == "ATOM  " || atom_tmp.atom_flag() == "HETATM")
+            if (atom_tmp.atom_flag() == "ATOM  " )
             {
                 if (resid_tmp.add_atom(atom_tmp))
                 {
-                    if (tmp_ri != 0)
+                    if (resid_tmp.m_residue_size() != 0)
                     {
                         chain_tmp.add_residue(resid_tmp);
+                        if (resid_tmp.m_atom(0).atom_flag() == "HETATM")
+                        {
+                            chain_tmp.set_chain_ID(resid_tmp.chain_ID());
+                            model_tmp.add_chain(chain_tmp);
+                            chain_tmp.reset();
+                        }
+
                         resid_tmp.reset();
                     }
-                    tmp_ri = atom_tmp.resid_index();
                     resid_tmp.set_resid_name(atom_tmp.resid_name());
-                    if (atom_tmp.atom_flag() == "HETATM")
-                    {
-                        resid_tmp.set_chain_ID('+');
-                    } else {
-                        resid_tmp.set_chain_ID(atom_tmp.chain_ID());
-                    }
+                    resid_tmp.set_chain_ID(atom_tmp.chain_ID());
                     resid_tmp.set_resid_index(atom_tmp.resid_index());
 
+                    resid_tmp.add_atom(atom_tmp);
+                }
+            }
+            if (atom_tmp.atom_flag() == "HETATM")
+            {
+                if (resid_tmp.add_atom(atom_tmp))
+                {
+                    if (resid_tmp.m_residue_size() != 0)
+                    {
+                        chain_tmp.add_residue(resid_tmp);
+                        chain_tmp.set_chain_ID(resid_tmp.chain_ID());
+                        model_tmp.add_chain(chain_tmp);
+
+                        chain_tmp.reset();
+                        resid_tmp.reset();
+                    }
+                    resid_tmp.set_resid_index(atom_tmp.resid_index());
+                    resid_tmp.set_resid_name(atom_tmp.resid_name());
+                    resid_tmp.set_chain_ID(atom_tmp.chain_ID());
                     resid_tmp.add_atom(atom_tmp);
                 }
             }

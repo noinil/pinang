@@ -25,11 +25,14 @@ namespace pinang {
         inline void print_sequence(int n) const;
 
         inline int m_model_size() const;
+
         void output_ca_pos(std::ostream& o);
         void output_top_mass(std::ostream& o);
         void output_top_bond(std::ostream& o);
         void output_top_angle(std::ostream& o);
         void output_top_dihedral(std::ostream& o);
+
+        void output_top_native(std::ostream& o);
 
     protected:
         int _model_ID;
@@ -93,9 +96,6 @@ namespace pinang {
     {
         int i = 0;
         for (i = 0; i < _n_chain; i++) {
-            std::cout << " - Chain " << _chains[i].chain_ID()
-                      << " : " << _chains[i].m_chain_length()
-                      << std::endl;
             _chains[i].pr_seq(n);
         }
 
@@ -134,13 +134,9 @@ namespace pinang {
         int i = 0;
         int n = 0;
         for (i = 0; i < _n_chain; i++) {
-            // if (_chains[i].chain_ID() == '+')
-            //     continue;
-            o << " - Chain " << _chains[i].chain_ID()
-              << " : " << _chains[i].m_chain_length()
-              << std::endl;
+            if (_chains[i].m_residue(0).resid_name() == "HOH")
+                continue;
             _chains[i].output_ca_pos(o, n);
-            o << "   " << std::endl;
             n += _chains[i].m_chain_length();
         }
     }
@@ -157,8 +153,8 @@ namespace pinang {
           << std::endl;
 
         for (i = 0; i < _n_chain; i++) {
-            // if (_chains[i].chain_ID() == '+')
-            //     continue;
+            if (_chains[i].m_residue(0).resid_name() == "HOH")
+                continue;
             _chains[i].output_top_mass(o, n);
             n += _chains[i].m_chain_length();
         }
@@ -177,8 +173,8 @@ namespace pinang {
           << std::endl;
 
         for (i = 0; i < _n_chain; i++) {
-            // if (_chains[i].chain_ID() == '+')
-            //     continue;
+            if (_chains[i].m_residue(0).resid_name() == "HOH")
+                continue;
             _chains[i].output_top_bond(o, n);
             n += _chains[i].m_chain_length();
         }
@@ -198,8 +194,8 @@ namespace pinang {
           << std::endl;
 
         for (i = 0; i < _n_chain; i++) {
-            // if (_chains[i].chain_ID() == '+')
-            //     continue;
+            if (_chains[i].m_residue(0).resid_name() == "HOH")
+                continue;
             _chains[i].output_top_angle(o, n);
             n += _chains[i].m_chain_length();
         }
@@ -221,11 +217,33 @@ namespace pinang {
           << std::endl;
 
         for (i = 0; i < _n_chain; i++) {
-            // if (_chains[i].chain_ID() == '+')
-            //     continue;
+            if (_chains[i].m_residue(0).resid_name() == "HOH")
+                continue;
             _chains[i].output_top_dihedral(o, n);
             n += _chains[i].m_chain_length();
         }
+        o << std::endl;
+    }
+
+    void Model::output_top_native(std::ostream& o)
+    {
+        int i = 0;
+        Chain c0;
+        o << "[ native ]" << std::endl;
+        o << "# "
+          << std::setw(6) << "pi"
+          << std::setw(6) << "pj"
+          << std::setw(8) << "eps"
+          << std::setw(8) << "sigma"
+          << std::endl;
+
+        for (i = 0; i < _n_chain; i++) {
+            if (_chains[i].m_residue(0).resid_name() == "HOH")
+                continue;
+            c0 = c0 + _chains[i];
+        }
+
+        c0.output_top_native(o);
         o << std::endl;
     }
 
