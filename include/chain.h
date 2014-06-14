@@ -24,6 +24,7 @@ namespace pinang {
         inline int m_chain_length() const;
 
         inline void pr_seq(int n) const;
+        void output_ca_pos(std::ostream& o);
 
     protected:
         char _chain_ID;
@@ -133,6 +134,20 @@ namespace pinang {
                 }
             }
             std::cout << std::endl;
+        }
+    }
+
+    void Chain::output_ca_pos(std::ostream& o)
+    {
+        int i = 0;
+        for (i = 0; i < _n_residue; i++) {
+            if (_residues[i].resid_name() != "HOH")
+            {
+                o << std::setw(6) << _residues[i].resid_index()
+                  << std::setw(5) << _residues[i].resid_name()
+                  << _residues[i].m_C_alpha().coordinates()
+                  << std::endl;
+            }
         }
     }
 

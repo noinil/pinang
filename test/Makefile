@@ -13,9 +13,9 @@ test3:
 	./t3
 test5:
 	icpc -Wall -I../include/ -o t5 pdb_read_test2.cpp
-	./t5 ../data/1J7O.pdb
+	./t5 ../data/1J7O.pdb tt.sop
 test6:
 	icpc -Wall -I../include/ -o t6 constants_test.cpp
 	./t6
 clean:
-	rm -f t1 t2 t3 t4 t5
+	rm -f t1 t2 t3 t4 t5 tt.sop

@@ -25,6 +25,7 @@ namespace pinang {
         inline void print_sequence(int n) const;
 
         inline int m_model_size() const;
+        void output_ca_pos(std::ostream& o);
 
     protected:
         int _model_ID;
@@ -94,6 +95,18 @@ namespace pinang {
             _chains[i].pr_seq(n);
         }
 
+    }
+
+    void Model::output_ca_pos(std::ostream& o)
+    {
+        int i = 0;
+        for (i = 0; i < _n_chain; i++) {
+            o << " - Chain " << _chains[i].chain_ID()
+              << " : " << _chains[i].m_chain_length()
+              << std::endl;
+            _chains[i].output_ca_pos(o);
+            o << "   " << std::endl;
+        }
     }
 
     inline int Model::m_model_size() const
