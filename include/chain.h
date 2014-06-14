@@ -262,11 +262,11 @@ namespace pinang {
                     f = resid_ca_distance(_residues[i], _residues[j]);
                     o << std::setw(8) << i+1
                       << std::setw(6) << j+1
-                      << std::setw(8) << p_K_native
                       << std::setiosflags(std::ios_base::fixed)
                       << std::setprecision(2)
-                      << std::setw(8) << f
-                      << std::setw(8) << d
+                      << std::setw(8) << p_K_native
+                      << std::setprecision(4)
+                      << std::setw(10) << f
                       << std::endl;
                 }
             }

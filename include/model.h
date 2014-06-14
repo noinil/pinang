@@ -234,7 +234,7 @@ namespace pinang {
           << std::setw(6) << "pi"
           << std::setw(6) << "pj"
           << std::setw(8) << "eps"
-          << std::setw(8) << "sigma"
+          << std::setw(10) << "sigma"
           << std::endl;
 
         for (i = 0; i < _n_chain; i++) {
