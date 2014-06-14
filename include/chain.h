@@ -25,6 +25,10 @@ namespace pinang {
 
         inline void pr_seq(int n) const;
         void output_ca_pos(std::ostream& o, int n);
+        void output_top_mass(std::ostream& o, int n);
+        void output_top_bond(std::ostream& o, int n);
+        void output_top_angle(std::ostream& o, int n);
+        void output_top_dihedral(std::ostream& o, int n);
 
     protected:
         char _chain_ID;
@@ -151,6 +155,65 @@ namespace pinang {
         }
     }
 
+    void Chain::output_top_mass(std::ostream& o, int n)
+    {
+        int i = 0;
+        for (i = 0; i < _n_residue; i++) {
+            if (_residues[i].resid_name() != "HOH")
+            {
+                o << std::setw(11) << i+1+n
+                  << std::setw(10) << _residues[i].resid_mass()
+                  << std::setw(8) << _residues[i].resid_charge()
+                  << std::endl;
+            }
+        }
+    }
+
+    void Chain::output_top_bond(std::ostream& o, int n)
+    {
+        int i = 0;
+        for (i = 0; i < _n_residue-1; i++) {
+            if (_residues[i].resid_name() != "HOH")
+            {
+                o << std::setw(8) << i+1+n
+                  << std::setw(6) << i+2+n
+                  << std::setw(8) << p_K_bond
+                  << std::endl;
+            }
+        }
+    }
+
+    void Chain::output_top_angle(std::ostream& o, int n)
+    {
+        int i = 0;
+        for (i = 0; i < _n_residue-2; i++) {
+            if (_residues[i].resid_name() != "HOH")
+            {
+                o << std::setw(8) << i+1+n
+                  << std::setw(6) << i+2+n
+                  << std::setw(6) << i+3+n
+                  << std::setw(8) << p_K_angle
+                  << std::endl;
+            }
+        }
+    }
+
+    void Chain::output_top_dihedral(std::ostream& o, int n)
+    {
+        int i = 0;
+        for (i = 0; i < _n_residue-3; i++) {
+            if (_residues[i].resid_name() != "HOH")
+            {
+                o << std::setw(8) << i+1+n
+                  << std::setw(6) << i+2+n
+                  << std::setw(6) << i+3+n
+                  << std::setw(6) << i+4+n
+                  << std::setw(8) << p_K_dihedral_1
+                  << std::setw(8) << p_K_dihedral_3
+                  << std::endl;
+            }
+        }
+    }
 
     // Chain -------------------------------------------------------------------
     inline Chain::Chain()

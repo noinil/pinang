@@ -26,6 +26,10 @@ namespace pinang {
 
         inline int m_model_size() const;
         void output_ca_pos(std::ostream& o);
+        void output_top_mass(std::ostream& o);
+        void output_top_bond(std::ostream& o);
+        void output_top_angle(std::ostream& o);
+        void output_top_dihedral(std::ostream& o);
 
     protected:
         int _model_ID;
@@ -97,22 +101,6 @@ namespace pinang {
 
     }
 
-    void Model::output_ca_pos(std::ostream& o)
-    {
-        int i = 0;
-        int n = 0;
-        for (i = 0; i < _n_chain; i++) {
-            // if (_chains[i].chain_ID() == '+')
-            //     continue;
-            o << " - Chain " << _chains[i].chain_ID()
-              << " : " << _chains[i].m_chain_length()
-              << std::endl;
-            _chains[i].output_ca_pos(o, n);
-            o << "   " << std::endl;
-            n += _chains[i].m_chain_length();
-        }
-    }
-
     inline int Model::m_model_size() const
     {
         return _n_chain;
@@ -133,6 +121,120 @@ namespace pinang {
         _n_chain = 0;
     }
 
+
+    /*              _               _     _                    _
+    //   ___  _   _| |_ _ __  _   _| |_  | |_ ___  _ __   ___ | | ___   __ _ _   _
+    //  / _ \| | | | __| '_ \| | | | __| | __/ _ \| '_ \ / _ \| |/ _ \ / _` | | | |
+    // | (_) | |_| | |_| |_) | |_| | |_  | || (_) | |_) | (_) | | (_) | (_| | |_| |
+    //  \___/ \__,_|\__| .__/ \__,_|\__|  \__\___/| .__/ \___/|_|\___/ \__, |\__, |
+    //                 |_|                        |_|                  |___/ |___/
+    */
+    void Model::output_ca_pos(std::ostream& o)
+    {
+        int i = 0;
+        int n = 0;
+        for (i = 0; i < _n_chain; i++) {
+            // if (_chains[i].chain_ID() == '+')
+            //     continue;
+            o << " - Chain " << _chains[i].chain_ID()
+              << " : " << _chains[i].m_chain_length()
+              << std::endl;
+            _chains[i].output_ca_pos(o, n);
+            o << "   " << std::endl;
+            n += _chains[i].m_chain_length();
+        }
+    }
+
+    void Model::output_top_mass(std::ostream& o)
+    {
+        int i = 0;
+        int n = 0;
+        o << "[ particles ]" << std::endl;
+        o << "# "
+          << std::setw(9) << "index"
+          << std::setw(10) << "mass"
+          << std::setw(8) << "charge"
+          << std::endl;
+
+        for (i = 0; i < _n_chain; i++) {
+            // if (_chains[i].chain_ID() == '+')
+            //     continue;
+            _chains[i].output_top_mass(o, n);
+            n += _chains[i].m_chain_length();
+        }
+        o << std::endl;
+    }
+
+    void Model::output_top_bond(std::ostream& o)
+    {
+        int i = 0;
+        int n = 0;
+        o << "[ bonds ]" << std::endl;
+        o << "# "
+          << std::setw(6) << "pi"
+          << std::setw(6) << "pj"
+          << std::setw(8) << "K_b"
+          << std::endl;
+
+        for (i = 0; i < _n_chain; i++) {
+            // if (_chains[i].chain_ID() == '+')
+            //     continue;
+            _chains[i].output_top_bond(o, n);
+            n += _chains[i].m_chain_length();
+        }
+        o << std::endl;
+    }
+
+    void Model::output_top_angle(std::ostream& o)
+    {
+        int i = 0;
+        int n = 0;
+        o << "[ angles ]" << std::endl;
+        o << "# "
+          << std::setw(6) << "pi"
+          << std::setw(6) << "pj"
+          << std::setw(6) << "pk"
+          << std::setw(8) << "K_a"
+          << std::endl;
+
+        for (i = 0; i < _n_chain; i++) {
+            // if (_chains[i].chain_ID() == '+')
+            //     continue;
+            _chains[i].output_top_angle(o, n);
+            n += _chains[i].m_chain_length();
+        }
+        o << std::endl;
+    }
+
+    void Model::output_top_dihedral(std::ostream& o)
+    {
+        int i = 0;
+        int n = 0;
+        o << "[ dihedrals ]" << std::endl;
+        o << "# "
+          << std::setw(6) << "pi"
+          << std::setw(6) << "pj"
+          << std::setw(6) << "pk"
+          << std::setw(6) << "pl"
+          << std::setw(8) << "K_d_1"
+          << std::setw(8) << "K_d_3"
+          << std::endl;
+
+        for (i = 0; i < _n_chain; i++) {
+            // if (_chains[i].chain_ID() == '+')
+            //     continue;
+            _chains[i].output_top_dihedral(o, n);
+            n += _chains[i].m_chain_length();
+        }
+        o << std::endl;
+    }
+
+    /*            _
+    //   ___  ___| |_ _ __ ___  __ _ _ __ ___
+    //  / _ \/ __| __| '__/ _ \/ _` | '_ ` _ \
+    // | (_) \__ \ |_| | |  __/ (_| | | | | | |
+    //  \___/|___/\__|_|  \___|\__,_|_| |_| |_|
+    */
     inline std::ostream& operator<<(std::ostream& o, Model& m)
     {
         o << "MODEL "

@@ -32,6 +32,9 @@ namespace pinang {
         inline double resid_charge() const;
         inline void set_resid_charge(double c);
 
+        inline double resid_mass() const;
+        inline void set_resid_mass(double c);
+
         inline Atom& m_atom(unsigned int n);
         inline int add_atom(const Atom& a);
 
@@ -46,7 +49,8 @@ namespace pinang {
         unsigned int _resid_index;
         std::vector<Atom> _atoms;
         int _n_atom;
-        double _charge;         // actually not used yet!
+        double _charge;
+        double _mass;
 
         Atom _C_alpha;
     };
@@ -72,16 +76,16 @@ namespace pinang {
 
         switch (c) {
         case 'A':
-            if (_resid_name == "ARG") _short_name = 'R';
-            else if (_resid_name == "ASP") _short_name = 'D';
-            else if (_resid_name == "ASN") _short_name = 'N';
-            else if (_resid_name == "ALA") _short_name = 'A';
+            if (_resid_name == "ARG") {_short_name = 'R'; _charge = 1.0; _mass = 156.19;}
+            else if (_resid_name == "ASP") {_short_name = 'D'; _charge = -1.0; _mass = 115.09;}
+            else if (_resid_name == "ASN") {_short_name = 'N'; _mass = 114.11;}
+            else if (_resid_name == "ALA") {_short_name = 'A'; _mass = 71.09;}
             else if (_resid_name == "A") _short_name = 'A';
             break;
         case 'C':
-            if (_resid_name == "CYS") _short_name = 'C';
+            if (_resid_name == "CYS") {_short_name = 'C';  _mass = 103.15;}
             else if (_resid_name == "C") _short_name = 'C';
-            else if (_resid_name == "CA") _short_name = 'c';
+            else if (_resid_name == "CA") {_short_name = 'c'; _charge = 2.0; _mass = 40.08;}
             break;
         case 'D':
             if (_resid_name == "DA") _short_name = 'A';
@@ -90,28 +94,28 @@ namespace pinang {
             else if (_resid_name == "DT") _short_name = 'T';
             break;
         case 'G':
-            if (_resid_name == "GLU") _short_name = 'E';
-            else if (_resid_name == "GLN") _short_name = 'Q';
-            else if (_resid_name == "GLY") _short_name = 'G';
+            if (_resid_name == "GLU") {_short_name = 'E'; _charge = -1.0; _mass = 129.12;}
+            else if (_resid_name == "GLN") {_short_name = 'Q';  _mass = 128.14;}
+            else if (_resid_name == "GLY") {_short_name = 'G';  _mass = 57.05;}
             else if (_resid_name == "G") _short_name = 'G';
             break;
         case 'H':
-            if (_resid_name == "HIS") _short_name = 'H';
+            if (_resid_name == "HIS") {_short_name = 'H';  _mass = 137.14; _charge = 1.0;}
             else if (_resid_name == "HOH") _short_name = 'w';
             break;
         case 'I':
-            if (_resid_name == "ILE") _short_name = 'I';
+            if (_resid_name == "ILE") {_short_name = 'I';  _mass = 113.16;}
             break;
         case 'L':
-            if (_resid_name == "LYS") _short_name = 'K';
-            else if (_resid_name == "LEU") _short_name = 'L';
+            if (_resid_name == "LYS") {_short_name = 'K'; _charge = 1.0; _mass = 128.17;}
+            else if (_resid_name == "LEU") {_short_name = 'L';  _mass = 113.16;}
             break;
         case 'M':
-            if (_resid_name == "MET") _short_name = 'M';
+            if (_resid_name == "MET") {_short_name = 'M';  _mass = 131.19;}
             break;
         case 'P':
-            if (_resid_name == "PRO") _short_name = 'P';
-            else if (_resid_name == "PHE") _short_name = 'F';
+            if (_resid_name == "PRO") {_short_name = 'P';  _mass = 97.12;}
+            else if (_resid_name == "PHE") {_short_name = 'F';  _mass = 147.18;}
             break;
         case 'R':
             if (_resid_name == "RA") _short_name = 'A';
@@ -120,23 +124,23 @@ namespace pinang {
             else if (_resid_name == "RG") _short_name = 'G';
             break;
         case 'S':
-            if (_resid_name == "SER") _short_name = 'S';
-            else if (_resid_name == "SEC") _short_name = 'U';
+            if (_resid_name == "SER") {_short_name = 'S';  _mass = 87.08;}
+            else if (_resid_name == "SEC") {_short_name = 'U';}
             break;
         case 'T':
-            if (_resid_name == "TYR") _short_name = 'Y';
-            else if (_resid_name == "TRP") _short_name = 'W';
-            else if (_resid_name == "THR") _short_name = 'T';
+            if (_resid_name == "TYR") {_short_name = 'Y';  _mass = 163.18;}
+            else if (_resid_name == "TRP") {_short_name = 'W'; _mass = 186.21;}
+            else if (_resid_name == "THR") {_short_name = 'T'; _mass = 101.11;}
             else if (_resid_name == "T") _short_name = 'T';
             break;
         case 'U':
             if (_resid_name == "U") _short_name = 'U';
             break;
         case 'V':
-            if (_resid_name == "VAL") _short_name = 'V';
+            if (_resid_name == "VAL") {_short_name = 'V'; _mass = 99.14;}
             break;
         default:
-            if (_resid_name == "ZN") _short_name = 'z';
+            if (_resid_name == "ZN") {_short_name = 'z'; _charge = 2.0; _mass = 65.37;}
         }
 
     }
@@ -185,6 +189,15 @@ namespace pinang {
     inline void Residue::set_resid_charge(double c)
     {
         _charge = c;
+    }
+
+    inline double Residue::resid_mass() const
+    {
+        return _mass;
+    }
+    inline void Residue::set_resid_mass(double m)
+    {
+        _mass = m;
     }
 
     /*                     _
@@ -253,6 +266,7 @@ namespace pinang {
         _atoms.clear();
         _n_atom = 0;
         _charge = 0.0;
+        _mass = 100.0;
 
         _C_alpha.reset();
     }
@@ -266,6 +280,7 @@ namespace pinang {
         _atoms.clear();
         _n_atom = 0;
         _charge = 0.0;
+        _mass = 100.0;
 
         _C_alpha.reset();
     }
