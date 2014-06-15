@@ -1,6 +1,6 @@
 default:
 
-all: 	seq pdb_output pdb_cg_top
+all: 	seq pdb_output pdb_cg_top matrix_transpose
 
 seq:
 	icpc -Wall -I../include/ -o p_seq get_sequence.cpp
@@ -11,5 +11,8 @@ pdb_output:
 pdb_cg_top:
 	icpc -Wall -I../include/ -o p_pdb2pin pdb_cg_top.cpp
 	mv p_pdb2pin ../bin/
+matrix_transpose:
+	icpc -Wall -o p_transpose matrix_transpose.cpp
+	mv p_transpose ../bin/
 clean:
 	rm -f ../bin/*
