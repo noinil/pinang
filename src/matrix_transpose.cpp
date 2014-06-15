@@ -94,8 +94,14 @@ int main(int argc, char *argv[])
     int i,j;
     for (i = 0; i < mat[0].size(); i++) {
         for (j = 0; j < mat.size(); j++) {
-            std::cout << std::setw(10) << mat[j][i];
-            ofile << std::setw(10) << mat[j][i];
+            std::cout << std::setw(10)
+                      << std::setiosflags(std::ios_base::fixed)
+                      << std::setprecision(2)
+                      << mat[j][i];
+            ofile << std::setw(10)
+                  << std::setiosflags(std::ios_base::fixed)
+                  << std::setprecision(2)
+                  << mat[j][i];
         }
         std::cout << std::endl;
         ofile << std::endl;
