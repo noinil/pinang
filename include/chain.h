@@ -202,9 +202,15 @@ namespace pinang {
         }
 
         int i = 0;
+        double d = 0;
         for (i = 0; i < _n_residue - 1; i++) {
+            d = resid_ca_distance(_residues[i], _residues[i+1]);
             o << std::setw(8) << i+1+n
               << std::setw(6) << i+2+n
+              << std::setiosflags(std::ios_base::fixed)
+              << std::setprecision(4)
+              << std::setw(10) << d
+              << std::setprecision(1)
               << std::setw(8) << p_K_bond
               << std::endl;
         }
@@ -218,10 +224,21 @@ namespace pinang {
         }
 
         int i = 0;
+        double a = 0;
+        Vec3d v1, v2;
         for (i = 0; i < _n_residue-2; i++) {
+            v1 = _residues[i].m_C_alpha().coordinates()
+                - _residues[i+1].m_C_alpha().coordinates();
+            v2 = _residues[i+2].m_C_alpha().coordinates()
+                - _residues[i+1].m_C_alpha().coordinates();
+            a = vec_angle_deg (v1, v2);
             o << std::setw(8) << i+1+n
               << std::setw(6) << i+2+n
               << std::setw(6) << i+3+n
+              << std::setiosflags(std::ios_base::fixed)
+              << std::setprecision(4)
+              << std::setw(12) << a
+              << std::setprecision(1)
               << std::setw(8) << p_K_angle
               << std::endl;
         }
@@ -235,11 +252,26 @@ namespace pinang {
         }
 
         int i = 0;
+        double d = 0;           // dihedral
+        Vec3d v1, v2, v3, n1, n2;
         for (i = 0; i < _n_residue-3; i++) {
+            v1 = _residues[i].m_C_alpha().coordinates()
+                - _residues[i+1].m_C_alpha().coordinates();
+            v2 = _residues[i+2].m_C_alpha().coordinates()
+                - _residues[i+1].m_C_alpha().coordinates();
+            v3 = _residues[i+2].m_C_alpha().coordinates()
+                - _residues[i+3].m_C_alpha().coordinates();
+            n1 = v1 ^ v2;
+            n2 = v2 ^ v3;
+            d = vec_angle_deg (n1, n2);
             o << std::setw(8) << i+1+n
               << std::setw(6) << i+2+n
               << std::setw(6) << i+3+n
               << std::setw(6) << i+4+n
+              << std::setiosflags(std::ios_base::fixed)
+              << std::setprecision(4)
+              << std::setw(12) << d
+              << std::setprecision(1)
               << std::setw(8) << p_K_dihedral_1
               << std::setw(8) << p_K_dihedral_3
               << std::endl;

@@ -169,6 +169,7 @@ namespace pinang {
         o << "# "
           << std::setw(6) << "pi"
           << std::setw(6) << "pj"
+          << std::setw(10) << "r0"
           << std::setw(8) << "K_b"
           << std::endl;
 
@@ -190,6 +191,7 @@ namespace pinang {
           << std::setw(6) << "pi"
           << std::setw(6) << "pj"
           << std::setw(6) << "pk"
+          << std::setw(12) << "theta_0"
           << std::setw(8) << "K_a"
           << std::endl;
 
@@ -212,6 +214,7 @@ namespace pinang {
           << std::setw(6) << "pj"
           << std::setw(6) << "pk"
           << std::setw(6) << "pl"
+          << std::setw(12) << "phi_0"
           << std::setw(8) << "K_d_1"
           << std::setw(8) << "K_d_3"
           << std::endl;

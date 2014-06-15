@@ -317,7 +317,11 @@ namespace pinang {
         double d = -1;           // distance;
         double f = 0;           // tmp distance;
         for (i = 0; i < r1.m_residue_size(); i++) {
+            if (r1.m_atom(i).element() == "H")
+                continue;
             for (j = 0; j < r2.m_residue_size(); j++) {
+                if (r2.m_atom(j).element() == "H")
+                    continue;
                 f = atom_distance(r1.m_atom(i), r2.m_atom(j));
                 if (d < 0 || d > f)
                 {
