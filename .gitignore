@@ -23,3 +23,7 @@
 # Test
 test/t*
 bin/*
+
+# Figures
+*.png
+*.eps
