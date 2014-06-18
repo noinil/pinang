@@ -30,6 +30,7 @@ namespace pinang {
         void output_top_angle(std::ostream& o, int n);
         void output_top_dihedral(std::ostream& o, int n);
         void output_top_native(std::ostream& o);
+        int m_native_contact_number();
 
         Chain operator+(Chain& other);
 
@@ -303,6 +304,26 @@ namespace pinang {
                 }
             }
         }
+    }
+
+    int Chain::m_native_contact_number()
+    {
+        int i = 0, j = 0;
+        double d = -1;
+        int n = 0;
+
+        for (i = 0; i < _n_residue-4; i++) {
+            if (_residues[i].resid_name() == "HOH")
+                continue;
+            for (j = i + 4; j < _n_residue; j++) {
+                if (_residues[j].resid_name() == "HOH")
+                    continue;
+                d = resid_min_distance(_residues[i], _residues[j]);
+                if ( d < g_cutoff)
+                    n++;
+            }
+        }
+        return n;
     }
 
 // Chain -------------------------------------------------------------------

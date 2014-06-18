@@ -145,13 +145,23 @@ namespace pinang {
     {
         int i = 0;
         int n = 0;
-        o << "[ particles ]" << std::endl;
+
+        for (i = 0; i < _n_chain; i++) {
+            if (_chains[i].m_residue(0).resid_name() == "HOH")
+                continue;
+            n += _chains[i].m_chain_length();
+        }
+
+        o << "[ particles ]"
+          << std::setw(6) << n
+          << std::endl;
         o << "# "
           << std::setw(9) << "index"
           << std::setw(10) << "mass"
           << std::setw(8) << "charge"
           << std::endl;
 
+        n = 0;
         for (i = 0; i < _n_chain; i++) {
             if (_chains[i].m_residue(0).resid_name() == "HOH")
                 continue;
@@ -165,7 +175,16 @@ namespace pinang {
     {
         int i = 0;
         int n = 0;
-        o << "[ bonds ]" << std::endl;
+
+        for (i = 0; i < _n_chain; i++) {
+            if (_chains[i].m_residue(0).resid_name() == "HOH")
+                continue;
+            n += _chains[i].m_chain_length()-1;
+        }
+
+        o << "[ bonds ]"
+          << std::setw(6) << n
+          << std::endl;
         o << "# "
           << std::setw(6) << "pi"
           << std::setw(6) << "pj"
@@ -173,6 +192,7 @@ namespace pinang {
           << std::setw(8) << "K_b"
           << std::endl;
 
+        n = 0;
         for (i = 0; i < _n_chain; i++) {
             if (_chains[i].m_residue(0).resid_name() == "HOH")
                 continue;
@@ -186,7 +206,16 @@ namespace pinang {
     {
         int i = 0;
         int n = 0;
-        o << "[ angles ]" << std::endl;
+
+        for (i = 0; i < _n_chain; i++) {
+            if (_chains[i].m_residue(0).resid_name() == "HOH")
+                continue;
+            n += _chains[i].m_chain_length()-2;
+        }
+
+        o << "[ angles ]"
+          << std::setw(6) << n
+          << std::endl;
         o << "# "
           << std::setw(6) << "pi"
           << std::setw(6) << "pj"
@@ -195,6 +224,7 @@ namespace pinang {
           << std::setw(8) << "K_a"
           << std::endl;
 
+        n = 0;
         for (i = 0; i < _n_chain; i++) {
             if (_chains[i].m_residue(0).resid_name() == "HOH")
                 continue;
@@ -208,7 +238,16 @@ namespace pinang {
     {
         int i = 0;
         int n = 0;
-        o << "[ dihedrals ]" << std::endl;
+
+        for (i = 0; i < _n_chain; i++) {
+            if (_chains[i].m_residue(0).resid_name() == "HOH")
+                continue;
+            n += _chains[i].m_chain_length()-3;
+        }
+
+        o << "[ dihedrals ]"
+          << std::setw(6) << n
+          << std::endl;
         o << "# "
           << std::setw(6) << "pi"
           << std::setw(6) << "pj"
@@ -219,6 +258,7 @@ namespace pinang {
           << std::setw(8) << "K_d_3"
           << std::endl;
 
+        n = 0;
         for (i = 0; i < _n_chain; i++) {
             if (_chains[i].m_residue(0).resid_name() == "HOH")
                 continue;
@@ -232,19 +272,22 @@ namespace pinang {
     {
         int i = 0;
         Chain c0;
-        o << "[ native ]" << std::endl;
-        o << "# "
-          << std::setw(6) << "pi"
-          << std::setw(6) << "pj"
-          << std::setw(8) << "eps"
-          << std::setw(10) << "sigma"
-          << std::endl;
 
         for (i = 0; i < _n_chain; i++) {
             if (_chains[i].m_residue(0).resid_name() == "HOH")
                 continue;
             c0 = c0 + _chains[i];
         }
+
+        o << "[ native ]"
+          << std::setw(6) << c0.m_native_contact_number()
+          << std::endl;
+        o << "# "
+          << std::setw(6) << "pi"
+          << std::setw(6) << "pj"
+          << std::setw(8) << "eps"
+          << std::setw(10) << "sigma"
+          << std::endl;
 
         c0.output_top_native(o);
         o << std::endl;
