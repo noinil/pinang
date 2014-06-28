@@ -1,9 +1,7 @@
 pinang
 ======
 
-PINANG is designed to be a coarse grained molecular dynamics package.
-
-PINANG Is Not AMBER, NAMD, or GROMACS.
+PINANG is a stupid test for CGMD.
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 The coarse grained model for molecular dynamics (mainly Go-like model) are
