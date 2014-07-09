@@ -218,7 +218,7 @@ namespace pinang {
                       << _resid_index << std::endl;
             exit(EXIT_SUCCESS);
         } else {
-            if (n < 0 || n >= _atoms.size())
+            if (n >= _atoms.size())
             {
                 std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
                 std::cout << " ~             PINANG :: Residue              ~ " << std::endl;

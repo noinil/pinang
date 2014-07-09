@@ -47,7 +47,7 @@ namespace pinang {
         inline const Vec3d& velocities() const;
         inline void set_velocities(const Vec3d& velos);
 
-        inline double occupancy() const ;
+        inline double occupancy() const;
         inline void set_occupancy(double o);
 
         inline double temperature_factor() const;
