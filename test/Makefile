@@ -14,5 +14,8 @@ test_resid:
 test_pdb_read:
 	icpc -Wall -I../include/ -o t5 pdb_read_test2.cpp
 	./t5 ../data/1J7O.pdb tt.sop
+test_dcd_read:
+	icpc -Wall -I../include/ -o t6 read_dcd_test.cpp
+	./t6 ../data/test.dcd
 clean:
 	rm -f t1 t2 t3 t4 t5 tt.sop

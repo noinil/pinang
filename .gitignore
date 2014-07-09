@@ -23,6 +23,7 @@
 # Test
 test/t*
 bin/*
+data/*
 
 # Figures
 *.png
