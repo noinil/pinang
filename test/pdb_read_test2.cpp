@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
     // pdb1.print_sequence(2);
 
     // ------------------ PDB output cg pos
-    pdb1.m_model(0).output_ca_pos(ofile);
+    pdb1.m_model(0).output_cg_pos(ofile);
 
     return 0;
 }

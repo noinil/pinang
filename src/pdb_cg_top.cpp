@@ -91,7 +91,7 @@ int main(int argc, char *argv[])
               << " to " << pos_name << " ... "
               << std::endl;
     pos_file << "# CG positions for PDB " << infilename << std::endl;
-    pdb1.m_model(mod_index - 1).output_ca_pos(pos_file);
+    pdb1.m_model(mod_index - 1).output_cg_pos(pos_file);
     std::cout << " Done! " << std::endl
               << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ "
               << std::endl;

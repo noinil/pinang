@@ -26,6 +26,8 @@ namespace pinang {
         inline char chain_ID() const;
         inline void set_chain_ID(char a);
 
+        inline chain_t chain_type() const;
+
         inline unsigned int resid_index() const;
         inline void set_resid_index(unsigned int i);
 
@@ -53,6 +55,7 @@ namespace pinang {
         double _mass;
 
         Atom _C_alpha;
+        chain_t _chain_type;
     };
 
     /*                _     _
@@ -76,71 +79,72 @@ namespace pinang {
 
         switch (c) {
         case 'A':
-            if (_resid_name == "ARG") {_short_name = 'R'; _charge = 1.0; _mass = 156.19;}
-            else if (_resid_name == "ASP") {_short_name = 'D'; _charge = -1.0; _mass = 115.09;}
-            else if (_resid_name == "ASN") {_short_name = 'N'; _mass = 114.11;}
-            else if (_resid_name == "ALA") {_short_name = 'A'; _mass = 71.09;}
-            else if (_resid_name == "A") _short_name = 'A';
+            if (_resid_name == "ARG") {_short_name = 'R'; _charge = 1.0; _mass = 156.19; _chain_type = protein;}
+            else if (_resid_name == "ASP") {_short_name = 'D'; _charge = -1.0;
+                _mass = 115.09; _chain_type = protein;}
+            else if (_resid_name == "ASN") {_short_name = 'N'; _mass = 114.11; _chain_type = protein;}
+            else if (_resid_name == "ALA") {_short_name = 'A'; _mass = 71.09; _chain_type = protein;}
+            else if (_resid_name == "A") {_short_name = 'A'; _chain_type = na;}
             break;
         case 'C':
-            if (_resid_name == "CYS") {_short_name = 'C';  _mass = 103.15;}
-            else if (_resid_name == "C") _short_name = 'C';
-            else if (_resid_name == "CA") {_short_name = 'c'; _charge = 2.0; _mass = 40.08;}
+            if (_resid_name == "CYS") {_short_name = 'C';  _mass = 103.15;  _chain_type = protein;}
+            else if (_resid_name == "C") {_short_name = 'C'; _chain_type = na;}
+            else if (_resid_name == "CA") {_short_name = 'c'; _charge = 2.0; _mass = 40.08; _chain_type = ion;}
             break;
         case 'D':
-            if (_resid_name == "DA") _short_name = 'A';
-            else if (_resid_name == "DC") _short_name = 'C';
-            else if (_resid_name == "DG") _short_name = 'G';
-            else if (_resid_name == "DT") _short_name = 'T';
+            if (_resid_name == "DA") {_short_name = 'A'; _chain_type = DNA;}
+            else if (_resid_name == "DC") {_short_name = 'C'; _chain_type = DNA;}
+            else if (_resid_name == "DG") {_short_name = 'G'; _chain_type = DNA;}
+            else if (_resid_name == "DT") {_short_name = 'T'; _chain_type = DNA;}
             break;
         case 'G':
-            if (_resid_name == "GLU") {_short_name = 'E'; _charge = -1.0; _mass = 129.12;}
-            else if (_resid_name == "GLN") {_short_name = 'Q';  _mass = 128.14;}
-            else if (_resid_name == "GLY") {_short_name = 'G';  _mass = 57.05;}
-            else if (_resid_name == "G") _short_name = 'G';
+            if (_resid_name == "GLU") {_short_name = 'E'; _charge = -1.0; _mass = 129.12; _chain_type = protein;}
+            else if (_resid_name == "GLN") {_short_name = 'Q';  _mass = 128.14;  _chain_type = protein;}
+            else if (_resid_name == "GLY") {_short_name = 'G';  _mass = 57.05; _chain_type = protein;}
+            else if (_resid_name == "G") {_short_name = 'G'; _chain_type = na;}
             break;
         case 'H':
-            if (_resid_name == "HIS") {_short_name = 'H';  _mass = 137.14; _charge = 1.0;}
-            else if (_resid_name == "HOH") _short_name = 'w';
+            if (_resid_name == "HIS") {_short_name = 'H';  _mass = 137.14; _charge = 1.0; _chain_type = protein;}
+            else if (_resid_name == "HOH") {_short_name = 'w';   _chain_type = water;}
             break;
         case 'I':
-            if (_resid_name == "ILE") {_short_name = 'I';  _mass = 113.16;}
+            if (_resid_name == "ILE") {_short_name = 'I';  _mass = 113.16; _chain_type = protein;}
             break;
         case 'L':
-            if (_resid_name == "LYS") {_short_name = 'K'; _charge = 1.0; _mass = 128.17;}
-            else if (_resid_name == "LEU") {_short_name = 'L';  _mass = 113.16;}
+            if (_resid_name == "LYS") {_short_name = 'K'; _charge = 1.0; _mass = 128.17; _chain_type = protein;}
+            else if (_resid_name == "LEU") {_short_name = 'L';  _mass = 113.16; _chain_type = protein;}
             break;
         case 'M':
-            if (_resid_name == "MET") {_short_name = 'M';  _mass = 131.19;}
+            if (_resid_name == "MET") {_short_name = 'M';  _mass = 131.19; _chain_type = protein;}
             break;
         case 'P':
-            if (_resid_name == "PRO") {_short_name = 'P';  _mass = 97.12;}
-            else if (_resid_name == "PHE") {_short_name = 'F';  _mass = 147.18;}
+            if (_resid_name == "PRO") {_short_name = 'P';  _mass = 97.12; _chain_type = protein;}
+            else if (_resid_name == "PHE") {_short_name = 'F';  _mass = 147.18; _chain_type = protein;}
             break;
         case 'R':
-            if (_resid_name == "RA") _short_name = 'A';
-            else if (_resid_name == "RU") _short_name = 'U';
-            else if (_resid_name == "RC") _short_name = 'C';
-            else if (_resid_name == "RG") _short_name = 'G';
+            if (_resid_name == "RA") {_short_name = 'A'; _chain_type = RNA;}
+            else if (_resid_name == "RU") {_short_name = 'U'; _chain_type = RNA;}
+            else if (_resid_name == "RC") {_short_name = 'C'; _chain_type = RNA;}
+            else if (_resid_name == "RG") {_short_name = 'G';  _chain_type = RNA;}
             break;
         case 'S':
-            if (_resid_name == "SER") {_short_name = 'S';  _mass = 87.08;}
-            else if (_resid_name == "SEC") {_short_name = 'U';}
+            if (_resid_name == "SER") {_short_name = 'S';  _mass = 87.08; _chain_type = protein;}
+            else if (_resid_name == "SEC") {_short_name = 'U'; _chain_type = protein;}
             break;
         case 'T':
-            if (_resid_name == "TYR") {_short_name = 'Y';  _mass = 163.18;}
-            else if (_resid_name == "TRP") {_short_name = 'W'; _mass = 186.21;}
-            else if (_resid_name == "THR") {_short_name = 'T'; _mass = 101.11;}
-            else if (_resid_name == "T") _short_name = 'T';
+            if (_resid_name == "TYR") {_short_name = 'Y';  _mass = 163.18; _chain_type = protein;}
+            else if (_resid_name == "TRP") {_short_name = 'W'; _mass = 186.21; _chain_type = protein;}
+            else if (_resid_name == "THR") {_short_name = 'T'; _mass = 101.11; _chain_type = protein;}
+            else if (_resid_name == "T") {_short_name = 'T';  _chain_type = DNA;}
             break;
         case 'U':
-            if (_resid_name == "U") _short_name = 'U';
+            if (_resid_name == "U") {_short_name = 'U'; _chain_type = RNA;}
             break;
         case 'V':
-            if (_resid_name == "VAL") {_short_name = 'V'; _mass = 99.14;}
+            if (_resid_name == "VAL") {_short_name = 'V'; _mass = 99.14; _chain_type = protein;}
             break;
         default:
-            if (_resid_name == "ZN") {_short_name = 'z'; _charge = 2.0; _mass = 65.37;}
+            if (_resid_name == "ZN") {_short_name = 'z'; _charge = 2.0; _mass = 65.37; _chain_type = ion;}
         }
 
     }
@@ -158,6 +162,18 @@ namespace pinang {
     inline void Residue::set_chain_ID(char a)
     {
         _chain_ID = a;
+    }
+
+    /*       _           _         _
+    //   ___| |__   __ _(_)_ __   | |_ _   _ _ __   ___
+    //  / __| '_ \ / _` | | '_ \  | __| | | | '_ \ / _ \
+    // | (__| | | | (_| | | | | | | |_| |_| | |_) |  __/
+    //  \___|_| |_|\__,_|_|_| |_|  \__|\__, | .__/ \___|
+    //                                 |___/|_|
+    */
+    inline chain_t Residue::chain_type() const
+    {
+        return _chain_type;
     }
 
     /*                _     _   _           _
@@ -277,6 +293,7 @@ namespace pinang {
         _mass = 100.0;
 
         _C_alpha.reset();
+        _chain_type = none;
     }
 
     inline void Residue::reset()
@@ -290,6 +307,7 @@ namespace pinang {
         _charge = 0.0;
         _mass = 100.0;
 
+        _chain_type = none;
         _C_alpha.reset();
     }
 

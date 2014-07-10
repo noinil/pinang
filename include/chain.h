@@ -24,7 +24,7 @@ namespace pinang {
         inline int m_chain_length() const;
 
         inline void pr_seq(int n) const;
-        void output_ca_pos(std::ostream& o, int n);
+        void output_cg_pos(std::ostream& o, int n);
         void output_top_mass(std::ostream& o, int n);
         void output_top_bond(std::ostream& o, int n);
         void output_top_angle(std::ostream& o, int n);
@@ -36,6 +36,7 @@ namespace pinang {
 
     protected:
         char _chain_ID;
+        chain_t _chain_type;
         int _n_residue;
         std::vector<Residue> _residues;
     };
@@ -73,7 +74,7 @@ namespace pinang {
                       << _chain_ID << std::endl;
             exit(EXIT_SUCCESS);
         } else {
-            if (n < 0 || n >= _residues.size())
+            if (n >= _residues.size())
             {
                 std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
                 std::cout << " ~              PINANG :: Chain               ~ " << std::endl;
@@ -94,6 +95,7 @@ namespace pinang {
         // }
         _residues.push_back(r);
         _n_residue++;
+        _chain_type = r.chain_type();
         return 0;
     }
 
@@ -158,7 +160,7 @@ namespace pinang {
         }
     }
 
-    void Chain::output_ca_pos(std::ostream& o, int n)
+    void Chain::output_cg_pos(std::ostream& o, int n)
     {
         if (_residues[0].resid_name() == "HOH")
         {
@@ -330,6 +332,7 @@ namespace pinang {
     inline Chain::Chain()
     {
         _chain_ID = -1;
+        _chain_type = none;
         _residues.clear();
         _n_residue = 0;
     }
@@ -337,6 +340,7 @@ namespace pinang {
     inline void Chain::reset()
     {
         _chain_ID = -1;
+        _chain_type = none;
         _residues.clear();
         _n_residue = 0;
     }

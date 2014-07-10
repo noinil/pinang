@@ -19,6 +19,8 @@ namespace pinang {
     const double p_K_dihedral_3 = 0.5;
     const double p_K_native = 1;
     const double p_K_nonnative = 1;
+
+    enum chain_t {none=0, protein=1, DNA=2, RNA=3, water=4, ion=5, other=6, na=7};
 }
 
 #endif

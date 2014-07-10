@@ -26,7 +26,8 @@ namespace pinang {
 
         inline int m_model_size() const;
 
-        void output_ca_pos(std::ostream& o);
+        void output_cg_pos(std::ostream& o);
+
         void output_top_mass(std::ostream& o);
         void output_top_bond(std::ostream& o);
         void output_top_angle(std::ostream& o);
@@ -129,14 +130,14 @@ namespace pinang {
     //  \___/ \__,_|\__| .__/ \__,_|\__|  \__\___/| .__/ \___/|_|\___/ \__, |\__, |
     //                 |_|                        |_|                  |___/ |___/
     */
-    void Model::output_ca_pos(std::ostream& o)
+    void Model::output_cg_pos(std::ostream& o)
     {
         int i = 0;
         int n = 0;
         for (i = 0; i < _n_chain; i++) {
             if (_chains[i].m_residue(0).resid_name() == "HOH")
                 continue;
-            _chains[i].output_ca_pos(o, n);
+            _chains[i].output_cg_pos(o, n);
             n += _chains[i].m_chain_length();
         }
     }
