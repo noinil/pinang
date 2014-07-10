@@ -106,7 +106,7 @@ int main(int argc, char *argv[])
     pdb1.m_model(mod_index - 1).output_top_bond(top_file);
     pdb1.m_model(mod_index - 1).output_top_angle(top_file);
     pdb1.m_model(mod_index - 1).output_top_dihedral(top_file);
-    pdb1.m_model(mod_index - 1).output_top_native(top_file);
+    pdb1.m_model(mod_index - 1).output_top_nonbonded(top_file);
     std::cout << " Done! " << std::endl
               << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ "
               << std::endl;
