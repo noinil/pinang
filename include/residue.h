@@ -268,7 +268,7 @@ namespace pinang {
             return 1;
         }
         _atoms.push_back(a);
-        if (a.atom_name() == "CA")
+        if (a.atom_name() == "CA ")
         {
             _C_alpha = a;
         }
@@ -276,11 +276,11 @@ namespace pinang {
         {
             _S = a;
         }
-        if (a.atom_name() == "P")
+        if (a.atom_name() == "P  ")
         {
             _P = a;
         }
-        if (a.atom_name() == "N1")
+        if (a.atom_name() == "N1 ")
         {
             _B = a;
         }
@@ -371,30 +371,30 @@ namespace pinang {
                 else if (aname == "C2'") {coor_C2p = _atoms[i].coordinates(); n_cs++;}
                 else if (aname == "C3'") {coor_C3p = _atoms[i].coordinates(); n_cs++;}
                 else if (aname == "C4'") {coor_C4p = _atoms[i].coordinates(); n_cs++;}
-                else if (aname == "C2") { coor_C2 = _atoms[i].coordinates(); n_cb++;}
-                else if (aname == "C4") { coor_C4 = _atoms[i].coordinates(); n_cb++;}
-                else if (aname == "C5") { coor_C5 = _atoms[i].coordinates(); n_cb++;}
-                else if (aname == "C6") { coor_C6 = _atoms[i].coordinates(); n_cb++;}
-                else if (aname == "C8") { coor_C8 = _atoms[i].coordinates(); n_cb++;}
+                else if (aname == "C2 ") { coor_C2 = _atoms[i].coordinates(); n_cb++;}
+                else if (aname == "C4 ") { coor_C4 = _atoms[i].coordinates(); n_cb++;}
+                else if (aname == "C5 ") { coor_C5 = _atoms[i].coordinates(); n_cb++;}
+                else if (aname == "C6 ") { coor_C6 = _atoms[i].coordinates(); n_cb++;}
+                else if (aname == "C8 ") { coor_C8 = _atoms[i].coordinates(); n_cb++;}
                 break;
             case 'O':
                 if (aname == "O4'") {coor_O4p = _atoms[i].coordinates(); n_os++;}
                 else if (aname == "O2'") {coor_O2p = _atoms[i].coordinates(); n_os++;}
-                else if (aname == "O2") {coor_O2 = _atoms[i].coordinates(); n_ob++;}
-                else if (aname == "O4") {coor_O4 = _atoms[i].coordinates(); n_ob++;}
-                else if (aname == "O6") {coor_O6 = _atoms[i].coordinates(); n_ob++;}
+                else if (aname == "O2 ") {coor_O2 = _atoms[i].coordinates(); n_ob++;}
+                else if (aname == "O4 ") {coor_O4 = _atoms[i].coordinates(); n_ob++;}
+                else if (aname == "O6 ") {coor_O6 = _atoms[i].coordinates(); n_ob++;}
                 break;
             case 'N':
-                if (aname == "N1") {coor_N1 = _atoms[i].coordinates(); n_nb++;}
-                else if (aname == "N2") {coor_N2 = _atoms[i].coordinates(); n_nb++;}
-                else if (aname == "N3") {coor_N3 = _atoms[i].coordinates(); n_nb++;}
-                else if (aname == "N4") {coor_N4 = _atoms[i].coordinates(); n_nb++;}
-                else if (aname == "N6") {coor_N6 = _atoms[i].coordinates(); n_nb++;}
-                else if (aname == "N7") {coor_N7 = _atoms[i].coordinates(); n_nb++;}
-                else if (aname == "N9") {coor_N9 = _atoms[i].coordinates(); n_nb++;}
+                if (aname == "N1 ") {coor_N1 = _atoms[i].coordinates(); n_nb++;}
+                else if (aname == "N2 ") {coor_N2 = _atoms[i].coordinates(); n_nb++;}
+                else if (aname == "N3 ") {coor_N3 = _atoms[i].coordinates(); n_nb++;}
+                else if (aname == "N4 ") {coor_N4 = _atoms[i].coordinates(); n_nb++;}
+                else if (aname == "N6 ") {coor_N6 = _atoms[i].coordinates(); n_nb++;}
+                else if (aname == "N7 ") {coor_N7 = _atoms[i].coordinates(); n_nb++;}
+                else if (aname == "N9 ") {coor_N9 = _atoms[i].coordinates(); n_nb++;}
                 break;
             default:
-                if (aname == "P") coor_P = _atoms[i].coordinates();
+                if (aname == "P  ") coor_P = _atoms[i].coordinates();
             }
         }
         com_P = coor_P;

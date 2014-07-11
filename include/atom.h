@@ -117,7 +117,13 @@ namespace pinang {
     }
     inline void Atom::set_atom_name(const std::string& s)
     {
+        size_t sz = 3;
         _atom_name = s;
+
+        if (_atom_name.size() < sz)
+        {
+            _atom_name.resize(sz, ' ');
+        }
     }
 
     /*        _ _     _
