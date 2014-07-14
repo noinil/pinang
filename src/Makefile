@@ -1,6 +1,6 @@
 default:
 
-all: 	seq pdb_output pdb_cg_top matrix_transpose
+all: 	seq pdb_output pdb_cg_top matrix_transpose dcd_distance
 
 seq:
 	mkdir -p ../bin
@@ -18,5 +18,11 @@ matrix_transpose:
 	mkdir -p ../bin
 	icpc -Wall -o p_transpose matrix_transpose.cpp
 	mv p_transpose ../bin/
+dcd_distance:
+	mkdir -p ../bin
+	icpc -Wall -I../include/ -o p_dist dcd_distances.cpp
+	mv p_dist ../bin/
 clean:
 	rm -f ../bin/*
+cct:
+	rm -f ../bin/p_dist
