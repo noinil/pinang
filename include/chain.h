@@ -276,6 +276,9 @@ namespace pinang {
         {
             for (i = 0; i < _n_residue; i++) {
                 o << std::setw(11) << ++n
+                  << std::setw(8) << _residues[i].resid_index()
+                  << std::setw(8) << _residues[i].resid_name()
+                  << std::setw(8) << "CA"
                   << std::setw(10) << _residues[i].resid_mass()
                   << std::setw(8)
                   << _residues[i].resid_charge()
@@ -283,23 +286,38 @@ namespace pinang {
             }
         } else {
             o << std::setw(11) << ++n
+              << std::setw(8) << _residues[0].resid_index()
+              << std::setw(8) << _residues[0].resid_name()
+              << std::setw(8) << "S"
               << std::setw(10) << 99.11
               << std::setw(8) << 0.0
               << std::endl;
             o << std::setw(11) << ++n
+              << std::setw(8) << _residues[0].resid_index()
+              << std::setw(8) << _residues[0].resid_name()
+              << std::setw(8) << _residues[0].short_name()
               << std::setw(10) << _residues[0].resid_mass()
               << std::setw(8) << 0.0
               << std::endl;
             for (i = 1; i < _n_residue; i++) {
                 o << std::setw(11) << ++n
+                  << std::setw(8) << _residues[i].resid_index()
+                  << std::setw(8) << _residues[i].resid_name()
+                  << std::setw(8) << "P"
                   << std::setw(10) << 94.93
                   << std::setw(8) << -0.6
                   << std::endl;
                 o << std::setw(11) << ++n
+                  << std::setw(8) << _residues[i].resid_index()
+                  << std::setw(8) << _residues[i].resid_name()
+                  << std::setw(8) << "S"
                   << std::setw(10) << 99.11
                   << std::setw(8) << 0.0
                   << std::endl;
                 o << std::setw(11) << ++n
+                  << std::setw(8) << _residues[i].resid_index()
+                  << std::setw(8) << _residues[i].resid_name()
+                  << std::setw(8) << _residues[i].short_name()
                   << std::setw(10) << _residues[i].resid_mass()
                   << std::setw(8) << 0.0
                   << std::endl;

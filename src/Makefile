@@ -25,4 +25,4 @@ dcd_distance:
 clean:
 	rm -f ../bin/*
 cct:
-	rm -f ../bin/p_dist
+	rm -f ../bin/p_pdb2pin

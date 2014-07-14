@@ -125,16 +125,20 @@ int main(int argc, char *argv[])
     // ==================== input particle pairs ====================
     if (!inp_flag)
     {
+        int tmp_a;
         std::cout << " - Please input the index of the first particle: "
                   << std::endl;
-        std::cin >> tmp_inpa.ii;
+        std::cin >> tmp_a;
+        tmp_inpa.ii = tmp_a - 1;
         std::cout << " - and the second one: "
                   << std::endl;
-        std::cin >> tmp_inpa.jj;
+        std::cin >> tmp_a;
+        tmp_inpa.jj = tmp_a - 1;
         v_inpa.push_back(tmp_inpa);
     } else {
         std::ifstream inp_file(inp_name.c_str());
         std::istringstream tmp_sstr;
+        int tmp_a, tmp_b;
 
         while (inp_file.good()) {
             std::getline(inp_file, inp_line);
@@ -145,7 +149,9 @@ int main(int argc, char *argv[])
             }
 
             tmp_sstr.str ( inp_line );
-            tmp_sstr >> tmp_inpa.ii >> tmp_inpa.jj;
+            tmp_sstr >> tmp_a >> tmp_b;
+            tmp_inpa.ii = tmp_a - 1;
+            tmp_inpa.jj = tmp_b - 1;
             v_inpa.push_back(tmp_inpa);
 
             tmp_sstr.clear();

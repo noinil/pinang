@@ -162,6 +162,9 @@ namespace pinang {
           << std::endl;
         o << "# "
           << std::setw(9) << "index"
+          << std::setw(8) << "resid"
+          << std::setw(8) << "resname"
+          << std::setw(8) << "atom"
           << std::setw(10) << "mass"
           << std::setw(8) << "charge"
           << std::endl;
