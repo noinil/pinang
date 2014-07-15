@@ -22,7 +22,11 @@ dcd_distance:
 	mkdir -p ../bin
 	icpc -Wall -I../include/ -o p_dist dcd_distances.cpp
 	mv p_dist ../bin/
+ts_read:
+	mkdir -p ../bin
+	icpc -Wall -o p_ts_read cafemol_ts_read.cpp
+	mv p_ts_read ../bin/
 clean:
 	rm -f ../bin/*
 cct:
-	rm -f ../bin/p_pdb2pin
+	rm -f ../bin/p_ts_read
