@@ -1,6 +1,6 @@
 default:
 
-all: 	seq pdb_output pdb_cg_top matrix_transpose dcd_distance
+all: 	seq pdb_output pdb_cg_top matrix_transpose dcd_distance ts_read
 
 seq:
 	mkdir -p ../bin
