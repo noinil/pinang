@@ -272,7 +272,7 @@ namespace pinang {
         {
             _C_alpha = a;
         }
-        if (a.atom_name() == "C3'")
+        if (a.atom_name() == "C3'" || a.atom_name() == "S  ")
         {
             _S = a;
         }
@@ -280,7 +280,7 @@ namespace pinang {
         {
             _P = a;
         }
-        if (a.atom_name() == "N1 ")
+        if (a.atom_name() == "N1 " || a.atom_name() == "B  ")
         {
             _B = a;
         }
@@ -408,8 +408,10 @@ namespace pinang {
                   * mass_C )
             * (1/(n_nb*mass_N + n_ob*mass_O + n_cb*mass_C));
         _P.set_coords(com_P);
-        _S.set_coords(com_S);
-        _B.set_coords(com_B);
+        if (a.atom_name() != "S  ")
+            _S.set_coords(com_S);
+        if (a.atom_name() != "B  ")
+            _B.set_coords(com_B);
     }
 
     /*                _     _       _

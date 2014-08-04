@@ -232,7 +232,7 @@ namespace pinang {
               << _residues[0].m_S().coordinates()
               << std::endl;
             o << std::setw(6) << ++n
-              << std::setw(5) << _residues[i].short_name()
+              << std::setw(5) << "B"
               << std::setw(5) << _residues[i].resid_index() << "   "
               << _residues[0].m_B().coordinates()
               << std::endl;
@@ -249,7 +249,7 @@ namespace pinang {
                   << _residues[i].m_S().coordinates()
                   << std::endl;
                 o << std::setw(6) << ++n
-                  << std::setw(5) << _residues[i].short_name()
+                  << std::setw(5) << "B"
                   << std::setw(5) << _residues[i].resid_index() << "   "
                   << _residues[i].m_B().coordinates()
                   << std::endl;
@@ -295,7 +295,7 @@ namespace pinang {
             o << std::setw(11) << ++n
               << std::setw(8) << _residues[0].resid_index()
               << std::setw(8) << _residues[0].resid_name()
-              << std::setw(8) << _residues[0].short_name()
+              << std::setw(8) << "B"
               << std::setw(10) << _residues[0].resid_mass()
               << std::setw(8) << 0.0
               << std::endl;
@@ -317,7 +317,7 @@ namespace pinang {
                 o << std::setw(11) << ++n
                   << std::setw(8) << _residues[i].resid_index()
                   << std::setw(8) << _residues[i].resid_name()
-                  << std::setw(8) << _residues[i].short_name()
+                  << std::setw(8) << "B"
                   << std::setw(10) << _residues[i].resid_mass()
                   << std::setw(8) << 0.0
                   << std::endl;
