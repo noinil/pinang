@@ -133,7 +133,7 @@ int main(int argc, char *argv[])
                    << std::setw(1) << " "
                    << std::setw(3) << "CUR" << " "
                    << std::setw(1) << "A"
-                   << std::setw(4) << i/10+1
+                   << std::setw(4) << i/10+2
                    << std::setw(1) << " " << "   "
                    << curve1_dots[i]
                    << std::endl;
@@ -147,7 +147,7 @@ int main(int argc, char *argv[])
                    << std::setw(1) << " "
                    << std::setw(3) << "CUR" << " "
                    << std::setw(1) << "A"
-                   << std::setw(4) << i/10+l+2
+                   << std::setw(4) << i/10+l+3
                    << std::setw(1) << " " << "   "
                    << curve2_dots[i]
                    << std::endl;
