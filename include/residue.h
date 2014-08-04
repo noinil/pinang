@@ -408,9 +408,9 @@ namespace pinang {
                   * mass_C )
             * (1/(n_nb*mass_N + n_ob*mass_O + n_cb*mass_C));
         _P.set_coords(com_P);
-        if (a.atom_name() != "S  ")
+        if (_S.atom_name() != "S  ")
             _S.set_coords(com_S);
-        if (a.atom_name() != "B  ")
+        if (_S.atom_name() != "B  ")
             _B.set_coords(com_B);
     }
 
