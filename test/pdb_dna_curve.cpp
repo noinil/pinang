@@ -10,7 +10,7 @@ using namespace std;
 
 int main(int argc, char *argv[])
 {
-    std::string infilename = "../data/dna_cg.pdb";
+    std::string infilename = "../data/dna0.pdb";
     pinang::PDB pdb1(infilename);
 
     std::string curve_name = "_curve.pdb";
@@ -133,19 +133,21 @@ int main(int argc, char *argv[])
                    << std::setw(1) << " "
                    << std::setw(3) << "CUR" << " "
                    << std::setw(1) << "A"
-                   << std::setw(4) << i/10
+                   << std::setw(4) << i/10+1
                    << std::setw(1) << " " << "   "
                    << curve1_dots[i]
                    << std::endl;
     }
+    int k = curve1_dots.size();
+    int l = curve1_nodes.size();
     for (i = 0; i < curve2_dots.size(); i++) {
         curve_file << std::setw(6) << "HETATM"
-                   << std::setw(5) << i+1 << " "
+                   << std::setw(5) << i+1+k << " "
                    << std::setw(4) << "O   "
                    << std::setw(1) << " "
                    << std::setw(3) << "CUR" << " "
                    << std::setw(1) << "A"
-                   << std::setw(4) << i/10
+                   << std::setw(4) << i/10+l+2
                    << std::setw(1) << " " << "   "
                    << curve2_dots[i]
                    << std::endl;
@@ -159,8 +161,8 @@ int main(int argc, char *argv[])
     }
     for (i = 0; i < curve2_dots.size()-1; i++) {
         curve_file << std::setw(6) << "CONECT"
-                   << std::setw(5) << i+1
-                   << std::setw(5) << i+2
+                   << std::setw(5) << i+1+k
+                   << std::setw(5) << i+2+k
                    << std::endl;
     }
 
