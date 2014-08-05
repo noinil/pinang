@@ -410,7 +410,7 @@ namespace pinang {
         _P.set_coords(com_P);
         if (_S.atom_name() != "S  ")
             _S.set_coords(com_S);
-        if (_S.atom_name() != "B  ")
+        if (_B.atom_name() != "B  ")
             _B.set_coords(com_B);
     }
 

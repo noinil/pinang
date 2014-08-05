@@ -1,4 +1,4 @@
-# Compiled Object files
+0;115;0c# Compiled Object files
 *.slo
 *.lo
 *.o
@@ -22,6 +22,7 @@
 
 # Test
 test/t*
+test/*.pdb
 bin/*
 data/*
 
