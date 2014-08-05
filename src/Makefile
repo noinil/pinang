@@ -1,6 +1,6 @@
 default:
 
-all: 	seq pdb_output pdb_cg_top matrix_transpose dcd_distance ts_read
+all: 	seq pdb_output pdb_cg_top matrix_transpose dcd_distance ts_read pdb_dna_curve
 
 seq:
 	mkdir -p ../bin
@@ -26,7 +26,11 @@ ts_read:
 	mkdir -p ../bin
 	icpc -Wall -o p_ts_read cafemol_ts_read.cpp
 	mv p_ts_read ../bin/
+pdb_dna_curve:
+	mkdir -p ../bin
+	icpc -Wall -I../include/ -o p_dna_curve pdb_dna_curve.cpp
+	mv p_dna_curve ../bin/
 clean:
 	rm -f ../bin/*
 cct:
-	rm -f ../bin/p_ts_read
+	rm -f ../bin/p_dna_curve
