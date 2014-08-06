@@ -134,6 +134,10 @@ int main(int argc, char *argv[])
     std::vector<double> base_rise;
     std::vector<double> helix_width;
     std::vector<double> bases_per_turn;
+
+    std::vector<double> major_groove_width;
+    std::vector<double> minor_groove_width;
+
     double d = 0;               // tmp for base_rise;
     double r = 0;               // tmp for helix width;
 
@@ -188,7 +192,16 @@ int main(int argc, char *argv[])
         t_tmp = curve2_nodes[len2-1-i] - curve1_nodes[i]; // for cross_vectors;
         cross_vecs.push_back(t_tmp);
     }
+    // ~~~~~~~~~~ correction of the first and the last vectors ~~~~~~~~~~
+    t1 = (curve1_tangents[1] * curve1_tangents[2]) * 2;
+    v1 = curve1_tangents[1] * t1;
+    curve1_tangents[0] = v1 - curve1_tangents[2]; // fixed tangent 0;
 
+    t1 = (curve1_tangents[len1-3] * curve1_tangents[len1-2]) * 2;
+    v1 = curve1_tangents[len1-2] * t1;
+    curve1_tangents[len1-1] = v1 - curve1_tangents[len1-3]; // fixed last tangent;
+
+    // ~~~~~~~~~~ spline fitting ~~~~~~~~~~
     for (i = 0; i < len1 - 1; i++) {
         p_i = curve1_nodes[i];
         t_tmp = curve1_nodes[i+1] - curve1_nodes[i];
@@ -227,6 +240,16 @@ int main(int argc, char *argv[])
         }
     }
 
+    // ~~~~~~~~~~ correction of the first and the last vectors ~~~~~~~~~~
+    t1 = (curve2_tangents[1] * curve2_tangents[2]) * 2;
+    v1 = curve2_tangents[1] * t1;
+    curve2_tangents[0] = v1 - curve2_tangents[2]; // fixed tangent 0;
+
+    t1 = (curve2_tangents[len1-3] * curve2_tangents[len1-2]) * 2;
+    v1 = curve2_tangents[len1-2] * t1;
+    curve2_tangents[len1-1] = v1 - curve2_tangents[len1-3]; // fixed last tangent;
+
+    // ~~~~~~~~~~ spline fitting ~~~~~~~~~~
     for (i = 0; i < len2 - 1; i++) {
         p_i = curve2_nodes[i];
         t_tmp = curve2_nodes[i+1] - curve2_nodes[i];
@@ -257,8 +280,8 @@ int main(int argc, char *argv[])
             v2 = cross_vecs[i];
             t_tmp = v1^v2;
             H = t_tmp * (1/t_tmp.norm()); // H is important, the local direction;
-            P1 = curve1_nodes[i] + (v1 * 0.5); // midpoint of cross_vecs;
-            t_tmp = H ^ v1;
+            P1 = curve1_nodes[i] + (v2 * 0.5); // midpoint of cross_vecs;
+            t_tmp = H ^ v2;
             n1 = t_tmp * (1/t_tmp.norm());
         } else {
             v1 = cross_vecs[i];
@@ -272,7 +295,7 @@ int main(int argc, char *argv[])
         axis_directions.push_back(H); // axis direction vectors!
 
         // r = axis center deviation!  This is just a empirical estimation!
-        r = 2.3 * v1.norm() / p_D_phosphate;
+        r = 2.12 * v1.norm() / p_D_phosphate;
         t_tmp = P1 + (n1 * r);
         axis_nodes.push_back(t_tmp);
 
@@ -285,6 +308,77 @@ int main(int argc, char *argv[])
         // r = helix width!  Also empirical estimation!
         r = 23.0 * v1.norm() / p_D_phosphate;
         helix_width.push_back(r);
+
+        // -------------------- Groove Width! --------------------
+        int m = 0, n = 0;
+        double major_w = 1000;
+        double minor_w = 1000;
+        // ---------- major groove ----------
+        for (m = i*10 - 50; m < i*10; m++) {
+            int proj = 1000;
+            double t_dist = 1000;
+            if (m < 0)
+                continue;
+            else {
+                v1 = curve1_dots[m] - t_tmp; // vector from P[m] atom to axis center[i];
+                n2 = v1 ^ n1;                 // normal vector of the plane;
+                n2 = n2 * (1/n2.norm());
+                for (n = (len2-i-5)*10; n < (len2-i)*10; n++) {
+                    if (n < 0)
+                        continue;
+                    else {
+                        // vector from P atom from the other strand to axis center;
+                        v2 = curve2_dots[n] - t_tmp;
+                        v2 = v2*(1/v2.norm());
+                        if (abs(n2 * v2) <= 0.05) // almost in the same plane!
+                        {
+                            proj = 0;
+                            break;
+                        }
+                    }
+                }
+                if (proj == 0)
+                    t_dist = vec_distance(curve1_dots[m], curve2_dots[n]);
+                if (t_dist < major_w)
+                    major_w = t_dist;
+            }
+        }
+        // std::cout << i << "  " << major_w << std::endl;
+        major_groove_width.push_back(major_w);
+
+        // ---------- minor groove ----------
+        for (m = i * 10 ; m < i * 10 + 60; m++) {
+            int proj = 1000;
+            double t_dist = 1000;
+            if (m > len1 * 10 - 1)
+                continue;
+            else {
+                v1 = curve1_dots[m] - t_tmp; // vector from P[m] atom to axis center[i];
+                n2 = v1 ^ n1;                 // normal vector of the plane;
+                n2 = n2 * (1/n2.norm());
+                for (n = (len2-i) * 10; n < (len2 - i + 6) * 10; n++) {
+                    if (n  > len2*10 -1)
+                        continue;
+                    else {
+                        // vector from P atom from the other strand to axis center;
+                        v2 = curve2_dots[n] - t_tmp;
+                        v2 = v2*(1/v2.norm());
+                        if (abs(n2 * v2) <= 0.05) // almost in the same plane!
+                        {
+                            proj = 0;
+                            break;
+                        }
+                    }
+                }
+                if (proj == 0)
+                    t_dist = vec_distance(curve1_dots[m], curve2_dots[n]);
+                if (t_dist < minor_w)
+                    minor_w = t_dist;
+            }
+        }
+        // std::cout << i << "  " << minor_w << std::endl;
+        minor_groove_width.push_back(minor_w);
+
     }
 
     // axis spline fitting!
@@ -388,10 +482,12 @@ int main(int argc, char *argv[])
     }
 
     // =================== output base rise, helix width... ===================
-    out_file << std::setw(6) << "#    i" << std::setw(8) << "b_rise"
+    out_file << "# Base rise and helix width:" << std::endl;
+    out_file << "#    i - j  " << std::setw(8) << "b_rise"
              << "  " << setw(8) << "h_width" << std::endl;
     for (i = 0; i < len1; i++) {
-        out_file << std::setw(6) << i
+        out_file << std::setw(6) << i+1
+                 << std::setw(4) << i+2 << "  "
                  << std::setw(8)
                  << std::setiosflags(std::ios_base::fixed)
                  << std::setprecision(2)
@@ -400,14 +496,41 @@ int main(int argc, char *argv[])
                  << helix_width[i]
                  << std::endl;
     }
-    out_file << std::endl << std::setw(6) << "#    i" << std::setw(8) << "bpt"
+    out_file << std::endl << "# Bases-per-turn" << std::endl;
+    out_file << std::setw(6) << "# turn " << std::setw(8) << "bpt"
              << std::endl;
     for (i = 0; i < bases_per_turn.size(); i++) {
-        out_file << std::setw(6) << i
+        out_file << std::setw(6) << i+1 << " "
                  << std::setw(8)
                  << std::setiosflags(std::ios_base::fixed)
                  << std::setprecision(2)
                  << bases_per_turn[i]
+                 << std::endl;
+    }
+    out_file << std::endl << "# Major groove width:" << std::endl
+             << std::setw(6) << "#    i" << std::setw(8) << "width"
+             << std::endl;
+    for (i = 3; i < major_groove_width.size()-3; i++) {
+        if (major_groove_width[i] > 25)
+            continue;
+        out_file << std::setw(6) << i+1
+                 << std::setw(8)
+                 << std::setiosflags(std::ios_base::fixed)
+                 << std::setprecision(2)
+                 << major_groove_width[i]
+                 << std::endl;
+    }
+    out_file << std::endl << "# Minor groove width:" << std::endl
+             << std::setw(6) << "#    i" << std::setw(8) << "width"
+             << std::endl;
+    for (i = 3; i < minor_groove_width.size()-3; i++) {
+        if (minor_groove_width[i] > 18)
+            continue;
+        out_file << std::setw(6) << i+1
+                 << std::setw(8)
+                 << std::setiosflags(std::ios_base::fixed)
+                 << std::setprecision(2)
+                 << minor_groove_width[i]
                  << std::endl;
     }
 
