@@ -133,6 +133,7 @@ int main(int argc, char *argv[])
 
     std::vector<double> base_rise;
     std::vector<double> helix_width;
+    std::vector<double> bases_per_turn;
     double d = 0;               // tmp for base_rise;
     double r = 0;               // tmp for helix width;
 
@@ -303,6 +304,27 @@ int main(int argc, char *argv[])
     p_i = axis_nodes[axis_nodes.size()-1];
     axis_dots.push_back(p_i);
 
+    // ~~~~~~~~~~~~~~~~~~~~ calculating base per turn ~~~~~~~~~~~~~~~~~~~~
+    for (i = 0; i < curve1_tangents.size()-10; i++) {
+        t_tmp = curve1_tangents[i];
+        double angle = pinang::g_pi;
+        int best_fit = 0;
+        for (int j = i * 10 + 90; j < i * 10 + 110; j++) {
+            if (j > curve1_dots.size()-2)
+                break;
+            v1 = curve1_dots[j+1] - curve1_dots[j-1];
+            s_tmp = v1 * (1/v1.norm());
+            double ang = abs(vec_angle(t_tmp, s_tmp));
+            if (ang < angle)
+            {
+                angle = ang;
+                best_fit = j;
+            }
+        }
+        bases_per_turn.push_back(best_fit/10.0-i);
+    }
+
+
     // ============================ Output to PDB ============================
     int k = curve1_dots.size();
     int l = curve1_nodes.size();
@@ -366,15 +388,29 @@ int main(int argc, char *argv[])
     }
 
     // =================== output base rise, helix width... ===================
+    out_file << std::setw(6) << "#    i" << std::setw(8) << "b_rise"
+             << "  " << setw(8) << "h_width" << std::endl;
     for (i = 0; i < len1; i++) {
-        out_file << std::setw(4) << i
+        out_file << std::setw(6) << i
                  << std::setw(8)
                  << std::setiosflags(std::ios_base::fixed)
                  << std::setprecision(2)
                  << base_rise[i] << "  "
+                 << std::setw(8)
                  << helix_width[i]
                  << std::endl;
     }
+    out_file << std::endl << std::setw(6) << "#    i" << std::setw(8) << "bpt"
+             << std::endl;
+    for (i = 0; i < bases_per_turn.size(); i++) {
+        out_file << std::setw(6) << i
+                 << std::setw(8)
+                 << std::setiosflags(std::ios_base::fixed)
+                 << std::setprecision(2)
+                 << bases_per_turn[i]
+                 << std::endl;
+    }
+
 
     back_file.close();
     axis_file.close();
