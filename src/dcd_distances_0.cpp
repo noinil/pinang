@@ -23,7 +23,10 @@ int main(int argc, char *argv[])
               << std::endl;
     std::cout << " ========================================================== "
               << std::endl;
-    std::cout << " Usage: "
+    std::cout << " This program only calculate distances between single atoms. \n"
+              << " If you want to calculate distance between center-of-mass of \n"
+              << " atom groups, please try p_dist_com!  Good luck! \n"
+              << " Usage: "
               << argv[0]
               << " -f some.dcd -s some.top [-i some.inp] [-o some.dis] [-h]"
               << std::endl;
@@ -104,7 +107,7 @@ int main(int argc, char *argv[])
 
         std::size_t found = inp_line.find(str0);
         if (found!=std::string::npos){
-            std::cout << " - TOP file: total number"
+            std::cout << " - TOP file: total number "
                       << inp_line << std::endl;
             std::string stmp;
             std::istringstream tmp_sstr;
@@ -127,11 +130,11 @@ int main(int argc, char *argv[])
     {
         int tmp_a;
         std::cout << " - Please input the index of the first particle: "
-                  << std::endl;
+                  << std::endl << " ";
         std::cin >> tmp_a;
         tmp_inpa.ii = tmp_a - 1;
         std::cout << " - and the second one: "
-                  << std::endl;
+                  << std::endl << " ";
         std::cin >> tmp_a;
         tmp_inpa.jj = tmp_a - 1;
         v_inpa.push_back(tmp_inpa);
@@ -160,7 +163,7 @@ int main(int argc, char *argv[])
     }
 
     // -------------------------------------------------------------------------
-
+    // ---------- Reading DCD ----------
     std::vector<pinang::Conformation> conformations;
 
     pinang::read_dcd(dcd_file, conformations);
