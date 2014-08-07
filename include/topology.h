@@ -56,11 +56,14 @@ namespace pinang {
                 tmp_sstr >> stmp  >> stmp  >> stmp
                          >> _n_particle;
                 std::getline(ifile, inp_line);
-                std::cout << " Start reading top file: " << std::endl;
                 for (int i = 0; i < _n_particle ; i++) {
                     ifile >> p;
+                    _particles.push_back(p);
                 }
-                std::cout << "100%" << std::endl;
+                std::cout << " Total particle number: "
+                          << _n_particle
+                          << " in top file: " << s
+                          << std::endl;
                 break;
             }
         }

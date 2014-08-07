@@ -1,4 +1,5 @@
 #include "read_dcd.h"
+#include "topology.h"
 
 #include <iostream>
 #include <iomanip>
@@ -89,19 +90,13 @@ int main(int argc, char *argv[])
         std::cout << " ERROR: No particles found in top file. " << std::endl;
         exit(EXIT_SUCCESS);
     }
-    for (int i = 0; i < top.m_size(); i++) {
-        std::cout << i+1
-                  << "   " << top.particle(i).mass()
-                  << std::endl;
-    }
-    exit(EXIT_SUCCESS);
-
 
     // ==================== input particle index ====================
     std::istringstream tmp_sstr;
     int flg_grp_1 = 0;
     int flg_grp_2 = 0;
     std::string tmp_str;
+    std::string inp_line;
 
     std::vector<int> atom_group1_idx;
     std::vector<int> atom_group2_idx;
@@ -202,7 +197,7 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    if (N_atom != conformations[0].m_size())
+    if (top.m_size() != conformations[0].m_size())
     {
         std::cout << " ERROR: Particle number don't match in top and dcd! "
                   << " Please check! " << std::endl;
@@ -219,13 +214,32 @@ int main(int argc, char *argv[])
     pinang::Vec3d com1, com2;
     double dist = 0;
     for (int i= 0; i < nframe; i++) {
-        dis_file << std::setw(6) << i;
         pinang::Vec3d v(0,0,0);
+        int k = 0;
+        double total_mass = 0;
+
         for (int j = 0; j < atom_group1_idx.size(); j++) {
             k = atom_group1_idx[j];
-            v += conformation[i].atom[k];
+            v = v + conformations[i].atom(k) * top.particle(k).mass();
+            total_mass += top.particle(k).mass();
         }
+        com1 = v * (1/total_mass);
 
+        v = v * 0;
+        total_mass = 0;
+        for (int j = 0; j < atom_group2_idx.size(); j++) {
+            k = atom_group2_idx[j];
+            v = v + conformations[i].atom(k) * top.particle(k).mass();
+            total_mass += top.particle(k).mass();
+        }
+        com2 = v * (1/total_mass);
+
+        dist = vec_distance(com1, com2);
+
+        dis_file << std::setw(6) << i
+                 << "   " << std::setw(8) << dist
+                 << std::endl; // Output the distance!
+    }
 
     dcd_file.close();
     dis_file.close();

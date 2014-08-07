@@ -154,7 +154,7 @@ namespace pinang {
         tmp_sstr.str (top_line);
 
         tmp_sstr >> tmp_i;
-        std::cout << ".";
+        // std::cout << ".";
 
         tmp_sstr >> tmp_i;
         p.set_resid_index(tmp_i);
