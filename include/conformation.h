@@ -55,7 +55,7 @@ namespace pinang {
             std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
             std::cout << " ~           PINANG :: CONFORMATION           ~ " << std::endl;
             std::cout << " ============================================== " << std::endl;
-            std::cerr << "ERROR: Wrong atom number when set conformation. " << std::endl;
+            std::cerr << " ERROR: Wrong atom number when set conformation. " << std::endl;
             return 1;
         } else {
             _coordinates = v;
@@ -74,7 +74,7 @@ namespace pinang {
             std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
             std::cout << " ~           PINANG :: CONFORMATION           ~ " << std::endl;
             std::cout << " ============================================== " << std::endl;
-            std::cerr << "ERROR: Atom index out of range in Conformation. " << std::endl;
+            std::cerr << " ERROR: Atom index out of range in Conformation. " << std::endl;
             exit(EXIT_SUCCESS);
         } else {
             return _coordinates[n];

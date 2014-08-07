@@ -81,39 +81,20 @@ int main(int argc, char *argv[])
 
     std::ifstream dcd_file(dcd_name.c_str(), std::ifstream::binary);
     std::ifstream inp_file(inp_name.c_str());
-    std::ifstream top_file(top_name.c_str());
     std::ofstream dis_file(dis_name.c_str());
 
-    int N_atom = 0;
-    std::string str0 = "particles";
-    std::string inp_line;
-    while (top_file.good()) {
-        std::getline(top_file, inp_line);
-
-        if (top_file.fail())
-        {
-            break;
-        }
-
-        std::size_t found = inp_line.find(str0);
-        if (found!=std::string::npos){
-            std::cout << " - TOP file: total number "
-                      << inp_line << std::endl;
-            std::string stmp;
-            std::istringstream tmp_sstr;
-            tmp_sstr.str ( inp_line );
-
-            tmp_sstr >> stmp  >> stmp  >> stmp
-                     >> N_atom;
-            tmp_sstr.clear();
-            break;
-        }
-    }
-    if (N_atom == 0)
+    pinang::Topology top(top_name);
+    if (top.m_size() == 0)
     {
         std::cout << " ERROR: No particles found in top file. " << std::endl;
         exit(EXIT_SUCCESS);
     }
+    for (int i = 0; i < top.m_size(); i++) {
+        std::cout << i+1
+                  << "   " << top.particle(i).mass()
+                  << std::endl;
+    }
+    exit(EXIT_SUCCESS);
 
 
     // ==================== input particle index ====================
@@ -144,7 +125,6 @@ int main(int argc, char *argv[])
             std::vector<std::string> strs;
             boost::split(strs, inp_line, boost::is_any_of(","));
             for (int i = 0; i < strs.size(); i++) {
-                // std::cout << strs[i] << std::endl;
                 tmp_s = strs[i];
                 std::size_t found = tmp_s.find("to");
                 if (found!=std::string::npos){
@@ -248,7 +228,6 @@ int main(int argc, char *argv[])
 
 
     dcd_file.close();
-    top_file.close();
     dis_file.close();
 
     return 0;
