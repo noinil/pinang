@@ -15,12 +15,6 @@ int main(int argc, char *argv[])
               << std::endl;
     std::cout << " ========================================================== "
               << std::endl;
-    std::cout << " Usage: "
-              << argv[0]
-              << " -f some.pdb [-o out.pos] [-t out.top] [-m module] [-h]"
-              << std::endl;
-    std::cout << " ========================================================== "
-              << std::endl;
 
     int opt, mod_index = 0;
     int mod_flag = 0;

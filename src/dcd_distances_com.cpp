@@ -6,29 +6,15 @@
 #include <sstream>
 #include <cstdlib>
 #include <unistd.h>
+#include <boost/algorithm/string.hpp>
 
 using namespace std;
-
-struct index_pair
-{
-    int ii;
-    int jj;
-};
 
 int main(int argc, char *argv[])
 {
     std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ "
               << std::endl;
     std::cout << " ~           PINANG DCD distances calculation             ~ "
-              << std::endl;
-    std::cout << " ========================================================== "
-              << std::endl;
-    std::cout << " This program only calculate distances between single atoms. \n"
-              << " If you want to calculate distance between center-of-mass of \n"
-              << " atom groups, please try p_dist_com!  Good luck! \n"
-              << " Usage: "
-              << argv[0]
-              << " -f some.dcd -s some.top [-i some.inp] [-o some.dis] [-h]"
               << std::endl;
     std::cout << " ========================================================== "
               << std::endl;
@@ -63,14 +49,14 @@ int main(int argc, char *argv[])
         case 'h':
             std::cout << " Usage: "
                       << argv[0]
-                      << " -f some.dcd -s some.top [-i some.inp] [-o some.dis] [-h]"
+                      << " -f some.dcd -s some.top -i some.inp [-o some.dis] [-h]"
                       << std::endl;
             exit(EXIT_SUCCESS);
             break;
         default: /* '?' */
             std::cout << " Usage: "
                       << argv[0]
-                      << " -f some.dcd -s some.top [-i some.inp] [-o some.dis] [-h]"
+                      << " -f some.dcd -s some.top -i some.inp [-o some.dis] [-h]"
                       << std::endl;
             exit(EXIT_FAILURE);
         }
@@ -86,11 +72,15 @@ int main(int argc, char *argv[])
         std::cout << " ERROR: Please provide the top file. " << std::endl;
         exit(EXIT_SUCCESS);
     }
+    if (inp_flag == 0)
+    {
+        std::cout << " ERROR: Please provide the input file. " << std::endl;
+        exit(EXIT_SUCCESS);
+    }
     // -------------------------------------------------------------------------
 
-    index_pair tmp_inpa;
-    std::vector<index_pair> v_inpa;
     std::ifstream dcd_file(dcd_name.c_str(), std::ifstream::binary);
+    std::ifstream inp_file(inp_name.c_str());
     std::ifstream top_file(top_name.c_str());
     std::ofstream dis_file(dis_name.c_str());
 
@@ -125,42 +115,40 @@ int main(int argc, char *argv[])
     }
 
 
-    // ==================== input particle pairs ====================
-    if (!inp_flag)
-    {
-        int tmp_a;
-        std::cout << " - Please input the index of the first particle: "
-                  << std::endl << " ";
-        std::cin >> tmp_a;
-        tmp_inpa.ii = tmp_a - 1;
-        std::cout << " - and the second one: "
-                  << std::endl << " ";
-        std::cin >> tmp_a;
-        tmp_inpa.jj = tmp_a - 1;
-        v_inpa.push_back(tmp_inpa);
-    } else {
-        std::ifstream inp_file(inp_name.c_str());
-        std::istringstream tmp_sstr;
-        int tmp_a, tmp_b;
+    // ==================== input particle index ====================
+    std::istringstream tmp_sstr;
+    int tmp_a, tmp_b;
+    int flg_grp_1 = 0;
+    int flg_grp_2 = 0;
+    std::string tmp_str;
 
-        while (inp_file.good()) {
-            std::getline(inp_file, inp_line);
+    while (inp_file.good()) {
+        std::getline(inp_file, inp_line);
 
-            if (inp_file.fail())
-            {
-                break;
-            }
-
-            tmp_sstr.str ( inp_line );
-            tmp_sstr >> tmp_a >> tmp_b;
-            tmp_inpa.ii = tmp_a - 1;
-            tmp_inpa.jj = tmp_b - 1;
-            v_inpa.push_back(tmp_inpa);
-
-            tmp_sstr.clear();
+        if (inp_file.fail())
+        {
+            break;
         }
-        inp_file.close();
+
+        tmp_str = inp_line.substr(0,7);
+
+        if (tmp_str == "GROUP1:")
+        {
+            flg_grp_1 = 1;
+            inp_line.erase(0,7);
+            std::vector<std::string> strs;
+            boost::split(strs, inp_line, boost::is_any_of(","));
+            for (int i = 0; i < strs.size(); i++) {
+                std::cout << strs[i] << std::endl;
+            }
+        }
     }
+    if (flg_grp_1 == 0)
+    {
+        std::cout << " ERROR: GROUP 1 not found!" << std::endl;
+    }
+    inp_file.close();
+    exit(EXIT_SUCCESS);
 
     // -------------------------------------------------------------------------
     // ---------- Reading DCD ----------
@@ -189,22 +177,6 @@ int main(int argc, char *argv[])
     // |_| |_| |_|\__,_|_|_| |_| |_|\___/ \___/| .__/
     //                                         |_|
     */
-    int a, b;
-    pinang::Vec3d v1, v2;
-    double dist = 0;
-    for (int i= 0; i < nframe; i++) {
-        dis_file << std::setw(6) << i;
-        for (int j = 0; j < v_inpa.size(); j++) {
-            a = v_inpa[j].ii;
-            b = v_inpa[j].jj;
-            v1 = conformations[i].atom(a);
-            v2 = conformations[i].atom(b);
-            dist = vec_distance(v1, v2);
-            dis_file << "  "
-                     << std::setw(8) << dist;
-        }
-        dis_file << std::endl;
-    }
 
     dcd_file.close();
     top_file.close();

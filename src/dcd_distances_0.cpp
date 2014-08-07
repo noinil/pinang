@@ -26,9 +26,6 @@ int main(int argc, char *argv[])
     std::cout << " This program only calculate distances between single atoms. \n"
               << " If you want to calculate distance between center-of-mass of \n"
               << " atom groups, please try p_dist_com!  Good luck! \n"
-              << " Usage: "
-              << argv[0]
-              << " -f some.dcd -s some.top [-i some.inp] [-o some.dis] [-h]"
               << std::endl;
     std::cout << " ========================================================== "
               << std::endl;

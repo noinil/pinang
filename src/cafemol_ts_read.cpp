@@ -16,12 +16,6 @@ int main(int argc, char *argv[])
               << std::endl;
     std::cout << " ========================================================== "
               << std::endl;
-    std::cout << " Usage: "
-              << argv[0]
-              << " -f some.ts [-o some.dat] [-h]"
-              << std::endl;
-    std::cout << " ========================================================== "
-              << std::endl;
 
     int opt;
     int ts_flag = 0;

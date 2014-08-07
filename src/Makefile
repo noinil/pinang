@@ -1,7 +1,6 @@
 default:
 
-all: 	seq pdb_output pdb_cg_top matrix_transpose dcd_distance_0 ts_read /
-	pdb_dna_curve dcd_distance_1
+all: 	seq pdb_output pdb_cg_top matrix_transpose dcd_distance_0 ts_read pdb_dna_curve dcd_distance_1
 
 seq:
 	mkdir -p ../bin

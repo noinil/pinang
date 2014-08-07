@@ -17,14 +17,13 @@ int main(int argc, char *argv[])
 
     std::cout << " ========================================================== "
               << std::endl;
-    std::cout << " Usage: "
-              << argv[0]
-              << " -f some.dat [-o out.dat] [-h]" << std::endl;
+    std::cout << " =        PINANG: Matrix transpose for txt files.         ="
+              << std::endl;
     std::cout << " ========================================================== "
               << std::endl;
 
-    int opt, mod_index = 0;
-    int mod_flag = 0;
+    int opt;
+    // int mod_flag = 0;
     int in_flag = 0;
     std::string infilename = "some.dat";
     std::string outfilename = "out.dat";

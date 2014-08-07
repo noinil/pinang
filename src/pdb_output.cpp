@@ -15,11 +15,6 @@ int main(int argc, char *argv[])
               << std::endl;
     std::cout << " ========================================================== "
               << std::endl;
-    std::cout << " Usage: "
-              << argv[0]
-              << " -f some.pdb [-o output.pdb] [-m module] [-h]" << std::endl;
-    std::cout << " ========================================================== "
-              << std::endl;
 
     int opt, mod_index = 0;
     int mod_flag = 0;
@@ -42,7 +37,7 @@ int main(int argc, char *argv[])
             in_flag = 1;
             break;
         case 'h':
-            std::cout << " Help: Usage: "
+            std::cout << " Usage: "
                       << argv[0]
                       << " -f some.pdb [-o output.pdb] [-m module] [-h]"
                       << std::endl;
