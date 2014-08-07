@@ -105,6 +105,7 @@ int main(int argc, char *argv[])
 
             tmp_sstr >> stmp  >> stmp  >> stmp
                      >> N_atom;
+            tmp_sstr.clear();
             break;
         }
     }
@@ -117,10 +118,12 @@ int main(int argc, char *argv[])
 
     // ==================== input particle index ====================
     std::istringstream tmp_sstr;
-    int tmp_a, tmp_b;
     int flg_grp_1 = 0;
     int flg_grp_2 = 0;
     std::string tmp_str;
+
+    std::vector<int> atom_group1_idx;
+    std::vector<int> atom_group2_idx;
 
     while (inp_file.good()) {
         std::getline(inp_file, inp_line);
@@ -134,12 +137,65 @@ int main(int argc, char *argv[])
 
         if (tmp_str == "GROUP1:")
         {
+            std::string tmp_s;
+            std::istringstream tmp_sstr;
             flg_grp_1 = 1;
             inp_line.erase(0,7);
             std::vector<std::string> strs;
             boost::split(strs, inp_line, boost::is_any_of(","));
             for (int i = 0; i < strs.size(); i++) {
-                std::cout << strs[i] << std::endl;
+                // std::cout << strs[i] << std::endl;
+                tmp_s = strs[i];
+                std::size_t found = tmp_s.find("to");
+                if (found!=std::string::npos){
+                    int tmp_i = 0;
+                    int tmp_j = 0;
+                    tmp_s.erase(found, 2);
+                    tmp_sstr.str(tmp_s);
+                    tmp_sstr >> tmp_i;
+                    tmp_sstr >> tmp_j;
+                    for (int j = tmp_i; j <= tmp_j; j++) {
+                        atom_group1_idx.push_back(j-1);
+                    }
+                    tmp_sstr.clear();
+                } else {
+                    int tmp_i = 0;
+                    tmp_sstr.str(tmp_s);
+                    tmp_sstr >> tmp_i;
+                    atom_group1_idx.push_back(tmp_i-1);
+                    tmp_sstr.clear();
+                }
+            }
+        }
+        if (tmp_str == "GROUP2:")
+        {
+            std::string tmp_s;
+            std::istringstream tmp_sstr;
+            flg_grp_2 = 1;
+            inp_line.erase(0,7);
+            std::vector<std::string> strs;
+            boost::split(strs, inp_line, boost::is_any_of(","));
+            for (int i = 0; i < strs.size(); i++) {
+                tmp_s = strs[i];
+                std::size_t found = tmp_s.find("to");
+                if (found!=std::string::npos){
+                    int tmp_i = 0;
+                    int tmp_j = 0;
+                    tmp_s.erase(found, 2);
+                    tmp_sstr.str(tmp_s);
+                    tmp_sstr >> tmp_i;
+                    tmp_sstr >> tmp_j;
+                    for (int j = tmp_i; j <= tmp_j; j++) {
+                        atom_group2_idx.push_back(j-1);
+                    }
+                    tmp_sstr.clear();
+                } else {
+                    int tmp_i = 0;
+                    tmp_sstr.str(tmp_s);
+                    tmp_sstr >> tmp_i;
+                    atom_group2_idx.push_back(tmp_i-1);
+                    tmp_sstr.clear();
+                }
             }
         }
     }
@@ -147,8 +203,11 @@ int main(int argc, char *argv[])
     {
         std::cout << " ERROR: GROUP 1 not found!" << std::endl;
     }
+    if (flg_grp_2 == 0)
+    {
+        std::cout << " ERROR: GROUP 2 not found!" << std::endl;
+    }
     inp_file.close();
-    exit(EXIT_SUCCESS);
 
     // -------------------------------------------------------------------------
     // ---------- Reading DCD ----------
@@ -177,6 +236,16 @@ int main(int argc, char *argv[])
     // |_| |_| |_|\__,_|_|_| |_| |_|\___/ \___/| .__/
     //                                         |_|
     */
+    pinang::Vec3d com1, com2;
+    double dist = 0;
+    for (int i= 0; i < nframe; i++) {
+        dis_file << std::setw(6) << i;
+        pinang::Vec3d v(0,0,0);
+        for (int j = 0; j < atom_group1_idx.size(); j++) {
+            k = atom_group1_idx[j];
+            v += conformation[i].atom[k];
+        }
+
 
     dcd_file.close();
     top_file.close();
