@@ -69,7 +69,7 @@ namespace pinang {
 
     inline const Vec3d& Conformation::atom(int n) const
     {
-        if ( n >= _n_atom)
+        if ( n >= _n_atom || n < 0)
         {
             std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
             std::cout << " ~           PINANG :: CONFORMATION           ~ " << std::endl;

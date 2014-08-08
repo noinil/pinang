@@ -1,8 +1,10 @@
 default:
 
-all: 	install_dir stable dcd_contact_num
+all: 	install_dir pdb_related dcd_related persistence_length
 
-stable: seq pdb_output pdb_cg_top matrix_transpose dcd_distance_0 ts_read pdb_dna_curve dcd_distance_1
+pdb_related: seq pdb_output pdb_cg_top matrix_transpose  ts_read pdb_dna_curve
+
+dcd_related:  dcd_contact_num dcd_distance_0 dcd_distance_1
 
 install_dir:
 	mkdir -p ../bin
@@ -33,7 +35,10 @@ pdb_dna_curve:
 dcd_contact_num:
 	icpc -Wall -I../include/ -o p_contact_num dcd_contact_number.cpp
 	mv p_contact_num ../bin/
+persistence_length:
+	icpc -Wall -I../include/ -o p_persistence_length dcd_persistence_length.cpp
+	mv p_persistence_length ../bin/
 clean:
 	rm -f ../bin/*
 cct:
-	rm -f ../bin/p_contact_num
+	rm -f ../bin/p_persistence_length

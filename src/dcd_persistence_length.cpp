@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
     std::string inp_name = "some.inp";
     std::string lp_name = "some.lp";
 
-    while ((opt = getopt(argc, argv, "f:s:i:o:c:h")) != -1) {
+    while ((opt = getopt(argc, argv, "f:s:i:o:h")) != -1) {
         switch (opt) {
         case 'f':
             dcd_name = optarg;
@@ -49,20 +49,17 @@ int main(int argc, char *argv[])
         case 'o':
             lp_name = optarg;
             break;
-        case 'c':
-            pinang::g_cutoff = atof(optarg);
-            break;
         case 'h':
             std::cout << " Usage: "
                       << argv[0]
-                      << " -f some.dcd -s some.top -i some.inp [-o some.lp] [-c cutoff] [-h]"
+                      << " -f some.dcd -s some.top -i some.inp [-o some.lp] [-h]"
                       << std::endl;
             exit(EXIT_SUCCESS);
             break;
         default: /* '?' */
             std::cout << " Usage: "
                       << argv[0]
-                      << " -f some.dcd -s some.top -i some.inp [-o some.lp] [-c cutoff] [-h]"
+                      << " -f some.dcd -s some.top -i some.inp [-o some.lp] [-h]"
                       << std::endl;
             exit(EXIT_FAILURE);
         }
@@ -139,9 +136,9 @@ int main(int argc, char *argv[])
                     tmp_sstr >> tmp_i;
                     tmp_sstr >> tmp_j;
                     for (int j = tmp_i; j <= tmp_j; j++) {
-                        if (top.particle(j-1).atom_name()=="P")
+                        if (top.particle(j-1).atom_name()=="P  ")
                             phosphate_strand1_idx.push_back(j-1);
-                        if (top.particle(j-1).atom_name()=="B")
+                        if (top.particle(j-1).atom_name()=="B  ")
                             base_strand1_idx.push_back(j-1);
                     }
                     tmp_sstr.clear();
@@ -149,14 +146,15 @@ int main(int argc, char *argv[])
                     int tmp_i = 0;
                     tmp_sstr.str(tmp_s);
                     tmp_sstr >> tmp_i;
-                    if (top.particle(tmp_i-1).atom_name()=="P")
+                    if (top.particle(tmp_i-1).atom_name()=="P  ")
                         phosphate_strand1_idx.push_back(tmp_i-1);
-                    if (top.particle(tmp_i-1).atom_name()=="B")
+                    if (top.particle(tmp_i-1).atom_name()=="B  ")
                         base_strand1_idx.push_back(tmp_i-1);
                     tmp_sstr.clear();
                 }
             }
         }
+
         if (tmp_str == "STRAND2:")
         {
             std::string tmp_s;
@@ -176,9 +174,9 @@ int main(int argc, char *argv[])
                     tmp_sstr >> tmp_i;
                     tmp_sstr >> tmp_j;
                     for (int j = tmp_i; j <= tmp_j; j++) {
-                        if (top.particle(j-1).atom_name()=="P")
+                        if (top.particle(j-1).atom_name()=="P  ")
                             phosphate_strand2_idx.push_back(j-1);
-                        if (top.particle(j-1).atom_name()=="B")
+                        if (top.particle(j-1).atom_name()=="B  ")
                             base_strand2_idx.push_back(j-1);
                     }
                     tmp_sstr.clear();
@@ -186,9 +184,9 @@ int main(int argc, char *argv[])
                     int tmp_i = 0;
                     tmp_sstr.str(tmp_s);
                     tmp_sstr >> tmp_i;
-                    if (top.particle(tmp_i-1).atom_name()=="P")
+                    if (top.particle(tmp_i-1).atom_name()=="P  ")
                         phosphate_strand2_idx.push_back(tmp_i-1);
-                    if (top.particle(tmp_i-1).atom_name()=="B")
+                    if (top.particle(tmp_i-1).atom_name()=="B  ")
                         base_strand2_idx.push_back(tmp_i-1);
                     tmp_sstr.clear();
                 }
@@ -330,7 +328,7 @@ int main(int argc, char *argv[])
             axis_directions.push_back(H); // axis direction vectors!
 
             // r = axis center deviation!  This is just a empirical estimation!
-            r = 2.12 * v1.norm() / p_D_phosphate;
+            double r = 2.12 * v1.norm() / p_D_phosphate;
             t_tmp = P1 + (n1 * r);
             axis_nodes.push_back(t_tmp);
 
@@ -355,16 +353,16 @@ int main(int argc, char *argv[])
         int s = int(len * 0.5);
         u_u_tmp = axis_directions[0] * axis_directions[s-1];
         u_u_50.push_back(u_u_tmp);
-        int s = int(len * 0.6);
+        s = int(len * 0.6);
         u_u_tmp = axis_directions[0] * axis_directions[s-1];
         u_u_60.push_back(u_u_tmp);
-        int s = int(len * 0.7);
+        s = int(len * 0.7);
         u_u_tmp = axis_directions[0] * axis_directions[s-1];
         u_u_70.push_back(u_u_tmp);
-        int s = int(len * 0.8);
+        s = int(len * 0.8);
         u_u_tmp = axis_directions[0] * axis_directions[s-1];
         u_u_80.push_back(u_u_tmp);
-        int s = int(len * 0.9);
+        s = int(len * 0.9);
         u_u_tmp = axis_directions[0] * axis_directions[s-1];
         u_u_90.push_back(u_u_tmp);
 
@@ -379,57 +377,95 @@ int main(int argc, char *argv[])
     // ==================== Calculating Def1 of Lp ====================
     // ---------- calculating contour length ----------
     double sum = std::accumulate(lc.begin(), lc.end(), 0.0);
-    contour_length = sum / lc.size();
+    contour_length = sum / lc.size() + 3.43;
+    std::cout << " Contour length = "
+              << std::setw(8) << contour_length
+              << std::endl;
 
     // ---------- calculating <Re^2> ----------
     sum = std::accumulate(R_e_sqr.begin(), R_e_sqr.end(), 0.0);
     double mean = sum / R_e_sqr.size();
     persistence_length_1 = mean / (2 * contour_length);
 
-    sum = std::accumulate(u_u_50.begin(), u_u_50.end(), 0.0);
-    mean = sum / u_u_50.size();
-    lp_file << std::setw(8) << contour_length * 0.5 << "  "
-            << std::setw(8) << mean << std::endl;
-
-    sum = std::accumulate(u_u_60.begin(), u_u_60.end(), 0.0);
-    mean = sum / u_u_60.size();
-    lp_file << std::setw(8) << contour_length * 0.6 << "  "
-            << std::setw(8) << mean << std::endl;
-
-    sum = std::accumulate(u_u_70.begin(), u_u_70.end(), 0.0);
-    mean = sum / u_u_70.size();
-    lp_file << std::setw(8) << contour_length * 0.7 << "  "
-            << std::setw(8) << mean << std::endl;
-
-    sum = std::accumulate(u_u_80.begin(), u_u_80.end(), 0.0);
-    mean = sum / u_u_80.size();
-    lp_file << std::setw(8) << contour_length * 0.8 << "  "
-            << std::setw(8) << mean << std::endl;
-
-    sum = std::accumulate(u_u_90.begin(), u_u_90.end(), 0.0);
-    mean = sum / u_u_90.size();
-    lp_file << std::setw(8) << contour_length * 0.9 << "  "
-            << std::setw(8) << mean << std::endl;
-
-    sum = std::accumulate(u_u_lc.begin(), u_u_lc.end(), 0.0);
-    mean = sum / u_u_lc.size();
-    lp_file << std::setw(8) << contour_length << "  "
-            << std::setw(8) << mean << std::endl;
-
-    persistence_length_2 = - contour_length / log(mean);
-
-    // ==================== Output to std ====================
+    // ~~~~~~~~~~ output ~~~~~~~~~~
     std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ "
               << std::endl;
     std::cout << " Def 1 of persistence length: "
               << " lp = <Re^2>/2L" << std::endl
               << " Result: " << std::setw(8) << persistence_length_1
               << std::endl;
+
+
+    // ==================== Calculating Def2 of Lp ====================
     std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ "
               << std::endl;
     std::cout << " Def 2 of persistence length: "
-              << " <u(0) * u(s)> = e^(-s/lp)" << std::endl
-              << " Result: " << std::setw(8) << persistence_length_2
+              << " <u(0) * u(s)> = e^(-s/lp)" << std::endl;
+
+    sum = std::accumulate(u_u_50.begin(), u_u_50.end(), 0.0);
+    mean = sum / u_u_50.size();
+    persistence_length_2 = - 0.5 * contour_length / log(mean);
+    lp_file << std::setw(8) << contour_length * 0.5 << "  "
+            << std::setw(8) << mean
+            << std::setw(8) << persistence_length_2
+            << std::endl;
+    std::cout << " Result (s=50% contour length): " << std::setw(8)
+              << persistence_length_2
+              << std::endl;
+
+    sum = std::accumulate(u_u_60.begin(), u_u_60.end(), 0.0);
+    mean = sum / u_u_60.size();
+    persistence_length_2 = - 0.6 * contour_length / log(mean);
+    lp_file << std::setw(8) << contour_length * 0.6 << "  "
+            << std::setw(8) << mean
+            << std::setw(8) << persistence_length_2
+            << std::endl;
+    std::cout << " Result (s=60% contour length): " << std::setw(8)
+              << persistence_length_2
+              << std::endl;
+
+    sum = std::accumulate(u_u_70.begin(), u_u_70.end(), 0.0);
+    mean = sum / u_u_70.size();
+    persistence_length_2 = - 0.7 * contour_length / log(mean);
+    lp_file << std::setw(8) << contour_length * 0.7 << "  "
+            << std::setw(8) << mean
+            << std::setw(8) << persistence_length_2
+            << std::endl;
+    std::cout << " Result (s=70% contour length): " << std::setw(8)
+              << persistence_length_2
+              << std::endl;
+
+    sum = std::accumulate(u_u_80.begin(), u_u_80.end(), 0.0);
+    mean = sum / u_u_80.size();
+    persistence_length_2 = - 0.8*contour_length / log(mean);
+    lp_file << std::setw(8) << contour_length * 0.8 << "  "
+            << std::setw(8) << mean
+            << std::setw(8) << persistence_length_2
+            << std::endl;
+    std::cout << " Result (s=80% contour length): " << std::setw(8)
+              << persistence_length_2
+              << std::endl;
+
+    sum = std::accumulate(u_u_90.begin(), u_u_90.end(), 0.0);
+    mean = sum / u_u_90.size();
+    persistence_length_2 = - 0.9*contour_length / log(mean);
+    lp_file << std::setw(8) << contour_length * 0.9 << "  "
+            << std::setw(8) << mean
+            << std::setw(8) << persistence_length_2
+            << std::endl;
+    std::cout << " Result (s=90% contour length): " << std::setw(8)
+              << persistence_length_2
+              << std::endl;
+
+    sum = std::accumulate(u_u_lc.begin(), u_u_lc.end(), 0.0);
+    mean = sum / u_u_lc.size();
+    persistence_length_2 = - contour_length / log(mean);
+    lp_file << std::setw(8) << contour_length << "  "
+            << std::setw(8) << mean
+            << std::setw(8) << persistence_length_2
+            << std::endl;
+    std::cout << " Result (s=100% contour length): " << std::setw(8)
+              << persistence_length_2
               << std::endl;
 
     // ending ------------------------------

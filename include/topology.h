@@ -78,7 +78,7 @@ namespace pinang {
 
     const Particle& Topology::particle(int n) const
     {
-        if ( n >= _n_particle)
+        if ( n >= _n_particle || n < 0)
         {
             std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
             std::cout << " ~             PINANG :: TOPOLOGY             ~ " << std::endl;
