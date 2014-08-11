@@ -443,70 +443,81 @@ int main(int argc, char *argv[])
             << std::setw(8) << "-Ln<u*u>"
             << std::setw(8) << "l_p" << std::endl;
 
+    double p2_5, p2_6, p2_7, p2_8, p2_9, p2_10; // all calculated persistence lengthes;
     sum = std::accumulate(u_u_50.begin(), u_u_50.end(), 0.0);
     mean = sum / u_u_50.size();
-    persistence_length_2 = - 0.5 * contour_length / log(mean);
+    p2_5 = - 0.5 * contour_length / log(mean);
     lp_file << std::setw(8) << contour_length * 0.5 << "  "
             << std::setw(8) << -log(mean)
-            << std::setw(8) << persistence_length_2
+            << std::setw(8) << p2_5
             << std::endl;
     std::cout << " Result (s=50% contour length): " << std::setw(8)
-              << persistence_length_2
+              << p2_5
               << std::endl;
 
     sum = std::accumulate(u_u_60.begin(), u_u_60.end(), 0.0);
     mean = sum / u_u_60.size();
-    persistence_length_2 = - 0.6 * contour_length / log(mean);
+    p2_6 = - 0.6 * contour_length / log(mean);
     lp_file << std::setw(8) << contour_length * 0.6 << "  "
             << std::setw(8) << -log(mean)
-            << std::setw(8) << persistence_length_2
+            << std::setw(8) << p2_6
             << std::endl;
     std::cout << " Result (s=60% contour length): " << std::setw(8)
-              << persistence_length_2
+              << p2_6
               << std::endl;
 
     sum = std::accumulate(u_u_70.begin(), u_u_70.end(), 0.0);
     mean = sum / u_u_70.size();
-    persistence_length_2 = - 0.7 * contour_length / log(mean);
+    p2_7 = - 0.7 * contour_length / log(mean);
     lp_file << std::setw(8) << contour_length * 0.7 << "  "
             << std::setw(8) << -log(mean)
-            << std::setw(8) << persistence_length_2
+            << std::setw(8) << p2_7
             << std::endl;
     std::cout << " Result (s=70% contour length): " << std::setw(8)
-              << persistence_length_2
+              << p2_7
               << std::endl;
 
     sum = std::accumulate(u_u_80.begin(), u_u_80.end(), 0.0);
     mean = sum / u_u_80.size();
-    persistence_length_2 = - 0.8*contour_length / log(mean);
+    p2_8 = - 0.8*contour_length / log(mean);
     lp_file << std::setw(8) << contour_length * 0.8 << "  "
             << std::setw(8) << -log(mean)
-            << std::setw(8) << persistence_length_2
+            << std::setw(8) << p2_8
             << std::endl;
     std::cout << " Result (s=80% contour length): " << std::setw(8)
-              << persistence_length_2
+              << p2_8
               << std::endl;
 
     sum = std::accumulate(u_u_90.begin(), u_u_90.end(), 0.0);
     mean = sum / u_u_90.size();
-    persistence_length_2 = - 0.9*contour_length / log(mean);
+    p2_9 = - 0.9*contour_length / log(mean);
     lp_file << std::setw(8) << contour_length * 0.9 << "  "
             << std::setw(8) << -log(mean)
-            << std::setw(8) << persistence_length_2
+            << std::setw(8) << p2_9
             << std::endl;
     std::cout << " Result (s=90% contour length): " << std::setw(8)
-              << persistence_length_2
+              << p2_9
               << std::endl;
 
     sum = std::accumulate(u_u_lc.begin(), u_u_lc.end(), 0.0);
     mean = sum / u_u_lc.size();
-    persistence_length_2 = - contour_length / log(mean);
+    p2_10 = - contour_length / log(mean);
     lp_file << std::setw(8) << contour_length << "  "
             << std::setw(8) << -log(mean)
-            << std::setw(8) << persistence_length_2
+            << std::setw(8) << p2_10
             << std::endl;
     std::cout << " Result (s=100% contour length): " << std::setw(8)
-              << persistence_length_2
+              << p2_10
+              << std::endl;
+
+    persistence_length_2 = (p2_5 + p2_6 + p2_7 + p2_8 + p2_9 + p2_10)/6;
+    std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ "
+              << std::endl;
+    lp_file << " Averaged from above:"
+            << std::setw(8) << persistence_length_2
+            << std::endl;
+    std::cout << " Averaged from above:"
+              << std::setw(8) << persistence_length_2
               << std::endl;
 
     // ending ------------------------------
