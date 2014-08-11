@@ -26,13 +26,17 @@ int main(int argc, char *argv[])
     int inp_flag = 0;
     int dcd_flag = 0;
     int top_flag = 0;
+    int beg_flag = 0;
+    int end_flag = 0;
+    int begin_frame = 0;
+    int end_frame = 0;
 
     std::string dcd_name = "some.dcd";
     std::string top_name = "some.top";
     std::string inp_name = "some.inp";
     std::string lp_name = "some.lp";
 
-    while ((opt = getopt(argc, argv, "f:s:i:o:h")) != -1) {
+    while ((opt = getopt(argc, argv, "f:s:i:o:b:e:h")) != -1) {
         switch (opt) {
         case 'f':
             dcd_name = optarg;
@@ -49,17 +53,27 @@ int main(int argc, char *argv[])
         case 'o':
             lp_name = optarg;
             break;
+        case 'b':
+            begin_frame = atoi(optarg);
+            beg_flag = 1;
+            break;
+        case 'e':
+            end_frame = atoi(optarg);
+            end_flag = 1;
+            break;
         case 'h':
             std::cout << " Usage: "
                       << argv[0]
-                      << " -f some.dcd -s some.top -i some.inp [-o some.lp] [-h]"
+                      << " -f some.dcd -s some.top -i some.inp [-o some.lp]\n"
+                      << " [-b] beginning_frame [-e] ending_frame [-h]"
                       << std::endl;
             exit(EXIT_SUCCESS);
             break;
         default: /* '?' */
             std::cout << " Usage: "
                       << argv[0]
-                      << " -f some.dcd -s some.top -i some.inp [-o some.lp] [-h]"
+                      << " -f some.dcd -s some.top -i some.inp [-o some.lp]\n"
+                      << " [-b] beginning_frame [-e] ending_frame [-h]"
                       << std::endl;
             exit(EXIT_FAILURE);
         }
@@ -87,6 +101,7 @@ int main(int argc, char *argv[])
 
     // ==================== topology file read in ====================
     pinang::Topology top(top_name);
+    std::cout << " (i.e. " << (top.m_size()+2)/6 << " bp.)" << std::endl;
     if (top.m_size() == 0)
     {
         std::cout << " ERROR: No particles found in top file. " << std::endl;
@@ -228,6 +243,7 @@ int main(int argc, char *argv[])
 
     pinang::read_dcd(dcd_file, conformations);
     int nframe = conformations.size();
+    std::cout << " Total " << nframe << " frames in dcd file." << std::endl;
 
     if (nframe == 0)
     {
@@ -241,7 +257,19 @@ int main(int argc, char *argv[])
                   << " Please check! " << std::endl;
         return 1;
     }
-
+    if (beg_flag == 0)
+    {
+        begin_frame = 0;
+    }
+    if (end_flag == 0)
+    {
+        end_frame = nframe;
+    } else if (end_frame > nframe)
+    {
+        end_frame = nframe;
+    }
+    std::cout << " Calculating from " << begin_frame << "th frame to "
+              << end_frame << "th frame..." << std::endl;
     /*                  _         _
     //  _ __ ___   __ _(_)_ __   | | ___   ___  _ __
     // | '_ ` _ \ / _` | | '_ \  | |/ _ \ / _ \| '_ \
@@ -267,7 +295,7 @@ int main(int argc, char *argv[])
     std::vector<double> u_u_90;  // u(0) * u(90%);
     std::vector<double> u_u_lc;  // u(0) * u(100%);
 
-    for (int h= 0; h < nframe; h++) {
+    for (int h = begin_frame; h < end_frame; h++) {
         std::vector<pinang::Vec3d> curve1_nodes; // "P" atoms in the 1st backbone;
         std::vector<pinang::Vec3d> curve2_nodes; // "P " atoms in the 2nd backbone;
         std::vector<pinang::Vec3d> cross_vecs;
@@ -378,6 +406,8 @@ int main(int argc, char *argv[])
     // ---------- calculating contour length ----------
     double sum = std::accumulate(lc.begin(), lc.end(), 0.0);
     contour_length = sum / lc.size() + 3.43;
+    std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ "
+              << std::endl;
     std::cout << " Contour length = "
               << std::setw(8) << contour_length
               << std::endl;
