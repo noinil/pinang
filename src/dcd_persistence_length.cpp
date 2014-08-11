@@ -440,7 +440,8 @@ int main(int argc, char *argv[])
     lp_file <<  " Def 2 of persistence length: "
             << " <u(0) * u(s)> = e^(-s/lp)" << std::endl;
     lp_file << std::setw(8) << "s" << "  "
-            << std::setw(8) << "-Ln<u*u>"
+            << std::setw(8) << "<u*u>"<< "  "
+            << std::setw(8) << "-Ln<u*u>"<< "  "
             << std::setw(8) << "l_p" << std::endl;
 
     double p2_5, p2_6, p2_7, p2_8, p2_9, p2_10; // all calculated persistence lengthes;
@@ -448,7 +449,8 @@ int main(int argc, char *argv[])
     mean = sum / u_u_50.size();
     p2_5 = - 0.5 * contour_length / log(mean);
     lp_file << std::setw(8) << contour_length * 0.5 << "  "
-            << std::setw(8) << -log(mean)
+            << std::setw(8) << mean<< "  "
+            << std::setw(8) << -log(mean)<< "  "
             << std::setw(8) << p2_5
             << std::endl;
     std::cout << " Result (s=50% contour length): " << std::setw(8)
@@ -459,7 +461,8 @@ int main(int argc, char *argv[])
     mean = sum / u_u_60.size();
     p2_6 = - 0.6 * contour_length / log(mean);
     lp_file << std::setw(8) << contour_length * 0.6 << "  "
-            << std::setw(8) << -log(mean)
+            << std::setw(8) << mean<< "  "
+            << std::setw(8) << -log(mean)<< "  "
             << std::setw(8) << p2_6
             << std::endl;
     std::cout << " Result (s=60% contour length): " << std::setw(8)
@@ -470,7 +473,8 @@ int main(int argc, char *argv[])
     mean = sum / u_u_70.size();
     p2_7 = - 0.7 * contour_length / log(mean);
     lp_file << std::setw(8) << contour_length * 0.7 << "  "
-            << std::setw(8) << -log(mean)
+            << std::setw(8) << mean<< "  "
+            << std::setw(8) << -log(mean)<< "  "
             << std::setw(8) << p2_7
             << std::endl;
     std::cout << " Result (s=70% contour length): " << std::setw(8)
@@ -481,7 +485,8 @@ int main(int argc, char *argv[])
     mean = sum / u_u_80.size();
     p2_8 = - 0.8*contour_length / log(mean);
     lp_file << std::setw(8) << contour_length * 0.8 << "  "
-            << std::setw(8) << -log(mean)
+            << std::setw(8) << mean<< "  "
+            << std::setw(8) << -log(mean)<< "  "
             << std::setw(8) << p2_8
             << std::endl;
     std::cout << " Result (s=80% contour length): " << std::setw(8)
@@ -492,7 +497,8 @@ int main(int argc, char *argv[])
     mean = sum / u_u_90.size();
     p2_9 = - 0.9*contour_length / log(mean);
     lp_file << std::setw(8) << contour_length * 0.9 << "  "
-            << std::setw(8) << -log(mean)
+            << std::setw(8) << mean<< "  "
+            << std::setw(8) << -log(mean)<< "  "
             << std::setw(8) << p2_9
             << std::endl;
     std::cout << " Result (s=90% contour length): " << std::setw(8)
@@ -503,7 +509,8 @@ int main(int argc, char *argv[])
     mean = sum / u_u_lc.size();
     p2_10 = - contour_length / log(mean);
     lp_file << std::setw(8) << contour_length << "  "
-            << std::setw(8) << -log(mean)
+            << std::setw(8) << mean << "  "
+            << std::setw(8) << -log(mean)<< "  "
             << std::setw(8) << p2_10
             << std::endl;
     std::cout << " Result (s=100% contour length): " << std::setw(8)
