@@ -5,6 +5,7 @@
 #include <fstream>
 #include <cstdlib>
 #include <unistd.h>
+#include <cmath>
 
 using namespace std;
 
@@ -475,10 +476,15 @@ int main(int argc, char *argv[])
     }
 
     // =================== output base rise, helix width... ===================
+    // -------------------- base-rise helix-width --------------------
     out_file << "# Base rise and helix width:" << std::endl;
     out_file << "#    i - j  " << std::setw(8) << "b_rise"
              << "  " << setw(8) << "h_width" << std::endl;
+    double b_rise_ave = 0;
+    double h_width_ave = 0;
     for (i = 0; i < len1; i++) {
+        b_rise_ave += base_rise[i];
+        h_width_ave += helix_width[i];
         out_file << std::setw(6) << i+1
                  << std::setw(4) << i+2 << "  "
                  << std::setw(8)
@@ -489,10 +495,32 @@ int main(int argc, char *argv[])
                  << helix_width[i]
                  << std::endl;
     }
+    double err1 = 0, err2 = 0;
+    b_rise_ave /= len1;
+    h_width_ave /= len1;
+    for (i = 0; i < len1; i++) {
+        double td = 0;
+        td = b_rise_ave - base_rise[i];
+        err1 += td * td;
+        td = h_width_ave - helix_width[i];
+        err2 += td * td;
+    }
+    err1 = sqrt(err1)/len1;
+    err2 = sqrt(err2)/len1;
+    out_file << "# Averaged base rise: " << b_rise_ave
+             << "; stderr: " << err1
+             << std::endl;
+    out_file << "# Averaged helix width: " << h_width_ave
+             << "; stderr: " << err2
+             << std::endl;
+
+    // -------------------- base-per-turn --------------------------------------
     out_file << std::endl << "# Bases-per-turn" << std::endl;
     out_file << std::setw(6) << "# turn " << std::setw(8) << "bpt"
              << std::endl;
+    double base_pt_ave = 0;
     for (i = 0; i < bases_per_turn.size(); i++) {
+        base_pt_ave += bases_per_turn[i];
         out_file << std::setw(6) << i+1 << " "
                  << std::setw(8)
                  << std::setiosflags(std::ios_base::fixed)
@@ -500,12 +528,30 @@ int main(int argc, char *argv[])
                  << bases_per_turn[i]
                  << std::endl;
     }
+    base_pt_ave /= bases_per_turn.size();
+    err1 = 0;
+    for (i = 0; i < bases_per_turn.size(); i++) {
+        double td = 0;
+        td = base_pt_ave - bases_per_turn[i];
+        err1 += td * td;
+    }
+    err1 = sqrt(err1)/bases_per_turn.size();
+    out_file << "# Averaged base per turn: " << base_pt_ave
+             << "; stderr: " << err1
+             << std::endl;
+
+    // -------------------- major-groove-width ---------------------------------
     out_file << std::endl << "# Major groove width:" << std::endl
              << std::setw(6) << "#    i" << std::setw(8) << "width"
              << std::endl;
+    double major_wd_ave = 0;
+    err1 = 0;
+    int ttt = 0;
     for (i = 3; i < major_groove_width.size()-3; i++) {
         if (major_groove_width[i] > 25)
             continue;
+        major_wd_ave += major_groove_width[i];
+        ttt++;
         out_file << std::setw(6) << i+1
                  << std::setw(8)
                  << std::setiosflags(std::ios_base::fixed)
@@ -513,12 +559,33 @@ int main(int argc, char *argv[])
                  << major_groove_width[i]
                  << std::endl;
     }
+    major_wd_ave /= ttt;
+    ttt = 0;
+    for (i = 3; i < major_groove_width.size()-3; i++) {
+        double td = 0;
+        if (major_groove_width[i] > 25)
+            continue;
+        td = major_wd_ave - major_groove_width[i];
+        err1 += td * td;
+        ttt++;
+    }
+    err1 /= ttt;
+    out_file << "# Averaged major groove width: " << major_wd_ave
+             << "; stderr: " << err1
+             << std::endl;
+
+    // -------------------- minor-groove-width ---------------------------------
     out_file << std::endl << "# Minor groove width:" << std::endl
              << std::setw(6) << "#    i" << std::setw(8) << "width"
              << std::endl;
+    double minor_wd_ave = 0;
+    err1 = 0;
+    ttt = 0;
     for (i = 3; i < minor_groove_width.size()-3; i++) {
         if (minor_groove_width[i] > 18)
             continue;
+        minor_wd_ave += minor_groove_width[i];
+        ttt++;
         out_file << std::setw(6) << i+1
                  << std::setw(8)
                  << std::setiosflags(std::ios_base::fixed)
@@ -526,6 +593,20 @@ int main(int argc, char *argv[])
                  << minor_groove_width[i]
                  << std::endl;
     }
+    minor_wd_ave /= ttt;
+    ttt = 0;
+    for (i = 3; i < minor_groove_width.size()-3; i++) {
+        double td = 0;
+        if (minor_groove_width[i] > 18)
+            continue;
+        td = minor_wd_ave - minor_groove_width[i];
+        err1 += td * td;
+        ttt++;
+    }
+    err1 /= ttt;
+    out_file << "# Averaged minor groove width: " << minor_wd_ave
+             << "; stderr: " << err1
+             << std::endl;
 
 
     back_file.close();

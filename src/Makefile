@@ -41,4 +41,4 @@ persistence_length:
 clean:
 	rm -f ../bin/*
 cct:
-	rm -f ../bin/p_persistence_length
+	rm -f ../bin/p_dna_curve
