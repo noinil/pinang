@@ -288,6 +288,10 @@ int main(int argc, char *argv[])
 
     std::vector<double> R_e_sqr; // Re^2 for each frame;
     std::vector<double> lc;      // contour length for each frame;
+    std::vector<double> u_u_10;  // u(0) * u(50%);
+    std::vector<double> u_u_20;  // u(0) * u(50%);
+    std::vector<double> u_u_30;  // u(0) * u(50%);
+    std::vector<double> u_u_40;  // u(0) * u(50%);
     std::vector<double> u_u_50;  // u(0) * u(50%);
     std::vector<double> u_u_60;  // u(0) * u(60%);
     std::vector<double> u_u_70;  // u(0) * u(70%);
@@ -378,7 +382,19 @@ int main(int argc, char *argv[])
         lc.push_back(d_lc);
 
         double u_u_tmp = 0;
-        int s = int(len * 0.5);
+        int s = int(len * 0.1);
+        u_u_tmp = axis_directions[0] * axis_directions[s-1];
+        u_u_10.push_back(u_u_tmp);
+        s = int(len * 0.2);
+        u_u_tmp = axis_directions[0] * axis_directions[s-1];
+        u_u_20.push_back(u_u_tmp);
+        s = int(len * 0.3);
+        u_u_tmp = axis_directions[0] * axis_directions[s-1];
+        u_u_30.push_back(u_u_tmp);
+        s = int(len * 0.4);
+        u_u_tmp = axis_directions[0] * axis_directions[s-1];
+        u_u_40.push_back(u_u_tmp);
+        s = int(len * 0.5);
         u_u_tmp = axis_directions[0] * axis_directions[s-1];
         u_u_50.push_back(u_u_tmp);
         s = int(len * 0.6);
@@ -444,7 +460,57 @@ int main(int argc, char *argv[])
             << std::setw(8) << "-Ln<u*u>"<< "  "
             << std::setw(8) << "l_p" << std::endl;
 
-    double p2_5, p2_6, p2_7, p2_8, p2_9, p2_10; // all calculated persistence lengthes;
+    double p2_1, p2_2, p2_3, p2_4, p2_5; // all calculated persistence lengthes;
+    double p2_6, p2_7, p2_8, p2_9, p2_10; // all calculated persistence lengthes;
+
+    sum = std::accumulate(u_u_10.begin(), u_u_10.end(), 0.0);
+    mean = sum / u_u_10.size();
+    p2_1 = - 0.1 * contour_length / log(mean);
+    lp_file << std::setw(8) << contour_length * 0.1 << "  "
+            << std::setw(8) << mean<< "  "
+            << std::setw(8) << -log(mean)<< "  "
+            << std::setw(8) << p2_1
+            << std::endl;
+    std::cout << " Result (s=10% contour length): " << std::setw(8)
+              << p2_1
+              << std::endl;
+
+    sum = std::accumulate(u_u_20.begin(), u_u_20.end(), 0.0);
+    mean = sum / u_u_20.size();
+    p2_2 = - 0.2 * contour_length / log(mean);
+    lp_file << std::setw(8) << contour_length * 0.2 << "  "
+            << std::setw(8) << mean<< "  "
+            << std::setw(8) << -log(mean)<< "  "
+            << std::setw(8) << p2_2
+            << std::endl;
+    std::cout << " Result (s=20% contour length): " << std::setw(8)
+              << p2_2
+              << std::endl;
+
+    sum = std::accumulate(u_u_30.begin(), u_u_30.end(), 0.0);
+    mean = sum / u_u_30.size();
+    p2_3 = - 0.3 * contour_length / log(mean);
+    lp_file << std::setw(8) << contour_length * 0.3 << "  "
+            << std::setw(8) << mean<< "  "
+            << std::setw(8) << -log(mean)<< "  "
+            << std::setw(8) << p2_3
+            << std::endl;
+    std::cout << " Result (s=30% contour length): " << std::setw(8)
+              << p2_3
+              << std::endl;
+
+    sum = std::accumulate(u_u_40.begin(), u_u_40.end(), 0.0);
+    mean = sum / u_u_40.size();
+    p2_4 = - 0.4 * contour_length / log(mean);
+    lp_file << std::setw(8) << contour_length * 0.4 << "  "
+            << std::setw(8) << mean<< "  "
+            << std::setw(8) << -log(mean)<< "  "
+            << std::setw(8) << p2_4
+            << std::endl;
+    std::cout << " Result (s=40% contour length): " << std::setw(8)
+              << p2_4
+              << std::endl;
+
     sum = std::accumulate(u_u_50.begin(), u_u_50.end(), 0.0);
     mean = sum / u_u_50.size();
     p2_5 = - 0.5 * contour_length / log(mean);
@@ -517,7 +583,8 @@ int main(int argc, char *argv[])
               << p2_10
               << std::endl;
 
-    persistence_length_2 = (p2_5 + p2_6 + p2_7 + p2_8 + p2_9 + p2_10)/6;
+    persistence_length_2 = (p2_1 + p2_2 + p2_3 + p2_4 + p2_5
+                            + p2_6 + p2_7 + p2_8 + p2_9 + p2_10)/10;
     std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ "
               << std::endl;
     lp_file << " Averaged from above:"
