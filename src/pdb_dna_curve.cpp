@@ -608,6 +608,47 @@ int main(int argc, char *argv[])
              << "; stderr: " << err1
              << std::endl;
 
+    // -------------------- local-bending-angle --------------------------------
+    out_file << std::endl << "# Successive bending angle:" << std::endl
+             << std::setw(6) << "#    i" << std::setw(8) << "angle";
+    for (i = 0; i < 9; i++) {
+        out_file << std::setw(8) << std::setiosflags(std::ios::showpos)
+                 << i+2;
+    }
+    out_file << std::resetiosflags(std::ios::showpos) << std::endl;
+
+    double ang_ave = 0;
+    ttt = 0;
+    for (i = 0; i < axis_directions.size() - 1; i++) {
+        v1 = axis_directions[i];
+        v2 = axis_directions[i+1];
+        double ang = vec_angle_deg(v1, v2);
+        ang_ave += ang;
+        ttt++;
+        out_file << std::setw(6) << i+1
+                 << std::setw(8)
+                 << std::setiosflags(std::ios_base::fixed)
+                 << std::setprecision(2)
+                 << ang ;
+
+        double ang_2 = 0;
+        pinang::Vec3d v3(0,0,0);
+        for (int j = 2; j <= 10; j++) {
+            if (i + j >= axis_directions.size())
+                break;
+            v3 = axis_directions[i+j];
+            ang_2 = vec_angle_deg(v1, v3);
+            out_file << std::setw(8)
+                     << std::setiosflags(std::ios_base::fixed)
+                     << std::setprecision(2)
+                     << ang_2 ;
+        }
+        out_file << std::endl;
+    }
+    ang_ave /= ttt;
+    out_file << "# Averaged local bending angle: " << ang_ave
+             << std::endl;
+
 
     back_file.close();
     axis_file.close();

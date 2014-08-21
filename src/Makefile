@@ -44,4 +44,4 @@ dcd_dna_bending:
 clean:
 	rm -f ../bin/*
 cct:
-	rm -f ../bin/p_dcd_dna_bending
+	rm -f ../bin/p_dna_curve
