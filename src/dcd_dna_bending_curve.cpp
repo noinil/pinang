@@ -279,25 +279,20 @@ int main(int argc, char *argv[])
     */
     const double p_D_phosphate = 17.45; // diameter of helix cross section;
 
-    // Persistence_length Definition 1: lp = <Re^2>/2L;
-    double persistence_length_1 = 0;
-    // Persistence_length Definition 2: <u(0) * u(s)> = e^(-s/lp);
-    double persistence_length_2 = 0;
-    // Contour length: \sum ( base_rise );
-    double contour_length = 0;  // This is an average of lc<frames>;
+    // END-END distance: l_ee = <Re^2>;
+    double l_e_e = 0;
 
     std::vector<double> R_e_sqr; // Re^2 for each frame;
-    std::vector<double> lc;      // contour length for each frame;
     std::vector<double> u_u_10;  // u(0) * u(10%);
-    std::vector<double> u_u_20;  // u(0) * u(20%);
-    std::vector<double> u_u_30;  // u(0) * u(30%);
-    std::vector<double> u_u_40;  // u(0) * u(40%);
-    std::vector<double> u_u_50;  // u(0) * u(50%);
-    std::vector<double> u_u_60;  // u(0) * u(60%);
-    std::vector<double> u_u_70;  // u(0) * u(70%);
-    std::vector<double> u_u_80;  // u(0) * u(80%);
-    std::vector<double> u_u_90;  // u(0) * u(90%);
-    std::vector<double> u_u_lc;  // u(0) * u(100%);
+    std::vector<double> u_u_20;  // u(10%) * u(20%);
+    std::vector<double> u_u_30;  // u(20%) * u(30%);
+    std::vector<double> u_u_40;  // u(30%) * u(40%);
+    std::vector<double> u_u_50;  // u(40%) * u(50%);
+    std::vector<double> u_u_60;  // u(50%) * u(60%);
+    std::vector<double> u_u_70;  // u(60%) * u(70%);
+    std::vector<double> u_u_80;  // u(70%) * u(80%);
+    std::vector<double> u_u_90;  // u(80%) * u(90%);
+    std::vector<double> u_u_lc;  // u(90%) * u(100%);
 
     for (int h = begin_frame; h < end_frame; h++) {
         std::vector<pinang::Vec3d> curve1_nodes; // "P" atoms in the 1st backbone;
@@ -306,11 +301,9 @@ int main(int argc, char *argv[])
         std::vector<pinang::Vec3d> base_positions;
         std::vector<pinang::Vec3d> axis_nodes;
         std::vector<pinang::Vec3d> axis_directions; // Axis direction vectors;
-        std::vector<double> base_rise;
         pinang::Conformation confm = conformations[h];
 
         double d_ee = 0;        // end-end distance ^ 2;
-        double d_lc = 0;        // sum of base rise;
 
         int len = phosphate_strand1_idx.size();
         for (int i = 0; i < len; i++) {
@@ -364,11 +357,6 @@ int main(int argc, char *argv[])
             t_tmp = P1 + (n1 * r);
             axis_nodes.push_back(t_tmp);
 
-            // Calculation of base rise!
-            P1 = base_positions[i];
-            P2 = base_positions[i+1];
-            d = (P2 - P1) * H;  // base rise
-            base_rise.push_back(d);
         }
 
         int last = axis_nodes.size()-1;
@@ -376,227 +364,205 @@ int main(int argc, char *argv[])
         d_ee = n1.sqr_norm();
         R_e_sqr.push_back(d_ee);
 
-        for (int j = 0; j < base_rise.size(); j++) {
-            d_lc += base_rise[j];
-        }
-        lc.push_back(d_lc);
-
         double u_u_tmp = 0;
-        int s = int(len * 0.1);
-        u_u_tmp = axis_directions[0] * axis_directions[s-1];
+        int s = int(len * 0.);
+        int t = int(len * 0.1);
+        u_u_tmp = axis_directions[s] * axis_directions[t];
         u_u_10.push_back(u_u_tmp);
-        s = int(len * 0.2);
-        u_u_tmp = axis_directions[0] * axis_directions[s-1];
+        s = int(len * 0.1);
+        t = int(len * 0.2);
+        u_u_tmp = axis_directions[s] * axis_directions[t];
         u_u_20.push_back(u_u_tmp);
-        s = int(len * 0.3);
-        u_u_tmp = axis_directions[0] * axis_directions[s-1];
+        s = int(len * 0.2);
+        t = int(len * 0.3);
+        u_u_tmp = axis_directions[s] * axis_directions[t];
         u_u_30.push_back(u_u_tmp);
-        s = int(len * 0.4);
-        u_u_tmp = axis_directions[0] * axis_directions[s-1];
+        s = int(len * 0.3);
+        t = int(len * 0.4);
+        u_u_tmp = axis_directions[s] * axis_directions[t];
         u_u_40.push_back(u_u_tmp);
-        s = int(len * 0.5);
-        u_u_tmp = axis_directions[0] * axis_directions[s-1];
+        s = int(len * 0.4);
+        t = int(len * 0.5);
+        u_u_tmp = axis_directions[s] * axis_directions[t];
         u_u_50.push_back(u_u_tmp);
-        s = int(len * 0.6);
-        u_u_tmp = axis_directions[0] * axis_directions[s-1];
+        s = int(len * 0.5);
+        t = int(len * 0.6);
+        u_u_tmp = axis_directions[s] * axis_directions[t];
         u_u_60.push_back(u_u_tmp);
-        s = int(len * 0.7);
-        u_u_tmp = axis_directions[0] * axis_directions[s-1];
+        s = int(len * 0.6);
+        t = int(len * 0.7);
+        u_u_tmp = axis_directions[s] * axis_directions[t];
         u_u_70.push_back(u_u_tmp);
-        s = int(len * 0.8);
-        u_u_tmp = axis_directions[0] * axis_directions[s-1];
+        s = int(len * 0.7);
+        t = int(len * 0.8);
+        u_u_tmp = axis_directions[s] * axis_directions[t];
         u_u_80.push_back(u_u_tmp);
-        s = int(len * 0.9);
-        u_u_tmp = axis_directions[0] * axis_directions[s-1];
+        s = int(len * 0.8);
+        t = int(len * 0.9);
+        u_u_tmp = axis_directions[s] * axis_directions[t];
         u_u_90.push_back(u_u_tmp);
 
-        u_u_tmp = axis_directions[0] * axis_directions[len-1];
+        s = int(len * 0.9);
+        t = int(len * 1.0)-1;
+        u_u_tmp = axis_directions[s] * axis_directions[t];
         u_u_lc.push_back(u_u_tmp);
-
-        // lp_file << std::setw(6) << i
-        //         << "   " << std::setw(8) << persistence_length_2
-        //         << std::endl;
     }
 
-    // ==================== Calculating Def1 of Lp ====================
-    // ---------- calculating contour length ----------
-    double sum = std::accumulate(lc.begin(), lc.end(), 0.0);
-    contour_length = sum / lc.size() + 3.43;
-    std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ "
-              << std::endl;
-    std::cout << " Contour length = "
-              << std::setw(8) << contour_length
-              << std::endl;
-    lp_file << " Contour Length: "
-            << " L_c = " << std::setw(8) << contour_length
-            << std::endl;
-    lp_file << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-            << std::endl;
-
+    // ==================== Calculating L_e_e ====================
     // ---------- calculating <Re^2> ----------
-    sum = std::accumulate(R_e_sqr.begin(), R_e_sqr.end(), 0.0);
+    double sum = std::accumulate(R_e_sqr.begin(), R_e_sqr.end(), 0.0);
     double mean = sum / R_e_sqr.size();
-    persistence_length_1 = mean / (2 * contour_length);
 
     // ~~~~~~~~~~ output ~~~~~~~~~~
     std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ "
               << std::endl;
-    std::cout << " Def 1 of persistence length: "
-              << " lp = <Re^2>/2L" << std::endl
-              << " Result: " << std::setw(8) << persistence_length_1
+    std::cout << " sqrt(<Re^2>) = : "
+              << std::setw(8) << sqrt(mean)
               << std::endl;
-    lp_file << " Def 1 of persistence length: "
-            << " lp = <Re^2>/2L" << std::endl
-            << " Result: " << std::setw(8) << persistence_length_1
+    lp_file << " sqrt(<Re^2>) = : "
+            << std::setw(8) << sqrt(mean)
             << std::endl;
     lp_file << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
             << std::endl;
 
-    // ==================== Calculating Def2 of Lp ====================
+    // ==================== Calculating bending ====================
     std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ "
               << std::endl;
-    std::cout << " Def 2 of persistence length: "
-              << " <u(0) * u(s)> = e^(-s/lp)" << std::endl;
-
-    lp_file <<  " Def 2 of persistence length: "
-            << " <u(0) * u(s)> = e^(-s/lp)" << std::endl;
-    lp_file << std::setw(8) << "s" << "  "
-            << std::setw(8) << "<u*u>"<< "  "
-            << std::setw(8) << "-Ln<u*u>"<< "  "
-            << std::setw(8) << "l_p" << std::endl;
-
-    double p2_1, p2_2, p2_3, p2_4, p2_5; // all calculated persistence lengthes;
-    double p2_6, p2_7, p2_8, p2_9, p2_10; // all calculated persistence lengthes;
-
+    std::cout << " Successive bending angle along contour length:"
+              << std::endl;
+    std::cout << " ---------------------------------------------- "
+              << std::endl;
     sum = std::accumulate(u_u_10.begin(), u_u_10.end(), 0.0);
     mean = sum / u_u_10.size();
-    p2_1 = - 0.1 * contour_length / log(mean);
-    lp_file << std::setw(8) << contour_length * 0.1 << "  "
+    lp_file << std::setw(8) << " site 01: "
+            << std::setiosflags(std::ios_base::fixed)
+            << std::setprecision(2)
             << std::setw(8) << mean<< "  "
-            << std::setw(8) << -log(mean)<< "  "
-            << std::setw(8) << p2_1
             << std::endl;
     std::cout << " Result (s=10% contour length): " << std::setw(8)
-              << p2_1
+              << std::setiosflags(std::ios_base::fixed)
+              << std::setprecision(2)
+              << mean
               << std::endl;
 
     sum = std::accumulate(u_u_20.begin(), u_u_20.end(), 0.0);
     mean = sum / u_u_20.size();
-    p2_2 = - 0.2 * contour_length / log(mean);
-    lp_file << std::setw(8) << contour_length * 0.2 << "  "
+    lp_file << std::setw(8) << " site 02: "
+            << std::setiosflags(std::ios_base::fixed)
+            << std::setprecision(2)
             << std::setw(8) << mean<< "  "
-            << std::setw(8) << -log(mean)<< "  "
-            << std::setw(8) << p2_2
             << std::endl;
     std::cout << " Result (s=20% contour length): " << std::setw(8)
-              << p2_2
+              << std::setiosflags(std::ios_base::fixed)
+              << std::setprecision(2)
+              << mean
               << std::endl;
 
     sum = std::accumulate(u_u_30.begin(), u_u_30.end(), 0.0);
     mean = sum / u_u_30.size();
-    p2_3 = - 0.3 * contour_length / log(mean);
-    lp_file << std::setw(8) << contour_length * 0.3 << "  "
+    lp_file << std::setw(8) << " site 03: "
+            << std::setiosflags(std::ios_base::fixed)
+            << std::setprecision(2)
             << std::setw(8) << mean<< "  "
-            << std::setw(8) << -log(mean)<< "  "
-            << std::setw(8) << p2_3
             << std::endl;
     std::cout << " Result (s=30% contour length): " << std::setw(8)
-              << p2_3
+              << std::setiosflags(std::ios_base::fixed)
+              << std::setprecision(2)
+              << mean
               << std::endl;
 
     sum = std::accumulate(u_u_40.begin(), u_u_40.end(), 0.0);
     mean = sum / u_u_40.size();
-    p2_4 = - 0.4 * contour_length / log(mean);
-    lp_file << std::setw(8) << contour_length * 0.4 << "  "
+    lp_file << std::setw(8) << " site 04: "
+            << std::setiosflags(std::ios_base::fixed)
+            << std::setprecision(2)
             << std::setw(8) << mean<< "  "
-            << std::setw(8) << -log(mean)<< "  "
-            << std::setw(8) << p2_4
             << std::endl;
     std::cout << " Result (s=40% contour length): " << std::setw(8)
-              << p2_4
+              << std::setiosflags(std::ios_base::fixed)
+              << std::setprecision(2)
+              << mean
               << std::endl;
 
     sum = std::accumulate(u_u_50.begin(), u_u_50.end(), 0.0);
     mean = sum / u_u_50.size();
-    p2_5 = - 0.5 * contour_length / log(mean);
-    lp_file << std::setw(8) << contour_length * 0.5 << "  "
+    lp_file << std::setw(8) << " site 05: "
+            << std::setiosflags(std::ios_base::fixed)
+            << std::setprecision(2)
             << std::setw(8) << mean<< "  "
-            << std::setw(8) << -log(mean)<< "  "
-            << std::setw(8) << p2_5
             << std::endl;
     std::cout << " Result (s=50% contour length): " << std::setw(8)
-              << p2_5
+              << std::setiosflags(std::ios_base::fixed)
+              << std::setprecision(2)
+              << mean
               << std::endl;
 
     sum = std::accumulate(u_u_60.begin(), u_u_60.end(), 0.0);
     mean = sum / u_u_60.size();
-    p2_6 = - 0.6 * contour_length / log(mean);
-    lp_file << std::setw(8) << contour_length * 0.6 << "  "
+    lp_file << std::setw(8) << " site 06: "
+            << std::setiosflags(std::ios_base::fixed)
+            << std::setprecision(2)
             << std::setw(8) << mean<< "  "
-            << std::setw(8) << -log(mean)<< "  "
-            << std::setw(8) << p2_6
             << std::endl;
     std::cout << " Result (s=60% contour length): " << std::setw(8)
-              << p2_6
+              << std::setiosflags(std::ios_base::fixed)
+              << std::setprecision(2)
+              << mean
               << std::endl;
 
     sum = std::accumulate(u_u_70.begin(), u_u_70.end(), 0.0);
     mean = sum / u_u_70.size();
-    p2_7 = - 0.7 * contour_length / log(mean);
-    lp_file << std::setw(8) << contour_length * 0.7 << "  "
+    lp_file << std::setw(8) << " site 07: "
+            << std::setiosflags(std::ios_base::fixed)
+            << std::setprecision(2)
             << std::setw(8) << mean<< "  "
-            << std::setw(8) << -log(mean)<< "  "
-            << std::setw(8) << p2_7
             << std::endl;
     std::cout << " Result (s=70% contour length): " << std::setw(8)
-              << p2_7
+              << std::setiosflags(std::ios_base::fixed)
+              << std::setprecision(2)
+              << mean
               << std::endl;
 
     sum = std::accumulate(u_u_80.begin(), u_u_80.end(), 0.0);
     mean = sum / u_u_80.size();
-    p2_8 = - 0.8*contour_length / log(mean);
-    lp_file << std::setw(8) << contour_length * 0.8 << "  "
+    lp_file << std::setw(8) << " site 08: "
+            << std::setiosflags(std::ios_base::fixed)
+            << std::setprecision(2)
             << std::setw(8) << mean<< "  "
-            << std::setw(8) << -log(mean)<< "  "
-            << std::setw(8) << p2_8
             << std::endl;
     std::cout << " Result (s=80% contour length): " << std::setw(8)
-              << p2_8
+              << std::setiosflags(std::ios_base::fixed)
+              << std::setprecision(2)
+              << mean
               << std::endl;
 
     sum = std::accumulate(u_u_90.begin(), u_u_90.end(), 0.0);
     mean = sum / u_u_90.size();
-    p2_9 = - 0.9*contour_length / log(mean);
-    lp_file << std::setw(8) << contour_length * 0.9 << "  "
+    lp_file << std::setw(8) << " site 09: "
+            << std::setiosflags(std::ios_base::fixed)
+            << std::setprecision(2)
             << std::setw(8) << mean<< "  "
-            << std::setw(8) << -log(mean)<< "  "
-            << std::setw(8) << p2_9
             << std::endl;
     std::cout << " Result (s=90% contour length): " << std::setw(8)
-              << p2_9
+              << std::setiosflags(std::ios_base::fixed)
+              << std::setprecision(2)
+              << mean
               << std::endl;
 
     sum = std::accumulate(u_u_lc.begin(), u_u_lc.end(), 0.0);
     mean = sum / u_u_lc.size();
-    p2_10 = - contour_length / log(mean);
-    lp_file << std::setw(8) << contour_length << "  "
+    lp_file << std::setw(8) << " site 10: "
+            << std::setiosflags(std::ios_base::fixed)
+            << std::setprecision(2)
             << std::setw(8) << mean << "  "
-            << std::setw(8) << -log(mean)<< "  "
-            << std::setw(8) << p2_10
             << std::endl;
     std::cout << " Result (s=100% contour length): " << std::setw(8)
-              << p2_10
+              << std::setiosflags(std::ios_base::fixed)
+              << std::setprecision(2)
+              << mean
               << std::endl;
 
-    persistence_length_2 = (p2_1 + p2_2 + p2_3 + p2_4 + p2_5
-                            + p2_6 + p2_7 + p2_8 + p2_9 + p2_10)/10;
     std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ "
-              << std::endl;
-    lp_file << " Averaged from above:"
-            << std::setw(8) << persistence_length_2
-            << std::endl;
-    std::cout << " Averaged from above:"
-              << std::setw(8) << persistence_length_2
               << std::endl;
 
     // ending ------------------------------
