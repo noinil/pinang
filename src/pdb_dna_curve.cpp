@@ -619,13 +619,13 @@ int main(int argc, char *argv[])
 
     double ang_ave = 0;
     ttt = 0;
-    for (i = 0; i < axis_directions.size() - 1; i++) {
-        v1 = axis_directions[i];
-        v2 = axis_directions[i+1];
+    for (i = 0; i < axis_nodes.size() - 2; i++) {
+        v1 = axis_nodes[i+1] - axis_nodes[i];
+        v2 = axis_nodes[i+2] - axis_nodes[i+1];
         double ang = vec_angle_deg(v1, v2);
         ang_ave += ang;
         ttt++;
-        out_file << std::setw(6) << i+1
+        out_file << std::setw(6) << i+2
                  << std::setw(8)
                  << std::setiosflags(std::ios_base::fixed)
                  << std::setprecision(2)
@@ -634,9 +634,9 @@ int main(int argc, char *argv[])
         double ang_2 = 0;
         pinang::Vec3d v3(0,0,0);
         for (int j = 2; j <= 10; j++) {
-            if (i + j >= axis_directions.size())
+            if (i + j >= axis_nodes.size()-1)
                 break;
-            v3 = axis_directions[i+j];
+            v3 = axis_nodes[i+j+1] - axis_nodes[i+j];
             ang_2 = vec_angle_deg(v1, v3);
             out_file << std::setw(8)
                      << std::setiosflags(std::ios_base::fixed)
