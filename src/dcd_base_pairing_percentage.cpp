@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
 {
     std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ "
               << std::endl;
-    std::cout << " ~           PINANG DCD distances calculation             ~ "
+    std::cout << " ~        PINANG DCD DNA base pairing calculation         ~ "
               << std::endl;
     std::cout << " ========================================================== "
               << std::endl;
@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
     std::string dcd_name = "some.dcd";
     std::string top_name = "some.top";
     std::string inp_name = "some.inp";
-    std::string bpn_name = "some.dis";
+    std::string bpn_name = "some.bpn";
 
     while ((opt = getopt(argc, argv, "f:s:i:o:c:h")) != -1) {
         switch (opt) {
@@ -53,14 +53,14 @@ int main(int argc, char *argv[])
         case 'h':
             std::cout << " Usage: "
                       << argv[0]
-                      << " -f some.dcd -s some.top -i some.inp [-o some.dis] [-h]"
+                      << " -f some.dcd -s some.top -i some.inp [-o some.bpn] [-h]"
                       << std::endl;
             exit(EXIT_SUCCESS);
             break;
         default: /* '?' */
             std::cout << " Usage: "
                       << argv[0]
-                      << " -f some.dcd -s some.top -i some.inp [-o some.dis] [-h]"
+                      << " -f some.dcd -s some.top -i some.inp [-o some.bpn] [-h]"
                       << std::endl;
             exit(EXIT_FAILURE);
         }
