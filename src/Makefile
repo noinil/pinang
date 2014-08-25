@@ -1,6 +1,6 @@
 default:
 
-all: 	install_dir pdb_related dcd_related
+all: 	install_dir pdb_related dcd_related dcd_dna_bpn
 
 pdb_related: seq pdb_output pdb_cg_top matrix_transpose  ts_read pdb_dna_curve
 
@@ -41,7 +41,10 @@ persistence_length:
 dcd_dna_bending:
 	icpc -Wall -I../include/ -o p_dcd_dna_bending dcd_dna_bending_curve.cpp
 	mv p_dcd_dna_bending ../bin/
+dcd_dna_bpn:
+	icpc -Wall -I../include/ -o p_dcd_dna_bp_number dcd_base_pairing_percentage.cpp
+	mv p_dcd_dna_bp_number ../bin/
 clean:
 	rm -f ../bin/*
 cct:
-	rm -f ../bin/p_dna_curve
+	rm -f ../bin/p_dcd_dna_bp_number
