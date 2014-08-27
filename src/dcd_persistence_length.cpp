@@ -288,16 +288,8 @@ int main(int argc, char *argv[])
 
     std::vector<double> R_e_sqr; // Re^2 for each frame;
     std::vector<double> lc;      // contour length for each frame;
-    std::vector<double> u_u_10;  // u(0) * u(10%);
-    std::vector<double> u_u_20;  // u(0) * u(20%);
-    std::vector<double> u_u_30;  // u(0) * u(30%);
-    std::vector<double> u_u_40;  // u(0) * u(40%);
-    std::vector<double> u_u_50;  // u(0) * u(50%);
-    std::vector<double> u_u_60;  // u(0) * u(60%);
-    std::vector<double> u_u_70;  // u(0) * u(70%);
-    std::vector<double> u_u_80;  // u(0) * u(80%);
-    std::vector<double> u_u_90;  // u(0) * u(90%);
-    std::vector<double> u_u_lc;  // u(0) * u(100%);
+
+    std::vector < std::vector <double> > u_0_u_s;  // u(0) * u(s);
 
     for (int h = begin_frame; h < end_frame; h++) {
         std::vector<pinang::Vec3d> curve1_nodes; // "P" atoms in the 1st backbone;
@@ -382,40 +374,13 @@ int main(int argc, char *argv[])
         lc.push_back(d_lc);
 
         double u_u_tmp = 0;
-        int s = int(len * 0.1);
-        u_u_tmp = axis_directions[0] * axis_directions[s-1];
-        u_u_10.push_back(u_u_tmp);
-        s = int(len * 0.2);
-        u_u_tmp = axis_directions[0] * axis_directions[s-1];
-        u_u_20.push_back(u_u_tmp);
-        s = int(len * 0.3);
-        u_u_tmp = axis_directions[0] * axis_directions[s-1];
-        u_u_30.push_back(u_u_tmp);
-        s = int(len * 0.4);
-        u_u_tmp = axis_directions[0] * axis_directions[s-1];
-        u_u_40.push_back(u_u_tmp);
-        s = int(len * 0.5);
-        u_u_tmp = axis_directions[0] * axis_directions[s-1];
-        u_u_50.push_back(u_u_tmp);
-        s = int(len * 0.6);
-        u_u_tmp = axis_directions[0] * axis_directions[s-1];
-        u_u_60.push_back(u_u_tmp);
-        s = int(len * 0.7);
-        u_u_tmp = axis_directions[0] * axis_directions[s-1];
-        u_u_70.push_back(u_u_tmp);
-        s = int(len * 0.8);
-        u_u_tmp = axis_directions[0] * axis_directions[s-1];
-        u_u_80.push_back(u_u_tmp);
-        s = int(len * 0.9);
-        u_u_tmp = axis_directions[0] * axis_directions[s-1];
-        u_u_90.push_back(u_u_tmp);
+        std::vector<double> u_0_u_s_tmp;
+        for (int i = 1; i < axis_directions.size(); i++) {
+            u_u_tmp = axis_directions[0] * axis_directions[i];
+            u_0_u_s_tmp.push_back(u_u_tmp);
+        }
+        u_0_u_s.push_back(u_0_u_s_tmp);
 
-        u_u_tmp = axis_directions[0] * axis_directions[len-1];
-        u_u_lc.push_back(u_u_tmp);
-
-        // lp_file << std::setw(6) << i
-        //         << "   " << std::setw(8) << persistence_length_2
-        //         << std::endl;
     }
 
     // ==================== Calculating Def1 of Lp ====================
@@ -465,131 +430,35 @@ int main(int argc, char *argv[])
             << std::setw(8) << "-Ln<u*u>"<< "  "
             << std::setw(8) << "l_p" << std::endl;
 
-    double p2_1, p2_2, p2_3, p2_4, p2_5; // all calculated persistence lengthes;
-    double p2_6, p2_7, p2_8, p2_9, p2_10; // all calculated persistence lengthes;
+    double p2; // all calculated persistence lengthes;
 
-    sum = std::accumulate(u_u_10.begin(), u_u_10.end(), 0.0);
-    mean = sum / u_u_10.size();
-    p2_1 = - 0.1 * contour_length / log(mean);
-    lp_file << std::setw(8) << contour_length * 0.1 << "  "
-            << std::setw(8) << mean<< "  "
-            << std::setw(8) << -log(mean)<< "  "
-            << std::setw(8) << p2_1
-            << std::endl;
-    std::cout << " Result (s=10% contour length): " << std::setw(8)
-              << p2_1
-              << std::endl;
+    double dna_len = u_0_u_s[0].size();
+    double time_len = u_0_u_s.size();
+    std::vector<double> lp2;
+    for (int i = 0; i < dna_len; i++) {
+        sum = 0;
+        for (int j = 0; j < time_len; j++) {
+            sum += u_0_u_s[j][i];
+        }
+        mean = sum / time_len;
+        p2 = - 0.1 * contour_length / log(mean);
+        lp2.push_back(p2);
+        lp_file << std::setw(8)
+                << contour_length * (i + 1) / dna_len << "  "
+                << std::setw(8) << mean << "  "
+                << std::setw(8) << -log(mean) << "  "
+                << std::setw(8) << p2
+                << std::endl;
+        std::cout << " Result (s=" << 1.0 * (i + 1) / dna_len
+                  << "% contour length): "
+                  << std::setw(8)
+                  << p2
+                  << std::endl;
+    }
 
-    sum = std::accumulate(u_u_20.begin(), u_u_20.end(), 0.0);
-    mean = sum / u_u_20.size();
-    p2_2 = - 0.2 * contour_length / log(mean);
-    lp_file << std::setw(8) << contour_length * 0.2 << "  "
-            << std::setw(8) << mean<< "  "
-            << std::setw(8) << -log(mean)<< "  "
-            << std::setw(8) << p2_2
-            << std::endl;
-    std::cout << " Result (s=20% contour length): " << std::setw(8)
-              << p2_2
-              << std::endl;
+    sum = std::accumulate(lp2.begin(), lp2.end(), 0.0);
+    persistence_length_2 = sum / dna_len;
 
-    sum = std::accumulate(u_u_30.begin(), u_u_30.end(), 0.0);
-    mean = sum / u_u_30.size();
-    p2_3 = - 0.3 * contour_length / log(mean);
-    lp_file << std::setw(8) << contour_length * 0.3 << "  "
-            << std::setw(8) << mean<< "  "
-            << std::setw(8) << -log(mean)<< "  "
-            << std::setw(8) << p2_3
-            << std::endl;
-    std::cout << " Result (s=30% contour length): " << std::setw(8)
-              << p2_3
-              << std::endl;
-
-    sum = std::accumulate(u_u_40.begin(), u_u_40.end(), 0.0);
-    mean = sum / u_u_40.size();
-    p2_4 = - 0.4 * contour_length / log(mean);
-    lp_file << std::setw(8) << contour_length * 0.4 << "  "
-            << std::setw(8) << mean<< "  "
-            << std::setw(8) << -log(mean)<< "  "
-            << std::setw(8) << p2_4
-            << std::endl;
-    std::cout << " Result (s=40% contour length): " << std::setw(8)
-              << p2_4
-              << std::endl;
-
-    sum = std::accumulate(u_u_50.begin(), u_u_50.end(), 0.0);
-    mean = sum / u_u_50.size();
-    p2_5 = - 0.5 * contour_length / log(mean);
-    lp_file << std::setw(8) << contour_length * 0.5 << "  "
-            << std::setw(8) << mean<< "  "
-            << std::setw(8) << -log(mean)<< "  "
-            << std::setw(8) << p2_5
-            << std::endl;
-    std::cout << " Result (s=50% contour length): " << std::setw(8)
-              << p2_5
-              << std::endl;
-
-    sum = std::accumulate(u_u_60.begin(), u_u_60.end(), 0.0);
-    mean = sum / u_u_60.size();
-    p2_6 = - 0.6 * contour_length / log(mean);
-    lp_file << std::setw(8) << contour_length * 0.6 << "  "
-            << std::setw(8) << mean<< "  "
-            << std::setw(8) << -log(mean)<< "  "
-            << std::setw(8) << p2_6
-            << std::endl;
-    std::cout << " Result (s=60% contour length): " << std::setw(8)
-              << p2_6
-              << std::endl;
-
-    sum = std::accumulate(u_u_70.begin(), u_u_70.end(), 0.0);
-    mean = sum / u_u_70.size();
-    p2_7 = - 0.7 * contour_length / log(mean);
-    lp_file << std::setw(8) << contour_length * 0.7 << "  "
-            << std::setw(8) << mean<< "  "
-            << std::setw(8) << -log(mean)<< "  "
-            << std::setw(8) << p2_7
-            << std::endl;
-    std::cout << " Result (s=70% contour length): " << std::setw(8)
-              << p2_7
-              << std::endl;
-
-    sum = std::accumulate(u_u_80.begin(), u_u_80.end(), 0.0);
-    mean = sum / u_u_80.size();
-    p2_8 = - 0.8*contour_length / log(mean);
-    lp_file << std::setw(8) << contour_length * 0.8 << "  "
-            << std::setw(8) << mean<< "  "
-            << std::setw(8) << -log(mean)<< "  "
-            << std::setw(8) << p2_8
-            << std::endl;
-    std::cout << " Result (s=80% contour length): " << std::setw(8)
-              << p2_8
-              << std::endl;
-
-    sum = std::accumulate(u_u_90.begin(), u_u_90.end(), 0.0);
-    mean = sum / u_u_90.size();
-    p2_9 = - 0.9*contour_length / log(mean);
-    lp_file << std::setw(8) << contour_length * 0.9 << "  "
-            << std::setw(8) << mean<< "  "
-            << std::setw(8) << -log(mean)<< "  "
-            << std::setw(8) << p2_9
-            << std::endl;
-    std::cout << " Result (s=90% contour length): " << std::setw(8)
-              << p2_9
-              << std::endl;
-
-    sum = std::accumulate(u_u_lc.begin(), u_u_lc.end(), 0.0);
-    mean = sum / u_u_lc.size();
-    p2_10 = - contour_length / log(mean);
-    lp_file << std::setw(8) << contour_length << "  "
-            << std::setw(8) << mean << "  "
-            << std::setw(8) << -log(mean)<< "  "
-            << std::setw(8) << p2_10
-            << std::endl;
-    std::cout << " Result (s=100% contour length): " << std::setw(8)
-              << p2_10
-              << std::endl;
-
-    persistence_length_2 = (p2_1 + p2_2 + p2_3 + p2_4 + p2_5
-                            + p2_6 + p2_7 + p2_8 + p2_9 + p2_10)/10;
     std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ "
               << std::endl;
     lp_file << " Averaged from above:"

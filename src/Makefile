@@ -47,4 +47,4 @@ dcd_dna_bpn:
 clean:
 	rm -f ../bin/*
 cct:
-	rm -f ../bin/p_dcd_dna_bp_number
+	rm -f ../bin/p_persistence_length
