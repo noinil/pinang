@@ -29,6 +29,9 @@ int main(int argc, char *argv[])
               << pdb1.pdb_name()
               << " :"
               << std::endl;
+    std::cout << " Total number of chains: "
+              << pdb1.m_model(0).m_model_size()
+              << std::endl;
     std::cout << std::endl;
     std::cout << " 1-char-aa-name : ----------------------------- " << std::endl;
     pdb1.print_sequence(1);

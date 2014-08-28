@@ -101,10 +101,14 @@ namespace pinang {
             else if (_resid_name == "CA") {_short_name = 'c'; _charge = 2.0; _mass = 40.08; _chain_type = ion;}
             break;
         case 'D':
-            if (_resid_name == "DA") {_short_name = 'A'; _chain_type = DNA; _mass = 134.12;}
-            else if (_resid_name == "DC") {_short_name = 'C'; _chain_type = DNA;  _mass = 110.09;}
-            else if (_resid_name == "DG") {_short_name = 'G'; _chain_type = DNA;  _mass = 150.12;}
-            else if (_resid_name == "DT") {_short_name = 'T'; _chain_type = DNA;  _mass = 125.091;}
+            if      (_resid_name == "DA" || _resid_name == "DA3" || _resid_name == "DA5") {
+                _short_name = 'A'; _chain_type = DNA; _mass = 134.12;}
+            else if (_resid_name == "DC" || _resid_name == "DC3" || _resid_name == "DC5") {
+                _short_name = 'C'; _chain_type = DNA;  _mass = 110.09;}
+            else if (_resid_name == "DG" || _resid_name == "DG3" || _resid_name == "DG5") {
+                _short_name = 'G'; _chain_type = DNA;  _mass = 150.12;}
+            else if (_resid_name == "DT" || _resid_name == "DT3" || _resid_name == "DT5") {
+                _short_name = 'T'; _chain_type = DNA;  _mass = 125.091;}
             break;
         case 'G':
             if (_resid_name == "GLU") {_short_name = 'E'; _charge = -1.0; _mass = 129.12; _chain_type = protein;}
