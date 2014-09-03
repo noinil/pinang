@@ -4,7 +4,7 @@ all: 	install_dir pdb_related dcd_related dcd_dna_bpn
 
 pdb_related: seq pdb_output pdb_cg_top matrix_transpose  ts_read pdb_dna_curve
 
-dcd_related:  dcd_contact_num dcd_distance_0 dcd_distance_1 persistence_length dcd_dna_bending
+dcd_related:  dcd_contact_num dcd_distance_0 dcd_distance_1 persistence_length
 
 install_dir:
 	mkdir -p ../bin
@@ -38,9 +38,6 @@ dcd_contact_num:
 persistence_length:
 	icpc -Wall -I../include/ -o p_persistence_length dcd_persistence_length.cpp
 	mv p_persistence_length ../bin/
-dcd_dna_bending:
-	icpc -Wall -I../include/ -o p_dcd_dna_bending dcd_dna_bending_curve.cpp
-	mv p_dcd_dna_bending ../bin/
 dcd_dna_bpn:
 	icpc -Wall -I../include/ -o p_dcd_dna_bp_number dcd_base_pairing_percentage.cpp
 	mv p_dcd_dna_bp_number ../bin/
