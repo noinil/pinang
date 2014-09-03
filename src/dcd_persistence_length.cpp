@@ -441,7 +441,7 @@ int main(int argc, char *argv[])
             sum += u_0_u_s[j][i];
         }
         mean = sum / time_len;
-        p2 = - 0.1 * contour_length / log(mean);
+        p2 = - 1.0 * (i / dna_len) * contour_length / log(mean);
         lp2.push_back(p2);
         lp_file << std::setw(8)
                 << contour_length * (i + 1) / dna_len << "  "
