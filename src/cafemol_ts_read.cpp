@@ -148,7 +148,7 @@ int main(int argc, char *argv[])
 
             out_file << "#" << std::setw(9) << "step";
             for (unsigned int i = 0; i < v_quantity_num.size(); i++)
-                out_file << std::setw(12) << v_str[v_quantity_num[i]-1];
+                out_file << std::setw(12) << v_str[v_quantity_num[i]];
             out_file << std::endl;
         }
 
