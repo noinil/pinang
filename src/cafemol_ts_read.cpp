@@ -122,10 +122,10 @@ int main(int argc, char *argv[])
                     break;
                 if (str_tmp == "#unit" || str_tmp == "step")
                     continue;
-                i_count++;
                 v_str.push_back(str_tmp);
                 std::cout << " " << i_count << " : "
                           << str_tmp << std::endl;
+                i_count++;
             }
             tmp_str_str.clear();
 
