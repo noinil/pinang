@@ -143,7 +143,7 @@ int main(int argc, char *argv[])
             }
             std::cout << " Now I'm trying to extract these quantities: ";
             for (unsigned int i = 0; i < v_quantity_num.size(); i++)
-                std::cout << v_str[v_quantity_num[i]-1] << " ";
+                std::cout << v_str[v_quantity_num[i]] << " ";
             std::cout << std::endl;
 
             out_file << "#" << std::setw(9) << "step";
