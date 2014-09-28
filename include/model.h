@@ -67,7 +67,7 @@ namespace pinang {
                       << _model_ID << std::endl;
             exit(EXIT_SUCCESS);
         } else {
-            if (n < 0 || n >= _chains.size())
+            if (n >= _chains.size())
             {
                 std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
                 std::cout << " ~              PINANG :: Model               ~ " << std::endl;

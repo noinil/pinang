@@ -186,7 +186,7 @@ namespace pinang{
                       << _PDB_file_name << std::endl;
             exit(EXIT_SUCCESS);
         } else {
-            if (n < 0 || n >= _models.size())
+            if (n >= _models.size())
             {
                 std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
                 std::cout << " ~               PINANG :: PDB                ~ " << std::endl;

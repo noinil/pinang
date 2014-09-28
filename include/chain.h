@@ -342,7 +342,8 @@ namespace pinang {
         {
             for (i = 0; i < _n_residue - 1; i++) {
                 d = resid_ca_distance(_residues[i], _residues[i+1]);
-                o << std::setw(8) << ++n
+		n++;
+                o << std::setw(8) << n
                   << std::setw(6) << n + 1
                   << std::setiosflags(std::ios_base::fixed)
                   << std::setprecision(4)
