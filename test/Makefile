@@ -1,3 +1,5 @@
+CPPINC=-I/usr/local/include
+
 default:
 
 all: test_vec3d test_atom test_resid test_pdb_read test_dcd_read dna_curve_pdb
@@ -20,5 +22,8 @@ test_dcd_read:
 dna_curve_pdb:
 	icpc -Wall -I../include/ -o t7 pdb_dna_curve.cpp
 	./t7
+pdi_st:
+	c++ -Wall -I../include/ -o t8 pdb_PDI_st.cpp
+	./t8 -f ttt.pdb
 clean:
-	rm -f t1 t2 t3 t4 t5 tt.sop t6 test*.coor t7 _curve.pdb _axis.pdb
+	rm -f t1 t2 t3 t4 t5 t8 tt.sop t6 test*.coor t7 _curve.pdb _axis.pdb
