@@ -107,14 +107,17 @@ int main(int argc, char *argv[])
     //     |_| |_| |_|\__,_|_|_| |_|
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     */
-
+    pinang::Chain c0;
     for (int i = 0; i < pdb1.m_model(mod_index - 1).m_model_size(); i++) {
-        if (pdb1.m_model(mod_index - 1).m_chain(i).chain_type() != 1)
-            continue;
-        std::cout << "Chain " << i << "  "
-                  << pdb1.m_model(mod_index - 1).m_chain(i).chain_type()
+        c0 = c0 + pdb1.m_model(mod_index - 1).m_chain(i);
+    }
+    for (int i = 0; i < c0.m_chain_length(); i++) {
+        std::cout << i << "  "
+                  << c0.m_residue(i).chain_type() << "  "
+                  << c0.m_residue(i).resid_name()
                   << std::endl;
     }
+
 
     return 0;
 }
