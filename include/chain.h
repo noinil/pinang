@@ -226,6 +226,7 @@ namespace pinang {
                   << std::endl;
             }
         } else {
+            _residues[0].set_cg_na();
             o << std::setw(6) << ++n
               << std::setw(5) << "S"
               << std::setw(5) << _residues[i].resid_index() << "   "
