@@ -222,7 +222,9 @@ namespace pinang {
                 o << std::setw(6) << ++n
                   << std::setw(5) << _residues[i].resid_name()
                   << std::setw(5) << _residues[i].resid_index() << "   "
-                  << _residues[i].m_C_alpha().coordinates()
+                  << _residues[i].m_C_alpha().coordinates().x() << " "
+                  << _residues[i].m_C_alpha().coordinates().y() << " "
+                  << _residues[i].m_C_alpha().coordinates().z() << " "
                   << std::endl;
             }
         } else {
@@ -230,29 +232,39 @@ namespace pinang {
             o << std::setw(6) << ++n
               << std::setw(5) << "S"
               << std::setw(5) << _residues[i].resid_index() << "   "
-              << _residues[0].m_S().coordinates()
+              << _residues[0].m_S().coordinates().x() << " "
+              << _residues[0].m_S().coordinates().y() << " "
+              << _residues[0].m_S().coordinates().z() << " "
               << std::endl;
             o << std::setw(6) << ++n
               << std::setw(5) << _residues[i].short_name()
               << std::setw(5) << _residues[i].resid_index() << "   "
-              << _residues[0].m_B().coordinates()
+              << _residues[0].m_B().coordinates().x() << " "
+              << _residues[0].m_B().coordinates().y() << " "
+              << _residues[0].m_B().coordinates().z() << " "
               << std::endl;
             for (i = 1; i < _n_residue; i++) {
                 _residues[i].set_cg_na();
                 o << std::setw(6) << ++n
                   << std::setw(5) << "P"
                   << std::setw(5) << _residues[i].resid_index() << "   "
-                  << _residues[i].m_P().coordinates()
+                  << _residues[i].m_P().coordinates().x() << " "
+                  << _residues[i].m_P().coordinates().y() << " "
+                  << _residues[i].m_P().coordinates().z() << " "
                   << std::endl;
                 o << std::setw(6) << ++n
                   << std::setw(5) << "S"
                   << std::setw(5) << _residues[i].resid_index() << "   "
-                  << _residues[i].m_S().coordinates()
+                  << _residues[i].m_S().coordinates().x() << " "
+                  << _residues[i].m_S().coordinates().y() << " "
+                  << _residues[i].m_S().coordinates().z() << " "
                   << std::endl;
                 o << std::setw(6) << ++n
                   << std::setw(5) << _residues[i].short_name()
                   << std::setw(5) << _residues[i].resid_index() << "   "
-                  << _residues[i].m_B().coordinates()
+                  << _residues[i].m_B().coordinates().x() << " "
+                  << _residues[i].m_B().coordinates().y() << " "
+                  << _residues[i].m_B().coordinates().z() << " "
                   << std::endl;
             }
         }
