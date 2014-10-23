@@ -115,6 +115,9 @@ int main(int argc, char *argv[])
             double min_dist_W_S = 0; // min distance water -- DNA
             double min_dist_W_P = 0; // min distance water -- DNA
 
+            pinang::Residue special0, special_P, special_S;
+            pinang::Residue special_A, special_T, special_G, special_C;
+
             for (int j = 0; j < pdb1.m_model(mod_index - 1).m_model_size(); j++) {
                 if (pdb1.m_model(mod_index - 1).m_chain(j).chain_type() == pinang::water ||
                     pdb1.m_model(mod_index - 1).m_chain(j).chain_type() == pinang::ion)
@@ -158,24 +161,60 @@ int main(int argc, char *argv[])
                         pinang::Residue rr1 = resi_group1[q];
                         double dist_min = pinang::resid_min_distance(r0, rr1);
 
-                        if (cti1 == pinang::protein && (min_dist_W_PRO == 0 || min_dist_W_PRO > dist_min))
+                        if (cti1 == pinang::protein && (min_dist_W_PRO == 0 || min_dist_W_PRO > dist_min)){
                             min_dist_W_PRO = dist_min;
+                            special0 = rr1;
+                        }
 
-                        if (rr1.resid_name() == "P" && (min_dist_W_P == 0 || min_dist_W_P > dist_min))
+                        if (rr1.resid_name() == "P" && (min_dist_W_P == 0 || min_dist_W_P > dist_min)){
                             min_dist_W_P = dist_min;
-                        if (rr1.resid_name() == "S" && (min_dist_W_S == 0 || min_dist_W_S > dist_min))
+                            special_P = rr1;
+                        }
+                        if (rr1.resid_name() == "S" && (min_dist_W_S == 0 || min_dist_W_S > dist_min)){
                             min_dist_W_S = dist_min;
+                            special_S = rr1;
+                        }
 
-                        if (rr1.resid_name() == "A" && (min_dist_W_A == 0 || min_dist_W_A > dist_min))
+                        if (rr1.resid_name() == "A" && (min_dist_W_A == 0 || min_dist_W_A > dist_min)){
                             min_dist_W_A = dist_min;
-                        if (rr1.resid_name() == "T" && (min_dist_W_T == 0 || min_dist_W_T > dist_min))
+                            special_A = rr1;
+                        }
+                        if (rr1.resid_name() == "T" && (min_dist_W_T == 0 || min_dist_W_T > dist_min)){
                             min_dist_W_T = dist_min;
-                        if (rr1.resid_name() == "G" && (min_dist_W_G == 0 || min_dist_W_G > dist_min))
+                            special_T = rr1;
+                        }
+                        if (rr1.resid_name() == "G" && (min_dist_W_G == 0 || min_dist_W_G > dist_min)){
                             min_dist_W_G = dist_min;
-                        if (rr1.resid_name() == "C" && (min_dist_W_C == 0 || min_dist_W_C > dist_min))
+                            special_G = rr1;
+                        }
+                        if (rr1.resid_name() == "C" && (min_dist_W_C == 0 || min_dist_W_C > dist_min)){
                             min_dist_W_C = dist_min;
+                            special_C = rr1;
+                        }
                     }
                 }
+            }
+            double * mmm_dist = & min_dist_W_A;
+            if (min_dist_W_T < * mmm_dist)
+            {
+                *mmm_dist = -1;
+                mmm_dist = & min_dist_W_T;
+            } else {
+                min_dist_W_T = -1;
+            }
+            if (min_dist_W_G < * mmm_dist)
+            {
+                *mmm_dist = -1;
+                mmm_dist = & min_dist_W_G;
+            } else {
+                min_dist_W_G = -1;
+            }
+            if (min_dist_W_C < * mmm_dist)
+            {
+                *mmm_dist = -1;
+                mmm_dist = & min_dist_W_C;
+            } else {
+                min_dist_W_C = -1;
             }
             if (min_dist_W_PRO < 100 && min_dist_W_PRO > 0)
                 out_file << " WAT_PAIR " << "PRO   "
@@ -205,6 +244,27 @@ int main(int argc, char *argv[])
                 out_file << " WAT_PAIR " << "C     "
                          << std::setw(6) << min_dist_W_C
                          << std::endl;
+            if (min_dist_W_PRO < 5 && min_dist_W_PRO > 2.5) {
+                if (min_dist_W_P < 3.5 && min_dist_W_P > 2.5) {
+                    double dist_PP = pinang::resid_min_distance(special0, special_P);
+                    out_file << " WAT_MED_PRO  P    " << std::setw(6) << dist_PP << std::endl;}
+                if (min_dist_W_S < 5.0 && min_dist_W_S > 2.5) {
+                    double dist_PS = pinang::resid_min_distance(special0, special_S);
+                    out_file << " WAT_MED_PRO  S    " << std::setw(6) << dist_PS << std::endl;}
+                double dist_PB = 0;
+                if (min_dist_W_T > 2.5 && min_dist_W_T < 4){
+                    dist_PB = pinang::resid_min_distance(special0, special_T);
+                    out_file << " WAT_MED_PRO  T    " << std::setw(6) << dist_PB << std::endl;}
+                if (min_dist_W_C > 2.5 && min_dist_W_C < 4){
+                    dist_PB = pinang::resid_min_distance(special0, special_C);
+                    out_file << " WAT_MED_PRO  C    " << std::setw(6) << dist_PB << std::endl;}
+                if (min_dist_W_G > 2.5 && min_dist_W_G < 4){
+                    dist_PB = pinang::resid_min_distance(special0, special_G);
+                    out_file << " WAT_MED_PRO  G    " << std::setw(6) << dist_PB << std::endl;}
+                if (min_dist_W_A > 2.5 && min_dist_W_A < 4){
+                    dist_PB = pinang::resid_min_distance(special0, special_A);
+                    out_file << " WAT_MED_PRO  A    " << std::setw(6) << dist_PB << std::endl;}
+            }
         }
     }
 

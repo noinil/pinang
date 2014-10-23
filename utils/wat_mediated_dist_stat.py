@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-key_names = ['A', 'T', 'G', 'C', 'P', 'S', 'PRO']
+key_names = ['A', 'T', 'G', 'C', 'P', 'S']
 huge_repo = {i : [] for i in key_names}
 
 def anaf(fin_name):
@@ -11,10 +11,9 @@ def anaf(fin_name):
     with open(fin_name, 'r') as fin:
         for lines in fin:
             line = lines.split()
-            if len(line) == 3 and line[0] == "WAT_PAIR":
+            if len(line) == 3 and line[0] == "WAT_MED_PRO":
                 key0, dist0 = line[1], float(line[2])
                 if dist0 < 2.5:
-                    print(fin_name, "  ", dist0, "  ", key0)
                     continue
             else:
                 continue
@@ -30,35 +29,22 @@ def main():
         anaf(filename)
 
     for i in key_names:
-        out_name = "near_wat_"+ i + "_distro.png"
-        x = np.array(huge_repo[i])
-        num_bins = 200
-        # the histogram of data
-        n, bins, patches = plt.hist(x, num_bins, normed=1, facecolor='green', alpha=0.5)
-        # add a 'best fit' line
-        # y = mlab.normpdf(bins, x.mean(), x.std())
-        # plt.plot(bins, y, 'r--')
-        plt.xlabel(r'distance $\AA$')
-        plt.ylabel('Probability')
-        plt.xlim(0, 10)
-        plt.xticks(np.arange(11))
-        plt.title('Histogram of Distance from Water to '+i)
-        plt.savefig(out_name, dpi=150)
-        plt.clf()
-
-    for i in key_names:
-        out_name = "wat_"+ i + "_distro.png"
+        out_name = "wat_mediated_pro_"+ i + "_distro.png"
         x = np.array(huge_repo[i])
         num_bins = 100
         # the histogram of data
         n, bins, patches = plt.hist(x, num_bins, normed=1, facecolor='green', alpha=0.5)
         # add a 'best fit' line
         # y = mlab.normpdf(bins, x.mean(), x.std())
-        # plt.plot(bins, y, 'r--')
+        y_sum = sum(n[:])
+        y, z = [sum(n[:i])/y_sum for i in range(len(n)+1)], [0.95 for i in range(len(n)+ 1)]
+        plt.plot(bins, y, 'r-')
+        plt.plot(bins, z, 'r--')
         plt.xlabel(r'distance $\AA$')
         plt.ylabel('Probability')
-        plt.xlim(0, 40)
-        plt.title('Histogram of Distance from Water to '+i)
+        plt.xlim(0, 10)
+        plt.xticks(np.arange(11))
+        plt.title('Histogram of Distance Between Water-Mediated Protein and '+i)
         plt.savefig(out_name, dpi=150)
         plt.clf()
 
