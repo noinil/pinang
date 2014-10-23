@@ -139,7 +139,7 @@ int main(int argc, char *argv[])
                             atmp = r1.m_atom(v);
                             std::string aname = atmp.atom_name();
                             if (aname == "P  " || aname == "OP1"
-                                || aname == "OP2" || aname == "O5'")
+                                || aname == "OP2" || aname == "O5'" || aname == "O3'")
                                 rtmp_P.add_atom(atmp);
                             else if (aname[2] == '\'') {
                                 rtmp_S.add_atom(atmp);
@@ -177,31 +177,31 @@ int main(int argc, char *argv[])
                     }
                 }
             }
-            if (min_dist_W_PRO < 100)
+            if (min_dist_W_PRO < 100 && min_dist_W_PRO > 0)
                 out_file << " WAT_PAIR " << "PRO   "
                          << std::setw(6) << min_dist_W_PRO
                          << std::endl;
-            if (min_dist_W_P < 100)
+            if (min_dist_W_P < 100 && min_dist_W_P > 0)
                 out_file << " WAT_PAIR " << "P     "
                          << std::setw(6) << min_dist_W_P
                          << std::endl;
-            if (min_dist_W_S < 100)
+            if (min_dist_W_S < 100 && min_dist_W_S > 0)
                 out_file << " WAT_PAIR " << "S     "
                          << std::setw(6) << min_dist_W_S
                          << std::endl;
-            if (min_dist_W_A < 100)
+            if (min_dist_W_A < 100 && min_dist_W_A > 0)
                 out_file << " WAT_PAIR " << "A     "
                          << std::setw(6) << min_dist_W_A
                          << std::endl;
-            if (min_dist_W_T < 100)
+            if (min_dist_W_T < 100 && min_dist_W_T > 0)
                 out_file << " WAT_PAIR " << "T     "
                          << std::setw(6) << min_dist_W_T
                          << std::endl;
-            if (min_dist_W_G < 100)
+            if (min_dist_W_G < 100 && min_dist_W_G > 0)
                 out_file << " WAT_PAIR " << "G     "
                          << std::setw(6) << min_dist_W_G
                          << std::endl;
-            if (min_dist_W_C < 100)
+            if (min_dist_W_C < 100 && min_dist_W_C > 0)
                 out_file << " WAT_PAIR " << "C     "
                          << std::setw(6) << min_dist_W_C
                          << std::endl;
