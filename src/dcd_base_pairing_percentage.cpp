@@ -122,7 +122,7 @@ int main(int argc, char *argv[])
             inp_line.erase(0,7);
             std::vector<std::string> strs;
             boost::split(strs, inp_line, boost::is_any_of(","));
-            for (int i = 0; i < strs.size(); i++) {
+            for (int i = 0; i < int(strs.size()); i++) {
                 tmp_s = strs[i];
                 std::size_t found = tmp_s.find("to");
                 std::size_t found1 = tmp_s.find("every");
@@ -173,7 +173,7 @@ int main(int argc, char *argv[])
             inp_line.erase(0,7);
             std::vector<std::string> strs;
             boost::split(strs, inp_line, boost::is_any_of(","));
-            for (int i = 0; i < strs.size(); i++) {
+            for (int i = 0; i < int(strs.size()); i++) {
                 tmp_s = strs[i];
                 std::size_t found = tmp_s.find("to");
                 std::size_t found1 = tmp_s.find("every");
@@ -219,7 +219,7 @@ int main(int argc, char *argv[])
             }
         }
     }
-    // for (int i = 0; i < atom_group1_idx.size(); i++) {
+    // for (int i = 0; i < int(atom_group1_idx.size()); i++) {
     //     std::cout << atom_group1_idx[i] << "   ";
     //     std::cout << atom_group2_idx[i] << std::endl;
     // }
@@ -275,7 +275,7 @@ int main(int argc, char *argv[])
         int bp_number = 0;
         int k = 0, l = 0;
 
-        for (int j = 0; j < atom_group1_idx.size(); j++) {
+        for (int j = 0; j < int(atom_group1_idx.size()); j++) {
             k = atom_group1_idx[j];
             l = atom_group2_idx[j];
             v = conformations[i].atom(k) - conformations[i].atom(l);

@@ -124,7 +124,7 @@ int main(int argc, char *argv[])
             inp_line.erase(0,7);
             std::vector<std::string> strs;
             boost::split(strs, inp_line, boost::is_any_of(","));
-            for (int i = 0; i < strs.size(); i++) {
+            for (int i = 0; i < int(strs.size()); i++) {
                 tmp_s = strs[i];
                 std::size_t found = tmp_s.find("to");
                 if (found!=std::string::npos){
@@ -155,7 +155,7 @@ int main(int argc, char *argv[])
             inp_line.erase(0,7);
             std::vector<std::string> strs;
             boost::split(strs, inp_line, boost::is_any_of(","));
-            for (int i = 0; i < strs.size(); i++) {
+            for (int i = 0; i < int(strs.size()); i++) {
                 tmp_s = strs[i];
                 std::size_t found = tmp_s.find("to");
                 if (found!=std::string::npos){
@@ -225,10 +225,10 @@ int main(int argc, char *argv[])
         int g = 0;
 
         contact_num = 0;
-        for (int j = 0; j < atom_group1_idx.size(); j++) {
+        for (int j = 0; j < int(atom_group1_idx.size()); j++) {
             f = atom_group1_idx[j];
             v1 = conformations[i].atom(f);
-            for (int k = 0; k < atom_group2_idx.size(); k++) {
+            for (int k = 0; k < int(atom_group2_idx.size()); k++) {
                 g = atom_group2_idx[k];
                 v2 = conformations[i].atom(g);
                 dist = vec_distance(v1, v2);

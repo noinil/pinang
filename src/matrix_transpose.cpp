@@ -91,8 +91,8 @@ int main(int argc, char *argv[])
     }
 
     int i,j;
-    for (i = 0; i < mat[0].size(); i++) {
-        for (j = 0; j < mat.size(); j++) {
+    for (i = 0; i < int(mat[0].size()); i++) {
+        for (j = 0; j < int(mat.size()); j++) {
             std::cout << std::setw(10)
                       << std::setiosflags(std::ios_base::fixed)
                       << std::setprecision(2)

@@ -4,7 +4,7 @@ default:
 
 all: 	install_dir pdb_related dcd_related dcd_dna_bpn
 
-pdb_related: seq pdb_output pdb_cg_top matrix_transpose  ts_read pdb_dna_curve
+pdb_related: seq pdb_output pdb_cg_top matrix_transpose  ts_read pdb_dna_curve pdi_st
 
 dcd_related:  dcd_contact_num dcd_distance_0 dcd_distance_1 persistence_length
 
@@ -43,7 +43,10 @@ persistence_length:
 dcd_dna_bpn:
 	c++ -Wall -I../include/ $(CPPINC) -o p_dcd_dna_bp_number dcd_base_pairing_percentage.cpp
 	mv p_dcd_dna_bp_number ../bin/
+pdi_st:
+	c++ -Wall -I../include/ -o p_pdi_st pdb_PDI_st.cpp
+	mv p_pdi_st ../bin/
 clean:
 	rm -f ../bin/*
 cct:
-	rm -f ../bin/p_persistence_length
+	rm -f ../bin/p_pdi_st

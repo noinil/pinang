@@ -140,7 +140,7 @@ int main(int argc, char *argv[])
             inp_line.erase(0,8);
             std::vector<std::string> strs;
             boost::split(strs, inp_line, boost::is_any_of(","));
-            for (int i = 0; i < strs.size(); i++) {
+            for (int i = 0; i < int(strs.size()); i++) {
                 tmp_s = strs[i];
                 std::size_t found = tmp_s.find("to");
                 if (found!=std::string::npos){
@@ -178,7 +178,7 @@ int main(int argc, char *argv[])
             inp_line.erase(0,8);
             std::vector<std::string> strs;
             boost::split(strs, inp_line, boost::is_any_of(","));
-            for (int i = 0; i < strs.size(); i++) {
+            for (int i = 0; i < int(strs.size()); i++) {
                 tmp_s = strs[i];
                 std::size_t found = tmp_s.find("to");
                 if (found!=std::string::npos){
@@ -368,14 +368,14 @@ int main(int argc, char *argv[])
         d_ee = n1.sqr_norm();
         R_e_sqr.push_back(d_ee);
 
-        for (int j = 0; j < base_rise.size(); j++) {
+        for (int j = 0; j < int(base_rise.size()); j++) {
             d_lc += base_rise[j];
         }
         lc.push_back(d_lc);
 
         double u_u_tmp = 0;
         std::vector<double> u_0_u_s_tmp;
-        for (int i = 1; i < axis_directions.size(); i++) {
+        for (int i = 1; i < int(axis_directions.size()); i++) {
             u_u_tmp = axis_directions[0] * axis_directions[i];
             u_0_u_s_tmp.push_back(u_u_tmp);
         }

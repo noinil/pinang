@@ -161,8 +161,8 @@ int main(int argc, char *argv[])
     double t1, t2;
 
     // ==================== curve 1 calculation ====================
-    len1 = curve1_nodes.size();
-    len2 = curve2_nodes.size();
+    len1 = int(curve1_nodes.size());
+    len2 = int(curve2_nodes.size());
     for (i = 0; i < len1; i++) {
         if (i == 0)
         {
@@ -376,7 +376,7 @@ int main(int argc, char *argv[])
     }
 
     // axis spline fitting!
-    for (i = 0; i < axis_nodes.size() - 1; i++) {
+    for (i = 0; i < int(axis_nodes.size()) - 1; i++) {
         p_i = axis_nodes[i];
         t_tmp = axis_nodes[i+1] - axis_nodes[i];
         d = t_tmp.norm();
@@ -393,12 +393,12 @@ int main(int argc, char *argv[])
     axis_dots.push_back(p_i);
 
     // ~~~~~~~~~~~~~~~~~~~~ calculating base per turn ~~~~~~~~~~~~~~~~~~~~
-    for (i = 0; i < curve1_tangents.size()-10; i++) {
+    for (i = 0; i < int(curve1_tangents.size())-10; i++) {
         t_tmp = curve1_tangents[i];
         double angle = pinang::g_pi;
         int best_fit = 0;
         for (int j = i * 10 + 90; j < i * 10 + 110; j++) {
-            if (j > curve1_dots.size()-2)
+            if (j > int(curve1_dots.size())-2)
                 break;
             v1 = curve1_dots[j+1] - curve1_dots[j-1];
             s_tmp = v1 * (1/v1.norm());
@@ -416,7 +416,7 @@ int main(int argc, char *argv[])
     // ============================ Output to PDB ============================
     int k = curve1_dots.size();
     int l = curve1_nodes.size();
-    for (i = 0; i < curve1_dots.size(); i++) {
+    for (i = 0; i < int(curve1_dots.size()); i++) {
         back_file << std::setw(6) << "HETATM"
                    << std::setw(5) << i+1 << " "
                    << std::setw(4) << "O   "
@@ -428,7 +428,7 @@ int main(int argc, char *argv[])
                    << curve1_dots[i]
                    << std::endl;
     }
-    for (i = 0; i < curve2_dots.size(); i++) {
+    for (i = 0; i < int(curve2_dots.size()); i++) {
         back_file << std::setw(6) << "HETATM"
                    << std::setw(5) << i+1+k << " "
                    << std::setw(4) << "O   "
@@ -441,13 +441,13 @@ int main(int argc, char *argv[])
                    << std::endl;
     }
     // connecting points!
-    for (i = 0; i < curve1_dots.size()-1; i++) {
+    for (i = 0; i < int(curve1_dots.size())-1; i++) {
         back_file << std::setw(6) << "CONECT"
                    << std::setw(5) << i+1
                    << std::setw(5) << i+2
                    << std::endl;
     }
-    for (i = 0; i < curve2_dots.size()-1; i++) {
+    for (i = 0; i < int(curve2_dots.size())-1; i++) {
         back_file << std::setw(6) << "CONECT"
                    << std::setw(5) << i+1+k
                    << std::setw(5) << i+2+k
@@ -456,7 +456,7 @@ int main(int argc, char *argv[])
 
 
     // ~~~~~~~~~~~~~~~~~~~~ output axis pdb ~~~~~~~~~~~~~~~~~~~~
-    for (i = 0; i < axis_dots.size(); i++) {
+    for (i = 0; i < int(axis_dots.size()); i++) {
         axis_file << std::setw(6) << "HETATM"
                    << std::setw(5) << i+1 << " "
                    << std::setw(4) << "A   "
@@ -468,7 +468,7 @@ int main(int argc, char *argv[])
                    << axis_dots[i]
                    << std::endl;
     }
-    for (i = 0; i < axis_dots.size()-1; i++) {
+    for (i = 0; i < int(axis_dots.size())-1; i++) {
         axis_file << std::setw(6) << "CONECT"
                    << std::setw(5) << i+1
                    << std::setw(5) << i+2
@@ -519,7 +519,7 @@ int main(int argc, char *argv[])
     out_file << std::setw(6) << "# turn " << std::setw(8) << "bpt"
              << std::endl;
     double base_pt_ave = 0;
-    for (i = 0; i < bases_per_turn.size(); i++) {
+    for (i = 0; i < int(bases_per_turn.size()); i++) {
         base_pt_ave += bases_per_turn[i];
         out_file << std::setw(6) << i+1 << " "
                  << std::setw(8)
@@ -530,7 +530,7 @@ int main(int argc, char *argv[])
     }
     base_pt_ave /= bases_per_turn.size();
     err1 = 0;
-    for (i = 0; i < bases_per_turn.size(); i++) {
+    for (i = 0; i < int(bases_per_turn.size()); i++) {
         double td = 0;
         td = base_pt_ave - bases_per_turn[i];
         err1 += td * td;
@@ -547,7 +547,7 @@ int main(int argc, char *argv[])
     double major_wd_ave = 0;
     err1 = 0;
     int ttt = 0;
-    for (i = 3; i < major_groove_width.size()-3; i++) {
+    for (i = 3; i < int(major_groove_width.size())-3; i++) {
         if (major_groove_width[i] > 25)
             continue;
         major_wd_ave += major_groove_width[i];
@@ -561,7 +561,7 @@ int main(int argc, char *argv[])
     }
     major_wd_ave /= ttt;
     ttt = 0;
-    for (i = 3; i < major_groove_width.size()-3; i++) {
+    for (i = 3; i < int(major_groove_width.size())-3; i++) {
         double td = 0;
         if (major_groove_width[i] > 25)
             continue;
@@ -581,7 +581,7 @@ int main(int argc, char *argv[])
     double minor_wd_ave = 0;
     err1 = 0;
     ttt = 0;
-    for (i = 3; i < minor_groove_width.size()-3; i++) {
+    for (i = 3; i < int(minor_groove_width.size())-3; i++) {
         if (minor_groove_width[i] > 18)
             continue;
         minor_wd_ave += minor_groove_width[i];
@@ -595,7 +595,7 @@ int main(int argc, char *argv[])
     }
     minor_wd_ave /= ttt;
     ttt = 0;
-    for (i = 3; i < minor_groove_width.size()-3; i++) {
+    for (i = 3; i < int(minor_groove_width.size())-3; i++) {
         double td = 0;
         if (minor_groove_width[i] > 18)
             continue;
@@ -619,7 +619,7 @@ int main(int argc, char *argv[])
 
     double ang_ave = 0;
     ttt = 0;
-    for (i = 0; i < axis_nodes.size() - 2; i++) {
+    for (i = 0; i < int(axis_nodes.size()) - 2; i++) {
         v1 = axis_nodes[i+1] - axis_nodes[i];
         v2 = axis_nodes[i+2] - axis_nodes[i+1];
         double ang = vec_angle_deg(v1, v2);
@@ -634,7 +634,7 @@ int main(int argc, char *argv[])
         double ang_2 = 0;
         pinang::Vec3d v3(0,0,0);
         for (int j = 2; j <= 10; j++) {
-            if (i + j >= axis_nodes.size()-1)
+            if (i + j >= int(axis_nodes.size())-1)
                 break;
             v3 = axis_nodes[i+j+1] - axis_nodes[i+j];
             ang_2 = vec_angle_deg(v1, v3);

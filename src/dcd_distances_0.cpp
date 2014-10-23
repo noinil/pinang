@@ -191,7 +191,7 @@ int main(int argc, char *argv[])
     double dist = 0;
     for (int i= 0; i < nframe; i++) {
         dis_file << std::setw(6) << i;
-        for (int j = 0; j < v_inpa.size(); j++) {
+        for (int j = 0; j < int(v_inpa.size()); j++) {
             a = v_inpa[j].ii;
             b = v_inpa[j].jj;
             v1 = conformations[i].atom(a);

@@ -333,7 +333,9 @@ namespace pinang {
             coor_C1p(0,0,0),
             coor_C2p(0,0,0),
             coor_C3p(0,0,0),
-            coor_O2p(0,0,0);
+            coor_O2p(0,0,0),
+            coor_O3p(0,0,0),
+            coor_O5p(0,0,0);
         Vec3d coor_N1(0,0,0),
             coor_C2(0,0,0),
             coor_N3(0,0,0),
@@ -384,6 +386,8 @@ namespace pinang {
             case 'O':
                 if (aname == "O4'") {coor_O4p = _atoms[i].coordinates(); n_os++;}
                 else if (aname == "O2'") {coor_O2p = _atoms[i].coordinates(); n_os++;}
+                else if (aname == "O3'") {coor_O3p = _atoms[i].coordinates();}
+                else if (aname == "O5'") {coor_O5p = _atoms[i].coordinates();}
                 else if (aname == "O2 ") {coor_O2 = _atoms[i].coordinates(); n_ob++;}
                 else if (aname == "O4 ") {coor_O4 = _atoms[i].coordinates(); n_ob++;}
                 else if (aname == "O6 ") {coor_O6 = _atoms[i].coordinates(); n_ob++;}

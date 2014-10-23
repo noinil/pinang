@@ -119,7 +119,7 @@ int main(int argc, char *argv[])
             inp_line.erase(0,7);
             std::vector<std::string> strs;
             boost::split(strs, inp_line, boost::is_any_of(","));
-            for (int i = 0; i < strs.size(); i++) {
+            for (int i = 0; i < int(strs.size()); i++) {
                 tmp_s = strs[i];
                 std::size_t found = tmp_s.find("to");
                 if (found!=std::string::npos){
@@ -150,7 +150,7 @@ int main(int argc, char *argv[])
             inp_line.erase(0,7);
             std::vector<std::string> strs;
             boost::split(strs, inp_line, boost::is_any_of(","));
-            for (int i = 0; i < strs.size(); i++) {
+            for (int i = 0; i < int(strs.size()); i++) {
                 tmp_s = strs[i];
                 std::size_t found = tmp_s.find("to");
                 if (found!=std::string::npos){
@@ -218,7 +218,7 @@ int main(int argc, char *argv[])
         int k = 0;
         double total_mass = 0;
 
-        for (int j = 0; j < atom_group1_idx.size(); j++) {
+        for (int j = 0; j < int(atom_group1_idx.size()); j++) {
             k = atom_group1_idx[j];
             v = v + conformations[i].atom(k) * top.particle(k).mass();
             total_mass += top.particle(k).mass();
@@ -227,7 +227,7 @@ int main(int argc, char *argv[])
 
         v = v * 0;
         total_mass = 0;
-        for (int j = 0; j < atom_group2_idx.size(); j++) {
+        for (int j = 0; j < int(atom_group2_idx.size()); j++) {
             k = atom_group2_idx[j];
             v = v + conformations[i].atom(k) * top.particle(k).mass();
             total_mass += top.particle(k).mass();
