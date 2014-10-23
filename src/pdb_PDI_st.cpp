@@ -46,16 +46,14 @@ int main(int argc, char *argv[])
         case 'h':
             std::cout << " Usage: "
                       << argv[0]
-                      << " -f some.pdb [-o _curve.dat] [-x _axis.pdb] \n"
-                      << " [-b _backbone.pdb] [-m module] [-h]"
+                      << " -f some.pdb [-o PDI_dist.dat] [-m module] [-h]"
                       << std::endl;
             exit(EXIT_SUCCESS);
             break;
         default: /* '?' */
             std::cout << " Usage: "
                       << argv[0]
-                      << " -f some.pdb [-o _curve.dat] [-x _axis.pdb] \n"
-                      << " [-b _backbone.pdb] [-m module] [-h]"
+                      << " -f some.pdb [-o PDI_dist.dat] [-m module] [-h]"
                       << std::endl;
             exit(EXIT_FAILURE);
         }
@@ -66,8 +64,7 @@ int main(int argc, char *argv[])
         std::cout << " ERROR: need parameter for option -f: " << std::endl
                   << " Usage: "
                   << argv[0]
-                  << " -f some.pdb [-o _curve.dat] [-x _axis.pdb] \n"
-                  << " [-b _backbone.pdb] [-m module] [-h]"
+                  << " -f some.pdb [-o PDI_dist.dat] [-m module] [-h]"
                   << std::endl;
         exit(EXIT_SUCCESS);
     }

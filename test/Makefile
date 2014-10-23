@@ -23,7 +23,7 @@ dna_curve_pdb:
 	icpc -Wall -I../include/ -o t7 pdb_dna_curve.cpp
 	./t7
 pdi_st:
-	c++ -Wall -I../include/ -o t8 pdb_PDI_st.cpp
+	c++ -Wall -I../include/ -o t8 pdb_PW_st.cpp
 	./t8 -f ttt.pdb
 clean:
 	rm -f t1 t2 t3 t4 t5 t8 tt.sop t6 test*.coor t7 _curve.pdb _axis.pdb PDI_dist.dat
