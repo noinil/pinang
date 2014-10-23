@@ -160,6 +160,8 @@ int main(int argc, char *argv[])
                     for (int q = 0; q < int(resi_group1.size()); q++) {
                         pinang::Residue rr1 = resi_group1[q];
                         double dist_min = pinang::resid_min_distance(r0, rr1);
+                        if (dist_min < 0)
+                            continue;
 
                         if (cti1 == pinang::protein && (min_dist_W_PRO == 0 || min_dist_W_PRO > dist_min)){
                             min_dist_W_PRO = dist_min;
@@ -195,27 +197,32 @@ int main(int argc, char *argv[])
                 }
             }
             double * mmm_dist = & min_dist_W_A;
-            if (min_dist_W_T < * mmm_dist)
+            if (min_dist_W_T > 0 && min_dist_W_T < * mmm_dist)
             {
                 *mmm_dist = -1;
                 mmm_dist = & min_dist_W_T;
             } else {
                 min_dist_W_T = -1;
             }
-            if (min_dist_W_G < * mmm_dist)
+            if (min_dist_W_G > 0 && min_dist_W_G < * mmm_dist)
             {
                 *mmm_dist = -1;
                 mmm_dist = & min_dist_W_G;
             } else {
                 min_dist_W_G = -1;
             }
-            if (min_dist_W_C < * mmm_dist)
+            if (min_dist_W_C > 0 && min_dist_W_C < * mmm_dist)
             {
                 *mmm_dist = -1;
                 mmm_dist = & min_dist_W_C;
             } else {
                 min_dist_W_C = -1;
             }
+            // std::cout << "  dists: A " << min_dist_W_A
+            //           << "  dists: T " << min_dist_W_T
+            //           << "  dists: G " << min_dist_W_G
+            //           << "  dists: C " << min_dist_W_C
+            //           << std::endl;
             if (min_dist_W_PRO < 100 && min_dist_W_PRO > 0)
                 out_file << " WAT_PAIR " << "PRO   "
                          << std::setw(6) << min_dist_W_PRO

@@ -171,6 +171,7 @@ int main(int argc, char *argv[])
                         atmp.set_resid_name("S");
                         atom_group1.push_back(atmp);
                         atmp = r1.m_B();
+                        atmp.set_resid_name(r1.resid_name());
                         atom_group1.push_back(atmp);
 
                         pinang::Residue rtmp_P, rtmp_S, rtmp_B;
@@ -200,9 +201,9 @@ int main(int argc, char *argv[])
 
                     // -------------------- Calculating distances --------------
                     if (resi_group0.size() != atom_group0.size()) {
-                               std::cout << "ERROR in getting atom group 0 and resi group 0"
-                                         << std::endl;
-                               return(1);
+                        std::cout << "ERROR in getting atom group 0 and resi group 0"
+                                  << std::endl;
+                        return(1);
                     }
                     if (resi_group1.size() != atom_group1.size()) {
                         std::cout << "ERROR in getting atom group 1 and resi group 1"
@@ -216,7 +217,14 @@ int main(int argc, char *argv[])
                             pinang::Atom a1 = atom_group1[q];
                             pinang::Residue rr1 = resi_group1[q];
                             double dist_min = pinang::resid_min_distance(rr0, rr1);
-                            if (dist_min < 6.5)
+                            double cut_off = 6.5;
+                            if (a1.resid_name() == "P") cut_off = 6.0;
+                            if (a1.resid_name() == "S") cut_off = 7.0;
+                            if (a1.resid_name() == "A") cut_off = 7.0;
+                            if (a1.resid_name() == "T") cut_off = 7.0;
+                            if (a1.resid_name() == "G") cut_off = 7.0;
+                            if (a1.resid_name() == "C") cut_off = 7.0;
+                            if (dist_min < cut_off && dist_min > 0)
                             {
                                 out_file << " RESID_PAIR " << std::setw(3) << i << " "
                                          << std::setw(6) << m << " "
