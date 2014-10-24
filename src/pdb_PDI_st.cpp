@@ -133,7 +133,7 @@ int main(int argc, char *argv[])
                     atmp = r0.m_atom(v);
                     std::string aname = atmp.atom_name();
                     if (aname == "P  " || aname == "OP1"
-                        || aname == "OP2" || aname == "O5'")
+                        || aname == "OP2")
                         rtmp_P.add_atom(atmp);
                     else if (aname[2] == '\'') {
                         rtmp_S.add_atom(atmp);
@@ -182,7 +182,7 @@ int main(int argc, char *argv[])
                             atmp = r1.m_atom(v);
                             std::string aname = atmp.atom_name();
                             if (aname == "P  " || aname == "OP1"
-                                || aname == "OP2" || aname == "O5'")
+                                || aname == "OP2")
                                 rtmp_P.add_atom(atmp);
                             else if (aname[2] == '\'') {
                                 rtmp_S.add_atom(atmp);
@@ -218,12 +218,12 @@ int main(int argc, char *argv[])
                             pinang::Residue rr1 = resi_group1[q];
                             double dist_min = pinang::resid_min_distance(rr0, rr1);
                             double cut_off = 6.5;
-                            if (a1.resid_name() == "P") cut_off = 6.0;
-                            if (a1.resid_name() == "S") cut_off = 7.0;
-                            if (a1.resid_name() == "A") cut_off = 7.0;
-                            if (a1.resid_name() == "T") cut_off = 7.0;
-                            if (a1.resid_name() == "G") cut_off = 7.0;
-                            if (a1.resid_name() == "C") cut_off = 7.0;
+                            if (a1.resid_name() == "P") cut_off = 6.2;
+                            if (a1.resid_name() == "S") cut_off = 6.8;
+                            if (a1.resid_name() == "A") cut_off = 7.2;
+                            if (a1.resid_name() == "T") cut_off = 7.2;
+                            if (a1.resid_name() == "G") cut_off = 7.2;
+                            if (a1.resid_name() == "C") cut_off = 7.2;
                             if (dist_min < cut_off && dist_min > 0)
                             {
                                 out_file << " RESID_PAIR " << std::setw(3) << i << " "
@@ -236,7 +236,6 @@ int main(int argc, char *argv[])
                                          << "   dist_min = "
                                          << std::setw(6) << dist_min
                                          << std::endl;
-
                                 double dist_Ca = pinang::atom_distance(a0, a1);
                                 out_file << " CG_PAIR "
                                          << std::setw(5)<< a0.resid_name()

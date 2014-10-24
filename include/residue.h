@@ -271,7 +271,14 @@ namespace pinang {
         {
             return 1;
         }
+        for (int i = 0; i < _n_atom; i++) {
+            Atom b = _atoms[i];
+            if (a.atom_name() == b.atom_name())
+                return 0;
+        }
+        // -------------------- add atom --------------------
         _atoms.push_back(a);
+        // -------------------- add atom --------------------
         if (a.atom_name() == "CA ")
         {
             _C_alpha = a;

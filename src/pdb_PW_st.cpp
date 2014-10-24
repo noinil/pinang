@@ -142,7 +142,7 @@ int main(int argc, char *argv[])
                             atmp = r1.m_atom(v);
                             std::string aname = atmp.atom_name();
                             if (aname == "P  " || aname == "OP1"
-                                || aname == "OP2" || aname == "O5'" || aname == "O3'")
+                                || aname == "OP2")
                                 rtmp_P.add_atom(atmp);
                             else if (aname[2] == '\'') {
                                 rtmp_S.add_atom(atmp);
