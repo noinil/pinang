@@ -28,6 +28,7 @@ def anaf(fin_name):
 
 def main():
     import numpy as np
+    import matplotlib
     import matplotlib.pyplot as plt
     import matplotlib.mlab as mlab
     import matplotlib.axis as axis
@@ -111,7 +112,7 @@ def main():
 
     pcommand = input(" Produce pro-DNA minimal distance map? (q to quit): ")
     if pcommand == 'q':
-        return 0
+        pass
     elif pcommand == 'y' or pcommand == 'yes':
         for k, l in huge_repo.items():
             sl = sorted(l)
@@ -124,40 +125,93 @@ def main():
             y_sum = sum(y)
             for i in range(51):
                 y[i] /= y_sum
-            local_dict = [(sl_S + i * delta, y[i]) for i in range(50)]
-            p_repo[k] = local_dict
-        while True:
-            p_cutoff_s = input(" Please give me a cutoff for P (q to quit): ")
-            if p_cutoff_s == 'q':
-                break
-            p_cutoff = float(p_cutoff_s)
+            local_dict = [(sl_S + i * delta, sum(y[:i])) for i in range(50)]
+            p_repo[k] = local_dict[:]
 
+        p_cutoff_list = [0.04 + 0.01 * i for i in range(20)]
+        it = 0
+        while True:
+            # p_cutoff_s = input(" Please give me a cutoff for P (q to quit): ")
+            # if p_cutoff_s == 'q':
+            #     break
+            # p_cutoff = float(p_cutoff_s)
+
+            if it >= 20:
+                break
+            p_cutoff = p_cutoff_list[it]
+            p_cutoff_s = str(round(p_cutoff, 2))
+            it += 1
+            print(it, "   ", p_cutoff)
+
+            # -------------------- compute the distance matrix -----------------
             imatrix = []
             for i, ni in enumerate(pna_names):
                 row = []
                 for j, nj in enumerate(pna_names):
                     reskey = (ni, nj) if (ni > nj and len(ni) == len(nj)) or len(ni) > len(nj) else (nj, ni)
                     if reskey not in p_repo:
-                        # print(" Index error!", reskey, "not in p_repo!")
                         row.append(0)
                     else:
                         for dist_p in p_repo[reskey]:
                             if dist_p[1] > p_cutoff:
-                                # print(dist_p[0])
                                 break
                         row.append(dist_p[0])
-                        # print(' end...')
                 imatrix.append(row[:])
                 row.clear()
-            print(imatrix)
-            # fig, ax = plt.subplots()
+            # print(imatrix)
+
             x = [i for i in range(len(pna_names))]
+            # -------------------- least square - compute sigmas ---------------
+            # ---------- calc from prot first, then from prot-DNA --------------
+            sigma, sigma_i_sum = [0 for i in range(26)], [0 for i in range(26)]
+            total_sigma_sum = 0
+            for i in range(20):
+                sigma_sum = sum(imatrix[i][:20])
+                sigma_i_sum[i] = sigma_sum
+                total_sigma_sum += sigma_sum
+            total_sigma_sum /= 40
+            for i in range(20, 26):
+                sigma_i_sum[i] = sum(imatrix[i][:20])
+            for i in range(26):
+                sigma[i] = 0.05 * (sigma_i_sum[i] - total_sigma_sum) * 2
+            # ---------- calc directly from prot-DNA --------------
+            sigma2, sigma_i_sum2 = [0 for i in range(26)], [0 for i in range(26)]
+            total_sigma_sum2 = 0
+            for i in range(20, 26):
+                sigma_sum2 = sum(imatrix[i][:20])
+                total_sigma_sum2 += sigma_sum2
+            for i in range(26):
+                sigma_i_sum2[i] = sum(imatrix[i][:])
+            ts1 = total_sigma_sum + 0.05 * (total_sigma_sum2 - 6 * total_sigma_sum)
+            for i in range(20):
+                sigma2[i] = 2 * (sigma_i_sum2[i] - ts1) / 26
+            ts2 = sum(sigma2[:20]) / 2
+            for i in range(20, 26):
+                sigma2[i] = 0.05 * (sigma_i_sum2[i] - ts2) * 2
+            plt.plot(x, sigma, 'r-', linewidth=2, label='pro-pro')
+            plt.plot(x, sigma2, 'g-', linewidth=2, label='pro-DNA')
+            plt.xticks(x, pna_names, rotation='vertical')
+            plt.ylim(3, 11)
+            plt.ylabel(r'Distance ($\AA$)')
+            plt.title(r'$\sigma$ (Quantile = '+p_cutoff_s+' )')
+            plt.grid(axis='x', linestyle='--', alpha=0.3)
+            plt.grid(axis='y', linestyle='-', alpha=0.3)
+            plt.legend(prop={'size': 16}, loc='upper left')
+            plt.savefig("sigma_quantile_"+p_cutoff_s+".png", dpi=150)
+            # plt.show()
+            plt.clf()
+
+            # ==================== plot the matrix! ====================
             plt.xticks(x, pna_names, rotation='vertical')
             plt.yticks(x, pna_names)
-            ax = plt.gca()
-            ax.xaxis.set_stick_position('top')
-            plt.imshow(imatrix, cmap=plt.cm.gray, interpolation='none', origin='upper')
-            plt.show()
+            cax = plt.imshow(imatrix, cmap=plt.cm.BuGn, interpolation='none', origin='lower', \
+                       vmin=2.0, vmax=10.0)
+            plt.title("Distance Matrix Quantile = "+p_cutoff_s)
+            cbar = plt.colorbar(cax, ticks=[2,4,6,8,10])
+            cbar.ax.set_yticklabels([r'<2$\AA$', r'4$\AA$', r'6$\AA$', r'8$\AA$', r'10$\AA$'])
+            plt.savefig("dist_matrix_quantile_"+p_cutoff_s+".png", dpi=150)
+            # plt.show()
+            plt.clf()
 
 
 if __name__ == '__main__':
