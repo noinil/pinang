@@ -2,11 +2,11 @@ CPPINC=-I/usr/local/include
 
 default:
 
-all: 	install_dir pdb_related dcd_related dcd_dna_bpn
+all: 	install_dir pdb_related dcd_related
 
 pdb_related: seq pdb_output pdb_cg_top matrix_transpose  ts_read pdb_dna_curve pdb_pdi_st pdb_wat_st
 
-dcd_related:  dcd_contact_num dcd_distance_0 dcd_distance_1 persistence_length
+dcd_related:  dcd_contact_num dcd_distance_0 dcd_distance_1 persistence_length dcd_dna_bpn
 
 install_dir:
 	mkdir -p ../bin
@@ -47,8 +47,10 @@ pdb_pdi_st:
 	c++ -Wall -I../include/ -o p_pdi_st pdb_PDI_st.cpp
 	mv p_pdi_st ../bin/
 pdb_wat_st:
-	c++ -Wall -I../include/ -o p_wat_st pdb_PW_st.cpp
-	mv p_wat_st ../bin/
+	c++ -Wall -I../include/ -o p_pwd_st pdb_PWD_st.cpp
+	c++ -Wall -I../include/ -o p_pwp_st pdb_PWP_st.cpp
+	mv p_pwp_st ../bin/
+	mv p_pwd_st ../bin/
 
 clean:
 	rm -f ../bin/*
