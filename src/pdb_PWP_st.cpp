@@ -124,7 +124,7 @@ int main(int argc, char *argv[])
                 }
                 if (min_dist_W_PRO < 10 && min_dist_W_PRO > 2){
                     min_dist_w_pro.push_back(min_dist_W_PRO);
-                    spec.push_back(r1);
+                    spec.push_back(special0);
                     out_file << " WAT_PAIR " << r1.resid_name() << " "
                              << std::setw(6) << min_dist_W_PRO
                              << std::endl;
