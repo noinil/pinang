@@ -105,6 +105,7 @@ int main(int argc, char *argv[])
             continue;
         for (int m = 0; m < pdb1.m_model(mod_index - 1).m_chain(i).m_chain_length(); m++) {
             r0 = pdb1.m_model(mod_index - 1).m_chain(i).m_residue(m);
+            // std::cout << r0 << std::endl;
 
             std::vector<double> min_dist_w_pro; // min distance water -- protein
             std::vector<pinang::Residue> spec;
@@ -125,7 +126,9 @@ int main(int argc, char *argv[])
                 if (min_dist_W_PRO < 10 && min_dist_W_PRO > 2){
                     min_dist_w_pro.push_back(min_dist_W_PRO);
                     spec.push_back(special0);
-                    out_file << " WAT_PAIR " << r1.resid_name() << " "
+                    // out_file << special0 << std::endl;
+                    out_file << " WAT_PAIR "
+                             << special0.resid_name() << " "
                              << std::setw(6) << min_dist_W_PRO
                              << std::endl;
                 }
@@ -149,7 +152,8 @@ int main(int argc, char *argv[])
                     if (dist2 > 5) continue;
                     pinang::Residue res2 = spec[t];
                     double dist_PP = pinang::resid_min_distance(res1, res2);
-                    out_file << " WAT_MED_PRO  " << res1.resid_name() << " "
+                    out_file << " WAT_MED_PRO  "
+                             << res1.resid_name() << " "
                              << res2.resid_name() << " "
                              << std::setw(6) << dist_PP << std::endl;
                 }

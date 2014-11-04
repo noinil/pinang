@@ -74,6 +74,7 @@ def main():
             fig.subplots_adjust(hspace=0.8)
             fig.subplots_adjust(wspace=0.8)
             fig.savefig(out_name, dpi=150)
+    plt.clf()
 
     # -------------------- PROTEIN -- DNA --------------------
     pcommand = input(" Produce pro-DNA distance distribution fig?  ")
@@ -109,6 +110,7 @@ def main():
             fig.subplots_adjust(hspace=0.8)
             fig.subplots_adjust(wspace=0.8)
             fig.savefig(out_name, dpi=150)
+    plt.clf()
 
     pcommand = input(" Produce pro-DNA minimal distance map? (q to quit): ")
     if pcommand == 'q':

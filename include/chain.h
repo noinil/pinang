@@ -21,7 +21,7 @@ namespace pinang {
         inline chain_t chain_type() const;
         inline void set_chain_type(chain_t ct);
 
-        inline Residue& m_residue(unsigned int n);
+        inline Residue& m_residue(int n);
         inline int add_residue(const Residue& r);
 
         inline int m_chain_length() const;
@@ -82,7 +82,7 @@ namespace pinang {
     // | | |  __/\__ \ | (_| | |_| |  __/
     // |_|  \___||___/_|\__,_|\__,_|\___|
     */
-    inline Residue& Chain::m_residue(unsigned int n)
+    inline Residue& Chain::m_residue(int n)
     {
         if (_residues.empty())
         {
@@ -93,7 +93,7 @@ namespace pinang {
                       << _chain_ID << std::endl;
             exit(EXIT_SUCCESS);
         } else {
-            if (n >= _residues.size())
+            if (n >= int(_residues.size()))
             {
                 std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
                 std::cout << " ~              PINANG :: Chain               ~ " << std::endl;

@@ -29,8 +29,8 @@ namespace pinang {
         inline chain_t chain_type() const;
         inline void set_chain_type(chain_t ct);
 
-        inline unsigned int resid_index() const;
-        inline void set_resid_index(unsigned int i);
+        inline int resid_index() const;
+        inline void set_resid_index(int i);
 
         inline double resid_charge() const;
         inline void set_resid_charge(double c);
@@ -38,7 +38,7 @@ namespace pinang {
         inline double resid_mass() const;
         inline void set_resid_mass(double c);
 
-        inline Atom& m_atom(unsigned int n);
+        inline Atom& m_atom(int n);
         inline int add_atom(const Atom& a);
 
         inline int m_residue_size() const;
@@ -54,7 +54,7 @@ namespace pinang {
         std::string _resid_name;
         char _short_name;
         char _chain_ID;
-        unsigned int _resid_index;
+        int _resid_index;
         std::vector<Atom> _atoms;
         int _n_atom;
         double _charge;
@@ -200,11 +200,11 @@ namespace pinang {
     // | | |  __/\__ \ | (_| | | | | | | (_| |  __/>  <
     // |_|  \___||___/_|\__,_| |_|_| |_|\__,_|\___/_/\_\
     */
-    inline unsigned int Residue::resid_index() const
+    inline int Residue::resid_index() const
     {
         return _resid_index;
     }
-    inline void Residue::set_resid_index(unsigned int i)
+    inline void Residue::set_resid_index(int i)
     {
         _resid_index = i;
     }
@@ -241,7 +241,7 @@ namespace pinang {
     // |_| |_| |_|___\__,_|\__\___/|_| |_| |_|
     //          |_____|
     */
-    inline Atom& Residue::m_atom(unsigned int n)
+    inline Atom& Residue::m_atom(int n)
     {
         if (_atoms.empty())
         {
@@ -252,7 +252,7 @@ namespace pinang {
                       << _resid_index << std::endl;
             exit(EXIT_SUCCESS);
         } else {
-            if (n >= _atoms.size())
+            if (n >= int(_atoms.size()))
             {
                 std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
                 std::cout << " ~             PINANG :: Residue              ~ " << std::endl;

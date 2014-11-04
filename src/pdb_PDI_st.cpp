@@ -218,12 +218,12 @@ int main(int argc, char *argv[])
                             pinang::Residue rr1 = resi_group1[q];
                             double dist_min = pinang::resid_min_distance(rr0, rr1);
                             double cut_off = 6.5;
-                            if (a1.resid_name() == "P") cut_off = 6.2;
-                            if (a1.resid_name() == "S") cut_off = 6.8;
-                            if (a1.resid_name() == "A") cut_off = 7.2;
-                            if (a1.resid_name() == "T") cut_off = 7.2;
-                            if (a1.resid_name() == "G") cut_off = 7.2;
-                            if (a1.resid_name() == "C") cut_off = 7.2;
+                            if (a1.resid_name() == "P") cut_off = 5.5;
+                            if (a1.resid_name() == "S") cut_off = 6.5;
+                            if (a1.resid_name() == "A") cut_off = 6.6;
+                            if (a1.resid_name() == "T") cut_off = 6.8;
+                            if (a1.resid_name() == "G") cut_off = 6.7;
+                            if (a1.resid_name() == "C") cut_off = 6.7;
                             if (dist_min < cut_off && dist_min > 0)
                             {
                                 out_file << " RESID_PAIR " << std::setw(3) << i << " "

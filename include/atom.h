@@ -20,8 +20,8 @@ namespace pinang {
         inline std::string atom_flag() const;
         inline void set_atom_flag(const std::string& s);
 
-        inline unsigned int serial() const;
-        inline void set_serial(unsigned int i);
+        inline int serial() const;
+        inline void set_serial(int i);
 
         inline std::string atom_name() const;
         inline void set_atom_name(const std::string& s);
@@ -35,8 +35,8 @@ namespace pinang {
         inline char chain_ID() const;
         inline void set_chain_ID(char a);
 
-        inline unsigned int resid_index() const;
-        inline void set_resid_index(unsigned int i);
+        inline int resid_index() const;
+        inline void set_resid_index(int i);
 
         inline char icode() const;
         inline void set_icode(char a);
@@ -64,12 +64,12 @@ namespace pinang {
 
     protected:
         std::string _atom_flag;
-        unsigned int _serial;
+        int _serial;
         std::string _atom_name;
         char _alt_loc;
         std::string _resid_name;
         char _chain_ID;
-        unsigned int _resid_index;
+        int _resid_index;
         char _insert_code;
         Vec3d _coordinate;
         Vec3d _velocity;
@@ -96,11 +96,11 @@ namespace pinang {
     // \__ \  __/ |  | | (_| | |
     // |___/\___|_|  |_|\__,_|_|
     */
-    inline unsigned int Atom::serial() const
+    inline int Atom::serial() const
     {
         return _serial;
     }
-    inline void Atom::set_serial(unsigned int i)
+    inline void Atom::set_serial(int i)
     {
         _serial = i;
     }
@@ -177,11 +177,11 @@ namespace pinang {
     // | | |  __/\__ \ | (_| | | | | | | (_| |  __/>  <
     // |_|  \___||___/_|\__,_| |_|_| |_|\__,_|\___/_/\_\
     */
-    inline unsigned int Atom::resid_index() const
+    inline int Atom::resid_index() const
     {
         return _resid_index;
     }
-    inline void Atom::set_resid_index(unsigned int i)
+    inline void Atom::set_resid_index(int i)
     {
         _resid_index = i;
     }
@@ -384,7 +384,7 @@ namespace pinang {
         std::istringstream tmp_sstr;
         std::string pdb_line;
 
-        unsigned int _tmp_ui;
+        int _tmp_ui;
         std::string _tmp_str;
         char _tmp_char;
         pinang::Vec3d _tmp_coordinates;
