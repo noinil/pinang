@@ -22,7 +22,9 @@ int main(int argc, char *argv[])
               << std::endl;
 
     int opt, mod_index = 0;
+    int dna_mod = 0;            // 0 -- 3SPN.2; 1 -- 3SPN.2C;   Default: 0
     int mod_flag = 0;
+    int dna_flag = 0;
     int in_flag = 0;
 
     std::string infilename = "some.pdb";
@@ -31,7 +33,7 @@ int main(int argc, char *argv[])
     std::string back_name = "_backbone.pdb";
     std::string out_name = "_curve.dat";
 
-    while ((opt = getopt(argc, argv, "o:x:b:m:f:h")) != -1) {
+    while ((opt = getopt(argc, argv, "o:x:b:m:d:f:h")) != -1) {
         switch (opt) {
         case 'o':
             out_name = optarg;
@@ -46,6 +48,10 @@ int main(int argc, char *argv[])
             mod_index = atoi(optarg);
             mod_flag = 1;
             break;
+        case 'd':
+            dna_mod = atoi(optarg);
+            dna_flag = 1;
+            break;
         case 'f':
             infilename = optarg;
             in_flag = 1;
@@ -54,7 +60,7 @@ int main(int argc, char *argv[])
             std::cout << " Usage: "
                       << argv[0]
                       << " -f some.pdb [-o _curve.dat] [-x _axis.pdb] \n"
-                      << " [-b _backbone.pdb] [-m module] [-h]"
+                      << " [-b _backbone.pdb] [-m module] [-d dna_model] [-h]"
                       << std::endl;
             exit(EXIT_SUCCESS);
             break;
@@ -62,7 +68,7 @@ int main(int argc, char *argv[])
             std::cout << " Usage: "
                       << argv[0]
                       << " -f some.pdb [-o _curve.dat] [-x _axis.pdb] \n"
-                      << " [-b _backbone.pdb] [-m module] [-h]"
+                      << " [-b _backbone.pdb] [-m module] [-d dna_model] [-h]"
                       << std::endl;
             exit(EXIT_FAILURE);
         }
@@ -74,7 +80,7 @@ int main(int argc, char *argv[])
                   << " Usage: "
                   << argv[0]
                   << " -f some.pdb [-o _curve.dat] [-x _axis.pdb] \n"
-                  << " [-b _backbone.pdb] [-m module] [-h]"
+                  << " [-b _backbone.pdb] [-m module] [-d dna_model] [-h]"
                   << std::endl;
         exit(EXIT_SUCCESS);
     }
@@ -94,8 +100,15 @@ int main(int argc, char *argv[])
         }
     }
 
+    if (dna_flag != 1) {
+        std::cout << " You'd better specify the DNA MODULE: " << std::endl;
+        std::cout << "      0 for 3SPN2; 1 for 3SPN2C" << std::endl;
+    }
+
     std::cout << " Analyzing DNA curvature of MODULE " << mod_index
-              << " of " << infilename  << " ... "
+              << " of " << infilename  << " ... " << std::endl
+              << " using DNA model: " << dna_mod
+              << "  (0: 3SPN2; 1: 3SPN2C)"
               << std::endl;
 
     /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -288,8 +301,15 @@ int main(int argc, char *argv[])
         }
         axis_directions.push_back(H); // axis direction vectors!
 
-        // r = axis center deviation!  This is just a empirical estimation!
-        r = 2.12 * v1.norm() / p_D_phosphate;
+        // r = axis center deviation!  This is just an empirical estimation!
+        if (dna_mod == 0){
+            r = 2.12 * v1.norm() / p_D_phosphate;
+            // std::cout << r << std::endl;
+        }
+        if (dna_mod == 1){
+            r = 3.5 * v1.norm() / p_D_phosphate;
+            // std::cout << r << std::endl;
+        }
         t_tmp = P1 + (n1 * r);
         axis_nodes.push_back(t_tmp);
 

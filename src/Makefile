@@ -55,4 +55,4 @@ pdb_wat_st:
 clean:
 	rm -f ../bin/*
 cct:
-	rm -f ../bin/p_wat_st
+	rm -f ../bin/p_dna_curve
