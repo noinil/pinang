@@ -130,7 +130,7 @@ def main():
             local_dict = [(sl_S + i * delta, sum(y[:i])) for i in range(50)]
             p_repo[k] = local_dict[:]
 
-        p_cutoff_list = [0.04 + 0.01 * i for i in range(20)]
+        p_cutoff_list = [0.01 + 0.01 * i for i in range(100)]
         it = 0
         while True:
             # p_cutoff_s = input(" Please give me a cutoff for P (q to quit): ")
@@ -138,12 +138,14 @@ def main():
             #     break
             # p_cutoff = float(p_cutoff_s)
 
-            if it >= 20:
+            if it >= 100:
                 break
             p_cutoff = p_cutoff_list[it]
             p_cutoff_s = str(round(p_cutoff, 2))
+            if len(p_cutoff_s) < 4:
+                p_cutoff_s += '0'
             it += 1
-            print(it, "   ", p_cutoff)
+            print(it, "   ", p_cutoff_s)
 
             # -------------------- compute the distance matrix -----------------
             imatrix = []
@@ -193,7 +195,7 @@ def main():
             plt.plot(x, sigma, 'r-', linewidth=2, label='pro-pro')
             plt.plot(x, sigma2, 'g-', linewidth=2, label='pro-DNA')
             plt.xticks(x, pna_names, rotation='vertical')
-            plt.ylim(3, 11)
+            plt.ylim(3, 20)
             plt.ylabel(r'Distance ($\AA$)')
             plt.title(r'$\sigma$ (Quantile = '+p_cutoff_s+' )')
             plt.grid(axis='x', linestyle='--', alpha=0.3)
