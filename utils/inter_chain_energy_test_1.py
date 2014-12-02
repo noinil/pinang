@@ -3,7 +3,7 @@
 T = 300.0
 I = 0.1
 ek = 78.0                       # diele const
-coef_exv = 0.2
+coef_exv = 0.1
 coef_exv_hard = 0.2
 B = 2
 C = 1
@@ -46,7 +46,7 @@ def pair_ene_exv(dist, sigma):
     E_exv += coef_exv_hard * (c_tmp2**12)
     return E_exv
 
-def main(top_name, pos_name, q):
+def main(top_name, pos_name):
     import numpy as np
     import matplotlib
     import matplotlib.pyplot as plt
@@ -54,18 +54,22 @@ def main(top_name, pos_name, q):
 
     coors = []                  # coordinates of every resid
     charges = []                # charge of every residue
-    ex_rad = []                 # excluded volumn radii
+    table_ex_rad = []                 # excluded volumn radii
     mol_type = []               # molecular type
     chain_ind = []              # resid in which chain?
-    sigma_dist = {}
+    table_sigma_dist = []
 
-    q_str = str(round(q,2))
-    if len(q_str) < 4:
-        q_str += '0'
-    sigma_file = open("/home/noinil/Workspace/excluded_volumn_test/final_radius/sigma_out_"+q_str+".dat", 'r')
-    for lines in sigma_file:
-        str0, radi = lines.split()[0], float(lines.split()[1])
-        sigma_dist[str0] = radi
+    for i in range(50):
+        sig_dist = {}
+        q = 0.01 * i + 0.01
+        q_str = str(round(q,2))
+        if len(q_str) < 4:
+            q_str += '0'
+        sigma_file = open("/home/noinil/Workspace/excluded_volumn_test/final_radius/sigma_out_"+q_str+".dat", 'r')
+        for lines in sigma_file:
+            str0, radi = lines.split()[0], float(lines.split()[1])
+            sig_dist[str0] = radi
+        table_sigma_dist.append(sig_dist)
 
     with open(top_name, 'r') as top_f:
         read_flag = 0
@@ -89,6 +93,7 @@ def main(top_name, pos_name, q):
                     mol_type.append(1)
 
     first_pro_chain_ind = -1
+    res_name = []
     with open(pos_name, 'r') as pos_f:
         chain_num = 0
         for lines in pos_f:
@@ -99,11 +104,21 @@ def main(top_name, pos_name, q):
                 resnum = int(words[0])
                 resname = words[1]
                 x, y, z = float(words[3]), float(words[4]), float(words[5])
-                ex_rad.append(sigma_dist[resname])
+                res_name.append(resname)
                 if mol_type[resnum - 1] == 0 and first_pro_chain_ind == -1:
                     first_pro_chain_ind = chain_num # ========== MARK the 1st pro chain
                 chain_ind.append(chain_num)
                 coors.append((x, y, z))
+    for i in range(50):
+        ex_rad = []
+        for j in res_name:
+            ex_rad.append(table_sigma_dist[i][j])
+        table_ex_rad.append(ex_rad[:])
+        ex_rad.clear()
+    # for i, k in enumerate(table_sigma_dist):
+    #     print(i, k)
+    # for i in table_ex_rad:
+    #     print(i)
     print(" Chain num =", chain_num)
     if chain_num > 3:
         print("  might be wrong, \'cause chain number is more than 3...")
@@ -114,7 +129,6 @@ def main(top_name, pos_name, q):
     exv_list = []
     nearest_group = [set(), set()]
     for i, u in enumerate(mol_type):
-        # print(i, '  ', u, '  ', ex_rad[i], charges[i], '   ', coors[i], chain_ind[i])
         if u == 0 and chain_ind[i] != first_pro_chain_ind:
             continue
         for j, v in enumerate(mol_type):
@@ -125,9 +139,9 @@ def main(top_name, pos_name, q):
                 dist = distance(coors[i], coors[j])
                 if abs(c1 * c2) > 0.1:
                     charge_list.append((i, j, c1, c2))
-                sig0 = (ex_rad[i] + ex_rad[j]) / 2
+                sig0 = (table_ex_rad[-1][i] + table_ex_rad[-1][j]) / 2
                 if dist < sig0 + 10:
-                    exv_list.append((i, j, sig0))
+                    exv_list.append((i, j))
                     nearest_group[u].add(i)
                     nearest_group[v].add(j)
 
@@ -156,49 +170,59 @@ def main(top_name, pos_name, q):
     vec_01 = normalize(vec_01)  # From vec0 to vec 1
 
     X = [-2 + 0.1 * i for i in range(60)]
-    E_TOT = []
-    E_ELE = []
-    E_EXV = []
-    for i in range(60):
-        dr = -2 + i * 0.1
-        dr = round(dr, 2)
-        dx, dy, dz = dr * vec_01[0], dr * vec_01[1], dr * vec_01[2]
-        tmp_coors = []
-        for j, ctmp in enumerate(coors):
-            x0, y0, z0 = ctmp
-            if mol_type[j] == 0 and chain_ind[j] == first_pro_chain_ind:
-                tmp_coors.append((x0-dx, y0-dy, z0-dz))
-            else:
-                tmp_coors.append((x0, y0, z0))
+    table_E_TOT = []
+    for quantile in range(50):
+        ex_rad = table_ex_rad[quantile]
+        E_TOT = []
+        for i in range(60):
+            dr = -2 + i * 0.1
+            dr = round(dr, 2)
+            dx, dy, dz = dr * vec_01[0], dr * vec_01[1], dr * vec_01[2]
+            tmp_coors = []
+            for j, ctmp in enumerate(coors):
+                x0, y0, z0 = ctmp
+                if mol_type[j] == 0 and chain_ind[j] == first_pro_chain_ind:
+                    tmp_coors.append((x0-dx, y0-dy, z0-dz))
+                else:
+                    tmp_coors.append((x0, y0, z0))
 
-        # -------------------- calc energies --------------------
-        total_energy = 0
-        ene_ele, ene_exv = 0, 0
-        for k in charge_list:
-            imp, jmp = k[0], k[1]
-            chi, chj = k[2], k[3]
-            dist = distance(tmp_coors[imp], tmp_coors[jmp])
-            e_tmp =  pair_ene_ele(chi, chj, dist)
-            total_energy += e_tmp
-            ene_ele += e_tmp
-        for k in exv_list:
-            imp, jmp = k[0], k[1]
-            dist = distance(tmp_coors[imp], tmp_coors[jmp])
-            sig = k[2]
-            e_tmp = pair_ene_exv(dist, sig)
-            total_energy += e_tmp
-            ene_exv += e_tmp
-        tmp_coors.clear()
-        # print(" Total energy at d =", dr, ",  E_total =", total_energy)
-        E_TOT.append(total_energy)
-        E_ELE.append(ene_ele)
-        E_EXV.append(ene_exv)
+            # -------------------- calc energies --------------------
+            total_energy = 0
+            ene_ele, ene_exv = 0, 0
+            for k in charge_list:
+                imp, jmp = k[0], k[1]
+                chi, chj = k[2], k[3]
+                dist = distance(tmp_coors[imp], tmp_coors[jmp])
+                e_tmp =  pair_ene_ele(chi, chj, dist)
+                total_energy += e_tmp
+                # ene_ele += e_tmp
+            for k in exv_list:
+                imp, jmp = k[0], k[1]
+                dist = distance(tmp_coors[imp], tmp_coors[jmp])
+                sig = 0.5 * (ex_rad[imp] + ex_rad[jmp])
+                e_tmp = pair_ene_exv(dist, sig)
+                total_energy += e_tmp
+                # ene_exv += e_tmp
+            tmp_coors.clear()
 
-    ymin, ymax = min(E_ELE[:30]), max(E_EXV[:])
+            E_TOT.append(total_energy)
+            # E_ELE.append(ene_ele)
+            # E_EXV.append(ene_exv)
+        table_E_TOT.append(E_TOT[:])
+        E_TOT.clear()
+
+    for i in table_E_TOT:
+        print(i)
+
+    ymin, ymax = min(table_E_TOT[0][:30]), max(table_E_TOT[-1][:])
+    if ymax > 50:
+        ymax = 50
     dy = (ymax-ymin) * 0.1
-    plt.plot(X, E_TOT, 'r-', linewidth=2, label=r'$E_{total}$')
-    plt.plot(X, E_ELE, 'g-', linewidth=2, label=r'$E_{ele}$')
-    plt.plot(X, E_EXV, 'b-', linewidth=2, label=r'$E_{excl}$')
+    plt.plot(X, table_E_TOT[9], '-', linewidth=2,  label=r'$quantile = 0.1$')
+    plt.plot(X, table_E_TOT[19], '-', linewidth=2, label=r'$quantile = 0.2$')
+    plt.plot(X, table_E_TOT[29], '-', linewidth=2, label=r'$quantile = 0.3$')
+    plt.plot(X, table_E_TOT[39], '-', linewidth=2, label=r'$quantile = 0.4$')
+    plt.plot(X, table_E_TOT[49], '-', linewidth=2, label=r'$quantile = 0.5$')
     plt.ylim(ymin-dy, ymax+dy)
     plt.xlim(-2, 4)
     plt.xlabel(r'Distance ($\AA$)')
@@ -214,8 +238,4 @@ if __name__ == '__main__':
     import sys
     top_file_name = sys.argv[1]
     pos_file_name = sys.argv[2]
-    if len(sys.argv) > 3:
-        quantile =  float(sys.argv[3])
-    else:
-        quantile = 0.2
-    main(top_file_name, pos_file_name, quantile)
+    main(top_file_name, pos_file_name)
