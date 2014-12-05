@@ -5,8 +5,8 @@ I = 0.1
 ek = 78.0                       # diele const
 coef_exv = 0.1
 coef_exv_hard = 0.2
-B = 4
-C = 2
+B = 12
+C = 6
 
 def distance(xi, xj):
     x1, y1, z1 = xi
@@ -43,7 +43,7 @@ def pair_ene_exv(dist, sigma):
     # if c_tmp2 <= 1:
     #     E_exv += 0
     # else:
-    E_exv += coef_exv_hard * (c_tmp2**12)
+    # E_exv += coef_exv_hard * (c_tmp2**12)
     return E_exv
 
 def main(top_name, pos_name):
@@ -186,12 +186,15 @@ def main(top_name, pos_name):
 
     X = [-2 + 0.1 * i for i in range(60)]
     # table_E_TOT = []
-    for p in range(10):
+    # for p in range(10):
+    for p in range(20):
         global coef_exv
-        coef_exv = p * 0.1 + 0.1
+        coef_exv = p * 0.05 + 0.05
+        # coef_exv = p * 0.02 + 0.02
         min_dist = []
-        for q in range(10):
-            quantile = q * 5 + 4
+        for q in range(20):
+            # quantile = q * 5 + 4
+            quantile = q
             ex_rad = table_ex_rad[quantile]
             E_TOT = []
             for i in range(30):
@@ -238,9 +241,9 @@ def main(top_name, pos_name):
             matrix_data_file.write(str(round(j, 3))+'  ')
         matrix_data_file.write('\n')
 
-    x = [i for i in range(10)]
-    xtx = [round(i*0.05 + 0.05, 2) for i in range(10)]
-    ytx = [round(i*0.1 + 0.1, 1) for i in range(10)]
+    x = [i for i in range(0,21,2)]
+    xtx = [round(i*0.02 + 0.01, 2) for i in range(11)]
+    ytx = [round(i*0.1 + 0.05, 2) for i in range(11)]
     plt.xlabel(r'quantile')
     plt.ylabel(r'$\epsilon$ (kcal/mol)')
     plt.xticks(x, xtx)
