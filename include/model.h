@@ -23,6 +23,7 @@ namespace pinang {
         inline void add_chain(const Chain& c);
 
         inline void print_sequence(int n) const;
+        inline void output_fasta(std::ostream & f_fasta, std::string s) const;
 
         inline int m_model_size() const;
 
@@ -101,6 +102,14 @@ namespace pinang {
         }
 
     }
+    inline void Model::output_fasta(std::ostream & f_fasta, std::string s) const
+    {
+        int i = 0;
+        for (i = 0; i < _n_chain; i++) {
+            _chains[i].output_fasta(f_fasta, s);
+        }
+    }
+
 
     inline int Model::m_model_size() const
     {

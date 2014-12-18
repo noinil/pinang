@@ -27,6 +27,8 @@ namespace pinang {
         inline int m_chain_length() const;
 
         inline void pr_seq(int n) const;
+        inline void output_fasta(std::ostream & f_fasta, std::string s) const;
+
         void output_cg_pos(std::ostream& o, int& n);
         void output_top_mass(std::ostream& o, int& n);
         void output_top_bond(std::ostream& o, int& n);
@@ -177,6 +179,22 @@ namespace pinang {
             }
             std::cout << std::endl;
         }
+    }
+    inline void Chain::output_fasta(std::ostream & f_fasta, std::string s0) const
+    {
+        if (_chain_type == water)
+            return;
+        if (_n_residue <= 3)
+            return;
+
+        f_fasta << ">" << s0 << "_chain_"
+                << _chain_ID
+                << std::endl;
+
+        for (int i = 0; i < _n_residue; i++) {
+            f_fasta << std::setw(1) << _residues[i].short_name();
+        }
+        f_fasta << std::endl;
     }
 
     void Chain::output_cg_pos(std::ostream& o, int& n)
@@ -355,7 +373,7 @@ namespace pinang {
         {
             for (i = 0; i < _n_residue - 1; i++) {
                 d = resid_ca_distance(_residues[i], _residues[i+1]);
-		n++;
+                n++;
                 o << std::setw(8) << n
                   << std::setw(6) << n + 1
                   << std::setiosflags(std::ios_base::fixed)

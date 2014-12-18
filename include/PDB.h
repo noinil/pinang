@@ -24,6 +24,7 @@ namespace pinang{
         inline int n_models() const;
 
         inline void print_sequence(int n) const;
+        inline void output_fasta(std::ostream & f_fasta) const;
 
         // void contact_map(double c);
 
@@ -231,6 +232,15 @@ namespace pinang{
         }
         _models[0].print_sequence(n);
         // std::cout << std::endl;
+    }
+    inline void PDB::output_fasta(std::ostream & f_fasta) const
+    {
+        std::string s = _PDB_file_name;
+        for (int i = 0; i < 4; i++) {
+            s.pop_back();
+        }
+
+        _models[0].output_fasta(f_fasta, s);
     }
 
 
