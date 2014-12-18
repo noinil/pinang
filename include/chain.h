@@ -188,7 +188,8 @@ namespace pinang {
             return;
 
         f_fasta << ">" << s0 << "_chain_"
-                << _chain_ID
+                << _chain_ID << "_type_"
+                << _chain_type
                 << std::endl;
 
         for (int i = 0; i < _n_residue; i++) {
