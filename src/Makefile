@@ -1,4 +1,4 @@
-CPPINC=-I/usr/local/include
+CPPINC=-I/usr/local/include -std=c++11
 
 default:
 
