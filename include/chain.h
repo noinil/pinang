@@ -75,6 +75,18 @@ namespace pinang {
     inline void Chain::set_chain_type(chain_t a)
     {
         _chain_type = a;
+        for (int i = 0; i < _n_residue; i++) {
+            _residues[i].set_chain_type(a);
+        }
+        if (a == DNA) {
+            for (int i = 0; i < _residues[0].m_residue_size(); i++) {
+                std::string s0 = _residues[0].m_atom(i).atom_name();
+                if (s0 == "OP3" || s0 == "P  " || s0 == "OP1" || s0 == "OP2"){
+                    if (!_residues[0].delete_atom(i))
+                        i--;
+                }
+            }
+        }
     }
 
     /*

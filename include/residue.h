@@ -40,6 +40,7 @@ namespace pinang {
 
         inline Atom& m_atom(int n);
         inline int add_atom(const Atom& a);
+        inline int delete_atom(const int i);
 
         inline int m_residue_size() const;
 
@@ -160,7 +161,6 @@ namespace pinang {
         default:
             if (_resid_name == "ZN") {_short_name = 'z'; _charge = 2.0; _mass = 65.409; _chain_type = ion;}
         }
-
     }
 
     /*      _           _         ___ ____
@@ -192,6 +192,21 @@ namespace pinang {
     inline void Residue::set_chain_type(chain_t a)
     {
         _chain_type = a;
+        if (a == DNA) {
+            // std::string s = _resid_name;
+            if      (_resid_name == "A" || _resid_name == "A3" || _resid_name == "A5") {
+                _resid_name = "DA"; _short_name = 'A';  _mass = 134.12;}
+            else if (_resid_name == "C" || _resid_name == "C3" || _resid_name == "C5") {
+                _resid_name = "DC"; _short_name = 'C';   _mass = 110.09;}
+            else if (_resid_name == "G" || _resid_name == "G3" || _resid_name == "G5") {
+                _resid_name = "DG"; _short_name = 'G';   _mass = 150.12;}
+            else if (_resid_name == "T" || _resid_name == "T3" || _resid_name == "T5") {
+                _resid_name = "DT"; _short_name = 'T';   _mass = 125.091;}
+            // std::cout << _resid_name << std::endl;
+            for (int i = 0; i < _n_atom; i++) {
+                _atoms[i].set_resid_name(_resid_name);
+            }
+        }
     }
 
     /*                _     _   _           _
@@ -302,6 +317,16 @@ namespace pinang {
         _n_atom++;
         return 0;
     }
+    inline int Residue::delete_atom(const int i)
+    {
+        if (i >= _n_atom){
+            return 1;
+        }
+        _atoms.erase(_atoms.begin()+i);
+        _n_atom--;
+        return 0;
+    }
+
 
     /*   ____         _       _
     //  / ___|   __ _| |_ __ | |__   __ _

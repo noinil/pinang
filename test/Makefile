@@ -1,4 +1,5 @@
 CPPINC=-I/usr/local/include
+CPPFLAG=-std=c++11
 
 default:
 
@@ -25,5 +26,9 @@ dna_curve_pdb:
 pdi_st:
 	c++ -Wall -I../include/ -o t8 pdb_PW_st.cpp
 	./t8 -f ttt.pdb
+split:
+	c++ -Wall -I../include/ $(CPPFLAG) -O3 -o tsplit pdb_split.cpp
+	./tsplit -f 1stx_1_1.ent
 clean:
 	rm -f t1 t2 t3 t4 t5 t8 tt.sop t6 test*.coor t7 _curve.pdb _axis.pdb PDI_dist.dat
+	rm -f tsplit chains.info
