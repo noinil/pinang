@@ -60,7 +60,7 @@ def main(top_name, pos_name):
     chain_ind = []              # resid in which chain?
     table_sigma_dist = []
 
-    for i in range(50):
+    for i in range(1):
         sig_dist = {}
         q = 0.001 * i
         q_str = str(round(q,2))
@@ -110,7 +110,7 @@ def main(top_name, pos_name):
                     first_pro_chain_ind = chain_num # ========== MARK the 1st pro chain
                 chain_ind.append(chain_num)
                 coors.append((x, y, z))
-    for i in range(50):
+    for i in range(1):
         ex_rad = []
         for j in res_name:
             ex_rad.append(table_sigma_dist[i][j])
@@ -141,7 +141,7 @@ def main(top_name, pos_name):
                 if abs(c1 * c2) > 0.1:
                     charge_list.append((i, j, c1, c2))
                 sig0 = (table_ex_rad[-1][i] + table_ex_rad[-1][j]) / 2
-                if dist < sig0 + 10:
+                if dist < 24:
                     exv_list.append((i, j))
                     nearest_group[u].add(i)
                     nearest_group[v].add(j)
@@ -172,9 +172,12 @@ def main(top_name, pos_name):
 
     X = [-2 + 0.1 * i for i in range(60)]
     table_E_TOT = []
-    for quantile in range(50):
+    for quantile in range(1):
         ex_rad = table_ex_rad[quantile]
         E_TOT = []
+        E_TOT_0_4 = []
+        E_TOT_0_5 = []
+        E_TOT_0_6 = []
         for i in range(60):
             dr = -2 + i * 0.1
             dr = round(dr, 2)
@@ -189,6 +192,9 @@ def main(top_name, pos_name):
 
             # -------------------- calc energies --------------------
             total_energy = 0
+            total_energy_4 = 0
+            total_energy_5 = 0
+            total_energy_6 = 0
             ene_ele, ene_exv = 0, 0
             for k in charge_list:
                 imp, jmp = k[0], k[1]
@@ -196,6 +202,9 @@ def main(top_name, pos_name):
                 dist = distance(tmp_coors[imp], tmp_coors[jmp])
                 e_tmp =  pair_ene_ele(chi, chj, dist)
                 total_energy += e_tmp
+                total_energy_4 += e_tmp
+                total_energy_5 += e_tmp
+                total_energy_6 += e_tmp
                 # ene_ele += e_tmp
             for k in exv_list:
                 imp, jmp = k[0], k[1]
@@ -203,13 +212,25 @@ def main(top_name, pos_name):
                 sig = 0.5 * (ex_rad[imp] + ex_rad[jmp])
                 e_tmp = pair_ene_exv(dist, sig)
                 total_energy += e_tmp
+                e_tmp = pair_ene_exv(dist, 4.0)/3.0
+                total_energy_4 += e_tmp
+                e_tmp = pair_ene_exv(dist, 4.5)/3.0
+                total_energy_5 += e_tmp
+                e_tmp = pair_ene_exv(dist, 5.0)/3.0
+                total_energy_6 += e_tmp
                 # ene_exv += e_tmp
             tmp_coors.clear()
 
             E_TOT.append(total_energy)
+            E_TOT_0_4.append(total_energy_4)
+            E_TOT_0_5.append(total_energy_5)
+            E_TOT_0_6.append(total_energy_6)
             # E_ELE.append(ene_ele)
             # E_EXV.append(ene_exv)
         table_E_TOT.append(E_TOT[:])
+        table_E_TOT.append(E_TOT_0_4[:])
+        table_E_TOT.append(E_TOT_0_5[:])
+        table_E_TOT.append(E_TOT_0_6[:])
         E_TOT.clear()
 
     for i in table_E_TOT:
@@ -219,19 +240,22 @@ def main(top_name, pos_name):
     if ymax > 50:
         ymax = 50
     dy = (ymax-ymin) * 0.1
-    plt.plot(X, table_E_TOT[0], '-', linewidth=2,  label=r'$quantile = 0.000$')
-    plt.plot(X, table_E_TOT[9], '-', linewidth=2,  label=r'$quantile = 0.01$')
-    plt.plot(X, table_E_TOT[19], '-', linewidth=2, label=r'$quantile = 0.02$')
-    plt.plot(X, table_E_TOT[29], '-', linewidth=2, label=r'$quantile = 0.03$')
-    plt.plot(X, table_E_TOT[39], '-', linewidth=2, label=r'$quantile = 0.04$')
-    plt.plot(X, table_E_TOT[49], '-', linewidth=2, label=r'$quantile = 0.05$')
+    plt.plot(X, table_E_TOT[0], '-', linewidth=2,  label=r'residue-type dependent $\sigma$')
+    plt.plot(X, table_E_TOT[1], '-', linewidth=2,  label=r'$\sigma = 4.0\AA$')
+    plt.plot(X, table_E_TOT[2], '-', linewidth=2,  label=r'$\sigma = 4.5\AA$')
+    plt.plot(X, table_E_TOT[3], '-', linewidth=2,  label=r'$\sigma = 5.0\AA$')
+    # plt.plot(X, table_E_TOT[9], '-', linewidth=2,  label=r'$quantile = 0.01$')
+    # plt.plot(X, table_E_TOT[19], '-', linewidth=2, label=r'$quantile = 0.02$')
+    # plt.plot(X, table_E_TOT[29], '-', linewidth=2, label=r'$quantile = 0.03$')
+    # plt.plot(X, table_E_TOT[39], '-', linewidth=2, label=r'$quantile = 0.04$')
+    # plt.plot(X, table_E_TOT[49], '-', linewidth=2, label=r'$quantile = 0.05$')
     plt.ylim(ymin-dy, ymax+dy)
     plt.xlim(-2, 4)
     plt.xlabel(r'Distance ($\AA$)')
     plt.ylabel(r'Energy (kcal/mol)')
     plt.grid(axis='x', linestyle='--', alpha=0.3)
     plt.grid(axis='y', linestyle='-', alpha=0.3)
-    plt.title(top_name[:-4]+' ('+r'$N_{chain}=$'+str(chain_num)+')')
+    plt.title(top_name[:-4])
     plt.legend(prop={'size': 16}, loc='upper right')
     plt.savefig(top_name[:-4]+'.png', dpi=150)
     # plt.show()
