@@ -1,5 +1,5 @@
 CPPINC=-I/usr/local/include
-CPPFLAG=-std=c++11
+CPPFLAG=-std=c++11 -O3
 
 default:
 
@@ -7,7 +7,7 @@ all: 	install_dir pdb_related dcd_related
 
 pdb_related: seq pdb_output pdb_cg_top matrix_transpose  ts_read pdb_dna_curve pdb_pdi_st pdb_wat_st
 
-dcd_related:  dcd_contact_num dcd_distance_0 dcd_distance_1 persistence_length dcd_dna_bpn
+dcd_related:  dcd_contact_num dcd_distance_0 dcd_distance_1 persistence_length dcd_dna_bpn dcd_distance_2 dcd_interface_scan
 
 install_dir:
 	mkdir -p ../bin
@@ -29,6 +29,12 @@ dcd_distance_0:
 dcd_distance_1:
 	c++ -Wall -I../include/ $(CPPINC) $(CPPFLAG) -o p_dist_com dcd_distances_com.cpp
 	mv p_dist_com ../bin/
+dcd_distance_2:
+	c++ -Wall -I../include/ $(CPPINC) $(CPPFLAG) -o p_dist_lig dcd_distances_lig_rec.cpp
+	mv p_dist_lig ../bin/
+dcd_interface_scan:
+	c++ -Wall -I../include/ $(CPPINC) $(CPPFLAG) -o p_interface dcd_interface_scan.cpp
+	mv p_interface ../bin/
 ts_read:
 	c++ -Wall $(CPPFLAG) -o p_ts_read cafemol_ts_read.cpp
 	mv p_ts_read ../bin/
