@@ -1,13 +1,5 @@
 #!/usr/bin/env python
 
-T = 300.0
-I = 0.1
-ek = 78.0                       # diele const
-coef_exv = 0.6
-coef_exv_hard = 0.6
-B = 12
-C = 6
-
 def distance(xi, xj):
     x1, y1, z1 = xi
     x2, y2, z2 = xj
@@ -20,31 +12,21 @@ def normalize(vec):
 
 def pair_ene_ele(q1, q2, dist):
     import math
-    global T
-    global I
-    global ek
+    T = 300.0
+    I = 0.1
+    ek = 78.0
     d_D = math.sqrt(3.95e-4*ek*T/I)
-    # print(q1, q2, dist, d_D)
     E_ele = 322 * q1 * q2 * math.exp(-dist/ d_D) / (ek * dist)
     return E_ele
 
-def pair_ene_exv(dist, sigma):
+def pair_ene_exv(dist, sigma, coef):
     import math
-    global coef_exv
-    # global coef_exv_hard
-    global B
-    # global C
+    B=12
     c_tmp = sigma/dist
-    # c_tmp2 = 4.0/dist
     if c_tmp <= 0.5:
         E_exv = 0
     else:
-        # E_exv = coef_exv * (c_tmp ** B - (B/C) * c_tmp ** C + (B/C - 1))
-        E_exv = coef_exv * (c_tmp ** B)
-    # if c_tmp2 <= 1:
-    #     E_exv += 0
-    # else:
-    # E_exv += coef_exv_hard * (c_tmp2**12)
+        E_exv = coef * (c_tmp ** B - 0.000244140625)
     return E_exv
 
 def main(top_name, pos_name):
@@ -210,13 +192,13 @@ def main(top_name, pos_name):
                 imp, jmp = k[0], k[1]
                 dist = distance(tmp_coors[imp], tmp_coors[jmp])
                 sig = 0.5 * (ex_rad[imp] + ex_rad[jmp])
-                e_tmp = pair_ene_exv(dist, sig)
+                e_tmp = pair_ene_exv(dist, sig, 0.6)
                 total_energy += e_tmp
-                e_tmp = pair_ene_exv(dist, 4.0)/3.0
+                e_tmp = pair_ene_exv(dist, 3.8, 0.5)
                 total_energy_4 += e_tmp
-                e_tmp = pair_ene_exv(dist, 4.5)/3.0
+                e_tmp = pair_ene_exv(dist, 4.0, 0.2)
                 total_energy_5 += e_tmp
-                e_tmp = pair_ene_exv(dist, 5.0)/3.0
+                e_tmp = pair_ene_exv(dist, 6.0, 0.2)
                 total_energy_6 += e_tmp
                 # ene_exv += e_tmp
             tmp_coors.clear()
@@ -233,17 +215,17 @@ def main(top_name, pos_name):
         table_E_TOT.append(E_TOT_0_6[:])
         E_TOT.clear()
 
-    for i in table_E_TOT:
-        print(i)
+    # for i in table_E_TOT:
+    #     print(i)
 
     ymin, ymax = min(table_E_TOT[0][:30]), max(table_E_TOT[-1][:])
     if ymax > 50:
         ymax = 50
     dy = (ymax-ymin) * 0.1
-    plt.plot(X, table_E_TOT[0], '-', linewidth=2,  label=r'residue-type dependent $\sigma$')
-    plt.plot(X, table_E_TOT[1], '-', linewidth=2,  label=r'$\sigma = 4.0\AA$')
-    plt.plot(X, table_E_TOT[2], '-', linewidth=2,  label=r'$\sigma = 4.5\AA$')
-    plt.plot(X, table_E_TOT[3], '-', linewidth=2,  label=r'$\sigma = 5.0\AA$')
+    plt.plot(X, table_E_TOT[0], '-', linewidth=2,  label=r'residue-type dependent $\sigma$, $\varepsilon=0.6$')
+    plt.plot(X, table_E_TOT[1], '-', linewidth=2,  label=r'$\sigma = 3.8\AA$, $\varepsilon=0.5$')
+    plt.plot(X, table_E_TOT[2], '-', linewidth=2,  label=r'$\sigma = 4.0\AA$, $\varepsilon=0.2$')
+    plt.plot(X, table_E_TOT[3], '-', linewidth=2,  label=r'$\sigma = 6.0\AA$, $\varepsilon=0.2$')
     # plt.plot(X, table_E_TOT[9], '-', linewidth=2,  label=r'$quantile = 0.01$')
     # plt.plot(X, table_E_TOT[19], '-', linewidth=2, label=r'$quantile = 0.02$')
     # plt.plot(X, table_E_TOT[29], '-', linewidth=2, label=r'$quantile = 0.03$')
@@ -251,8 +233,8 @@ def main(top_name, pos_name):
     # plt.plot(X, table_E_TOT[49], '-', linewidth=2, label=r'$quantile = 0.05$')
     plt.ylim(ymin-dy, ymax+dy)
     plt.xlim(-2, 4)
-    plt.xlabel(r'Distance ($\AA$)')
-    plt.ylabel(r'Energy (kcal/mol)')
+    plt.xlabel(r'$\Delta d$ ($\AA$)', fontsize=18)
+    plt.ylabel(r'$E_{inter}$ (kcal/mol)', fontsize=18)
     plt.grid(axis='x', linestyle='--', alpha=0.3)
     plt.grid(axis='y', linestyle='-', alpha=0.3)
     plt.title(top_name[:-4])
