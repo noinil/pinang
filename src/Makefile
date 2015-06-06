@@ -32,6 +32,9 @@ dcd_distance_1:
 dcd_distance_2:
 	c++ -Wall -I../include/ $(CPPINC) $(CPPFLAG) -o p_dist_lig dcd_distances_lig_rec.cpp
 	mv p_dist_lig ../bin/
+dcd_angle:
+	c++ -Wall -I../include/ $(CPPINC) $(CPPFLAG) -o p_angle_com dcd_angle_com.cpp
+	mv p_angle_com ../bin/
 dcd_interface_scan:
 	c++ -Wall -I../include/ $(CPPINC) $(CPPFLAG) -o p_interface dcd_interface_scan.cpp
 	mv p_interface ../bin/
