@@ -153,8 +153,6 @@ int main(int argc, char *argv[])
     pinang::Chain c2 = pdb1.m_model(mod_index-1).m_chain(1);
     int len1 = c1.m_chain_length();
     int len2 = c2.m_chain_length();
-    cout << "len1 = " << len1 << endl;
-    cout << "len2 = " << len2 << endl;
     for (i = 1; i < len1; i++) {
         curve1_nodes.push_back(c1.m_residue(i).m_P().coordinates());
     }
@@ -450,13 +448,14 @@ int main(int argc, char *argv[])
                    << curve1_dots[i]
                    << std::endl;
     }
+    back_file << "TER" << std::endl;
     for (i = 0; i < int(curve2_dots.size()); i++) {
         back_file << std::setw(6) << "HETATM"
                    << std::setw(5) << i+1+k << " "
                    << std::setw(4) << "O   "
                    << std::setw(1) << " "
                    << std::setw(3) << "CUR" << " "
-                   << std::setw(1) << "A"
+                   << std::setw(1) << "B"
                    << std::setw(4) << i/10+l+3
                    << std::setw(1) << " " << "   "
                    << curve2_dots[i]

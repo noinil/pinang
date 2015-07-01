@@ -298,15 +298,15 @@ namespace pinang {
         {
             _C_alpha = a;
         }
-        if (a.atom_name() == "C3'" || a.atom_name() == "S  ")
+        if (a.atom_name() == "C3'" || a.atom_name() == "S  " || a.atom_name() == "DS ")
         {
             _S = a;
         }
-        if (a.atom_name() == "P  ")
+        if (a.atom_name() == "P  " || a.atom_name() == "DP ")
         {
             _P = a;
         }
-        if (a.atom_name() == "N1 " || a.atom_name() == "B  ")
+        if (a.atom_name() == "N1 " || a.atom_name() == "B  " || a.atom_name() == "DB ")
         {
             _B = a;
         }
