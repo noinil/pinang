@@ -5,20 +5,123 @@
 #include <fstream>
 #include <cstdlib>
 #include <unistd.h>
+#include <cmath>
 
 using namespace std;
 
 int main(int argc, char *argv[])
 {
-    std::string infilename = "../data/dna_cg.pdb";
-    pinang::PDB pdb1(infilename);
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // whatever
 
-    std::string curve_name = "_curve.pdb";
-    std::ofstream curve_file(curve_name.c_str());
+    std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ "
+              << std::endl;
+    std::cout << " ~                  PINANG DNA curvature                  ~ "
+              << std::endl;
+    std::cout << " ========================================================== "
+              << std::endl;
+
+    int opt, mod_index = 0;
+    int dna_mod = 0;            // 0 -- 3SPN.2; 1 -- 3SPN.2C;   Default: 0
+    int mod_flag = 0;
+    int dna_flag = 0;
+    int in_flag = 0;
+
+    std::string infilename = "some.pdb";
 
     std::string axis_name = "_axis.pdb";
+    std::string back_name = "_backbone.pdb";
+    std::string out_name = "_curve.dat";
+
+    while ((opt = getopt(argc, argv, "o:x:b:m:d:f:h")) != -1) {
+        switch (opt) {
+        case 'o':
+            out_name = optarg;
+            break;
+        case 'x':
+            axis_name = optarg;
+            break;
+        case 'b':
+            back_name = optarg;
+            break;
+        case 'm':
+            mod_index = atoi(optarg);
+            mod_flag = 1;
+            break;
+        case 'd':
+            dna_mod = atoi(optarg);
+            dna_flag = 1;
+            break;
+        case 'f':
+            infilename = optarg;
+            in_flag = 1;
+            break;
+        case 'h':
+            std::cout << " Usage: "
+                      << argv[0]
+                      << " -f some.pdb [-o _curve.dat] [-x _axis.pdb] \n"
+                      << " [-b _backbone.pdb] [-m module] [-d dna_model] [-h]"
+                      << std::endl;
+            exit(EXIT_SUCCESS);
+            break;
+        default: /* '?' */
+            std::cout << " Usage: "
+                      << argv[0]
+                      << " -f some.pdb [-o _curve.dat] [-x _axis.pdb] \n"
+                      << " [-b _backbone.pdb] [-m module] [-d dna_model] [-h]"
+                      << std::endl;
+            exit(EXIT_FAILURE);
+        }
+    }
+
+    if (!in_flag)
+    {
+        std::cout << " ERROR: need parameter for option -f: " << std::endl
+                  << " Usage: "
+                  << argv[0]
+                  << " -f some.pdb [-o _curve.dat] [-x _axis.pdb] \n"
+                  << " [-b _backbone.pdb] [-m module] [-d dna_model] [-h]"
+                  << std::endl;
+        exit(EXIT_SUCCESS);
+    }
+    pinang::PDB pdb1(infilename);
+
+    std::ofstream back_file(back_name.c_str());
     std::ofstream axis_file(axis_name.c_str());
-    std::ofstream test_file("test.pdb");
+    std::ofstream out_file(out_name.c_str());
+
+    if (mod_flag != 1) {
+        if (pdb1.n_models() == 1)
+        {
+            mod_index = 1;
+        } else {
+            std::cout << " Please choose a MODULE: " ;
+            std::cin >> mod_index;
+        }
+    }
+
+    if (dna_flag != 1) {
+        std::cout << " You'd better specify the DNA MODULE: " << std::endl;
+        std::cout << "      0 for 3SPN2; 1 for 3SPN2C" << std::endl;
+    }
+
+    std::cout << " Analyzing DNA curvature of MODULE " << mod_index
+              << " of " << infilename  << " ... " << std::endl
+              << " using DNA model: " << dna_mod
+              << "  (0: 3SPN2; 1: 3SPN2C)"
+              << std::endl;
+
+    /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // main
+    //  _ _                 _      _ _
+    // ( | )_ __ ___   __ _(_)_ __( | )
+    //  V V| '_ ` _ \ / _` | | '_ \V V
+    //     | | | | | | (_| | | | | |
+    //     |_| |_| |_|\__,_|_|_| |_|
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    */
+
+    const double p_D_phosphate = 17.45;
 
     std::vector<pinang::Vec3d> curve1_dots;  // Interpolation points;
     std::vector<pinang::Vec3d> curve1_nodes; // "P" atoms in the 1st backbone;
@@ -29,6 +132,7 @@ int main(int argc, char *argv[])
     std::vector<pinang::Vec3d> curve2_tangents;
 
     std::vector<pinang::Vec3d> cross_vecs;
+    std::vector<pinang::Vec3d> base_positions;
 
     std::vector<pinang::Vec3d> axis_dots;
     std::vector<pinang::Vec3d> axis_nodes;
@@ -36,30 +140,44 @@ int main(int argc, char *argv[])
 
     std::vector<double> base_rise;
     std::vector<double> helix_width;
+    std::vector<double> bases_per_turn;
+
+    std::vector<double> major_groove_width;
+    std::vector<double> minor_groove_width;
+
     double d = 0;               // tmp for base_rise;
     double r = 0;               // tmp for helix width;
 
     int i  = 0;
-    int len1 = pdb1.m_model(0).m_chain(0).m_chain_length();
-    int len2 = pdb1.m_model(0).m_chain(1).m_chain_length();
+    pinang::Chain c1 = pdb1.m_model(mod_index-1).m_chain(0);
+    pinang::Chain c2 = pdb1.m_model(mod_index-1).m_chain(1);
+    int len1 = c1.m_chain_length();
+    int len2 = c2.m_chain_length();
+    cout << "len1 = " << len1 << endl;
+    cout << "len2 = " << len2 << endl;
     for (i = 1; i < len1; i++) {
-        curve1_nodes.push_back(pdb1.m_model(0).m_chain(0).m_residue(i).m_P().coordinates());
+        curve1_nodes.push_back(c1.m_residue(i).m_P().coordinates());
     }
     for (i = 1; i < len2; i++) {
-        curve2_nodes.push_back(pdb1.m_model(0).m_chain(1).m_residue(i).m_P().coordinates());
+        curve2_nodes.push_back(c2.m_residue(i).m_P().coordinates());
     }
-
+    for (i = 0; i < len1; i++) {
+        base_positions.push_back(c1.m_residue(i).m_B().coordinates());
+    }
 
     pinang::Vec3d v1(0,0,0);
     pinang::Vec3d v2(0,0,0);
     pinang::Vec3d v3(0,0,0);
-
-    // ==================== curve 1 calculation ====================
     pinang::Vec3d s_tmp(0,0,0);
     pinang::Vec3d t_tmp(0,0,0);
+
+    pinang::Vec3d p_i(0,0,0);   // used in the algorithm of spline fitting;
+    pinang::Vec3d b_r(0,0,0);   // used in the algorithm of spline fitting;
     double t1, t2;
-    len1 = curve1_nodes.size();
-    len2 = curve2_nodes.size();
+
+    // ==================== curve 1 calculation ====================
+    len1 = int(curve1_nodes.size());
+    len2 = int(curve2_nodes.size());
     for (i = 0; i < len1; i++) {
         if (i == 0)
         {
@@ -80,16 +198,20 @@ int main(int argc, char *argv[])
             curve1_tangents.push_back(t_tmp);
         }
 
-        t_tmp = curve2_nodes[len2-1-i] - curve1_nodes[i];
+        t_tmp = curve2_nodes[len2-1-i] - curve1_nodes[i]; // for cross_vectors;
         cross_vecs.push_back(t_tmp);
     }
+    // ~~~~~~~~~~ correction of the first and the last vectors ~~~~~~~~~~
+    t1 = (curve1_tangents[1] * curve1_tangents[2]) * 2;
+    v1 = curve1_tangents[1] * t1;
+    curve1_tangents[0] = v1 - curve1_tangents[2]; // fixed tangent 0;
 
-    pinang::Vec3d p_i(0,0,0);
-    pinang::Vec3d b_r(0,0,0);
+    t1 = (curve1_tangents[len1-3] * curve1_tangents[len1-2]) * 2;
+    v1 = curve1_tangents[len1-2] * t1;
+    curve1_tangents[len1-1] = v1 - curve1_tangents[len1-3]; // fixed last tangent;
+
+    // ~~~~~~~~~~ spline fitting ~~~~~~~~~~
     for (i = 0; i < len1 - 1; i++) {
-        // std::cout << i << " -- nodes:  "
-        //           << curve1_nodes[i] << " -- tangents: "
-        //           << curve1_tangents[i] << std::endl;
         p_i = curve1_nodes[i];
         t_tmp = curve1_nodes[i+1] - curve1_nodes[i];
         d = t_tmp.norm();
@@ -98,8 +220,7 @@ int main(int argc, char *argv[])
         for (int j = 0; j < 10; j++) {
             r = j * 0.1;
             b_r = p_i + v1 * d * ( r - 2*r*r + r*r*r)
-                + t_tmp * ( 3*r*r - 2*r*r*r )
-                + v2 * d * (r*r*r - r*r);
+                + t_tmp * ( 3*r*r - 2*r*r*r ) + v2 * d * (r*r*r - r*r);
             curve1_dots.push_back(b_r);
         }
     }
@@ -128,10 +249,17 @@ int main(int argc, char *argv[])
         }
     }
 
+    // ~~~~~~~~~~ correction of the first and the last vectors ~~~~~~~~~~
+    t1 = (curve2_tangents[1] * curve2_tangents[2]) * 2;
+    v1 = curve2_tangents[1] * t1;
+    curve2_tangents[0] = v1 - curve2_tangents[2]; // fixed tangent 0;
+
+    t1 = (curve2_tangents[len1-3] * curve2_tangents[len1-2]) * 2;
+    v1 = curve2_tangents[len1-2] * t1;
+    curve2_tangents[len1-1] = v1 - curve2_tangents[len1-3]; // fixed last tangent;
+
+    // ~~~~~~~~~~ spline fitting ~~~~~~~~~~
     for (i = 0; i < len2 - 1; i++) {
-        // std::cout << i << " -- nodes:  "
-        //           << curve2_nodes[i] << " -- tangents: "
-        //           << curve2_tangents[i] << std::endl;
         p_i = curve2_nodes[i];
         t_tmp = curve2_nodes[i+1] - curve2_nodes[i];
         d = t_tmp.norm();
@@ -140,78 +268,137 @@ int main(int argc, char *argv[])
         for (int j = 0; j < 10; j++) {
             r = j * 0.1;
             b_r = p_i + v1 * d * ( r - 2*r*r + r*r*r)
-                + t_tmp * ( 3*r*r - 2*r*r*r )
-                + v2 * d * (r*r*r - r*r);
+                + t_tmp * ( 3*r*r - 2*r*r*r ) + v2 * d * (r*r*r - r*r);
             curve2_dots.push_back(b_r);
         }
     }
     p_i = curve2_nodes[len2-1];
     curve2_dots.push_back(p_i);
 
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // ==================== axis calculation ====================
 
-    pinang::Vec3d H(0,0,0);
-    pinang::Vec3d P1(0,0,0);
-    pinang::Vec3d P2(0,0,0);
-    pinang::Vec3d n1(0,0,0);
-    pinang::Vec3d n2(0,0,0);
+    pinang::Vec3d H(0,0,0);     // for use in the algorithm of axis calculation;
+    pinang::Vec3d P1(0,0,0);    // for use in the algorithm of axis calculation;
+    pinang::Vec3d P2(0,0,0);    // for use in the algorithm of axis calculation;
+    pinang::Vec3d n1(0,0,0);    // for use in the algorithm of axis calculation;
+    pinang::Vec3d n2(0,0,0);    // for use in the algorithm of axis calculation;
     for (i = 0; i < len1; i++) {
-        if (i == 0)
-        {
-            v1 = cross_vecs[i];
-            v2 = cross_vecs[i+1];
+        if (i == len1-1) {
+            v1 = cross_vecs[i-1];
+            v2 = cross_vecs[i];
             t_tmp = v1^v2;
-            H = t_tmp * (1/t_tmp.norm());
-            P1 = curve1_nodes[i] + (v1 * 0.5);
-            P2 = curve1_nodes[i+1] + (v2 * 0.5);
-            t_tmp = H ^ v1;
-            n1 = t_tmp * (1/t_tmp.norm());
+            H = t_tmp * (1/t_tmp.norm()); // H is important, the local direction;
+            P1 = curve1_nodes[i] + (v2 * 0.5); // midpoint of cross_vecs;
             t_tmp = H ^ v2;
-            n2 = t_tmp * (1/t_tmp.norm());
-        } else if (i == len1-1) {
-            v2 = cross_vecs[i-1];
-            v1 = cross_vecs[i];
-            t_tmp = v1^v2;
-            H = t_tmp * (1/t_tmp.norm());
-            P2 = curve1_nodes[i-1] + (v2 * 0.5);
-            P1 = curve1_nodes[i] + (v1 * 0.5);
-            t_tmp = v1 ^ H;
             n1 = t_tmp * (1/t_tmp.norm());
-            t_tmp = v2 ^ H;
-            n2 = t_tmp * (1/t_tmp.norm());
         } else {
             v1 = cross_vecs[i];
             v2 = cross_vecs[i+1];
             t_tmp = v1^v2;
-            H = t_tmp * (1/t_tmp.norm());
-            P1 = curve1_nodes[i] + (v1 * 0.5);
-            P2 = curve1_nodes[i+1] + (v2 * 0.5);
+            H = t_tmp * (1/t_tmp.norm()); // H is important, the local direction;
+            P1 = curve1_nodes[i] + (v1 * 0.5); // midpoint of cross_vecs;
             t_tmp = H ^ v1;
             n1 = t_tmp * (1/t_tmp.norm());
-            t_tmp = H ^ v2;
-            n2 = t_tmp * (1/t_tmp.norm());
         }
-        axis_directions.push_back(H);
-        s_tmp = P2 - P1;
-        d = s_tmp * H;
-        // std::cout << " Base rise at " << i << " : " << d << std::endl;
-        base_rise.push_back(d);
-        // r = ( d*d - s_tmp.sqr_norm())/(2 * (s_tmp * n2));
-        r = 2.3 * v1.norm() / 17.45;
-        std::cout << " Node " << i+1
-                  << " hw " << cross_vecs[i].norm()
-                  << " P-dis: " << s_tmp.norm()
-                  << " base rise: " << d
-                  << std::endl;
-        helix_width.push_back(r);
+        axis_directions.push_back(H); // axis direction vectors!
+
+        // r = axis center deviation!  This is just an empirical estimation!
+        if (dna_mod == 0){
+            r = 2.12 * v1.norm() / p_D_phosphate;
+            // std::cout << r << std::endl;
+        }
+        if (dna_mod == 1){
+            r = 3.5 * v1.norm() / p_D_phosphate;
+            // std::cout << r << std::endl;
+        }
         t_tmp = P1 + (n1 * r);
         axis_nodes.push_back(t_tmp);
+
+        // Calculation of base rise!
+        P1 = base_positions[i];
+        P2 = base_positions[i+1];
+        d = (P2 - P1) * H;
+        base_rise.push_back(d);
+
+        // r = helix width!  Also empirical estimation!
+        r = 23.0 * v1.norm() / p_D_phosphate;
+        helix_width.push_back(r);
+
+        // -------------------- Groove Width! --------------------
+        int m = 0, n = 0;
+        double major_w = 1000;
+        double minor_w = 1000;
+        // ---------- major groove ----------
+        for (m = i*10 - 50; m < i*10; m++) {
+            int proj = 1000;
+            double t_dist = 1000;
+            if (m < 0)
+                continue;
+            else {
+                v1 = curve1_dots[m] - t_tmp; // vector from P[m] atom to axis center[i];
+                n2 = v1 ^ n1;                 // normal vector of the plane;
+                n2 = n2 * (1/n2.norm());
+                for (n = (len2-i-5)*10; n < (len2-i)*10; n++) {
+                    if (n < 0)
+                        continue;
+                    else {
+                        // vector from P atom from the other strand to axis center;
+                        v2 = curve2_dots[n] - t_tmp;
+                        v2 = v2*(1/v2.norm());
+                        if (abs(n2 * v2) <= 0.05) // almost in the same plane!
+                        {
+                            proj = 0;
+                            break;
+                        }
+                    }
+                }
+                if (proj == 0)
+                    t_dist = vec_distance(curve1_dots[m], curve2_dots[n]);
+                if (t_dist < major_w)
+                    major_w = t_dist;
+            }
+        }
+        // std::cout << i << "  " << major_w << std::endl;
+        major_groove_width.push_back(major_w);
+
+        // ---------- minor groove ----------
+        for (m = i * 10 ; m < i * 10 + 60; m++) {
+            int proj = 1000;
+            double t_dist = 1000;
+            if (m > len1 * 10 - 1)
+                continue;
+            else {
+                v1 = curve1_dots[m] - t_tmp; // vector from P[m] atom to axis center[i];
+                n2 = v1 ^ n1;                 // normal vector of the plane;
+                n2 = n2 * (1/n2.norm());
+                for (n = (len2-i) * 10; n < (len2 - i + 6) * 10; n++) {
+                    if (n  > len2*10 -1)
+                        continue;
+                    else {
+                        // vector from P atom from the other strand to axis center;
+                        v2 = curve2_dots[n] - t_tmp;
+                        v2 = v2*(1/v2.norm());
+                        if (abs(n2 * v2) <= 0.05) // almost in the same plane!
+                        {
+                            proj = 0;
+                            break;
+                        }
+                    }
+                }
+                if (proj == 0)
+                    t_dist = vec_distance(curve1_dots[m], curve2_dots[n]);
+                if (t_dist < minor_w)
+                    minor_w = t_dist;
+            }
+        }
+        // std::cout << i << "  " << minor_w << std::endl;
+        minor_groove_width.push_back(minor_w);
+
     }
 
-    for (i = 0; i < axis_nodes.size() - 1; i++) {
-        // std::cout << i << " -- nodes:  "
-        //           << axis_nodes[i] << " -- tangents: "
-        //           << axis_tangents[i] << std::endl;
+    // axis spline fitting!
+    for (i = 0; i < int(axis_nodes.size()) - 1; i++) {
         p_i = axis_nodes[i];
         t_tmp = axis_nodes[i+1] - axis_nodes[i];
         d = t_tmp.norm();
@@ -220,17 +407,39 @@ int main(int argc, char *argv[])
         for (int j = 0; j < 10; j++) {
             r = j * 0.1;
             b_r = p_i + v1 * d * ( r - 2*r*r + r*r*r)
-                + t_tmp * ( 3*r*r - 2*r*r*r )
-                + v2 * d * (r*r*r - r*r);
+                + t_tmp * ( 3*r*r - 2*r*r*r ) + v2 * d * (r*r*r - r*r);
             axis_dots.push_back(b_r);
         }
     }
     p_i = axis_nodes[axis_nodes.size()-1];
     axis_dots.push_back(p_i);
 
+    // ~~~~~~~~~~~~~~~~~~~~ calculating base per turn ~~~~~~~~~~~~~~~~~~~~
+    for (i = 0; i < int(curve1_tangents.size())-10; i++) {
+        t_tmp = curve1_tangents[i];
+        double angle = pinang::g_pi;
+        int best_fit = 0;
+        for (int j = i * 10 + 90; j < i * 10 + 110; j++) {
+            if (j > int(curve1_dots.size())-2)
+                break;
+            v1 = curve1_dots[j+1] - curve1_dots[j-1];
+            s_tmp = v1 * (1/v1.norm());
+            double ang = abs(vec_angle(t_tmp, s_tmp));
+            if (ang < angle)
+            {
+                angle = ang;
+                best_fit = j;
+            }
+        }
+        bases_per_turn.push_back(best_fit/10.0-i);
+    }
+
+
     // ============================ Output to PDB ============================
-    for (i = 0; i < curve1_dots.size(); i++) {
-        curve_file << std::setw(6) << "HETATM"
+    int k = curve1_dots.size();
+    int l = curve1_nodes.size();
+    for (i = 0; i < int(curve1_dots.size()); i++) {
+        back_file << std::setw(6) << "HETATM"
                    << std::setw(5) << i+1 << " "
                    << std::setw(4) << "O   "
                    << std::setw(1) << " "
@@ -241,10 +450,8 @@ int main(int argc, char *argv[])
                    << curve1_dots[i]
                    << std::endl;
     }
-    int k = curve1_dots.size();
-    int l = curve1_nodes.size();
-    for (i = 0; i < curve2_dots.size(); i++) {
-        curve_file << std::setw(6) << "HETATM"
+    for (i = 0; i < int(curve2_dots.size()); i++) {
+        back_file << std::setw(6) << "HETATM"
                    << std::setw(5) << i+1+k << " "
                    << std::setw(4) << "O   "
                    << std::setw(1) << " "
@@ -255,22 +462,23 @@ int main(int argc, char *argv[])
                    << curve2_dots[i]
                    << std::endl;
     }
-
-    for (i = 0; i < curve1_dots.size()-1; i++) {
-        curve_file << std::setw(6) << "CONECT"
+    // connecting points!
+    for (i = 0; i < int(curve1_dots.size())-1; i++) {
+        back_file << std::setw(6) << "CONECT"
                    << std::setw(5) << i+1
                    << std::setw(5) << i+2
                    << std::endl;
     }
-    for (i = 0; i < curve2_dots.size()-1; i++) {
-        curve_file << std::setw(6) << "CONECT"
+    for (i = 0; i < int(curve2_dots.size())-1; i++) {
+        back_file << std::setw(6) << "CONECT"
                    << std::setw(5) << i+1+k
                    << std::setw(5) << i+2+k
                    << std::endl;
     }
 
 
-    for (i = 0; i < axis_dots.size(); i++) {
+    // ~~~~~~~~~~~~~~~~~~~~ output axis pdb ~~~~~~~~~~~~~~~~~~~~
+    for (i = 0; i < int(axis_dots.size()); i++) {
         axis_file << std::setw(6) << "HETATM"
                    << std::setw(5) << i+1 << " "
                    << std::setw(4) << "A   "
@@ -282,34 +490,191 @@ int main(int argc, char *argv[])
                    << axis_dots[i]
                    << std::endl;
     }
-    for (i = 0; i < axis_dots.size()-1; i++) {
+    for (i = 0; i < int(axis_dots.size())-1; i++) {
         axis_file << std::setw(6) << "CONECT"
                    << std::setw(5) << i+1
                    << std::setw(5) << i+2
                    << std::endl;
     }
 
-    for (i = 0; i < axis_nodes.size(); i++) {
-        test_file << std::setw(6) << "HETATM"
-                  << std::setw(5) << i+1 << " "
-                  << std::setw(4) << "A   "
-                  << std::setw(1) << " "
-                  << std::setw(3) << "AXS" << " "
-                  << std::setw(1) << "A"
-                  << std::setw(4) << i/10+1
-                  << std::setw(1) << " " << "   "
-                  << axis_nodes[i]
-                  << std::endl;
+    // =================== output base rise, helix width... ===================
+    // -------------------- base-rise helix-width --------------------
+    out_file << "# Base rise and helix width:" << std::endl;
+    out_file << "#    i - j  " << std::setw(8) << "b_rise"
+             << "  " << setw(8) << "h_width" << std::endl;
+    double b_rise_ave = 0;
+    double h_width_ave = 0;
+    for (i = 0; i < len1; i++) {
+        b_rise_ave += base_rise[i];
+        h_width_ave += helix_width[i];
+        out_file << std::setw(6) << i+1
+                 << std::setw(4) << i+2 << "  "
+                 << std::setw(8)
+                 << std::setiosflags(std::ios_base::fixed)
+                 << std::setprecision(2)
+                 << base_rise[i] << "  "
+                 << std::setw(8)
+                 << helix_width[i]
+                 << std::endl;
     }
-    for (i = 0; i < axis_nodes.size()-1; i++) {
-        test_file << std::setw(6) << "CONECT"
-                  << std::setw(5) << i+1
-                  << std::setw(5) << i+2
-                  << std::endl;
+    double err1 = 0, err2 = 0;
+    b_rise_ave /= len1;
+    h_width_ave /= len1;
+    for (i = 0; i < len1; i++) {
+        double td = 0;
+        td = b_rise_ave - base_rise[i];
+        err1 += td * td;
+        td = h_width_ave - helix_width[i];
+        err2 += td * td;
     }
+    err1 = sqrt(err1)/len1;
+    err2 = sqrt(err2)/len1;
+    out_file << "# Averaged base rise: " << b_rise_ave
+             << "; stderr: " << err1
+             << std::endl;
+    out_file << "# Averaged helix width: " << h_width_ave
+             << "; stderr: " << err2
+             << std::endl;
 
-    curve_file.close();
+    // -------------------- base-per-turn --------------------------------------
+    out_file << std::endl << "# Bases-per-turn" << std::endl;
+    out_file << std::setw(6) << "# turn " << std::setw(8) << "bpt"
+             << std::endl;
+    double base_pt_ave = 0;
+    for (i = 0; i < int(bases_per_turn.size()); i++) {
+        base_pt_ave += bases_per_turn[i];
+        out_file << std::setw(6) << i+1 << " "
+                 << std::setw(8)
+                 << std::setiosflags(std::ios_base::fixed)
+                 << std::setprecision(2)
+                 << bases_per_turn[i]
+                 << std::endl;
+    }
+    base_pt_ave /= bases_per_turn.size();
+    err1 = 0;
+    for (i = 0; i < int(bases_per_turn.size()); i++) {
+        double td = 0;
+        td = base_pt_ave - bases_per_turn[i];
+        err1 += td * td;
+    }
+    err1 = sqrt(err1)/bases_per_turn.size();
+    out_file << "# Averaged base per turn: " << base_pt_ave
+             << "; stderr: " << err1
+             << std::endl;
+
+    // -------------------- major-groove-width ---------------------------------
+    out_file << std::endl << "# Major groove width:" << std::endl
+             << std::setw(6) << "#    i" << std::setw(8) << "width"
+             << std::endl;
+    double major_wd_ave = 0;
+    err1 = 0;
+    int ttt = 0;
+    for (i = 3; i < int(major_groove_width.size())-3; i++) {
+        if (major_groove_width[i] > 25)
+            continue;
+        major_wd_ave += major_groove_width[i];
+        ttt++;
+        out_file << std::setw(6) << i+1
+                 << std::setw(8)
+                 << std::setiosflags(std::ios_base::fixed)
+                 << std::setprecision(2)
+                 << major_groove_width[i]
+                 << std::endl;
+    }
+    major_wd_ave /= ttt;
+    ttt = 0;
+    for (i = 3; i < int(major_groove_width.size())-3; i++) {
+        double td = 0;
+        if (major_groove_width[i] > 25)
+            continue;
+        td = major_wd_ave - major_groove_width[i];
+        err1 += td * td;
+        ttt++;
+    }
+    err1 /= ttt;
+    out_file << "# Averaged major groove width: " << major_wd_ave
+             << "; stderr: " << err1
+             << std::endl;
+
+    // -------------------- minor-groove-width ---------------------------------
+    out_file << std::endl << "# Minor groove width:" << std::endl
+             << std::setw(6) << "#    i" << std::setw(8) << "width"
+             << std::endl;
+    double minor_wd_ave = 0;
+    err1 = 0;
+    ttt = 0;
+    for (i = 3; i < int(minor_groove_width.size())-3; i++) {
+        if (minor_groove_width[i] > 18)
+            continue;
+        minor_wd_ave += minor_groove_width[i];
+        ttt++;
+        out_file << std::setw(6) << i+1
+                 << std::setw(8)
+                 << std::setiosflags(std::ios_base::fixed)
+                 << std::setprecision(2)
+                 << minor_groove_width[i]
+                 << std::endl;
+    }
+    minor_wd_ave /= ttt;
+    ttt = 0;
+    for (i = 3; i < int(minor_groove_width.size())-3; i++) {
+        double td = 0;
+        if (minor_groove_width[i] > 18)
+            continue;
+        td = minor_wd_ave - minor_groove_width[i];
+        err1 += td * td;
+        ttt++;
+    }
+    err1 /= ttt;
+    out_file << "# Averaged minor groove width: " << minor_wd_ave
+             << "; stderr: " << err1
+             << std::endl;
+
+    // -------------------- local-bending-angle --------------------------------
+    out_file << std::endl << "# Successive bending angle:" << std::endl
+             << std::setw(6) << "#    i" << std::setw(8) << "angle";
+    for (i = 0; i < 9; i++) {
+        out_file << std::setw(8) << std::setiosflags(std::ios::showpos)
+                 << i+2;
+    }
+    out_file << std::resetiosflags(std::ios::showpos) << std::endl;
+
+    double ang_ave = 0;
+    ttt = 0;
+    for (i = 0; i < int(axis_nodes.size()) - 2; i++) {
+        v1 = axis_nodes[i+1] - axis_nodes[i];
+        v2 = axis_nodes[i+2] - axis_nodes[i+1];
+        double ang = vec_angle_deg(v1, v2);
+        ang_ave += ang;
+        ttt++;
+        out_file << std::setw(6) << i+2
+                 << std::setw(8)
+                 << std::setiosflags(std::ios_base::fixed)
+                 << std::setprecision(2)
+                 << ang ;
+
+        double ang_2 = 0;
+        pinang::Vec3d v3(0,0,0);
+        for (int j = 2; j <= 10; j++) {
+            if (i + j >= int(axis_nodes.size())-1)
+                break;
+            v3 = axis_nodes[i+j+1] - axis_nodes[i+j];
+            ang_2 = vec_angle_deg(v1, v3);
+            out_file << std::setw(8)
+                     << std::setiosflags(std::ios_base::fixed)
+                     << std::setprecision(2)
+                     << ang_2 ;
+        }
+        out_file << std::endl;
+    }
+    ang_ave /= ttt;
+    out_file << "# Averaged local bending angle: " << ang_ave
+             << std::endl;
+
+
+    back_file.close();
     axis_file.close();
+    out_file.close();
 
     return 0;
 }
