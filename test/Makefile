@@ -22,7 +22,6 @@ test_dcd_read:
 	./t6 ../data/test.dcd
 dna_curve_pdb:
 	g++ -Wall -I../include/ $(CPPFLAG) -O3 -o t7 pdb_dna_curve.cpp
-	./t7
 pdi_st:
 	c++ -Wall -I../include/ -o t8 pdb_PW_st.cpp
 	./t8 -f ttt.pdb
