@@ -448,13 +448,14 @@ int main(int argc, char *argv[])
                    << curve1_dots[i]
                    << std::endl;
     }
+    back_file << "TER" << std::endl;
     for (i = 0; i < int(curve2_dots.size()); i++) {
         back_file << std::setw(6) << "HETATM"
                    << std::setw(5) << i+1+k << " "
                    << std::setw(4) << "O   "
                    << std::setw(1) << " "
                    << std::setw(3) << "CUR" << " "
-                   << std::setw(1) << "A"
+                   << std::setw(1) << "B"
                    << std::setw(4) << i/10+l+3
                    << std::setw(1) << " " << "   "
                    << curve2_dots[i]
