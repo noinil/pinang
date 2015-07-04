@@ -562,7 +562,7 @@ int main(int argc, char *argv[])
     // =========================================================================
     */
     std::cout << " 5. Calculating groove width ..." << std::endl;
-    for (i = 0; i < int(axis_directions.size()); i++) {
+    for (i = 0; i < int(axis_directions.size())-1; i++) {
         // step 1: plane perpendicular to direction Ox, O is the current point -
         // Plane: a x + b y + c z = _d0
         j = i + 4;
@@ -602,6 +602,10 @@ int main(int argc, char *argv[])
                 kb2 = k;
             }
         }
+        // std::cout << "kb test"
+        //           << backbone2_dots[kb2] * nm - _d0 << " .... "
+        //           << backbone1_dots[kb1] * nm - _d0
+        //           << std::endl;
         // step 3: find a point in groove --------------------------------------
         pinang::Vec3d vtmp;
         pinang::Vec3d v1;
@@ -621,7 +625,12 @@ int main(int argc, char *argv[])
         v2 = vtmp * (1.0 / vtmp.norm());
         vtmp = v1 + v2;
         groove_D1 = nm ^ v1;    // ****************************** OMG~
-
+        if (vtmp.norm() > 0.05) {
+            if (vtmp * groove_D1 > 0)
+                groove_D1 = vtmp * (1.0 / vtmp.norm());
+            else
+                groove_D1 = vtmp * ( - 1.0 / vtmp.norm());
+        }
         // ============================================================!!!!!!!!!
         // !!! KEY~ !!!
         // step 4: rotate the test plane around groove_D
@@ -629,7 +638,7 @@ int main(int argc, char *argv[])
         double major_g_w = 100000.0;
         pinang::Vec3d t3 = groove_D1 ^ nm; // plane normal vector
         double theta = 0;
-        double angle_lim = pinang::g_pi / 3;   // 60 degree;
+        double angle_lim = pinang::g_pi / 2;   // 90 degree;
         for (theta = - angle_lim; theta <= 0; theta += pi_over_60) {
             pinang::Vec3d I1;   // backbone 1
             pinang::Vec3d I2;   // backbone 2
@@ -637,13 +646,14 @@ int main(int argc, char *argv[])
             // two intersection lines' I1-I2 and I3-I4
 
             nm_plane = t3 + nm * tan(theta);
+            nm_plane = nm_plane * (1.0 / nm_plane.norm());
             _d0 = nm_plane * _O; // param in plane function!
 
             // ------------------------------ backbone 1 intersects
             _dm = 1000000.0;
             k_min = kb1;
             k_max = std::min(kb1 + 100, int(backbone1_dots.size()));
-            for (int k = k_min; k < k_max; k++) {
+            for (k = k_min; k < k_max; k++) {
                 _d = backbone1_dots[k] * nm_plane - _d0;
                 double d_tmp = _d > 0 ? _d : - _d;
                 if (d_tmp <= _dm) {
@@ -651,13 +661,12 @@ int main(int argc, char *argv[])
                     I1 = backbone1_dots[k];
                 }
             }
-            if (_dm > 0.5) std::cout << "i" << i << " the " << theta  << "  I1 " << _dm << std::endl;
 
             // ------------------------------ backbone 2 intersects
             _dm = 1000000.0;
             k_min = kb2;
             k_max = std::min(kb2 + 100, int(backbone2_dots.size()));
-            for (int k = k_min; k < k_max; k++) {
+            for (k = k_min; k < k_max; k++) {
                 _d = backbone2_dots[k] * nm_plane - _d0;
                 double d_tmp = _d > 0 ? _d : - _d;
                 if (d_tmp <= _dm) {
@@ -665,7 +674,6 @@ int main(int argc, char *argv[])
                     I2 = backbone2_dots[k];
                 }
             }
-            if (_dm > 0.5) std::cout << "i" << i << " the " << theta  << "  I2 " << _dm << std::endl;
 
             pinang::Vec3d min_g_v = I1 - I2;
             double mingw = min_g_v.norm();
@@ -675,20 +683,26 @@ int main(int argc, char *argv[])
                 I2_0 = I2;
             }
         }
-        for (theta = 0; theta <= 1; theta += pi_over_60) {
+        double ang1 = acos(nm * backbone1_tangents[kb1/10]);
+        double ang2 = acos(nm * backbone2_tangents[kb2/10]);
+        if (ang1 > 1.570795)
+            ang1 = pinang::g_pi - ang1;
+        if (ang2 > 1.570795)
+            ang2 = pinang::g_pi - ang2;
+        angle_lim = pinang::g_pi / 2 - min(ang1, ang2);
+        for (theta = 0; theta <= angle_lim; theta += pi_over_60) {
             pinang::Vec3d I3;   // backbone 1
             pinang::Vec3d I4;   // backbone 2
 
-            // two intersection lines' I1-I2 and I3-I4
-
             nm_plane = t3 + nm * tan(theta);
+            nm_plane = nm_plane * (1.0 / nm_plane.norm());
             _d0 = nm_plane * _O; // param in plane function!
 
             // ------------------------------ backbone 1 intersects
             _dm = 1000000.0;
             k_min = std::max(0, kb1 - 100);
             k_max = kb1;
-            for (int k = k_max; k > k_min; k--) {
+            for (k = k_max; k > k_min; k--) {
                 _d = backbone1_dots[k] * nm_plane - _d0;
                 double d_tmp = _d > 0 ? _d : - _d;
                 if (d_tmp <= _dm) {
@@ -696,12 +710,14 @@ int main(int argc, char *argv[])
                     I3 = backbone1_dots[k];
                 }
             }
-            if (_dm > 0.5) std::cout << "i" << i << " the " << theta  << "  I3 " << _dm << std::endl;
+            // if ( (I3 - _O) * groove_D1 > 0 )
+            //     continue;
+
             // ------------------------------ backbone 2 intersects
             _dm = 1000000.0;
             k_min = std::max(0, kb2 - 100);
             k_max = kb2;
-            for (int k = k_max; k > k_min; k--) {
+            for (k = k_max; k > k_min; k--) {
                 _d = backbone2_dots[k] * nm_plane - _d0;
                 double d_tmp = _d > 0 ? _d : - _d;
                 if (d_tmp <= _dm) {
@@ -709,7 +725,8 @@ int main(int argc, char *argv[])
                     I4 = backbone2_dots[k];
                 }
             }
-            if (_dm > 0.5) std::cout << "i" << i << " the " << theta  << "  I4 " << _dm << std::endl;
+            // if ( (I4 - _O) * groove_D1 > 0 )
+            //     continue;
 
             pinang::Vec3d maj_g_v = I3 - I4;
             double majgw = maj_g_v.norm();
