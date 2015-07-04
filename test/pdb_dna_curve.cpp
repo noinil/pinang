@@ -33,6 +33,7 @@ int main(int argc, char *argv[])
 
     std::string axis_name = "_axis.pdb";
     std::string norm_name = "_norm.pdb";
+    std::string groove_name = "_groove.pdb";
     std::string back_name = "_backbone.pdb";
     std::string gline_name = "_generating_lines.pdb";
     std::string out_name = "_curve.dat";
@@ -96,6 +97,7 @@ int main(int argc, char *argv[])
     std::ofstream gline_file(gline_name.c_str());
     std::ofstream axis_file(axis_name.c_str());
     std::ofstream norm_file(norm_name.c_str());
+    std::ofstream groove_file(groove_name.c_str());
     std::ofstream out_file(out_name.c_str());
 
     if (mod_flag != 1) {
@@ -136,7 +138,8 @@ int main(int argc, char *argv[])
     std::vector< std::vector<pinang::Vec3d> > genline1_line_tangents;
     std::vector< std::vector<pinang::Vec3d> > genline2_line_tangents;
 
-    std::vector<pinang::Vec3d> base_positions;
+    std::vector<pinang::Vec3d> base_positions1;
+    std::vector<pinang::Vec3d> base_positions2;
 
     std::vector<pinang::Vec3d> axis_dots;
     std::vector<pinang::Vec3d> axis_nodes;
@@ -155,6 +158,7 @@ int main(int argc, char *argv[])
     pinang::Chain c2 = pdb1.m_model(mod_index-1).m_chain(1);
     int len1 = c1.m_chain_length();
     int len2 = c2.m_chain_length();
+    std::cout << " 1. Reading coordinates ..." << std::endl;
     for (i = 1; i < len1; i++) { // start from 1! because residue 0 has no P!
         backbone1_nodes.push_back(c1.m_residue(i).m_P().coordinates());
     }
@@ -162,8 +166,12 @@ int main(int argc, char *argv[])
         backbone2_nodes.push_back(c2.m_residue(i).m_P().coordinates());
     }
     for (i = 0; i < len1; i++) {
-        base_positions.push_back(c1.m_residue(i).m_B().coordinates());
+        base_positions1.push_back(c1.m_residue(i).m_B().coordinates());
     }
+    for (i = 0; i < len2; i++) {
+        base_positions2.push_back(c2.m_residue(i).m_B().coordinates());
+    }
+    std::cout << " ... done." << std::endl;
 
 
     /* ============================================================
@@ -174,6 +182,7 @@ int main(int argc, char *argv[])
     // |_.__/ \__,_|\___|_|\_\_.__/ \___/|_| |_|\___|
     // ============================================================
     */
+    std::cout << " 2. Generating backbone curves ..." << std::endl;
     gen_spline_fit(backbone1_nodes, 10, backbone1_dots, backbone1_tangents);
     gen_spline_fit(backbone2_nodes, 10, backbone2_dots, backbone2_tangents);
 
@@ -226,6 +235,8 @@ int main(int argc, char *argv[])
                    << std::endl;
     }
 
+    std::cout << " ... done." << std::endl;
+
     /* ============================================================
     //                     _ _
     //   __ _  ___ _ __   | (_)_ __   ___
@@ -235,6 +246,7 @@ int main(int argc, char *argv[])
     //  |___/
     // ============================================================
     */
+    std::cout << " 3. Generating lines of cylinders ..." << std::endl;
     genline1_lines.clear();
     genline2_lines.clear();
     genline1_line_tangents.clear();
@@ -259,39 +271,40 @@ int main(int argc, char *argv[])
         genline2_lines.push_back(genline2_dots);
         genline1_line_tangents.push_back(genline1_tangents);
         genline2_line_tangents.push_back(genline2_tangents);
+
+        // std::cout << i  << "  " << genline1_dots.size() << "  " << genline2_dots.size() << std::endl;
         // ============================ Output to PDB ==========================
-        int k = genline1_dots.size();
-        int l = genline1_nodes.size();
-        // std::cout << k << " " << l << std::endl;}}
-        for (j = 0; j < int(genline1_dots.size()); j++) {
-            if (j % 10 == 0) {
+        int k = int(genline1_dots.size());
+        int l = int(backbone1_nodes.size());
+        for (j = 0; j < k; j++) {
+            if (j % 50 == 0) {
                 gline_file << std::setw(6) << "HETATM" << std::setw(5) << j+1 << " "
-                          << std::setw(4) << "C   "   << std::setw(1) << " "
-                          << std::setw(3) << "GEN" << " " << std::setw(1) << "A"
-                          << std::setw(4) << j/10+2 << std::setw(1) << " " << "   "
-                          << genline1_dots[j] << std::endl;
+                           << std::setw(4) << "C   "   << std::setw(1) << " "
+                           << std::setw(3) << "GEN" << " " << std::setw(1) << "A"
+                           << std::setw(4) << (j/50) * 10 + i + 1 << std::setw(1) << " " << "   "
+                           << genline1_dots[j] << std::endl;
             } else {
                 gline_file << std::setw(6) << "HETATM" << std::setw(5) << j+1 << " "
-                          << std::setw(4) << "O   " << std::setw(1) << " "
-                          << std::setw(3) << "GEN" << " " << std::setw(1) << "A"
-                          << std::setw(4) << j/10+2 << std::setw(1) << " " << "   "
-                          << genline1_dots[j] << std::endl;
+                           << std::setw(4) << "O   " << std::setw(1) << " "
+                           << std::setw(3) << "GEN" << " " << std::setw(1) << "A"
+                           << std::setw(4) << (j/50) * 10 + i + 1 << std::setw(1) << " " << "   "
+                           << genline1_dots[j] << std::endl;
             }
         }
         gline_file << "TER" << std::endl;
         for (j = 0; j < int(genline2_dots.size()); j++) {
             if (j % 10 == 0) {
                 gline_file << std::setw(6) << "HETATM" << std::setw(5) << j+1+k << " "
-                          << std::setw(4) << "C   "   << std::setw(1) << " "
-                          << std::setw(3) << "GEN" << " " << std::setw(1) << "B"
-                          << std::setw(4) << j/10+l+3 << std::setw(1) << " " << "   "
-                          << genline2_dots[j] << std::endl;
+                           << std::setw(4) << "C   "   << std::setw(1) << " "
+                           << std::setw(3) << "GEN" << " " << std::setw(1) << "B"
+                           << std::setw(4) << j/50 * 10 + l + i + 1 << std::setw(1) << " " << "   "
+                           << genline2_dots[j] << std::endl;
             } else {
                 gline_file << std::setw(6) << "HETATM" << std::setw(5) << j+1+k << " "
-                          << std::setw(4) << "O   " << std::setw(1) << " "
-                          << std::setw(3) << "GEN" << " " << std::setw(1) << "B"
-                          << std::setw(4) << j/10+l+3 << std::setw(1) << " " << "   "
-                          << genline2_dots[j] << std::endl;
+                           << std::setw(4) << "O   " << std::setw(1) << " "
+                           << std::setw(3) << "GEN" << " " << std::setw(1) << "B"
+                           << std::setw(4) << j/50 * 10 + l + i + 1 << std::setw(1) << " " << "   "
+                           << genline2_dots[j] << std::endl;
             }
         }
         gline_file << "TER" << std::endl;
@@ -316,8 +329,9 @@ int main(int argc, char *argv[])
         genline1_tangents.clear();
         genline2_tangents.clear();
     }
-    // cout << "genline1 " << genline1_lines.size() << endl;
-    // cout << "genline2 " << genline2_lines.size() << endl;
+    std::cout << " ... done." << std::endl;
+    // std::cout << genline1_lines.size() << std::endl;
+    // std::cout << genline2_lines.size() << std::endl;
 
     /* ==================================================================
     //  _          _ _            _ _               _   _
@@ -327,6 +341,7 @@ int main(int argc, char *argv[])
     // |_| |_|\___|_|_/_/\_\  \__,_|_|_|  \___|\___|\__|_|\___/|_| |_|
     // ==================================================================
     */
+    std::cout << " 4. Calculating helix axis ..." << std::endl;
     for (i = 0; i < int(backbone1_nodes.size()); i++) {
         int m = i / 10;
         int n = i % 10;
@@ -359,7 +374,7 @@ int main(int argc, char *argv[])
                   << backbone1_nodes[j] + backbone1_normals[j] * 5 << std::endl;
     }
     // connecting points!
-    for (j = 0; j < int(backbone1_nodes.size())-1; j++) {
+    for (j = 0; j < int(backbone1_nodes.size()); j++) {
         norm_file << std::setw(6) << "CONECT"
                    << std::setw(5) << 3 * j + 1
                    << std::setw(5) << 3 * j + 2
@@ -368,8 +383,10 @@ int main(int argc, char *argv[])
 
 
     // ============= find the helix center and tangent for every P =============
-    double angle_lim = pinang::g_pi / 2;
-    double pi_over_60 = pinang::g_pi / 60;
+    double angle_lim = pinang::g_pi / 3;   // 60 degree;
+    double angle_lim2 = pinang::g_pi / 15;   // 12 degree;
+    double pi_over_36 = pinang::g_pi / 36; // 5 degree;
+    double pi_over_60 = pinang::g_pi / 60; // 3 degree;
     for (i = 0; i < int(backbone1_normals.size()); i++) {
         // if (i != 52 && i != 53 && i != 51)
         // if (i != 52)
@@ -378,87 +395,128 @@ int main(int argc, char *argv[])
         pinang::Vec3d t1 = backbone1_normals[i];
         pinang::Vec3d t2 = genline1_line_tangents[i%10][i/10];
         pinang::Vec3d t3 = t1 ^ t2;
-        t3 = t3 * (1.0 / t3.norm());
+        // t3 = t3 * (1.0 / t3.norm());
         pinang::Vec3d nm;       // normal vector of the fake plane
         double theta = 0;
-        // std::cout << t1 << " | " << t2 << " | " << t3 << std::endl;
+        double alpha = 0;
+
+        // find closest base on genline2...
+        int cog_base_id = 0;
+        double d_m = 1000.0;
+        double _d_ = 0.0;
+        for (j = 0; j < int(base_positions2.size()); j++) {
+            _d_ = vec_distance(base_positions1[i], base_positions2[j]);
+            if (_d_ < d_m) {
+                d_m = _d_;
+                cog_base_id = j;
+            }
+        }
+        // std::cout << i << "  vs  " << cog_base_id << " -> " << i + cog_base_id << std::endl;
 
         double circle_radius_min = 1000.0;
         pinang::Vec3d circle_center;
-        for (theta = - angle_lim ; theta < angle_lim; theta += pi_over_60) {
-            // STEP 1: calculate the plane! ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-            // Plane: a x + b y + c z = _d0
-            nm = t2 + t3 * (tan(theta) * t2.norm());
-            nm = nm * (1.0 / nm.norm());
-            // std::cout << nm << "  norm = " << nm.norm() << std::endl;
-            double _d0 = nm * backbone1_nodes[i]; // param in plane function!
+        for (theta = - angle_lim ; theta <= angle_lim; theta += pi_over_36) {
+            nm = t2 + t3 * tan(theta);
+            for (alpha = - angle_lim2 ; alpha <= angle_lim2; alpha += pi_over_60) {
+                nm = nm + t1 * tan(alpha);
+                nm = nm * (1.0 / nm.norm());
+                // std::cout << nm << "  norm = " << nm.norm() << std::endl;
+                // STEP 1: calculate the plane! ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                // Plane: a x + b y + c z = _d0
+                double _d0 = nm * backbone1_nodes[i]; // param in plane function!
 
-            // STEP 2: get intersections for each generating line ~~~~~~~~~~~~~~
-            double _dm = 0.0;   // min distances to the plane!
-            double _d  = 0.0;   // distances to the plane!
-            std::vector<pinang::Vec3d> intersects;
-            pinang::Vec3d insect;
-            for (j = 0; j < int(genline1_lines.size()); j++) {
-                _dm = 100000000.0;
-                for (int k = 0; k < int(genline1_lines[j].size()); k++) {
-                    _d = genline1_lines[j][k] * nm - _d0;
-                    // std::cout << "aaaaaaa ====================" << _d << std::endl;
-                    double d_tmp = _d > 0 ? _d : - _d;
-                    if (d_tmp <= _dm) {
-                        _dm = d_tmp;
-                        insect = genline1_lines[j][k] - (nm * _d);
+                // STEP 2: get intersections for each generating line ~~~~~~~~~~~~~~
+                double _dm = 0.0;   // min distances to the plane!
+                double _d  = 0.0;   // distances to the plane!
+                std::vector<pinang::Vec3d> intersects;
+                pinang::Vec3d insect;
+
+                for (j = 0; j < int(genline1_lines.size()); j++) {
+                    _dm = 100000000.0;
+                    // find the closest points on genlines...
+                    int s = (i - j) * 5;
+                    int k_min = std::max(0, s - 50);
+                    int k_max = std::min(s + 50, int(genline1_lines[j].size()));
+                    // find the closets point and the crspnding intersect
+                    for (int k = k_min; k < k_max; k++) {
+                        _d = genline1_lines[j][k] * nm - _d0;
+                        double d_tmp = _d > 0 ? _d : - _d;
+                        if (d_tmp <= _dm) {
+                            _dm = d_tmp;
+                            insect = genline1_lines[j][k] - (nm * _d);
+                        }
                     }
+                    // std::cout << insect * nm - _d0 << std::endl;
+                    // std::cout << j << " dist to plane = " <<  _dm << std::endl;
+                    intersects.push_back(insect);
                 }
-                // std::cout << insect * nm - _d0 << std::endl;
-                // std::cout << genline1_lines[j].size() << std::endl;
-                // std::cout << j << " distance to plane = " <<  _dm << std::endl;
-                intersects.push_back(insect);
-            }
-            for (j = 0; j < int(genline2_lines.size()); j++) {
-                _dm = 100000000.0;
-                for (int k = 0; k < int(genline2_lines[j].size()); k++) {
-                    _d = genline2_lines[j][k] * nm - _d0;
-                    double d_tmp = _d > 0 ? _d : - _d;
-                    if (d_tmp <= _dm) {
-                        _dm = d_tmp;
-                        insect = genline2_lines[j][k] - (nm * _d);
+                for (j = 0; j < int(genline2_lines.size()); j++) {
+                    _dm = 100000000.0;
+                    int s = (cog_base_id - j) * 5;
+                    int k_min = std::max(0, s - 50);
+                    int k_max = std::min(s + 50, int(genline1_lines[j].size()));
+                    for (int k = k_min; k < k_max; k++) {
+                        _d = genline2_lines[j][k] * nm - _d0;
+                        double d_tmp = _d > 0 ? _d : - _d;
+                        if (d_tmp <= _dm) {
+                            _dm = d_tmp;
+                            insect = genline2_lines[j][k] - (nm * _d);
+                        }
                     }
+                    intersects.push_back(insect);
                 }
-                // std::cout << insect * nm - _d0 << std::endl;
-                // std::cout << genline2_lines[j].size() << std::endl;
-                // std::cout << j << " distance to plane = " <<  _dm << std::endl;
-                intersects.push_back(insect);
-            }
-            // STEP 3: find out the minimal circle cover all dots ~~~~~~~~~~~~~~
-            pinang::Vec3d com(0,0,0);
-            for (j = 0; j < int(intersects.size()); j++) {
-                com = com + intersects[j];
-                // std::cout << intersects[j] << std::endl;
-            }
-            com = com * (1.0 / int(intersects.size()) );
-            double d_max = 0;   // largest distance from intersects to com
-            double d_tmp = 0;   // distance from intersects to com
-            for (j = 0; j < int(intersects.size()); j++) {
-                d_tmp = vec_distance(com, intersects[j]);
-                if (d_tmp > d_max)
-                    d_max = d_tmp;
-                // std::cout << j << ":"<< intersects[j] << "  dist = " << d_tmp << std::endl;
-            }
-            // std::cout << " insect size = " << intersects.size() << "; max radius=" << d_max << std::endl;
-            // std::cout << " normal vector : " << nm << std::endl;
-            // STEP 4: return the helix center and helix width!  ~~~~~~~~~~~~~~~
-            if (d_max < circle_radius_min) {
-                circle_radius_min = d_max;
-                circle_center = com;
+                // STEP 3: find out the minimal circle cover all dots ~~~~~~~~~~~~~~
+                pinang::Vec3d com(0,0,0);
+                for (j = 0; j < int(intersects.size()); j++) {
+                    com = com + intersects[j];
+                    // std::cout << intersects[j] << std::endl;
+                }
+                com = com * (1.0 / int(intersects.size()) );
+                double d_max = 0;   // largest distance from intersects to com
+                double d_tmp = 0;   // distance from intersects to com
+                for (j = 0; j < int(intersects.size()); j++) {
+                    d_tmp = vec_distance(com, intersects[j]);
+                    if (d_tmp > d_max)
+                        d_max = d_tmp;
+                    // std::cout << j << ":"<< intersects[j] << "  dist = " << d_tmp << std::endl;
+                }
+                // std::cout << " theta = " << theta << "; alpha =" << alpha << std::endl;
+                // std::cout << " insect size = " << intersects.size() << "; max radius=" << d_max << std::endl;
+                // std::cout << " normal vector : " << nm << std::endl;
+                // STEP 4: return the helix center and helix width!  ~~~~~~~~~~~~~~~
+                if (d_max < circle_radius_min) {
+                    circle_radius_min = d_max;
+                    circle_center = com;
+                }
             }
         }
         // std::cout << " No. " << i << " radius = "
         //           << circle_radius_min << " com : (" << circle_center << ")" << std::endl;
         axis_nodes.push_back(circle_center);
         helix_width.push_back(circle_radius_min);
-        std::cout << circle_radius_min * 2 + 5.8 << std::endl;
+        // std::cout << circle_radius_min << std::endl;
     }
-    for (j = 0; j < int(axis_nodes.size()); j++) {
+
+    // Calculate Helix DIRECTION~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    for (i = 4; i < int(axis_nodes.size()) - 4; i++) {
+        pinang::Vec3d s_tmp(0,0,0);
+        pinang::Vec3d t_tmp(0,0,0);
+        pinang::Vec3d v1(0,0,0);
+        pinang::Vec3d v2(0,0,0);
+        double t1 = 0;
+        double t2 = 0;
+        v1 = axis_nodes[i + 3] - axis_nodes[i];
+        v2 = axis_nodes[i] - axis_nodes[i - 3];
+        t1 = v1.sqr_norm();
+        t2 = v2.sqr_norm();
+        s_tmp = v1 * t2 + v2 * t1;
+        t_tmp = s_tmp * (1 / s_tmp.norm());
+        axis_directions.push_back(t_tmp);
+    }
+    // for (j = 1; j < int(axis_directions.size()); j++) {
+    //     std::cout << axis_directions[j] * axis_directions[j-1] << std::endl;
+    // }
+    for (j = 4; j < int(axis_nodes.size())-4; j++) {
         axis_file << std::setw(6) << "HETATM" << std::setw(5) << j+1 << " "
                   << std::setw(4) << "C   " << std::setw(1) << " "
                   << std::setw(3) << "AXS" << " " << std::setw(1) << "A"
@@ -471,7 +529,7 @@ int main(int argc, char *argv[])
                   << axis_nodes[j] << std::endl;
     }
     // connecting points!
-    for (j = 0; j < int(axis_nodes.size())-1; j++) {
+    for (j = 4; j < int(axis_nodes.size())-4; j++) {
         axis_file << std::setw(6) << "CONECT"
                    << std::setw(5) << j + 1
                    << std::setw(5) << j + 2
@@ -482,13 +540,223 @@ int main(int argc, char *argv[])
                   << std::endl;
     }
 
+    // ---------- Base rise ----------
+    pinang::Vec3d base_delta;
+    double proj = 0;
+    for (j = 4; j < int(base_positions1.size())-5; j++) {
+        base_delta = base_positions1[j+1] - base_positions1[j];
+        proj = base_delta * axis_directions[j-4];
+        base_rise.push_back(abs(proj));
+        // std::cout << j << " - " << j + 1 << " : "
+        //           << base_delta.norm() << "    "
+        //           << abs(proj) << std::endl;
+    }
+    std::cout << " ... done." << std::endl;
 
+    /* =========================================================================
+    //   ____                                     _     _ _   _
+    //  / ___|_ __ ___   _____   _____  __      _(_) __| | |_| |__
+    // | |  _| '__/ _ \ / _ \ \ / / _ \ \ \ /\ / / |/ _` | __| '_ \
+    // | |_| | | | (_) | (_) \ V /  __/  \ V  V /| | (_| | |_| | | |
+    //  \____|_|  \___/ \___/ \_/ \___|   \_/\_/ |_|\__,_|\__|_| |_|
+    // =========================================================================
+    */
+    std::cout << " 5. Calculating groove width ..." << std::endl;
+    for (i = 0; i < int(axis_directions.size()); i++) {
+        // step 1: plane perpendicular to direction Ox, O is the current point -
+        // Plane: a x + b y + c z = _d0
+        j = i + 4;
+        pinang::Vec3d nm = axis_directions[i];
+        pinang::Vec3d _O = axis_nodes[j];
+        double _d0 = nm * _O; // param in plane function!
+        double _d = 0;
+        // step 2: intersections with backbones it1 and it2 --------------------
+        pinang::Vec3d it1;
+        pinang::Vec3d it2;
+        // backbone1
+        double _dm = 100000000.0;
+        int k_min = std::max(0, j * 10 - 50);
+        int k_max = std::min(j * 10 + 50, int(backbone1_dots.size()));
+        int kb1 = 0;
+        int kb2 = 0;
+        for (int k = k_min; k < k_max; k++) {
+            _d = backbone1_dots[k] * nm - _d0;
+            double d_tmp = _d > 0 ? _d : - _d;
+            if (d_tmp <= _dm) {
+                _dm = d_tmp;
+                it1 = backbone1_dots[k] - (nm * _d);
+                kb1 = k;
+            }
+        }
+        // backbone2
+        _dm = 100000000.0;
+        k = int(backbone2_nodes.size());
+        k_min = std::max(0, (k - j) * 10 - 100);
+        k_max = std::min((k - j) * 10 + 100, int(backbone2_dots.size()));
+        for (int k = k_min; k < k_max; k++) {
+            _d = backbone2_dots[k] * nm - _d0;
+            double d_tmp = _d > 0 ? _d : - _d;
+            if (d_tmp <= _dm) {
+                _dm = d_tmp;
+                it2 = backbone2_dots[k] - (nm * _d);
+                kb2 = k;
+            }
+        }
+        // step 3: find a point in groove --------------------------------------
+        pinang::Vec3d vtmp;
+        pinang::Vec3d v1;
+        pinang::Vec3d v2;
+        pinang::Vec3d groove_D1;
+        pinang::Vec3d nm_plane;
+
+        pinang::Vec3d I1_0;   // backbone 1
+        pinang::Vec3d I3_0;   // backbone 1
+
+        pinang::Vec3d I2_0;   // backbone 2
+        pinang::Vec3d I4_0;   // backbone 2
+
+        vtmp = it1 - _O;
+        v1 = vtmp * (1.0 / vtmp.norm());
+        vtmp = it2 - _O;
+        v2 = vtmp * (1.0 / vtmp.norm());
+        vtmp = v1 + v2;
+        groove_D1 = nm ^ v1;    // ****************************** OMG~
+
+        // ============================================================!!!!!!!!!
+        // !!! KEY~ !!!
+        // step 4: rotate the test plane around groove_D
+        double minor_g_w = 100000.0;   // local minor groove width----
+        double major_g_w = 100000.0;
+        pinang::Vec3d t3 = groove_D1 ^ nm; // plane normal vector
+        double theta = 0;
+        double angle_lim = pinang::g_pi / 3;   // 60 degree;
+        for (theta = - angle_lim; theta <= 0; theta += pi_over_60) {
+            pinang::Vec3d I1;   // backbone 1
+            pinang::Vec3d I2;   // backbone 2
+
+            // two intersection lines' I1-I2 and I3-I4
+
+            nm_plane = t3 + nm * tan(theta);
+            _d0 = nm_plane * _O; // param in plane function!
+
+            // ------------------------------ backbone 1 intersects
+            _dm = 1000000.0;
+            k_min = kb1;
+            k_max = std::min(kb1 + 100, int(backbone1_dots.size()));
+            for (int k = k_min; k < k_max; k++) {
+                _d = backbone1_dots[k] * nm_plane - _d0;
+                double d_tmp = _d > 0 ? _d : - _d;
+                if (d_tmp <= _dm) {
+                    _dm = d_tmp;
+                    I1 = backbone1_dots[k];
+                }
+            }
+            if (_dm > 0.5) std::cout << "i" << i << " the " << theta  << "  I1 " << _dm << std::endl;
+
+            // ------------------------------ backbone 2 intersects
+            _dm = 1000000.0;
+            k_min = kb2;
+            k_max = std::min(kb2 + 100, int(backbone2_dots.size()));
+            for (int k = k_min; k < k_max; k++) {
+                _d = backbone2_dots[k] * nm_plane - _d0;
+                double d_tmp = _d > 0 ? _d : - _d;
+                if (d_tmp <= _dm) {
+                    _dm = d_tmp;
+                    I2 = backbone2_dots[k];
+                }
+            }
+            if (_dm > 0.5) std::cout << "i" << i << " the " << theta  << "  I2 " << _dm << std::endl;
+
+            pinang::Vec3d min_g_v = I1 - I2;
+            double mingw = min_g_v.norm();
+            if (mingw < minor_g_w) {
+                minor_g_w = mingw;
+                I1_0 = I1;
+                I2_0 = I2;
+            }
+        }
+        for (theta = 0; theta <= 1; theta += pi_over_60) {
+            pinang::Vec3d I3;   // backbone 1
+            pinang::Vec3d I4;   // backbone 2
+
+            // two intersection lines' I1-I2 and I3-I4
+
+            nm_plane = t3 + nm * tan(theta);
+            _d0 = nm_plane * _O; // param in plane function!
+
+            // ------------------------------ backbone 1 intersects
+            _dm = 1000000.0;
+            k_min = std::max(0, kb1 - 100);
+            k_max = kb1;
+            for (int k = k_max; k > k_min; k--) {
+                _d = backbone1_dots[k] * nm_plane - _d0;
+                double d_tmp = _d > 0 ? _d : - _d;
+                if (d_tmp <= _dm) {
+                    _dm = d_tmp;
+                    I3 = backbone1_dots[k];
+                }
+            }
+            if (_dm > 0.5) std::cout << "i" << i << " the " << theta  << "  I3 " << _dm << std::endl;
+            // ------------------------------ backbone 2 intersects
+            _dm = 1000000.0;
+            k_min = std::max(0, kb2 - 100);
+            k_max = kb2;
+            for (int k = k_max; k > k_min; k--) {
+                _d = backbone2_dots[k] * nm_plane - _d0;
+                double d_tmp = _d > 0 ? _d : - _d;
+                if (d_tmp <= _dm) {
+                    _dm = d_tmp;
+                    I4 = backbone2_dots[k];
+                }
+            }
+            if (_dm > 0.5) std::cout << "i" << i << " the " << theta  << "  I4 " << _dm << std::endl;
+
+            pinang::Vec3d maj_g_v = I3 - I4;
+            double majgw = maj_g_v.norm();
+            if (majgw < major_g_w) {
+                major_g_w = majgw;
+                I3_0 = I3;
+                I4_0 = I4;
+            }
+        }
+        std::cout << i << " minor: " << minor_g_w
+                  << " major: " << major_g_w << std::endl;
+        groove_file << std::setw(6) << "HETATM" << std::setw(5) << 4 * i+1 << " "
+                    << std::setw(4) << "C   " << std::setw(1) << " "
+                    << std::setw(3) << "GRV" << " " << std::setw(1) << "A"
+                    << std::setw(4) << j+1 << std::setw(1) << " " << "   "
+                    << I1_0 << std::endl;
+        groove_file << std::setw(6) << "HETATM" << std::setw(5) << 4 * i+3 << " "
+                    << std::setw(4) << "O   " << std::setw(1) << " "
+                    << std::setw(3) << "GRV" << " " << std::setw(1) << "A"
+                    << std::setw(4) << j+1 << std::setw(1) << " " << "   "
+                    << I3_0 << std::endl;
+        groove_file << std::setw(6) << "HETATM" << std::setw(5) << 4 * i+2 << " "
+                    << std::setw(4) << "N   " << std::setw(1) << " "
+                    << std::setw(3) << "GRV" << " " << std::setw(1) << "B"
+                    << std::setw(4) << j+1 << std::setw(1) << " " << "   "
+                    << I2_0 << std::endl;
+        groove_file << std::setw(6) << "HETATM" << std::setw(5) << 4 * i+4 << " "
+                    << std::setw(4) << "S   " << std::setw(1) << " "
+                    << std::setw(3) << "GRV" << " " << std::setw(1) << "B"
+                    << std::setw(4) << j+1 << std::setw(1) << " " << "   "
+                    << I4_0 << std::endl;
+        groove_file << std::setw(6) << "CONECT"
+                    << std::setw(5) << 4*i + 1
+                    << std::setw(5) << 4*i + 2
+                    << std::endl;
+        groove_file << std::setw(6) << "CONECT"
+                    << std::setw(5) << 4*i + 3
+                    << std::setw(5) << 4*i + 4
+                    << std::endl;
+    }
 
     // ----------------------------------------------------------------------
     back_file.close();
     gline_file.close();
     axis_file.close();
     norm_file.close();
+    groove_file.close();
     out_file.close();
 
     return 0;
