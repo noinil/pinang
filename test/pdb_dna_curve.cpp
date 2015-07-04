@@ -1,4 +1,5 @@
 #include "PDB.h"
+#include "constants.h"
 #include "vec3d.h"
 
 #include <iostream>
@@ -9,7 +10,7 @@
 
 using namespace std;
 
-void gen_spline_fit(const std::vector<pinang::Vec3d>&,
+void gen_spline_fit(const std::vector<pinang::Vec3d>&, int N,
                     std::vector<pinang::Vec3d>&, std::vector<pinang::Vec3d>&);
 
 int main(int argc, char *argv[])
@@ -31,10 +32,12 @@ int main(int argc, char *argv[])
     std::string infilename = "some.pdb";
 
     std::string axis_name = "_axis.pdb";
+    std::string norm_name = "_norm.pdb";
     std::string back_name = "_backbone.pdb";
+    std::string gline_name = "_generating_lines.pdb";
     std::string out_name = "_curve.dat";
 
-    while ((opt = getopt(argc, argv, "o:x:b:m:f:h")) != -1) {
+    while ((opt = getopt(argc, argv, "o:x:b:g:m:f:h")) != -1) {
         switch (opt) {
         case 'o':
             out_name = optarg;
@@ -44,6 +47,9 @@ int main(int argc, char *argv[])
             break;
         case 'b':
             back_name = optarg;
+            break;
+        case 'g':
+            gline_name = optarg;
             break;
         case 'm':
             mod_index = atoi(optarg);
@@ -57,7 +63,8 @@ int main(int argc, char *argv[])
             std::cout << " Usage: "
                       << argv[0]
                       << " -f some.pdb [-o _curve.dat] [-x _axis.pdb] \n"
-                      << " [-b _backbone.pdb] [-m module] [-h]"
+                      << " [-b _backbone.pdb] [-g _generating_lines.pdb]"
+                      << " [-m module] [-h]"
                       << std::endl;
             exit(EXIT_SUCCESS);
             break;
@@ -65,7 +72,8 @@ int main(int argc, char *argv[])
             std::cout << " Usage: "
                       << argv[0]
                       << " -f some.pdb [-o _curve.dat] [-x _axis.pdb] \n"
-                      << " [-b _backbone.pdb] [-m module] [-h]"
+                      << " [-b _backbone.pdb] [-g _generating_lines.pdb]"
+                      << " [-m module] [-h]"
                       << std::endl;
             exit(EXIT_FAILURE);
         }
@@ -77,14 +85,17 @@ int main(int argc, char *argv[])
                   << " Usage: "
                   << argv[0]
                   << " -f some.pdb [-o _curve.dat] [-x _axis.pdb] \n"
-                  << " [-b _backbone.pdb] [-m module] [-h]"
+                  << " [-b _backbone.pdb] [-g _generating_lines.pdb]"
+                  << " [-m module] [-h]"
                   << std::endl;
         exit(EXIT_SUCCESS);
     }
     pinang::PDB pdb1(infilename);
 
     std::ofstream back_file(back_name.c_str());
+    std::ofstream gline_file(gline_name.c_str());
     std::ofstream axis_file(axis_name.c_str());
+    std::ofstream norm_file(norm_name.c_str());
     std::ofstream out_file(out_name.c_str());
 
     if (mod_flag != 1) {
@@ -113,25 +124,33 @@ int main(int argc, char *argv[])
     std::vector<pinang::Vec3d> backbone1_dots;  // Interpolation points;
     std::vector<pinang::Vec3d> backbone1_nodes; // P atoms in the 1st backbone;
     std::vector<pinang::Vec3d> backbone1_tangents; // Tangents at "P" atoms;
+    std::vector<pinang::Vec3d> backbone1_normals; // Normal vectors at "P" atoms;
 
     std::vector<pinang::Vec3d> backbone2_dots;
     std::vector<pinang::Vec3d> backbone2_nodes; // P atoms in the 2nd backbone;
     std::vector<pinang::Vec3d> backbone2_tangents;
+    std::vector<pinang::Vec3d> backbone2_normals; // Normal vectors at "P" atoms;
+
+    std::vector< std::vector<pinang::Vec3d> > genline1_lines; // Generating Lines!
+    std::vector< std::vector<pinang::Vec3d> > genline2_lines;
+    std::vector< std::vector<pinang::Vec3d> > genline1_line_tangents;
+    std::vector< std::vector<pinang::Vec3d> > genline2_line_tangents;
 
     std::vector<pinang::Vec3d> base_positions;
 
     std::vector<pinang::Vec3d> axis_dots;
     std::vector<pinang::Vec3d> axis_nodes;
     std::vector<pinang::Vec3d> axis_directions; // Axis direction vectors;
+    std::vector<double> helix_width;
 
     std::vector<double> base_rise;
-    std::vector<double> helix_width;
     std::vector<double> bases_per_turn;
 
     std::vector<double> major_groove_width;
     std::vector<double> minor_groove_width;
 
-    int i  = 0;
+    int i = 0;
+    int j = 0;
     pinang::Chain c1 = pdb1.m_model(mod_index-1).m_chain(0);
     pinang::Chain c2 = pdb1.m_model(mod_index-1).m_chain(1);
     int len1 = c1.m_chain_length();
@@ -146,22 +165,19 @@ int main(int argc, char *argv[])
         base_positions.push_back(c1.m_residue(i).m_B().coordinates());
     }
 
-    // ==================== backbone 1 calculation ====================
-    len1 = int(backbone1_nodes.size());
-    len2 = int(backbone2_nodes.size());
 
-    gen_spline_fit(backbone1_nodes, backbone1_dots, backbone1_tangents);
-
-    // ==================== backbone 2 calculation ====================
-    gen_spline_fit(backbone2_nodes, backbone2_dots, backbone2_tangents);
-
-
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // ==================== axis calculation ====================
-
+    /* ============================================================
+    //  _                _    _
+    // | |__   __ _  ___| | _| |__   ___  _ __   ___
+    // | '_ \ / _` |/ __| |/ / '_ \ / _ \| '_ \ / _ \
+    // | |_) | (_| | (__|   <| |_) | (_) | | | |  __/
+    // |_.__/ \__,_|\___|_|\_\_.__/ \___/|_| |_|\___|
+    // ============================================================
+    */
+    gen_spline_fit(backbone1_nodes, 10, backbone1_dots, backbone1_tangents);
+    gen_spline_fit(backbone2_nodes, 10, backbone2_dots, backbone2_tangents);
 
     // ============================ Output to PDB ============================
-    // -------------------- backbone.pdb --------------------
     int k = backbone1_dots.size();
     int l = backbone1_nodes.size();
     for (i = 0; i < int(backbone1_dots.size()); i++) {
@@ -210,16 +226,287 @@ int main(int argc, char *argv[])
                    << std::endl;
     }
 
+    /* ============================================================
+    //                     _ _
+    //   __ _  ___ _ __   | (_)_ __   ___
+    //  / _` |/ _ \ '_ \  | | | '_ \ / _ \
+    // | (_| |  __/ | | | | | | | | |  __/
+    //  \__, |\___|_| |_| |_|_|_| |_|\___|
+    //  |___/
+    // ============================================================
+    */
+    genline1_lines.clear();
+    genline2_lines.clear();
+    genline1_line_tangents.clear();
+    genline2_line_tangents.clear();
+    for (i = 0; i < 10; i++) {
+        std::vector<pinang::Vec3d> genline1_dots;  // Interpolation points;
+        std::vector<pinang::Vec3d> genline1_nodes; // P atoms in the 1st backbone;
+        std::vector<pinang::Vec3d> genline1_tangents; // Tangents at "P" atoms;
+        std::vector<pinang::Vec3d> genline2_dots;
+        std::vector<pinang::Vec3d> genline2_nodes; // P atoms in the 2nd backbone;
+        std::vector<pinang::Vec3d> genline2_tangents;
+
+        for (j = i; j < int(backbone1_nodes.size()); j += 10)
+            genline1_nodes.push_back(backbone1_nodes[j]);
+        for (j = i; j < int(backbone2_nodes.size()); j += 10)
+            genline2_nodes.push_back(backbone2_nodes[j]);
+
+        gen_spline_fit(genline1_nodes, 50, genline1_dots, genline1_tangents);
+        gen_spline_fit(genline2_nodes, 50, genline2_dots, genline2_tangents);
+
+        genline1_lines.push_back(genline1_dots);
+        genline2_lines.push_back(genline2_dots);
+        genline1_line_tangents.push_back(genline1_tangents);
+        genline2_line_tangents.push_back(genline2_tangents);
+        // ============================ Output to PDB ==========================
+        int k = genline1_dots.size();
+        int l = genline1_nodes.size();
+        // std::cout << k << " " << l << std::endl;}}
+        for (j = 0; j < int(genline1_dots.size()); j++) {
+            if (j % 10 == 0) {
+                gline_file << std::setw(6) << "HETATM" << std::setw(5) << j+1 << " "
+                          << std::setw(4) << "C   "   << std::setw(1) << " "
+                          << std::setw(3) << "GEN" << " " << std::setw(1) << "A"
+                          << std::setw(4) << j/10+2 << std::setw(1) << " " << "   "
+                          << genline1_dots[j] << std::endl;
+            } else {
+                gline_file << std::setw(6) << "HETATM" << std::setw(5) << j+1 << " "
+                          << std::setw(4) << "O   " << std::setw(1) << " "
+                          << std::setw(3) << "GEN" << " " << std::setw(1) << "A"
+                          << std::setw(4) << j/10+2 << std::setw(1) << " " << "   "
+                          << genline1_dots[j] << std::endl;
+            }
+        }
+        gline_file << "TER" << std::endl;
+        for (j = 0; j < int(genline2_dots.size()); j++) {
+            if (j % 10 == 0) {
+                gline_file << std::setw(6) << "HETATM" << std::setw(5) << j+1+k << " "
+                          << std::setw(4) << "C   "   << std::setw(1) << " "
+                          << std::setw(3) << "GEN" << " " << std::setw(1) << "B"
+                          << std::setw(4) << j/10+l+3 << std::setw(1) << " " << "   "
+                          << genline2_dots[j] << std::endl;
+            } else {
+                gline_file << std::setw(6) << "HETATM" << std::setw(5) << j+1+k << " "
+                          << std::setw(4) << "O   " << std::setw(1) << " "
+                          << std::setw(3) << "GEN" << " " << std::setw(1) << "B"
+                          << std::setw(4) << j/10+l+3 << std::setw(1) << " " << "   "
+                          << genline2_dots[j] << std::endl;
+            }
+        }
+        gline_file << "TER" << std::endl;
+
+        // connecting points!
+        for (j = 0; j < int(genline1_dots.size())-1; j++) {
+            gline_file << std::setw(6) << "CONECT"
+                      << std::setw(5) << j + 1
+                      << std::setw(5) << j + 2
+                      << std::endl;
+        }
+        for (j = 0; j < int(genline2_dots.size())-1; j++) {
+            gline_file << std::setw(6) << "CONECT"
+                      << std::setw(5) << j+1+k
+                      << std::setw(5) << j+2+k
+                      << std::endl;
+        }
+        genline1_nodes.clear();
+        genline2_nodes.clear();
+        genline1_dots.clear();
+        genline2_dots.clear();
+        genline1_tangents.clear();
+        genline2_tangents.clear();
+    }
+    // cout << "genline1 " << genline1_lines.size() << endl;
+    // cout << "genline2 " << genline2_lines.size() << endl;
+
+    /* ==================================================================
+    //  _          _ _            _ _               _   _
+    // | |__   ___| (_)_  __   __| (_)_ __ ___  ___| |_(_) ___  _ __
+    // | '_ \ / _ \ | \ \/ /  / _` | | '__/ _ \/ __| __| |/ _ \| '_ \
+    // | | | |  __/ | |>  <  | (_| | | | |  __/ (__| |_| | (_) | | | |
+    // |_| |_|\___|_|_/_/\_\  \__,_|_|_|  \___|\___|\__|_|\___/|_| |_|
+    // ==================================================================
+    */
+    for (i = 0; i < int(backbone1_nodes.size()); i++) {
+        int m = i / 10;
+        int n = i % 10;
+        pinang::Vec3d t1 = backbone1_tangents[i];
+        pinang::Vec3d t2 = genline1_line_tangents[n][m];
+        pinang::Vec3d nm = t2 ^ t1;
+        pinang::Vec3d n0 = nm * (1.0 / nm.norm());
+        backbone1_normals.push_back(n0);
+    }
+    for (i = 0; i < int(backbone2_nodes.size()); i++) {
+        int m = i / 10;
+        int n = i % 10;
+        pinang::Vec3d t1 = backbone2_tangents[i];
+        pinang::Vec3d t2 = genline2_line_tangents[n][m];
+        pinang::Vec3d nm = t2 ^ t1;
+        pinang::Vec3d n0 = nm * (1.0 / nm.norm());
+        backbone2_normals.push_back(n0);
+    }
+    // -------------------- output normal vectors for P --------------------
+    for (j = 0; j < int(backbone1_nodes.size()); j++) {
+        norm_file << std::setw(6) << "HETATM" << std::setw(5) << 3 * j+1 << " "
+                  << std::setw(4) << "C   " << std::setw(1) << " "
+                  << std::setw(3) << "AXS" << " " << std::setw(1) << "A"
+                  << std::setw(4) << j+1 << std::setw(1) << " " << "   "
+                  << backbone1_nodes[j] << std::endl;
+        norm_file << std::setw(6) << "HETATM" << std::setw(5) << 3 * j+2 << " "
+                  << std::setw(4) << "O   " << std::setw(1) << " "
+                  << std::setw(3) << "AXS" << " " << std::setw(1) << "A"
+                  << std::setw(4) << j+1 << std::setw(1) << " " << "   "
+                  << backbone1_nodes[j] + backbone1_normals[j] * 5 << std::endl;
+    }
+    // connecting points!
+    for (j = 0; j < int(backbone1_nodes.size())-1; j++) {
+        norm_file << std::setw(6) << "CONECT"
+                   << std::setw(5) << 3 * j + 1
+                   << std::setw(5) << 3 * j + 2
+                   << std::endl;
+    }
 
 
+    // ============= find the helix center and tangent for every P =============
+    double angle_lim = pinang::g_pi / 2;
+    double pi_over_60 = pinang::g_pi / 60;
+    for (i = 0; i < int(backbone1_normals.size()); i++) {
+        // if (i != 52 && i != 53 && i != 51)
+        // if (i != 52)
+        //     continue;
+
+        pinang::Vec3d t1 = backbone1_normals[i];
+        pinang::Vec3d t2 = genline1_line_tangents[i%10][i/10];
+        pinang::Vec3d t3 = t1 ^ t2;
+        t3 = t3 * (1.0 / t3.norm());
+        pinang::Vec3d nm;       // normal vector of the fake plane
+        double theta = 0;
+        // std::cout << t1 << " | " << t2 << " | " << t3 << std::endl;
+
+        double circle_radius_min = 1000.0;
+        pinang::Vec3d circle_center;
+        for (theta = - angle_lim ; theta < angle_lim; theta += pi_over_60) {
+            // STEP 1: calculate the plane! ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            // Plane: a x + b y + c z = _d0
+            nm = t2 + t3 * (tan(theta) * t2.norm());
+            nm = nm * (1.0 / nm.norm());
+            // std::cout << nm << "  norm = " << nm.norm() << std::endl;
+            double _d0 = nm * backbone1_nodes[i]; // param in plane function!
+
+            // STEP 2: get intersections for each generating line ~~~~~~~~~~~~~~
+            double _dm = 0.0;   // min distances to the plane!
+            double _d  = 0.0;   // distances to the plane!
+            std::vector<pinang::Vec3d> intersects;
+            pinang::Vec3d insect;
+            for (j = 0; j < int(genline1_lines.size()); j++) {
+                _dm = 100000000.0;
+                for (int k = 0; k < int(genline1_lines[j].size()); k++) {
+                    _d = genline1_lines[j][k] * nm - _d0;
+                    // std::cout << "aaaaaaa ====================" << _d << std::endl;
+                    double d_tmp = _d > 0 ? _d : - _d;
+                    if (d_tmp <= _dm) {
+                        _dm = d_tmp;
+                        insect = genline1_lines[j][k] - (nm * _d);
+                    }
+                }
+                // std::cout << insect * nm - _d0 << std::endl;
+                // std::cout << genline1_lines[j].size() << std::endl;
+                // std::cout << j << " distance to plane = " <<  _dm << std::endl;
+                intersects.push_back(insect);
+            }
+            for (j = 0; j < int(genline2_lines.size()); j++) {
+                _dm = 100000000.0;
+                for (int k = 0; k < int(genline2_lines[j].size()); k++) {
+                    _d = genline2_lines[j][k] * nm - _d0;
+                    double d_tmp = _d > 0 ? _d : - _d;
+                    if (d_tmp <= _dm) {
+                        _dm = d_tmp;
+                        insect = genline2_lines[j][k] - (nm * _d);
+                    }
+                }
+                // std::cout << insect * nm - _d0 << std::endl;
+                // std::cout << genline2_lines[j].size() << std::endl;
+                // std::cout << j << " distance to plane = " <<  _dm << std::endl;
+                intersects.push_back(insect);
+            }
+            // STEP 3: find out the minimal circle cover all dots ~~~~~~~~~~~~~~
+            pinang::Vec3d com(0,0,0);
+            for (j = 0; j < int(intersects.size()); j++) {
+                com = com + intersects[j];
+                // std::cout << intersects[j] << std::endl;
+            }
+            com = com * (1.0 / int(intersects.size()) );
+            double d_max = 0;   // largest distance from intersects to com
+            double d_tmp = 0;   // distance from intersects to com
+            for (j = 0; j < int(intersects.size()); j++) {
+                d_tmp = vec_distance(com, intersects[j]);
+                if (d_tmp > d_max)
+                    d_max = d_tmp;
+                // std::cout << j << ":"<< intersects[j] << "  dist = " << d_tmp << std::endl;
+            }
+            // std::cout << " insect size = " << intersects.size() << "; max radius=" << d_max << std::endl;
+            // std::cout << " normal vector : " << nm << std::endl;
+            // STEP 4: return the helix center and helix width!  ~~~~~~~~~~~~~~~
+            if (d_max < circle_radius_min) {
+                circle_radius_min = d_max;
+                circle_center = com;
+            }
+        }
+        // std::cout << " No. " << i << " radius = "
+        //           << circle_radius_min << " com : (" << circle_center << ")" << std::endl;
+        axis_nodes.push_back(circle_center);
+        helix_width.push_back(circle_radius_min);
+        std::cout << circle_radius_min * 2 + 5.8 << std::endl;
+    }
+    for (j = 0; j < int(axis_nodes.size()); j++) {
+        axis_file << std::setw(6) << "HETATM" << std::setw(5) << j+1 << " "
+                  << std::setw(4) << "C   " << std::setw(1) << " "
+                  << std::setw(3) << "AXS" << " " << std::setw(1) << "A"
+                  << std::setw(4) << j+1 << std::setw(1) << " " << "   "
+                  << axis_nodes[j] << std::endl;
+        norm_file << std::setw(6) << "HETATM" << std::setw(5) << 3 * j+3 << " "
+                  << std::setw(4) << "C   " << std::setw(1) << " "
+                  << std::setw(3) << "AXS" << " " << std::setw(1) << "A"
+                  << std::setw(4) << j+1 << std::setw(1) << " " << "   "
+                  << axis_nodes[j] << std::endl;
+    }
+    // connecting points!
+    for (j = 0; j < int(axis_nodes.size())-1; j++) {
+        axis_file << std::setw(6) << "CONECT"
+                   << std::setw(5) << j + 1
+                   << std::setw(5) << j + 2
+                   << std::endl;
+        norm_file << std::setw(6) << "CONECT"
+                  << std::setw(5) << 3* j + 2
+                  << std::setw(5) << 3* j + 3
+                  << std::endl;
+    }
+
+
+
+    // ----------------------------------------------------------------------
     back_file.close();
+    gline_file.close();
     axis_file.close();
+    norm_file.close();
     out_file.close();
 
     return 0;
 }
 
-void gen_spline_fit(const std::vector<pinang::Vec3d>& nodes,
+
+
+
+
+/* FUNCTION gen_spline_fit
+//                                 _ _                 __ _ _
+//   __ _  ___ _ __      ___ _ __ | (_)_ __   ___     / _(_) |_
+//  / _` |/ _ \ '_ \    / __| '_ \| | | '_ \ / _ \   | |_| | __|
+// | (_| |  __/ | | |   \__ \ |_) | | | | | |  __/   |  _| | |_
+//  \__, |\___|_| |_|___|___/ .__/|_|_|_| |_|\___|___|_| |_|\__|
+//  |___/          |_____|  |_|                 |_____|
+*/
+void gen_spline_fit(const std::vector<pinang::Vec3d>& nodes, int N,
                     std::vector<pinang::Vec3d>& dots,
                     std::vector<pinang::Vec3d>& tangents)
 {
@@ -275,8 +562,8 @@ void gen_spline_fit(const std::vector<pinang::Vec3d>& nodes,
         d = t_tmp.norm();
         v1 = tangents[i];
         v2 = tangents[i+1];
-        for (int j = 0; j < 10; j++) {
-            r = j * 0.1;
+        for (int j = 0; j < N; j++) {
+            r = j * (1.0 / N);
             b_r = p_i + v1 * d * ( r - 2*r*r + r*r*r)
                 + t_tmp * ( 3*r*r - 2*r*r*r ) + v2 * d * (r*r*r - r*r);
             dots.push_back(b_r);
