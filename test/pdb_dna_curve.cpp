@@ -7,6 +7,7 @@
 #include <cstdlib>
 #include <unistd.h>
 #include <cmath>
+#include <boost/algorithm/string.hpp>
 
 using namespace std;
 
@@ -28,9 +29,11 @@ int main(int argc, char *argv[])
     int opt, mod_index = 0;
     int mod_flag = 0;
     int in_flag = 0;
+    int inp_flag = 0;
 
     std::string infilename = "some.pdb";
 
+    std::string inp_name = "curve.inp";
     std::string axis_name = "_axis.pdb";
     std::string norm_name = "_norm.pdb";
     std::string groove_name = "_groove.pdb";
@@ -38,10 +41,14 @@ int main(int argc, char *argv[])
     std::string gline_name = "_generating_lines.pdb";
     std::string out_name = "_curve.dat";
 
-    while ((opt = getopt(argc, argv, "o:x:b:g:m:f:h")) != -1) {
+    while ((opt = getopt(argc, argv, "o:x:b:g:i:m:f:h")) != -1) {
         switch (opt) {
         case 'o':
             out_name = optarg;
+            break;
+        case 'i':
+            inp_name = optarg;
+            inp_flag = 1;
             break;
         case 'x':
             axis_name = optarg;
@@ -80,11 +87,10 @@ int main(int argc, char *argv[])
         }
     }
 
-    if (!in_flag)
+    if (!in_flag || !inp_flag)
     {
-        std::cout << " ERROR: need parameter for option -f: " << std::endl
-                  << " Usage: "
-                  << argv[0]
+        std::cout << " ERROR: need parameter for option -f and -i: "
+                  << std::endl << " Usage: " << argv[0]
                   << " -f some.pdb [-o _curve.dat] [-x _axis.pdb] \n"
                   << " [-b _backbone.pdb] [-g _generating_lines.pdb]"
                   << " [-m module] [-h]"
@@ -93,6 +99,7 @@ int main(int argc, char *argv[])
     }
     pinang::PDB pdb1(infilename);
 
+    std::ifstream inp_file(inp_name.c_str());
     std::ofstream back_file(back_name.c_str());
     std::ofstream gline_file(gline_name.c_str());
     std::ofstream axis_file(axis_name.c_str());
@@ -152,24 +159,135 @@ int main(int argc, char *argv[])
     std::vector<double> major_groove_width;
     std::vector<double> minor_groove_width;
 
+
+
+    /* ============================================================
+    //      _                   _
+    //     (_)_ __  _ __  _   _| |_
+    //     | | '_ \| '_ \| | | | __|
+    //     | | | | | |_) | |_| | |_
+    //     |_|_| |_| .__/ \__,_|\__|
+    //              |_|
+    // ============================================================
+    */
     int i = 0;
     int j = 0;
-    pinang::Chain c1 = pdb1.m_model(mod_index-1).m_chain(0);
-    pinang::Chain c2 = pdb1.m_model(mod_index-1).m_chain(1);
-    int len1 = c1.m_chain_length();
-    int len2 = c2.m_chain_length();
-    std::cout << " 1. Reading coordinates ..." << std::endl;
-    for (i = 1; i < len1; i++) { // start from 1! because residue 0 has no P!
-        backbone1_nodes.push_back(c1.m_residue(i).m_P().coordinates());
+
+    int flg_grp_1 = 0;
+    int flg_grp_2 = 0;
+    std::vector<char> chain1_id;
+    std::vector<char> chain2_id;
+    std::string inp_line;
+    std::string tmp_str;
+    while (inp_file.good()) {
+        std::getline(inp_file, inp_line);
+
+        if (inp_file.fail())
+        {
+            break;
+        }
+
+        tmp_str = inp_line.substr(0,8);
+
+        if (tmp_str == "STRAND1:")
+        {
+            std::string tmp_s;
+            std::istringstream tmp_sstr;
+            flg_grp_1 = 1;
+            inp_line.erase(0,8);
+            std::vector<std::string> strs;
+            boost::split(strs, inp_line, boost::is_any_of(","));
+            for (i = 0; i < int(strs.size()); i++) {
+                tmp_s = strs[i];
+                char tmp_c = 0;
+                // tmp_sstr.str(tmp_s);
+                tmp_sstr.str(strs[i]);
+                tmp_sstr >> tmp_c;
+                chain1_id.push_back(tmp_c);
+                tmp_sstr.clear();
+            }
+        }
+        if (tmp_str == "STRAND2:")
+        {
+            std::string tmp_s;
+            std::istringstream tmp_sstr;
+            flg_grp_2 = 1;
+            inp_line.erase(0,8);
+            std::vector<std::string> strs;
+            boost::split(strs, inp_line, boost::is_any_of(","));
+            for (i = 0; i < int(strs.size()); i++) {
+                tmp_s = strs[i];
+                char tmp_c = 0;
+                // tmp_sstr.str(tmp_s);
+                tmp_sstr.str(strs[i]);
+                tmp_sstr >> tmp_c;
+                if (tmp_c == ' ' or tmp_c == 0)
+                    continue;
+                chain2_id.push_back(tmp_c);
+                tmp_sstr.clear();
+            }
+        }
     }
-    for (i = 1; i < len2; i++) {
-        backbone2_nodes.push_back(c2.m_residue(i).m_P().coordinates());
+    if (flg_grp_1 == 0 || chain1_id.size() == 0)
+    {
+        std::cout << " ERROR: STRAND1 not found!" << std::endl;
+        exit(EXIT_FAILURE);
     }
-    for (i = 0; i < len1; i++) {
-        base_positions1.push_back(c1.m_residue(i).m_B().coordinates());
+    if (flg_grp_2 == 0 || chain2_id.size() == 0)
+    {
+        std::cout << " ERROR: STRAND2 not found!" << std::endl;
+        exit(EXIT_FAILURE);
     }
-    for (i = 0; i < len2; i++) {
-        base_positions2.push_back(c2.m_residue(i).m_B().coordinates());
+    std::cout << "Strand 1: ";
+    for (i = 0; i < int(chain1_id.size()); i++) {
+        std::cout << chain1_id[i] << ", ";
+    }
+    std::cout << std::endl;
+    std::cout << "Strand 2: ";
+    for (i = 0; i < int(chain2_id.size()); i++) {
+        std::cout << chain2_id[i] << ", ";
+    }
+    std::cout << std::endl;
+    inp_file.close();
+
+    pinang::Model mdl0 = pdb1.m_model(mod_index-1);
+    pinang::Chain chain_tmp;
+    int mdl_size = mdl0.m_model_size();
+    for (i = 0; i < int(chain1_id.size()); i++)
+        for (j = 0; j < mdl_size; ++j)
+            if (mdl0.m_chain(j).chain_ID() == chain1_id[i]) {
+                chain_tmp = mdl0.m_chain(j);
+                int len1 = chain_tmp.m_chain_length();
+                for (int k = 1; k < len1; k++) { // start from 1! because residue 0 has no P!
+                    backbone1_nodes.push_back(chain_tmp.m_residue(k).m_P().coordinates());
+                }
+                for (int k = 0; k < len1; k++) {
+                    base_positions1.push_back(chain_tmp.m_residue(k).m_B().coordinates());
+                }
+                chain_tmp.reset();
+            }
+    for (i = 0; i < int(chain2_id.size()); i++)
+        for (j = 0; j < mdl_size; ++j)
+            if (mdl0.m_chain(j).chain_ID() == chain2_id[i]) {
+                chain_tmp = mdl0.m_chain(j);
+                int len1 = chain_tmp.m_chain_length();
+                for (int k = 1; k < len1; k++) { // start from 1! because residue 0 has no P!
+                    backbone2_nodes.push_back(chain_tmp.m_residue(k).m_P().coordinates());
+                }
+                for (int k = 0; k < len1; k++) {
+                    base_positions2.push_back(chain_tmp.m_residue(k).m_B().coordinates());
+                }
+                chain_tmp.reset();
+            }
+    if (backbone1_nodes.size() == 0 || base_positions1.size() == 0)
+    {
+        std::cout << " ERROR: STRAND1 read in error!" << std::endl;
+        exit(EXIT_FAILURE);
+    }
+    if (backbone2_nodes.size() == 0 || base_positions2.size() == 0)
+    {
+        std::cout << " ERROR: STRAND2 read in error!" << std::endl;
+        exit(EXIT_FAILURE);
     }
     std::cout << " ... done." << std::endl;
 
@@ -481,7 +599,6 @@ int main(int argc, char *argv[])
                     // std::cout << j << ":"<< intersects[j] << "  dist = " << d_tmp << std::endl;
                 }
                 // std::cout << " theta = " << theta << "; alpha =" << alpha << std::endl;
-                // std::cout << " insect size = " << intersects.size() << "; max radius=" << d_max << std::endl;
                 // std::cout << " normal vector : " << nm << std::endl;
                 // STEP 4: return the helix center and helix width!  ~~~~~~~~~~~~~~~
                 if (d_max < circle_radius_min) {
@@ -738,35 +855,43 @@ int main(int argc, char *argv[])
         }
         std::cout << i << " minor: " << minor_g_w
                   << " major: " << major_g_w << std::endl;
-        groove_file << std::setw(6) << "HETATM" << std::setw(5) << 4 * i+1 << " "
-                    << std::setw(4) << "C   " << std::setw(1) << " "
-                    << std::setw(3) << "GRV" << " " << std::setw(1) << "A"
-                    << std::setw(4) << j+1 << std::setw(1) << " " << "   "
-                    << I1_0 << std::endl;
-        groove_file << std::setw(6) << "HETATM" << std::setw(5) << 4 * i+3 << " "
-                    << std::setw(4) << "O   " << std::setw(1) << " "
-                    << std::setw(3) << "GRV" << " " << std::setw(1) << "A"
-                    << std::setw(4) << j+1 << std::setw(1) << " " << "   "
-                    << I3_0 << std::endl;
-        groove_file << std::setw(6) << "HETATM" << std::setw(5) << 4 * i+2 << " "
-                    << std::setw(4) << "N   " << std::setw(1) << " "
-                    << std::setw(3) << "GRV" << " " << std::setw(1) << "B"
-                    << std::setw(4) << j+1 << std::setw(1) << " " << "   "
-                    << I2_0 << std::endl;
-        groove_file << std::setw(6) << "HETATM" << std::setw(5) << 4 * i+4 << " "
-                    << std::setw(4) << "S   " << std::setw(1) << " "
-                    << std::setw(3) << "GRV" << " " << std::setw(1) << "B"
-                    << std::setw(4) << j+1 << std::setw(1) << " " << "   "
-                    << I4_0 << std::endl;
-        groove_file << std::setw(6) << "CONECT"
-                    << std::setw(5) << 4*i + 1
-                    << std::setw(5) << 4*i + 2
-                    << std::endl;
-        groove_file << std::setw(6) << "CONECT"
-                    << std::setw(5) << 4*i + 3
-                    << std::setw(5) << 4*i + 4
-                    << std::endl;
+        if (minor_g_w < 25) {
+            groove_file << std::setw(6) << "HETATM" << std::setw(5) << 4 * i+1 << " "
+                        << std::setw(4) << "C   " << std::setw(1) << " "
+                        << std::setw(3) << "GRV" << " " << std::setw(1) << "A"
+                        << std::setw(4) << j+1 << std::setw(1) << " " << "   "
+                        << I1_0 << std::endl;
+            groove_file << std::setw(6) << "HETATM" << std::setw(5) << 4 * i+2 << " "
+                        << std::setw(4) << "N   " << std::setw(1) << " "
+                        << std::setw(3) << "GRV" << " " << std::setw(1) << "B"
+                        << std::setw(4) << j+1 << std::setw(1) << " " << "   "
+                        << I2_0 << std::endl;
+            groove_file << std::setw(6) << "CONECT"
+                        << std::setw(5) << 4*i + 1
+                        << std::setw(5) << 4*i + 2
+                        << std::endl;
+            minor_groove_width.push_back(minor_g_w);
+        }
+        if (major_g_w < 25) {
+            groove_file << std::setw(6) << "HETATM" << std::setw(5) << 4 * i+3 << " "
+                        << std::setw(4) << "O   " << std::setw(1) << " "
+                        << std::setw(3) << "GRV" << " " << std::setw(1) << "A"
+                        << std::setw(4) << j+1 << std::setw(1) << " " << "   "
+                        << I3_0 << std::endl;
+            groove_file << std::setw(6) << "HETATM" << std::setw(5) << 4 * i+4 << " "
+                        << std::setw(4) << "S   " << std::setw(1) << " "
+                        << std::setw(3) << "GRV" << " " << std::setw(1) << "B"
+                        << std::setw(4) << j+1 << std::setw(1) << " " << "   "
+                        << I4_0 << std::endl;
+            groove_file << std::setw(6) << "CONECT"
+                        << std::setw(5) << 4*i + 3
+                        << std::setw(5) << 4*i + 4
+                        << std::endl;
+            major_groove_width.push_back(major_g_w);
+        }
     }
+    std::cout << " ... done." << std::endl;
+
 
     // ----------------------------------------------------------------------
     back_file.close();
