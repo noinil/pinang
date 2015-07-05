@@ -170,6 +170,7 @@ int main(int argc, char *argv[])
     //              |_|
     // ============================================================
     */
+    std::cout << " 1. Read in structures ..." << std::endl;
     int i = 0;
     int j = 0;
 
@@ -238,16 +239,16 @@ int main(int argc, char *argv[])
         std::cout << " ERROR: STRAND2 not found!" << std::endl;
         exit(EXIT_FAILURE);
     }
-    std::cout << "Strand 1: ";
-    for (i = 0; i < int(chain1_id.size()); i++) {
-        std::cout << chain1_id[i] << ", ";
-    }
-    std::cout << std::endl;
-    std::cout << "Strand 2: ";
-    for (i = 0; i < int(chain2_id.size()); i++) {
-        std::cout << chain2_id[i] << ", ";
-    }
-    std::cout << std::endl;
+    // std::cout << "Strand 1: ";
+    // for (i = 0; i < int(chain1_id.size()); i++) {
+    //     std::cout << chain1_id[i] << ", ";
+    // }
+    // std::cout << std::endl;
+    // std::cout << "Strand 2: ";
+    // for (i = 0; i < int(chain2_id.size()); i++) {
+    //     std::cout << chain2_id[i] << ", ";
+    // }
+    // std::cout << std::endl;
     inp_file.close();
 
     pinang::Model mdl0 = pdb1.m_model(mod_index-1);
@@ -390,7 +391,6 @@ int main(int argc, char *argv[])
         genline1_line_tangents.push_back(genline1_tangents);
         genline2_line_tangents.push_back(genline2_tangents);
 
-        // std::cout << i  << "  " << genline1_dots.size() << "  " << genline2_dots.size() << std::endl;
         // ============================ Output to PDB ==========================
         int k = int(genline1_dots.size());
         int l = int(backbone1_nodes.size());
@@ -448,8 +448,6 @@ int main(int argc, char *argv[])
         genline2_tangents.clear();
     }
     std::cout << " ... done." << std::endl;
-    // std::cout << genline1_lines.size() << std::endl;
-    // std::cout << genline2_lines.size() << std::endl;
 
     /* ==================================================================
     //  _          _ _            _ _               _   _
@@ -538,7 +536,6 @@ int main(int argc, char *argv[])
             for (alpha = - angle_lim2 ; alpha <= angle_lim2; alpha += pi_over_60) {
                 nm = nm + t1 * tan(alpha);
                 nm = nm * (1.0 / nm.norm());
-                // std::cout << nm << "  norm = " << nm.norm() << std::endl;
                 // STEP 1: calculate the plane! ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                 // Plane: a x + b y + c z = _d0
                 double _d0 = nm * backbone1_nodes[i]; // param in plane function!
@@ -564,8 +561,6 @@ int main(int argc, char *argv[])
                             insect = genline1_lines[j][k] - (nm * _d);
                         }
                     }
-                    // std::cout << insect * nm - _d0 << std::endl;
-                    // std::cout << j << " dist to plane = " <<  _dm << std::endl;
                     intersects.push_back(insect);
                 }
                 for (j = 0; j < int(genline2_lines.size()); j++) {
@@ -587,7 +582,6 @@ int main(int argc, char *argv[])
                 pinang::Vec3d com(0,0,0);
                 for (j = 0; j < int(intersects.size()); j++) {
                     com = com + intersects[j];
-                    // std::cout << intersects[j] << std::endl;
                 }
                 com = com * (1.0 / int(intersects.size()) );
                 double d_max = 0;   // largest distance from intersects to com
@@ -596,10 +590,7 @@ int main(int argc, char *argv[])
                     d_tmp = vec_distance(com, intersects[j]);
                     if (d_tmp > d_max)
                         d_max = d_tmp;
-                    // std::cout << j << ":"<< intersects[j] << "  dist = " << d_tmp << std::endl;
                 }
-                // std::cout << " theta = " << theta << "; alpha =" << alpha << std::endl;
-                // std::cout << " normal vector : " << nm << std::endl;
                 // STEP 4: return the helix center and helix width!  ~~~~~~~~~~~~~~~
                 if (d_max < circle_radius_min) {
                     circle_radius_min = d_max;
@@ -607,11 +598,8 @@ int main(int argc, char *argv[])
                 }
             }
         }
-        // std::cout << " No. " << i << " radius = "
-        //           << circle_radius_min << " com : (" << circle_center << ")" << std::endl;
         axis_nodes.push_back(circle_center);
         helix_width.push_back(circle_radius_min);
-        // std::cout << circle_radius_min << std::endl;
     }
 
     // Calculate Helix DIRECTION~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -630,9 +618,7 @@ int main(int argc, char *argv[])
         t_tmp = s_tmp * (1 / s_tmp.norm());
         axis_directions.push_back(t_tmp);
     }
-    // for (j = 1; j < int(axis_directions.size()); j++) {
-    //     std::cout << axis_directions[j] * axis_directions[j-1] << std::endl;
-    // }
+    // Output to PDB...
     for (j = 4; j < int(axis_nodes.size())-4; j++) {
         axis_file << std::setw(6) << "HETATM" << std::setw(5) << j+1 << " "
                   << std::setw(4) << "C   " << std::setw(1) << " "
@@ -659,7 +645,19 @@ int main(int argc, char *argv[])
 
     // ============================================================
     // Calculate Curvature!
-    for (i = 3; i < int(axis_nodes.size())-3; i++) {
+    out_file << "------------------------------------------------------------"
+             << std::endl;
+    out_file << "DNA curvature: " << std::endl
+             << std::setw(6) << "id" << "  "
+             << std::setw(10) << "k1" << "   "
+             << std::setw(10) << "k2" << "   "
+             << std::setw(10) << "k3" << "   "
+             << std::setw(10) << "k_ave" << "   "
+             << std::endl;
+    out_file << "------------------------------------------------------------"
+             << std::endl;
+
+    for (i = 4; i < int(axis_nodes.size())-4; i++) {
         j = i - 3;
         pinang::Vec3d v1 = axis_nodes[i + 1] - axis_nodes[i - 1];
         pinang::Vec3d v2 = axis_nodes[i + 2] - axis_nodes[i - 2];
@@ -676,7 +674,7 @@ int main(int argc, char *argv[])
         int k_count = 0;
         int f_only_k1 = 0;
         // ----- i - 1 : i + 1
-        if ( j >=3 && j < int(axis_directions.size()) - 3) {
+        if ( j >=1 && j < int(axis_directions.size()) - 1) {
             dir1 = axis_directions[j-1];
             dir2 = axis_directions[j+1];
             k1 = pinang::vec_angle(dir1, dir2) / dist1;
@@ -686,7 +684,7 @@ int main(int argc, char *argv[])
                 f_only_k1 = 1;
             }
         }
-        if ( j >=3 && j < int(axis_directions.size()) - 3) {
+        if ( j >=2 && j < int(axis_directions.size()) - 2) {
             dir1 = axis_directions[j-2];
             dir2 = axis_directions[j+2];
             k2 = pinang::vec_angle(dir1, dir2) / dist2;
@@ -710,16 +708,15 @@ int main(int argc, char *argv[])
             k_ave = k_sum / k_count;
         }
 
-        std::cout << i + 1 << "  "
-                  << dist1 << "   "
-                  << dist2 << "   "
-                  << dist3 << "   "
-                  << k1 << "   "
-                  << k2 << "   "
-                  << k3 << "   "
-                  << k_ave << "   "
-                  << std::endl;
+        out_file << std::setw(6) << i + 2 << "  "
+                 << std::setw(10) << k1 << "   "
+                 << std::setw(10) << k2 << "   "
+                 << std::setw(10) << k3 << "   "
+                 << std::setw(10) << k_ave << "   "
+                 << std::endl;
     }
+    out_file << "============================================================\n\n\n"
+             << std::endl;
 
     // ---------- Base rise ----------
     // pinang::Vec3d base_delta;
@@ -743,6 +740,14 @@ int main(int argc, char *argv[])
     // =========================================================================
     */
     std::cout << " 5. Calculating groove width ..." << std::endl;
+    out_file << "------------------------------------------------------------"
+             << std::endl;
+    out_file << std::setw(6) << "id" << "   "
+            << std::setw(20) << "minor groove width" << "   "
+            << std::setw(20) <<  "major groove width" << std::endl;
+    out_file << "------------------------------------------------------------"
+             << std::endl;
+
     for (i = 0; i < int(axis_directions.size())-1; i++) {
         // step 1: plane perpendicular to direction Ox, O is the current point -
         // Plane: a x + b y + c z = _d0
@@ -783,10 +788,7 @@ int main(int argc, char *argv[])
                 kb2 = k;
             }
         }
-        // std::cout << "kb test"
-        //           << backbone2_dots[kb2] * nm - _d0 << " .... "
-        //           << backbone1_dots[kb1] * nm - _d0
-        //           << std::endl;
+
         // step 3: find a point in groove --------------------------------------
         pinang::Vec3d vtmp;
         pinang::Vec3d v1;
@@ -812,7 +814,7 @@ int main(int argc, char *argv[])
             else
                 groove_D1 = vtmp * ( - 1.0 / vtmp.norm());
         }
-        // ============================================================!!!!!!!!!
+        // ============================================================
         // !!! KEY~ !!!
         // step 4: rotate the test plane around groove_D
         double minor_g_w = 100000.0;   // local minor groove width----
@@ -891,8 +893,6 @@ int main(int argc, char *argv[])
                     I3 = backbone1_dots[k];
                 }
             }
-            // if ( (I3 - _O) * groove_D1 > 0 )
-            //     continue;
 
             // ------------------------------ backbone 2 intersects
             _dm = 1000000.0;
@@ -917,8 +917,9 @@ int main(int argc, char *argv[])
                 I4_0 = I4;
             }
         }
-        // std::cout << i << " minor: " << minor_g_w
-        //           << " major: " << major_g_w << std::endl;
+        out_file << std::setw(6) << i+6 << "   "
+                << std::setw(20) << minor_g_w << "   "
+                << std::setw(20) <<  major_g_w << std::endl;
         if (minor_g_w < 25) {
             groove_file << std::setw(6) << "HETATM" << std::setw(5) << 4 * i+1 << " "
                         << std::setw(4) << "C   " << std::setw(1) << " "
@@ -954,6 +955,7 @@ int main(int argc, char *argv[])
             major_groove_width.push_back(major_g_w);
         }
     }
+
     std::cout << " ... done." << std::endl;
 
 
