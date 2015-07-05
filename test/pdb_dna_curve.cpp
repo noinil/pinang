@@ -615,7 +615,7 @@ int main(int argc, char *argv[])
     }
 
     // Calculate Helix DIRECTION~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    for (i = 4; i < int(axis_nodes.size()) - 4; i++) {
+    for (i = 3; i < int(axis_nodes.size()) - 3; i++) {
         pinang::Vec3d s_tmp(0,0,0);
         pinang::Vec3d t_tmp(0,0,0);
         pinang::Vec3d v1(0,0,0);
@@ -657,17 +657,81 @@ int main(int argc, char *argv[])
                   << std::endl;
     }
 
-    // ---------- Base rise ----------
-    pinang::Vec3d base_delta;
-    double proj = 0;
-    for (j = 4; j < int(base_positions1.size())-5; j++) {
-        base_delta = base_positions1[j+1] - base_positions1[j];
-        proj = base_delta * axis_directions[j-4];
-        base_rise.push_back(abs(proj));
-        // std::cout << j << " - " << j + 1 << " : "
-        //           << base_delta.norm() << "    "
-        //           << abs(proj) << std::endl;
+    // ============================================================
+    // Calculate Curvature!
+    for (i = 3; i < int(axis_nodes.size())-3; i++) {
+        j = i - 3;
+        pinang::Vec3d v1 = axis_nodes[i + 1] - axis_nodes[i - 1];
+        pinang::Vec3d v2 = axis_nodes[i + 2] - axis_nodes[i - 2];
+        pinang::Vec3d v3 = axis_nodes[i + 3] - axis_nodes[i - 3];
+        pinang::Vec3d dir1(0,0,0);
+        pinang::Vec3d dir2(0,0,0);
+        pinang::Vec3d dir3(0,0,0);
+        double dist1 = v1.norm();
+        double dist2 = v2.norm();
+        double dist3 = v3.norm();
+        double k1=0, k2=0, k3=0;
+        double k_sum = 0;
+        double k_ave = 0;
+        int k_count = 0;
+        int f_only_k1 = 0;
+        // ----- i - 1 : i + 1
+        if ( j >=3 && j < int(axis_directions.size()) - 3) {
+            dir1 = axis_directions[j-1];
+            dir2 = axis_directions[j+1];
+            k1 = pinang::vec_angle(dir1, dir2) / dist1;
+            if (dist1 > 3) {
+                k_sum += k1;
+                k_count += 1;
+                f_only_k1 = 1;
+            }
+        }
+        if ( j >=3 && j < int(axis_directions.size()) - 3) {
+            dir1 = axis_directions[j-2];
+            dir2 = axis_directions[j+2];
+            k2 = pinang::vec_angle(dir1, dir2) / dist2;
+            if (dist2 > 3) {
+                k_sum += k2;
+                k_count += 1;
+                f_only_k1 = 0;
+            }
+        }
+        if ( j >=3 && j < int(axis_directions.size()) - 3) {
+            dir1 = axis_directions[j-3];
+            dir2 = axis_directions[j+3];
+            k3 = pinang::vec_angle(dir1, dir2) / dist3;
+            if (dist3 > 3) {
+                k_sum += k3;
+                k_count += 1;
+                f_only_k1 = 0;
+            }
+        }
+        if (k_count != 0 && f_only_k1 == 0) {
+            k_ave = k_sum / k_count;
+        }
+
+        std::cout << i + 1 << "  "
+                  << dist1 << "   "
+                  << dist2 << "   "
+                  << dist3 << "   "
+                  << k1 << "   "
+                  << k2 << "   "
+                  << k3 << "   "
+                  << k_ave << "   "
+                  << std::endl;
     }
+
+    // ---------- Base rise ----------
+    // pinang::Vec3d base_delta;
+    // double proj = 0;
+    // for (j = 4; j < int(base_positions1.size())-5; j++) {
+    //     base_delta = base_positions1[j+1] - base_positions1[j];
+    //     proj = base_delta * axis_directions[j-4];
+    //     base_rise.push_back(abs(proj));
+    //     // std::cout << j << " - " << j + 1 << " : "
+    //     //           << base_delta.norm() << "    "
+    //     //           << abs(proj) << std::endl;
+    // }
     std::cout << " ... done." << std::endl;
 
     /* =========================================================================
@@ -853,8 +917,8 @@ int main(int argc, char *argv[])
                 I4_0 = I4;
             }
         }
-        std::cout << i << " minor: " << minor_g_w
-                  << " major: " << major_g_w << std::endl;
+        // std::cout << i << " minor: " << minor_g_w
+        //           << " major: " << major_g_w << std::endl;
         if (minor_g_w < 25) {
             groove_file << std::setw(6) << "HETATM" << std::setw(5) << 4 * i+1 << " "
                         << std::setw(4) << "C   " << std::setw(1) << " "
