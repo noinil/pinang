@@ -38,6 +38,9 @@ dcd_angle:
 dcd_interface_scan:
 	c++ -Wall -I../include/ $(CPPINC) $(CPPFLAG) -o p_interface dcd_interface_scan.cpp
 	mv p_interface ../bin/
+dcd_dna_bending:
+	c++ -Wall -I../include/ $(CPPINC) $(CPPFLAG) -o p_dcd_dna_curve dcd_dna_bending.cpp
+	mv p_dcd_dna_curve ../bin/
 ts_read:
 	c++ -Wall $(CPPFLAG) -o p_ts_read cafemol_ts_read.cpp
 	mv p_ts_read ../bin/

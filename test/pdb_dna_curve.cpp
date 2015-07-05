@@ -148,7 +148,6 @@ int main(int argc, char *argv[])
     std::vector<pinang::Vec3d> base_positions1;
     std::vector<pinang::Vec3d> base_positions2;
 
-    std::vector<pinang::Vec3d> axis_dots;
     std::vector<pinang::Vec3d> axis_nodes;
     std::vector<pinang::Vec3d> axis_directions; // Axis direction vectors;
     std::vector<double> helix_width;
