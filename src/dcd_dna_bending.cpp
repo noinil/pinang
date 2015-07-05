@@ -27,6 +27,7 @@ int main(int argc, char *argv[])
               << std::endl;
 
     int opt;
+    int dt = 100;
     int inp_flag = 0;
     int dcd_flag = 0;
     int top_flag = 0;
@@ -42,7 +43,7 @@ int main(int argc, char *argv[])
     std::string crv_name = "some.curve";
     std::string log_name = "curve.log";
 
-    while ((opt = getopt(argc, argv, "f:s:i:o:l:b:e:h")) != -1) {
+    while ((opt = getopt(argc, argv, "f:s:i:o:l:b:d:e:h")) != -1) {
         switch (opt) {
         case 'f':
             dcd_name = optarg;
@@ -58,6 +59,9 @@ int main(int argc, char *argv[])
             break;
         case 'o':
             crv_name = optarg;
+            break;
+        case 'd':
+            dt = std::max(atoi(optarg), 1);
             break;
         case 'l':
             log_name = optarg;
@@ -294,7 +298,7 @@ int main(int argc, char *argv[])
     // |_| |_| |_|\__,_|_|_| |_| |_|\___/ \___/| .__/
     //                                         |_|
     */
-    int step = (end_frame - begin_frame) / 1000;
+    int step = (end_frame - begin_frame) / dt;
     step = step==0 ? 1 : step;
     int count = 0;
     for (int h = begin_frame; h < end_frame; h+=step) {
