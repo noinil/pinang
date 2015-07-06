@@ -340,13 +340,13 @@ int main(int argc, char *argv[])
     }
 
     // connecting points!
-    for (i = 0; i < int(backbone1_dots.size())-1; i++) {
+    for (i = 0; i < int(backbone1_dots.size())-2; i++) {
         back_file << std::setw(6) << "CONECT"
                    << std::setw(5) << i+1
                    << std::setw(5) << i+2
                    << std::endl;
     }
-    for (i = 0; i < int(backbone2_dots.size())-1; i++) {
+    for (i = 0; i < int(backbone2_dots.size())-2; i++) {
         back_file << std::setw(6) << "CONECT"
                    << std::setw(5) << i+1+k
                    << std::setw(5) << i+2+k
@@ -427,13 +427,13 @@ int main(int argc, char *argv[])
         gline_file << "TER" << std::endl;
 
         // connecting points!
-        for (j = 0; j < int(genline1_dots.size())-1; j++) {
+        for (j = 0; j < int(genline1_dots.size())-2; j++) {
             gline_file << std::setw(6) << "CONECT"
                       << std::setw(5) << j + 1
                       << std::setw(5) << j + 2
                       << std::endl;
         }
-        for (j = 0; j < int(genline2_dots.size())-1; j++) {
+        for (j = 0; j < int(genline2_dots.size())-2; j++) {
             gline_file << std::setw(6) << "CONECT"
                       << std::setw(5) << j+1+k
                       << std::setw(5) << j+2+k
@@ -631,7 +631,7 @@ int main(int argc, char *argv[])
                   << axis_nodes[j] << std::endl;
     }
     // connecting points!
-    for (j = 4; j < int(axis_nodes.size())-4; j++) {
+    for (j = 4; j < int(axis_nodes.size())-5; j++) {
         axis_file << std::setw(6) << "CONECT"
                    << std::setw(5) << j + 1
                    << std::setw(5) << j + 2
