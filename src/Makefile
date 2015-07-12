@@ -32,15 +32,15 @@ dcd_distance_1:
 dcd_distance_2:
 	c++ -Wall -I../include/ $(CPPINC) $(CPPFLAG) -o p_dist_lig dcd_distances_lig_rec.cpp
 	mv p_dist_lig ../bin/
-dcd_angle:
-	c++ -Wall -I../include/ $(CPPINC) $(CPPFLAG) -o p_angle_com dcd_angle_com.cpp
-	mv p_angle_com ../bin/
 dcd_interface_scan:
 	c++ -Wall -I../include/ $(CPPINC) $(CPPFLAG) -o p_interface dcd_interface_scan.cpp
 	mv p_interface ../bin/
 dcd_dna_bending:
 	c++ -Wall -I../include/ $(CPPINC) $(CPPFLAG) -o p_dcd_dna_curve dcd_dna_bending.cpp
 	mv p_dcd_dna_curve ../bin/
+dcd_angle_com:
+	c++ -Wall -I../include/ $(CPPINC) $(CPPFLAG) -o p_angle_com dcd_angle_com.cpp
+	mv p_angle_com ../bin/
 ts_read:
 	c++ -Wall $(CPPFLAG) -o p_ts_read cafemol_ts_read.cpp
 	mv p_ts_read ../bin/
