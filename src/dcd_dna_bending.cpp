@@ -303,7 +303,7 @@ int main(int argc, char *argv[])
     int count = 0;
     for (int h = begin_frame; h < end_frame; h+=step) {
         count++;
-        if (count % 10 == 0 && log_flag == 1) {
+        if (log_flag == 1) {
             std::cout << " Time : " << h << std::endl;
             log_file << " ----------------------------------------------------- \n"
                      << " step " << std::setw(6) << h << std::endl
@@ -568,7 +568,7 @@ int main(int argc, char *argv[])
             if (k_count != 0 && f_only_k1 == 0) {
                 k_ave = k_sum / k_count;
             }
-            if (count % 10 == 0 && log_flag == 1) {
+            if (log_flag == 1) {
                 log_file << std::setw(6) << i + 2 << "  "
                          << std::setw(10) << k_ave << "   "
                          << std::endl;
