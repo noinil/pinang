@@ -21,6 +21,7 @@ int main(int argc, char *argv[])
               << std::endl;
 
     double cutoff = 0;
+    double contact_cutoff = 7.0;
 
     int opt;
     int inp_flag = 0;
@@ -32,7 +33,7 @@ int main(int argc, char *argv[])
     std::string inp_name = "some.inp";
     std::string dis_name = "some.dis";
 
-    while ((opt = getopt(argc, argv, "f:s:i:o:h")) != -1) {
+    while ((opt = getopt(argc, argv, "f:c:s:i:o:h")) != -1) {
         switch (opt) {
         case 'f':
             dcd_name = optarg;
@@ -42,6 +43,9 @@ int main(int argc, char *argv[])
             top_name = optarg;
             top_flag = 1;
             break;
+	case 'c':
+	    contact_cutoff = atof(optarg);
+	    break;
         case 'i':
             inp_name = optarg;
             inp_flag = 1;
@@ -270,7 +274,7 @@ int main(int argc, char *argv[])
                 m = atom_group2_idx[l];
                 v2 = conformations[i].atom(m);
                 d_tmp = vec_distance(v1, v2);
-                if (d_tmp < 7.0) {
+                if (d_tmp < contact_cutoff) {
                     lig_resid[j] = 1;
                     rec_resid[l] = 1;
                 }
