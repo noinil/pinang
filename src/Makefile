@@ -44,6 +44,9 @@ dcd_angle_com:
 ts_read:
 	c++ -Wall $(CPPFLAG) -o p_ts_read cafemol_ts_read.cpp
 	mv p_ts_read ../bin/
+pdb_rg:
+	c++ -Wall -I../include/ $(CPPFLAG) -o p_pdb_rg pdb_rg.cpp
+	mv p_pdb_rg ../bin/
 pdb_dna_curve:
 	c++ -Wall -I../include/ $(CPPFLAG) -o p_dna_curve pdb_dna_curve.cpp
 	mv p_dna_curve ../bin/
