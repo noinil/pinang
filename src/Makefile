@@ -7,7 +7,7 @@ all: 	install_dir pdb_related dcd_related
 
 pdb_related: seq pdb_output pdb_cg_top matrix_transpose  ts_read pdb_dna_curve pdb_pdi_st pdb_wat_st
 
-dcd_related:  dcd_contact_num dcd_distance_0 dcd_distance_1 persistence_length dcd_dna_bpn dcd_distance_2 dcd_interface_scan
+dcd_related:  dcd_contact_num dcd_distance_0 dcd_distance_1 persistence_length dcd_dna_bpn dcd_distance_2 dcd_interface_scan dcd_dna_bending
 
 install_dir:
 	mkdir -p ../bin
