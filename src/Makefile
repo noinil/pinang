@@ -1,7 +1,7 @@
 # variables
 INSTALL_DIR = ../bin/
-CC = clang
-CXX = clang++
+CC = cc
+CXX = c++
 LINK = $(CXX)
 INCPATH = -I/usr/local/include -I../include
 CXXFLAGS = -std=c++11 -O3
