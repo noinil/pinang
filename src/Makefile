@@ -20,6 +20,8 @@ RM = rm -fr
 .PHONY : all install clean
 
 all : $(TARGETS)
+
+install:
 	@$(CHK_DIR_EXISTS) $(INSTALL_DIR) || $(MKDIR) $(INSTALL_DIR)
 	mv p_* $(INSTALL_DIR)
 
@@ -28,6 +30,8 @@ $(TARGETS) : p_% : %.o
 	@$(RM) $<
 
 $(OBJECTS) : %.o : %.cpp
+	@echo " ------------------------------------------------------------ "
+	@echo " Compiling $< ..."
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) $< -o $@
 
 clean:
