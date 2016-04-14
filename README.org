@@ -1,24 +1,26 @@
 #+TITLE: pinang
 
-* Table of Contents                                        :TOC_4_org:noexport:
- - [[Description][Description]]
- - [[Install][Install]]
- - [[Tools][Tools]]
-
 * Description
 
-This is a package consisting of several small handy tools for investigating
-biomolecule structures (protein, RNA, DNA) or MD trajectories.
+  This is a package consisting of several small handy tools for investigating
+  biomolecule structures (protein, RNA, DNA) or MD trajectories.
 
-* Install
 
-Please change compiler confirgurations in =src/Makefile=. 
+* Installation
+
+  Please change compiler confirgurations in =src/Makefile=, then run
 
 #+begin_src sh
 make
 make install
 #+end_src
 
+By default, all the tools will be moved to the =bin/= directory.
+
+** Prerequisites
+
+   The /Boost C++ Libraries/ are reqired.
+   
 
 * Tools
 
