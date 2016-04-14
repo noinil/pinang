@@ -1,4 +1,4 @@
-0;115;0c# Compiled Object files
+# Compiled Object files
 *.slo
 *.lo
 *.o
@@ -19,6 +19,7 @@
 *.exe
 *.out
 *.app
+p_*
 
 # Test
 test/t*
