@@ -2,8 +2,11 @@
 
 * Description
 
-  This is a package consisting of several small handy tools for investigating
+  This is a package consisting of several small handy tools for analyzing
   biomolecule structures (protein, RNA, DNA) or MD trajectories.
+
+  At the current stage, these tools are mainly used for analyzing /CafeMol/ MD
+  results.
 
 
 * Installation
