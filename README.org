@@ -1,0 +1,42 @@
+#+TITLE: pinang
+
+* Table of Contents                                        :TOC_4_org:noexport:
+ - [[Description][Description]]
+ - [[Install][Install]]
+ - [[Tools][Tools]]
+
+* Description
+
+This is a package consisting of several small handy tools for investigating
+biomolecule structures (protein, RNA, DNA) or MD trajectories.
+
+* Install
+
+Please change compiler confirgurations in =src/Makefile=. 
+
+#+begin_src sh
+make
+make install
+#+end_src
+
+
+* Tools
+
+| Command                       | Description                                                        |
+|-------------------------------+--------------------------------------------------------------------|
+| p_cafemol_ts_read             | Simplely read /CafeMol/ =.ts= files.                               |
+| p_dcd_angle_com               | Calculate angle between three COMs (center of masses).             |
+| p_dcd_base_pairing_percentage | Calculate base pairing percentage for DNA.                         |
+| p_dcd_contact_number          | Calculate contact number between biomolecule chains.               |
+| p_dcd_distance_*              | Calculate distances between atoms/COM/specified groups.            |
+| p_dcd_dna_curvature           | Calculate DNA curvature from trajectories.                         |
+| p_dcd_interface_scan          | Find inter-chain interface in MD trajectories.                     |
+| p_dcd_persistence_length      | Calculate DNA persistence length from MD trajectories.             |
+| p_pdb_PDI_st                  | Statistics of protein-DNA interactions from PDB structures.        |
+| p_pdb_R_g                     | Calculate radius of gyration \(R_g\) of molecules from PDB.        |
+| p_pdb_cat                     | Re-output PDB coordinates.                                         |
+| p_pdb_cg_top                  | Generate topology file from PDB file.                              |
+| p_pdb_dna_curvature           | Calculate DNA curvature and other structural information from PDB. |
+| p_pdb_get_sequence            | Output sequence of molecules in PDB.                               |
+
+
