@@ -77,8 +77,10 @@ int main(int argc, char *argv[])
     {
       mod_index = 1;
     } else {
-      std::cout << " Please choose a MODULE: " ;
-      std::cin >> mod_index;
+      // std::cout << " Please choose a MODULE: " ;
+      // std::cin >> mod_index;
+      std::cout << " Trying to use MODULE: 1 " ;
+      mod_index = 1;
     }
   }
 
