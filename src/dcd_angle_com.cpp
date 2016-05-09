@@ -1,4 +1,4 @@
-#include "read_dcd.h"
+#include "read_cafemol_dcd.h"
 #include "topology.h"
 
 #include <iostream>
@@ -226,7 +226,7 @@ int main(int argc, char *argv[])
     // ---------- Reading DCD ----------
     std::vector<pinang::Conformation> conformations;
 
-    pinang::read_dcd(dcd_file, conformations);
+    pinang::read_cafemol_dcd(dcd_file, conformations);
     int nframe = conformations.size();
 
     if (nframe == 0)

@@ -9,7 +9,7 @@
 #include <fstream>
 
 namespace pinang {
-    int read_dcd(std::ifstream& dcd_file, std::vector<Conformation>& cfms)
+    int read_cafemol_dcd(std::ifstream& dcd_file, std::vector<Conformation>& cfms)
     {
         const std::size_t Si = sizeof(int);
         const std::size_t Sf = sizeof(float);
