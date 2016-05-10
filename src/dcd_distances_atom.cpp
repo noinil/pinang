@@ -172,7 +172,7 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    if (N_atom != conformations[0].m_size())
+    if (N_atom != conformations[0].get_size())
     {
         std::cout << " ERROR: Particle number don't match in top and dcd! "
                   << " Please check! " << std::endl;

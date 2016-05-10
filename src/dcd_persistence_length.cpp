@@ -101,8 +101,8 @@ int main(int argc, char *argv[])
 
     // ==================== topology file read in ====================
     pinang::Topology top(top_name);
-    std::cout << " (i.e. " << (top.m_size()+2)/6 << " bp.)" << std::endl;
-    if (top.m_size() == 0)
+    std::cout << " (i.e. " << (top.get_size()+2)/6 << " bp.)" << std::endl;
+    if (top.get_size() == 0)
     {
         std::cout << " ERROR: No particles found in top file. " << std::endl;
         exit(EXIT_SUCCESS);
@@ -251,7 +251,7 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    if (top.m_size() != conformations[0].m_size())
+    if (top.get_size() != conformations[0].get_size())
     {
         std::cout << " ERROR: Particle number don't match in top and dcd! "
                   << " Please check! " << std::endl;
