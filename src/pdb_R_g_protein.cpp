@@ -166,7 +166,7 @@ int main(int argc, char *argv[])
   double dist_square_sum = 0;
   for (i = 0; i < len_ca_coors; ++i) {
     pinang::Vec3d v_dist = c_alpha_coors[i] - com_ca;
-    double sqr_dist = v_dist.squaredNorm();
+    double sqr_dist = v_dist.sqr_norm();
     dist_square_sum += sqr_dist;
   }
 

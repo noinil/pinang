@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
     std::ofstream out_file(out_name.c_str());
 
     if (mod_flag != 1) {
-        if (pdb1.n_models() == 1)
+        if (pdb1.get_n_models() == 1)
         {
             mod_index = 1;
         } else {
@@ -96,16 +96,16 @@ int main(int argc, char *argv[])
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     */
     pinang::Chain c0;
-    for (int i = 0; i < pdb1.m_model(mod_index - 1).m_model_size(); i++) {
-        c0 = c0 + pdb1.m_model(mod_index - 1).m_chain(i);
+    for (int i = 0; i < pdb1.get_model(mod_index - 1).get_model_size(); i++) {
+        c0 = c0 + pdb1.get_model(mod_index - 1).get_chain(i);
     }
     pinang::Residue r0, r1;
-    pinang::chain_t cti1;
-    for (int i = 0; i < pdb1.m_model(mod_index - 1).m_model_size(); i++) {
-        if (pdb1.m_model(mod_index - 1).m_chain(i).chain_type() != pinang::water)
+    pinang::ChainType cti1;
+    for (int i = 0; i < pdb1.get_model(mod_index - 1).get_model_size(); i++) {
+        if (pdb1.get_model(mod_index - 1).get_chain(i).get_chain_type() != pinang::water)
             continue;
-        for (int m = 0; m < pdb1.m_model(mod_index - 1).m_chain(i).m_chain_length(); m++) {
-            r0 = pdb1.m_model(mod_index - 1).m_chain(i).m_residue(m);
+        for (int m = 0; m < pdb1.get_model(mod_index - 1).get_chain(i).get_chain_length(); m++) {
+            r0 = pdb1.get_model(mod_index - 1).get_chain(i).get_residue(m);
 
             double min_dist_W_PRO = 0; // min distance water -- protein
             double min_dist_W_A = 0; // min distance water -- DNA
@@ -118,29 +118,29 @@ int main(int argc, char *argv[])
             pinang::Residue special0, special_P, special_S;
             pinang::Residue special_A, special_T, special_G, special_C;
 
-            for (int j = 0; j < pdb1.m_model(mod_index - 1).m_model_size(); j++) {
-                if (pdb1.m_model(mod_index - 1).m_chain(j).chain_type() == pinang::water ||
-                    pdb1.m_model(mod_index - 1).m_chain(j).chain_type() == pinang::ion)
+            for (int j = 0; j < pdb1.get_model(mod_index - 1).get_model_size(); j++) {
+                if (pdb1.get_model(mod_index - 1).get_chain(j).get_chain_type() == pinang::water ||
+                    pdb1.get_model(mod_index - 1).get_chain(j).get_chain_type() == pinang::ion)
                     continue;
-                for (int n = 0; n < pdb1.m_model(mod_index - 1).m_chain(j).m_chain_length(); n++) {
-                    r1 = pdb1.m_model(mod_index - 1).m_chain(j).m_residue(n);
-                    cti1 = r1.chain_type();
+                for (int n = 0; n < pdb1.get_model(mod_index - 1).get_chain(j).get_chain_length(); n++) {
+                    r1 = pdb1.get_model(mod_index - 1).get_chain(j).get_residue(n);
+                    cti1 = r1.get_chain_type();
                     std::vector<pinang::Residue> resi_group1;
                     if (cti1 == pinang::protein) {
                         resi_group1.push_back(r1);
                     }
                     else if (cti1 == pinang::DNA || cti1 == pinang::RNA || cti1 == pinang::na) {
-                        pinang::Atom atmp = r1.m_P();
+                        pinang::Atom atmp = r1.get_P();
                         pinang::Residue rtmp_P, rtmp_S, rtmp_B;
-                        rtmp_P.set_resid_index(r1.resid_index());
-                        rtmp_S.set_resid_index(r1.resid_index());
-                        rtmp_B.set_resid_index(r1.resid_index());
+                        rtmp_P.set_resid_index(r1.get_resid_index());
+                        rtmp_S.set_resid_index(r1.get_resid_index());
+                        rtmp_B.set_resid_index(r1.get_resid_index());
                         rtmp_P.set_resid_name("P");
                         rtmp_S.set_resid_name("S");
                         rtmp_B.set_resid_name(r1.get_resid_name());
-                        for (int v = 0; v < r1.m_residue_size(); v++) {
-                            atmp = r1.m_atom(v);
-                            std::string aname = atmp.atom_name();
+                        for (int v = 0; v < r1.get_residue_size(); v++) {
+                            atmp = r1.get_atom(v);
+                            std::string aname = atmp.get_atom_name();
                             if (aname == "P  " || aname == "OP1"
                                 || aname == "OP2")
                                 rtmp_P.add_atom(atmp);

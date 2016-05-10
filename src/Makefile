@@ -23,11 +23,10 @@ all : $(TARGETS)
 
 install:
 	@$(CHK_DIR_EXISTS) $(INSTALL_DIR) || $(MKDIR) $(INSTALL_DIR)
-	mv p_* $(INSTALL_DIR)
+	cp p_* $(INSTALL_DIR)
 
 $(TARGETS) : p_% : %.o
 	$(LINK) $< -o $@
-	@$(RM) $<
 
 $(OBJECTS) : %.o : %.cpp
 	@echo " ------------------------------------------------------------ "

@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
     std::ofstream out_file(out_name.c_str());
 
     if (mod_flag != 1) {
-        if (pdb1.n_models() == 1)
+        if (pdb1.get_n_models() == 1)
         {
             mod_index = 1;
         } else {
@@ -96,42 +96,42 @@ int main(int argc, char *argv[])
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     */
     pinang::Chain c0;
-    for (int i = 0; i < pdb1.m_model(mod_index - 1).m_model_size(); i++) {
-        c0 = c0 + pdb1.m_model(mod_index - 1).m_chain(i);
+    for (int i = 0; i < pdb1.get_model(mod_index - 1).get_model_size(); i++) {
+        c0 = c0 + pdb1.get_model(mod_index - 1).get_chain(i);
     }
     pinang::Residue r0, r1;
-    pinang::chain_t cti0, cti1;
-    for (int i = 0; i < pdb1.m_model(mod_index - 1).m_model_size(); i++) {
-        for (int m = 0; m < pdb1.m_model(mod_index - 1).m_chain(i).m_chain_length(); m++) {
-            r0 = pdb1.m_model(mod_index - 1).m_chain(i).m_residue(m);
-            cti0 = r0.chain_type();
+    pinang::ChainType cti0, cti1;
+    for (int i = 0; i < pdb1.get_model(mod_index - 1).get_model_size(); i++) {
+        for (int m = 0; m < pdb1.get_model(mod_index - 1).get_chain(i).get_chain_length(); m++) {
+            r0 = pdb1.get_model(mod_index - 1).get_chain(i).get_residue(m);
+            cti0 = r0.get_chain_type();
             if (cti0 == pinang::water || cti0 == pinang::ion)
                 continue;
             std::vector<pinang::Atom> atom_group0;
             std::vector<pinang::Residue> resi_group0;
             if (cti0 == pinang::protein) {
-                pinang::Atom atmp = r0.m_C_alpha();
+                pinang::Atom atmp = r0.get_C_alpha();
                 atom_group0.push_back(atmp);
                 resi_group0.push_back(r0);
             }
             else if (cti0 == pinang::DNA || cti0 == pinang::RNA || cti0 == pinang::na) {
-                pinang::Atom atmp = r0.m_P();
+                pinang::Atom atmp = r0.get_P();
                 atmp.set_resid_name("P");
                 if (m != 0)
                     atom_group0.push_back(atmp);
-                atmp = r0.m_S();
+                atmp = r0.get_S();
                 atmp.set_resid_name("S");
                 atom_group0.push_back(atmp);
-                atmp = r0.m_B();
+                atmp = r0.get_B();
                 atom_group0.push_back(atmp);
 
                 pinang::Residue rtmp_P, rtmp_S, rtmp_B;
-                rtmp_P.set_resid_index(r0.resid_index());
-                rtmp_S.set_resid_index(r0.resid_index());
-                rtmp_B.set_resid_index(r0.resid_index());
-                for (int v = 0; v < r0.m_residue_size(); v++) {
-                    atmp = r0.m_atom(v);
-                    std::string aname = atmp.atom_name();
+                rtmp_P.set_resid_index(r0.get_resid_index());
+                rtmp_S.set_resid_index(r0.get_resid_index());
+                rtmp_B.set_resid_index(r0.get_resid_index());
+                for (int v = 0; v < r0.get_residue_size(); v++) {
+                    atmp = r0.get_atom(v);
+                    std::string aname = atmp.get_atom_name();
                     if (aname == "P  " || aname == "OP1"
                         || aname == "OP2")
                         rtmp_P.add_atom(atmp);
@@ -146,10 +146,10 @@ int main(int argc, char *argv[])
                 resi_group0.push_back(rtmp_S);
                 resi_group0.push_back(rtmp_B);
             }
-            for (int j = i + 1; j < pdb1.m_model(mod_index - 1).m_model_size(); j++) {
-                for (int n = 0; n < pdb1.m_model(mod_index - 1).m_chain(j).m_chain_length(); n++) {
-                    r1 = pdb1.m_model(mod_index - 1).m_chain(j).m_residue(n);
-                    cti1 = r1.chain_type();
+            for (int j = i + 1; j < pdb1.get_model(mod_index - 1).get_model_size(); j++) {
+                for (int n = 0; n < pdb1.get_model(mod_index - 1).get_chain(j).get_chain_length(); n++) {
+                    r1 = pdb1.get_model(mod_index - 1).get_chain(j).get_residue(n);
+                    cti1 = r1.get_chain_type();
                     if (cti1 == pinang::water || cti1 == pinang::ion)
                         continue;
                     if ((cti0 == pinang::DNA || cti0 == pinang::na) &&
@@ -158,29 +158,29 @@ int main(int argc, char *argv[])
                     std::vector<pinang::Atom> atom_group1;
                     std::vector<pinang::Residue> resi_group1;
                     if (cti1 == pinang::protein) {
-                        pinang::Atom atmp = r1.m_C_alpha();
+                        pinang::Atom atmp = r1.get_C_alpha();
                         atom_group1.push_back(atmp);
                         resi_group1.push_back(r1);
                     }
                     else if (cti1 == pinang::DNA || cti1 == pinang::RNA || cti1 == pinang::na) {
-                        pinang::Atom atmp = r1.m_P();
+                        pinang::Atom atmp = r1.get_P();
                         atmp.set_resid_name("P");
                         if (n != 0)
                             atom_group1.push_back(atmp);
-                        atmp = r1.m_S();
+                        atmp = r1.get_S();
                         atmp.set_resid_name("S");
                         atom_group1.push_back(atmp);
-                        atmp = r1.m_B();
+                        atmp = r1.get_B();
                         atmp.set_resid_name(r1.get_resid_name());
                         atom_group1.push_back(atmp);
 
                         pinang::Residue rtmp_P, rtmp_S, rtmp_B;
-                        rtmp_P.set_resid_index(r1.resid_index());
-                        rtmp_S.set_resid_index(r1.resid_index());
-                        rtmp_B.set_resid_index(r1.resid_index());
-                        for (int v = 0; v < r1.m_residue_size(); v++) {
-                            atmp = r1.m_atom(v);
-                            std::string aname = atmp.atom_name();
+                        rtmp_P.set_resid_index(r1.get_resid_index());
+                        rtmp_S.set_resid_index(r1.get_resid_index());
+                        rtmp_B.set_resid_index(r1.get_resid_index());
+                        for (int v = 0; v < r1.get_residue_size(); v++) {
+                            atmp = r1.get_atom(v);
+                            std::string aname = atmp.get_atom_name();
                             if (aname == "P  " || aname == "OP1"
                                 || aname == "OP2")
                                 rtmp_P.add_atom(atmp);
@@ -191,7 +191,7 @@ int main(int argc, char *argv[])
                             }
                         }
                         // std::cout << rtmp_P << std::endl;
-                        // std::cout << rtmp_S.m_residue_size() << std::endl;
+                        // std::cout << rtmp_S.get_residue_size() << std::endl;
                         // std::cout << rtmp_B << std::endl;
                         if (n != 0)
                             resi_group1.push_back(rtmp_P);

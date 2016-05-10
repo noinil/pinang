@@ -108,7 +108,7 @@ int main(int argc, char *argv[])
     std::ofstream out_file(out_name.c_str());
 
     if (mod_flag != 1) {
-        if (pdb1.n_models() == 1)
+        if (pdb1.get_n_models() == 1)
         {
             mod_index = 1;
         } else {
@@ -250,32 +250,32 @@ int main(int argc, char *argv[])
     // std::cout << std::endl;
     inp_file.close();
 
-    pinang::Model mdl0 = pdb1.m_model(mod_index-1);
+    pinang::Model mdl0 = pdb1.get_model(mod_index-1);
     pinang::Chain chain_tmp;
-    int mdl_size = mdl0.m_model_size();
+    int mdl_size = mdl0.get_model_size();
     for (i = 0; i < int(chain1_id.size()); i++)
         for (j = 0; j < mdl_size; ++j)
-            if (mdl0.m_chain(j).chain_ID() == chain1_id[i]) {
-                chain_tmp = mdl0.m_chain(j);
-                int len1 = chain_tmp.m_chain_length();
+            if (mdl0.get_chain(j).get_chain_ID() == chain1_id[i]) {
+                chain_tmp = mdl0.get_chain(j);
+                int len1 = chain_tmp.get_chain_length();
                 for (int k = 1; k < len1; k++) { // start from 1! because residue 0 has no P!
-                    backbone1_nodes.push_back(chain_tmp.m_residue(k).m_P().get_coordinates());
+                    backbone1_nodes.push_back(chain_tmp.get_residue(k).get_P().get_coordinates());
                 }
                 for (int k = 0; k < len1; k++) {
-                    base_positions1.push_back(chain_tmp.m_residue(k).m_B().get_coordinates());
+                    base_positions1.push_back(chain_tmp.get_residue(k).get_B().get_coordinates());
                 }
                 chain_tmp.reset();
             }
     for (i = 0; i < int(chain2_id.size()); i++)
         for (j = 0; j < mdl_size; ++j)
-            if (mdl0.m_chain(j).chain_ID() == chain2_id[i]) {
-                chain_tmp = mdl0.m_chain(j);
-                int len1 = chain_tmp.m_chain_length();
+            if (mdl0.get_chain(j).get_chain_ID() == chain2_id[i]) {
+                chain_tmp = mdl0.get_chain(j);
+                int len1 = chain_tmp.get_chain_length();
                 for (int k = 1; k < len1; k++) { // start from 1! because residue 0 has no P!
-                    backbone2_nodes.push_back(chain_tmp.m_residue(k).m_P().get_coordinates());
+                    backbone2_nodes.push_back(chain_tmp.get_residue(k).get_P().get_coordinates());
                 }
                 for (int k = 0; k < len1; k++) {
-                    base_positions2.push_back(chain_tmp.m_residue(k).m_B().get_coordinates());
+                    base_positions2.push_back(chain_tmp.get_residue(k).get_B().get_coordinates());
                 }
                 chain_tmp.reset();
             }
