@@ -20,7 +20,7 @@ class Topology
 
   inline void reset();
 
-  int m_size() {return _n_particle;}
+  int get_size() {return _n_particle;}
   const Particle& particle(int n) const;
 
  protected:

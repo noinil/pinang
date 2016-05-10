@@ -5,6 +5,7 @@
 
 #include <map>
 #include <string>
+#include <iostream>
 #include <cstdlib>
 
 namespace pinang {
@@ -32,10 +33,10 @@ class PhysicalProperty
   PhysicalProperty();
   ~PhysicalProperty();
 
-  inline static std::string get_short_name(const std::string& s);
-  inline static double get_charge(const std::string& s);
-  inline static double get_mass(const std::string& s);
-  inline static ChainType get_chain_type(const std::string& s);
+  inline std::string get_short_name(const std::string& s);
+  inline double get_charge(const std::string& s);
+  inline double get_mass(const std::string& s);
+  inline ChainType get_chain_type(const std::string& s);
 
  private:
   std::map<std::string, std::string> map_resName_shortName;
