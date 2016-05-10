@@ -498,10 +498,10 @@ int main(int argc, char *argv[])
 
 
     // ============= find the helix center and tangent for every P =============
-    double angle_lim = pinang::g_pi / 3;   // 60 degree;
-    double angle_lim2 = pinang::g_pi / 15;   // 12 degree;
-    double pi_over_36 = pinang::g_pi / 36; // 5 degree;
-    double pi_over_60 = pinang::g_pi / 60; // 3 degree;
+    double angle_lim = pinang::k_pi / 3;   // 60 degree;
+    double angle_lim2 = pinang::k_pi / 15;   // 12 degree;
+    double pi_over_36 = pinang::k_pi / 36; // 5 degree;
+    double pi_over_60 = pinang::k_pi / 60; // 3 degree;
     for (i = 0; i < int(backbone1_normals.size()); i++) {
         // if (i != 52 && i != 53 && i != 51)
         // if (i != 52)
@@ -820,7 +820,7 @@ int main(int argc, char *argv[])
         double major_g_w = 100000.0;
         pinang::Vec3d t3 = groove_D1 ^ nm; // plane normal vector
         double theta = 0;
-        double angle_lim = pinang::g_pi / 2;   // 90 degree;
+        double angle_lim = pinang::k_pi / 2;   // 90 degree;
         for (theta = - angle_lim; theta <= 0; theta += pi_over_60) {
             pinang::Vec3d I1;   // backbone 1
             pinang::Vec3d I2;   // backbone 2
@@ -868,10 +868,10 @@ int main(int argc, char *argv[])
         double ang1 = acos(nm * backbone1_tangents[kb1/10]);
         double ang2 = acos(nm * backbone2_tangents[kb2/10]);
         if (ang1 > 1.570795)
-            ang1 = pinang::g_pi - ang1;
+            ang1 = pinang::k_pi - ang1;
         if (ang2 > 1.570795)
-            ang2 = pinang::g_pi - ang2;
-        angle_lim = pinang::g_pi / 2 - min(ang1, ang2);
+            ang2 = pinang::k_pi - ang2;
+        angle_lim = pinang::k_pi / 2 - min(ang1, ang2);
         for (theta = 0; theta <= angle_lim; theta += pi_over_60) {
             pinang::Vec3d I3;   // backbone 1
             pinang::Vec3d I4;   // backbone 2

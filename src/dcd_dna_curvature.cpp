@@ -178,10 +178,10 @@ int main(int argc, char *argv[])
     */
     int i = 0;
     int j = 0;
-    double angle_lim = pinang::g_pi / 3;   // 60 degree;
-    double angle_lim2 = pinang::g_pi / 15;   // 12 degree;
-    double pi_over_36 = pinang::g_pi / 36; // 5 degree;
-    double pi_over_60 = pinang::g_pi / 60; // 3 degree;
+    double angle_lim = pinang::k_pi / 3;   // 60 degree;
+    double angle_lim2 = pinang::k_pi / 15;   // 12 degree;
+    double pi_over_36 = pinang::k_pi / 36; // 5 degree;
+    double pi_over_60 = pinang::k_pi / 60; // 3 degree;
 
     std::istringstream tmp_sstr;
     int flg_grp_1 = 0;
