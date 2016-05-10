@@ -144,7 +144,7 @@ namespace pinang {
         int i = 0;
         int n = 0;
         for (i = 0; i < _n_chain; i++) {
-            chain_t ct = _chains[i].chain_type();
+            ChainType ct = _chains[i].chain_type();
             if (ct == water || ct == other || ct == none)
                 continue;
             _chains[i].output_cg_pos(o, n);
@@ -157,7 +157,7 @@ namespace pinang {
         int n = 0;
 
         for (i = 0; i < _n_chain; i++) {
-            chain_t ct = _chains[i].chain_type();
+            ChainType ct = _chains[i].chain_type();
             if (ct == water || ct == other || ct == none)
                 continue;
             else if (ct == DNA || ct == RNA || ct == na)
@@ -180,7 +180,7 @@ namespace pinang {
 
         n = 0;
         for (i = 0; i < _n_chain; i++) {
-            chain_t ct = _chains[i].chain_type();
+            ChainType ct = _chains[i].chain_type();
             if (ct == water || ct == other || ct == none)
                 continue;
             _chains[i].output_top_mass(o, n);
@@ -194,7 +194,7 @@ namespace pinang {
         int n = 0;
 
         for (i = 0; i < _n_chain; i++) {
-            chain_t ct = _chains[i].chain_type();
+            ChainType ct = _chains[i].chain_type();
             if (ct == water || ct == other || ct == none)
                 continue;
             else if (ct == DNA || ct == RNA || ct == na)
@@ -215,7 +215,7 @@ namespace pinang {
 
         n = 0;
         for (i = 0; i < _n_chain; i++) {
-            chain_t ct = _chains[i].chain_type();
+            ChainType ct = _chains[i].chain_type();
             if (ct == water || ct == other || ct == none)
                 continue;
             _chains[i].output_top_bond(o, n);
@@ -229,7 +229,7 @@ namespace pinang {
         int n = 0;
 
         for (i = 0; i < _n_chain; i++) {
-            chain_t ct = _chains[i].chain_type();
+            ChainType ct = _chains[i].chain_type();
             if (ct == water || ct == other || ct == none)
                 continue;
             else if (ct == DNA || ct == RNA || ct == na)
@@ -251,7 +251,7 @@ namespace pinang {
 
         n = 0;
         for (i = 0; i < _n_chain; i++) {
-            chain_t ct = _chains[i].chain_type();
+            ChainType ct = _chains[i].chain_type();
             if (ct == water || ct == other || ct == none)
                 continue;
             _chains[i].output_top_angle(o, n);
@@ -265,7 +265,7 @@ namespace pinang {
         int n = 0;
 
         for (i = 0; i < _n_chain; i++) {
-            chain_t ct = _chains[i].chain_type();
+            ChainType ct = _chains[i].chain_type();
             if (ct == water || ct == other || ct == none)
                 continue;
             else if (ct == DNA || ct == RNA || ct == na)
@@ -289,7 +289,7 @@ namespace pinang {
 
         n = 0;
         for (i = 0; i < _n_chain; i++) {
-            chain_t ct = _chains[i].chain_type();
+            ChainType ct = _chains[i].chain_type();
             if (ct == water || ct == other || ct == none)
                 continue;
             _chains[i].output_top_dihedral(o, n);
@@ -305,7 +305,7 @@ namespace pinang {
         Residue r_tmp;
 
         for (i = 0; i < _n_chain; i++) {
-            chain_t ct = _chains[i].chain_type();
+            ChainType ct = _chains[i].chain_type();
             if (ct == water || ct == other || ct == none)
                 continue;
             if (ct == DNA || ct == RNA || ct == na)

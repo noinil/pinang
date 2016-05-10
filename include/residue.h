@@ -26,8 +26,8 @@ namespace pinang {
         inline char chain_ID() const;
         inline void set_chain_ID(char a);
 
-        inline chain_t chain_type() const;
-        inline void set_chain_type(chain_t ct);
+        inline ChainType chain_type() const;
+        inline void set_chain_type(ChainType ct);
 
         inline int resid_index() const;
         inline void set_resid_index(int i);
@@ -65,7 +65,7 @@ namespace pinang {
         Atom _P;
         Atom _S;
         Atom _B;
-        chain_t _chain_type;
+        ChainType _chain_type;
     };
 
     /*                _     _
@@ -185,11 +185,11 @@ namespace pinang {
     //  \___|_| |_|\__,_|_|_| |_|  \__|\__, | .__/ \___|
     //                                 |___/|_|
     */
-    inline chain_t Residue::chain_type() const
+    inline ChainType Residue::chain_type() const
     {
         return _chain_type;
     }
-    inline void Residue::set_chain_type(chain_t a)
+    inline void Residue::set_chain_type(ChainType a)
     {
         _chain_type = a;
         if (a == DNA) {

@@ -118,7 +118,7 @@ namespace pinang{
         if ((v1*v2)/(v1.norm()*v2.norm()) <= -0.99999)
             return 180;
         double ang = acos((v1*v2)/(v1.norm()*v2.norm()));
-        return (180 * ang / g_pi);
+        return (180 * ang / k_pi);
     }
 
 }

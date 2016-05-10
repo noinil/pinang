@@ -18,8 +18,8 @@ namespace pinang {
         inline char chain_ID() const;
         inline void set_chain_ID(char a);
 
-        inline chain_t chain_type() const;
-        inline void set_chain_type(chain_t ct);
+        inline ChainType chain_type() const;
+        inline void set_chain_type(ChainType ct);
 
         inline Residue& m_residue(int n);
         inline int add_residue(const Residue& r);
@@ -41,7 +41,7 @@ namespace pinang {
 
     protected:
         char _chain_ID;
-        chain_t _chain_type;
+        ChainType _chain_type;
         int _n_residue;
         std::vector<Residue> _residues;
     };
@@ -68,11 +68,11 @@ namespace pinang {
     //  \___|_| |_|\__,_|_|_| |_|  \__|\__, | .__/ \___|
     //                                 |___/|_|
     */
-    inline chain_t Chain::chain_type() const
+    inline ChainType Chain::chain_type() const
     {
         return _chain_type;
     }
-    inline void Chain::set_chain_type(chain_t a)
+    inline void Chain::set_chain_type(ChainType a)
     {
         _chain_type = a;
         for (int i = 0; i < _n_residue; i++) {
@@ -393,7 +393,7 @@ namespace pinang {
                   << std::setprecision(4)
                   << std::setw(10) << d
                   << std::setprecision(1)
-                  << std::setw(8) << p_K_bond
+                  << std::setw(8) << k_K_bond
                   << std::endl;
             }
             n++;
@@ -403,7 +403,7 @@ namespace pinang {
               << std::setw(6) << n+2
               << std::setiosflags(std::ios_base::fixed) << std::setprecision(4)
               << std::setw(10) << d_sb
-              << std::setprecision(1) << std::setw(8) << p_K_bond
+              << std::setprecision(1) << std::setw(8) << k_K_bond
               << std::endl;
             d_sp = atom_distance(_residues[1].m_P(), _residues[0].m_S());
             o << std::setw(8) << n+1
@@ -412,7 +412,7 @@ namespace pinang {
               << std::setprecision(4)
               << std::setw(10) << d_sp
               << std::setprecision(1)
-              << std::setw(8) << p_K_bond
+              << std::setw(8) << k_K_bond
               << std::endl;
             for (i = 1; i < _n_residue - 1; i++) {
                 n += 3;
@@ -420,19 +420,19 @@ namespace pinang {
                 o << std::setw(8) << n
                   << std::setw(6) << n+1 << std::setiosflags(std::ios_base::fixed)
                   << std::setprecision(4) << std::setw(10) << d_ps
-                  << std::setprecision(1) << std::setw(8) << p_K_bond
+                  << std::setprecision(1) << std::setw(8) << k_K_bond
                   << std::endl;
                 d_sb = atom_distance(_residues[i].m_S(), _residues[i].m_B());
                 o << std::setw(8) << n+1
                   << std::setw(6) << n+2 << std::setiosflags(std::ios_base::fixed)
                   << std::setprecision(4) << std::setw(10) << d_sb
-                  << std::setprecision(1) << std::setw(8) << p_K_bond
+                  << std::setprecision(1) << std::setw(8) << k_K_bond
                   << std::endl;
                 d_sp = atom_distance(_residues[i].m_S(), _residues[i+1].m_P());
                 o << std::setw(8) << n+1
                   << std::setw(6) << n+3 << std::setiosflags(std::ios_base::fixed)
                   << std::setprecision(4) << std::setw(10) << d_sp
-                  << std::setprecision(1) << std::setw(8) << p_K_bond
+                  << std::setprecision(1) << std::setw(8) << k_K_bond
                   << std::endl;
             }
             i = _n_residue - 1;
@@ -441,13 +441,13 @@ namespace pinang {
             o << std::setw(8) << n
               << std::setw(6) << n+1 << std::setiosflags(std::ios_base::fixed)
               << std::setprecision(4) << std::setw(10) << d_ps
-              << std::setprecision(1) << std::setw(8) << p_K_bond
+              << std::setprecision(1) << std::setw(8) << k_K_bond
               << std::endl;
             d_sb = atom_distance(_residues[i].m_S(), _residues[i].m_B());
             o << std::setw(8) << n+1
               << std::setw(6) << n+2 << std::setiosflags(std::ios_base::fixed)
               << std::setprecision(4) << std::setw(10) << d_sb
-              << std::setprecision(1) << std::setw(8) << p_K_bond
+              << std::setprecision(1) << std::setw(8) << k_K_bond
               << std::endl;
             n += 2;
         }
@@ -478,7 +478,7 @@ namespace pinang {
                   << std::setprecision(4)
                   << std::setw(12) << a
                   << std::setprecision(1)
-                  << std::setw(8) << p_K_angle
+                  << std::setw(8) << k_K_angle
                   << std::endl;
             }
             n += _n_residue;
@@ -494,7 +494,7 @@ namespace pinang {
               << std::setw(6) << n+3
               << std::setiosflags(std::ios_base::fixed) << std::setprecision(4)
               << std::setw(12) << a << std::setprecision(1)
-              << std::setw(8) << p_K_angle << std::endl;
+              << std::setw(8) << k_K_angle << std::endl;
             // ---------- angle SPS ----------
             v1 = _residues[0].m_S().coordinates()
                 - _residues[1].m_P().coordinates();
@@ -506,7 +506,7 @@ namespace pinang {
               << std::setw(6) << n+4
               << std::setiosflags(std::ios_base::fixed) << std::setprecision(4)
               << std::setw(12) << a << std::setprecision(1)
-              << std::setw(8) << p_K_angle << std::endl;
+              << std::setw(8) << k_K_angle << std::endl;
 
             // -------------------- loop --------------------
             for (i = 1; i < _n_residue-1; i++) {
@@ -522,7 +522,7 @@ namespace pinang {
                   << std::setw(6) << n+2
                   << std::setiosflags(std::ios_base::fixed) << std::setprecision(4)
                   << std::setw(12) << a << std::setprecision(1)
-                  << std::setw(8) << p_K_angle << std::endl;
+                  << std::setw(8) << k_K_angle << std::endl;
                 // ---------- angle PSP ----------
                 v1 = _residues[i].m_P().coordinates()
                     - _residues[i].m_S().coordinates();
@@ -534,7 +534,7 @@ namespace pinang {
                   << std::setw(6) << n+3
                   << std::setiosflags(std::ios_base::fixed) << std::setprecision(4)
                   << std::setw(12) << a << std::setprecision(1)
-                  << std::setw(8) << p_K_angle << std::endl;
+                  << std::setw(8) << k_K_angle << std::endl;
                 // ---------- angle BSP ----------
                 v1 = _residues[i].m_B().coordinates()
                     - _residues[i].m_S().coordinates();
@@ -546,7 +546,7 @@ namespace pinang {
                   << std::setw(6) << n+3
                   << std::setiosflags(std::ios_base::fixed) << std::setprecision(4)
                   << std::setw(12) << a << std::setprecision(1)
-                  << std::setw(8) << p_K_angle << std::endl;
+                  << std::setw(8) << k_K_angle << std::endl;
                 // ---------- angle SPS ----------
                 v1 = _residues[i].m_S().coordinates()
                     - _residues[i+1].m_P().coordinates();
@@ -558,7 +558,7 @@ namespace pinang {
                   << std::setw(6) << n+4
                   << std::setiosflags(std::ios_base::fixed) << std::setprecision(4)
                   << std::setw(12) << a << std::setprecision(1)
-                  << std::setw(8) << p_K_angle << std::endl;
+                  << std::setw(8) << k_K_angle << std::endl;
             }
             n += 3;
             i = _n_residue - 1;
@@ -573,7 +573,7 @@ namespace pinang {
               << std::setw(6) << n+2
               << std::setiosflags(std::ios_base::fixed) << std::setprecision(4)
               << std::setw(12) << a << std::setprecision(1)
-              << std::setw(8) << p_K_angle << std::endl;
+              << std::setw(8) << k_K_angle << std::endl;
             n += 2;
         }
     }
@@ -608,8 +608,8 @@ namespace pinang {
                   << std::setprecision(4)
                   << std::setw(12) << d
                   << std::setprecision(1)
-                  << std::setw(8) << p_K_dihedral_1
-                  << std::setw(8) << p_K_dihedral_3
+                  << std::setw(8) << k_K_dihedral_1
+                  << std::setw(8) << k_K_dihedral_3
                   << std::endl;
             }
             n += _n_residue;
@@ -631,8 +631,8 @@ namespace pinang {
               << std::setprecision(4)
               << std::setw(12) << d
               << std::setprecision(1)
-              << std::setw(8) << p_K_dihedral_1
-              << std::setw(8) << p_K_dihedral_3
+              << std::setw(8) << k_K_dihedral_1
+              << std::setw(8) << k_K_dihedral_3
               << std::endl;
 
             for (i = 1; i < _n_residue-1; i++) {
@@ -655,8 +655,8 @@ namespace pinang {
                   << std::setprecision(4)
                   << std::setw(12) << d
                   << std::setprecision(1)
-                  << std::setw(8) << p_K_dihedral_1
-                  << std::setw(8) << p_K_dihedral_3
+                  << std::setw(8) << k_K_dihedral_1
+                  << std::setw(8) << k_K_dihedral_3
                   << std::endl;
 
                 if (i == _n_residue - 2)
@@ -679,8 +679,8 @@ namespace pinang {
                   << std::setprecision(4)
                   << std::setw(12) << d
                   << std::setprecision(1)
-                  << std::setw(8) << p_K_dihedral_1
-                  << std::setw(8) << p_K_dihedral_3
+                  << std::setw(8) << k_K_dihedral_1
+                  << std::setw(8) << k_K_dihedral_3
                   << std::endl;
             }
             n += 5;
@@ -691,7 +691,7 @@ namespace pinang {
     {
         int i = 0, j = 0;
         double d = -1, f = -1;
-        chain_t cti, ctj;
+        ChainType cti, ctj;
         for (i = 0; i < _n_residue-4; i++) {
             cti = _residues[i].chain_type();
             if (cti == water || cti == DNA || cti == RNA || cti == na || cti == ion)
@@ -708,7 +708,7 @@ namespace pinang {
                       << std::setw(6) << j+1
                       << std::setiosflags(std::ios_base::fixed)
                       << std::setprecision(2)
-                      << std::setw(8) << p_K_native
+                      << std::setw(8) << k_K_native
                       << std::setprecision(4)
                       << std::setw(10) << f
                       << std::endl;
@@ -722,7 +722,7 @@ namespace pinang {
         int i = 0, j = 0;
         double d = -1;
         int n = 0;
-        chain_t cti, ctj;
+        ChainType cti, ctj;
 
         for (i = 0; i < _n_residue-4; i++) {
             cti = _residues[i].chain_type();
