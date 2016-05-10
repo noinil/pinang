@@ -171,7 +171,7 @@ int main(int argc, char *argv[])
                         atmp.set_resid_name("S");
                         atom_group1.push_back(atmp);
                         atmp = r1.m_B();
-                        atmp.set_resid_name(r1.resid_name());
+                        atmp.set_resid_name(r1.get_resid_name());
                         atom_group1.push_back(atmp);
 
                         pinang::Residue rtmp_P, rtmp_S, rtmp_B;
@@ -218,28 +218,28 @@ int main(int argc, char *argv[])
                             pinang::Residue rr1 = resi_group1[q];
                             double dist_min = pinang::resid_min_distance(rr0, rr1);
                             double cut_off = 6.5;
-                            if (a1.resid_name() == "P") cut_off = 5.5;
-                            if (a1.resid_name() == "S") cut_off = 6.5;
-                            if (a1.resid_name() == "A") cut_off = 6.6;
-                            if (a1.resid_name() == "T") cut_off = 6.8;
-                            if (a1.resid_name() == "G") cut_off = 6.7;
-                            if (a1.resid_name() == "C") cut_off = 6.7;
+                            if (a1.get_resid_name() == "P") cut_off = 5.5;
+                            if (a1.get_resid_name() == "S") cut_off = 6.5;
+                            if (a1.get_resid_name() == "A") cut_off = 6.6;
+                            if (a1.get_resid_name() == "T") cut_off = 6.8;
+                            if (a1.get_resid_name() == "G") cut_off = 6.7;
+                            if (a1.get_resid_name() == "C") cut_off = 6.7;
                             if (dist_min < cut_off && dist_min > 0)
                             {
                                 out_file << " RESID_PAIR " << std::setw(3) << i << " "
                                          << std::setw(6) << m << " "
-                                         << std::setw(6) << r0.resid_name()
+                                         << std::setw(6) << r0.get_resid_name()
                                          << "   -- "
                                          << std::setw(3) << j << " "
                                          << std::setw(6) << n << " "
-                                         << std::setw(6) << a1.resid_name()
+                                         << std::setw(6) << a1.get_resid_name()
                                          << "   dist_min = "
                                          << std::setw(6) << dist_min
                                          << std::endl;
                                 double dist_Ca = pinang::atom_distance(a0, a1);
                                 out_file << " CG_PAIR "
-                                         << std::setw(5)<< a0.resid_name()
-                                         << std::setw(5)<< a1.resid_name()
+                                         << std::setw(5)<< a0.get_resid_name()
+                                         << std::setw(5)<< a1.get_resid_name()
                                          << "  "
                                          << std::setw(6) << dist_Ca
                                          << std::endl;

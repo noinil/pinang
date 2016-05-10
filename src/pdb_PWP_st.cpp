@@ -128,7 +128,7 @@ int main(int argc, char *argv[])
                     spec.push_back(special0);
                     // out_file << special0 << std::endl;
                     out_file << " WAT_PAIR "
-                             << special0.resid_name() << " "
+                             << special0.get_resid_name() << " "
                              << std::setw(6) << min_dist_W_PRO
                              << std::endl;
                 }
@@ -153,8 +153,8 @@ int main(int argc, char *argv[])
                     pinang::Residue res2 = spec[t];
                     double dist_PP = pinang::resid_min_distance(res1, res2);
                     out_file << " WAT_MED_PRO  "
-                             << res1.resid_name() << " "
-                             << res2.resid_name() << " "
+                             << res1.get_resid_name() << " "
+                             << res2.get_resid_name() << " "
                              << std::setw(6) << dist_PP << std::endl;
                 }
             }

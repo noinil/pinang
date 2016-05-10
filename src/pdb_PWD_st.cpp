@@ -137,7 +137,7 @@ int main(int argc, char *argv[])
                         rtmp_B.set_resid_index(r1.resid_index());
                         rtmp_P.set_resid_name("P");
                         rtmp_S.set_resid_name("S");
-                        rtmp_B.set_resid_name(r1.resid_name());
+                        rtmp_B.set_resid_name(r1.get_resid_name());
                         for (int v = 0; v < r1.m_residue_size(); v++) {
                             atmp = r1.m_atom(v);
                             std::string aname = atmp.atom_name();
@@ -168,28 +168,28 @@ int main(int argc, char *argv[])
                             special0 = rr1;
                         }
 
-                        if (rr1.resid_name() == "P" && (min_dist_W_P == 0 || min_dist_W_P > dist_min)){
+                        if (rr1.get_resid_name() == "P" && (min_dist_W_P == 0 || min_dist_W_P > dist_min)){
                             min_dist_W_P = dist_min;
                             special_P = rr1;
                         }
-                        if (rr1.resid_name() == "S" && (min_dist_W_S == 0 || min_dist_W_S > dist_min)){
+                        if (rr1.get_resid_name() == "S" && (min_dist_W_S == 0 || min_dist_W_S > dist_min)){
                             min_dist_W_S = dist_min;
                             special_S = rr1;
                         }
 
-                        if (rr1.resid_name() == "A" && (min_dist_W_A == 0 || min_dist_W_A > dist_min)){
+                        if (rr1.get_resid_name() == "A" && (min_dist_W_A == 0 || min_dist_W_A > dist_min)){
                             min_dist_W_A = dist_min;
                             special_A = rr1;
                         }
-                        if (rr1.resid_name() == "T" && (min_dist_W_T == 0 || min_dist_W_T > dist_min)){
+                        if (rr1.get_resid_name() == "T" && (min_dist_W_T == 0 || min_dist_W_T > dist_min)){
                             min_dist_W_T = dist_min;
                             special_T = rr1;
                         }
-                        if (rr1.resid_name() == "G" && (min_dist_W_G == 0 || min_dist_W_G > dist_min)){
+                        if (rr1.get_resid_name() == "G" && (min_dist_W_G == 0 || min_dist_W_G > dist_min)){
                             min_dist_W_G = dist_min;
                             special_G = rr1;
                         }
-                        if (rr1.resid_name() == "C" && (min_dist_W_C == 0 || min_dist_W_C > dist_min)){
+                        if (rr1.get_resid_name() == "C" && (min_dist_W_C == 0 || min_dist_W_C > dist_min)){
                             min_dist_W_C = dist_min;
                             special_C = rr1;
                         }
