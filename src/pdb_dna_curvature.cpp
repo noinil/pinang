@@ -259,10 +259,10 @@ int main(int argc, char *argv[])
                 chain_tmp = mdl0.m_chain(j);
                 int len1 = chain_tmp.m_chain_length();
                 for (int k = 1; k < len1; k++) { // start from 1! because residue 0 has no P!
-                    backbone1_nodes.push_back(chain_tmp.m_residue(k).m_P().coordinates());
+                    backbone1_nodes.push_back(chain_tmp.m_residue(k).m_P().get_coordinates());
                 }
                 for (int k = 0; k < len1; k++) {
-                    base_positions1.push_back(chain_tmp.m_residue(k).m_B().coordinates());
+                    base_positions1.push_back(chain_tmp.m_residue(k).m_B().get_coordinates());
                 }
                 chain_tmp.reset();
             }
@@ -272,10 +272,10 @@ int main(int argc, char *argv[])
                 chain_tmp = mdl0.m_chain(j);
                 int len1 = chain_tmp.m_chain_length();
                 for (int k = 1; k < len1; k++) { // start from 1! because residue 0 has no P!
-                    backbone2_nodes.push_back(chain_tmp.m_residue(k).m_P().coordinates());
+                    backbone2_nodes.push_back(chain_tmp.m_residue(k).m_P().get_coordinates());
                 }
                 for (int k = 0; k < len1; k++) {
-                    base_positions2.push_back(chain_tmp.m_residue(k).m_B().coordinates());
+                    base_positions2.push_back(chain_tmp.m_residue(k).m_B().get_coordinates());
                 }
                 chain_tmp.reset();
             }
