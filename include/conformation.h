@@ -10,76 +10,67 @@
 
 
 namespace pinang {
-    class Conformation
-    {
-    public:
-        Conformation();
-        Conformation(std::vector<Vec3d> v);
+class Conformation
+{
+ public:
+  Conformation();
+  Conformation(std::vector<Vec3d> v);
+  virtual ~Conformation() {coordinates_.clear();}
 
-        inline void reset();
+  inline void reset();
 
-        int m_size() {return _n_atom;}
+  int get_size() {return n_atom_;}
 
-        int set_conformation(std::vector<Vec3d> v);
-        inline const Vec3d& atom(int n) const;
+  int set_conformation(std::vector<Vec3d> v);
+  inline const Vec3d& atom(int n) const;
 
-        virtual ~Conformation() {_coordinates.clear();}
-    protected:
-        std::vector<Vec3d> _coordinates;
-        int _n_atom;
-    };
+ protected:
+  std::vector<Vec3d> coordinates_;
+  int n_atom_;
+};
 
-    Conformation::Conformation()
-    {
-        _n_atom = 0;
-        _coordinates.clear();
-    }
+Conformation::Conformation()
+{
+  n_atom_ = 0;
+  coordinates_.clear();
+}
 
-    Conformation::Conformation(std::vector<Vec3d> v)
-    {
-        _coordinates = v;
-        _n_atom = _coordinates.size();
-    }
+Conformation::Conformation(std::vector<Vec3d> v)
+{
+  coordinates_ = v;
+  n_atom_ = coordinates_.size();
+}
 
-    inline void Conformation::reset()
-    {
-        _n_atom = 0;
-        _coordinates.clear();
-    }
+inline void Conformation::reset()
+{
+  n_atom_ = 0;
+  coordinates_.clear();
+}
 
-    int Conformation::set_conformation(std::vector<Vec3d> v)
-    {
-        int m = v.size();
-        if (m != _n_atom && _n_atom > 0)
-        {
-            std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
-            std::cout << " ~           PINANG :: CONFORMATION           ~ " << std::endl;
-            std::cout << " ============================================== " << std::endl;
-            std::cerr << " ERROR: Wrong atom number when set conformation. " << std::endl;
-            return 1;
-        } else {
-            _coordinates = v;
-            _n_atom = m;
-            return 0;
-        }
-        // _coordinates = v;
-        // _n_atom = m;
-        // return 0;
-    }
+int Conformation::set_conformation(std::vector<Vec3d> v)
+{
+  int m = v.size();
+  if (m != n_atom_ && n_atom_ > 0)
+  {
+    std::cerr << " ERROR: Wrong atom number when set conformation. " << std::endl;
+    return 1;
+  } else {
+    coordinates_ = v;
+    n_atom_ = m;
+    return 0;
+  }
+}
 
-    inline const Vec3d& Conformation::atom(int n) const
-    {
-        if ( n >= _n_atom || n < 0)
-        {
-            std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
-            std::cout << " ~           PINANG :: CONFORMATION           ~ " << std::endl;
-            std::cout << " ============================================== " << std::endl;
-            std::cerr << " ERROR: Atom index out of range in Conformation. " << std::endl;
-            exit(EXIT_SUCCESS);
-        } else {
-            return _coordinates[n];
-        }
-    }
+inline const Vec3d& Conformation::atom(int n) const
+{
+  if ( n >= n_atom_ || n < 0)
+  {
+    std::cerr << " ERROR: Atom index out of range in Conformation. " << std::endl;
+    exit(EXIT_SUCCESS);
+  } else {
+    return coordinates_[n];
+  }
+}
 
 }
 #endif
