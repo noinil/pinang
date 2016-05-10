@@ -268,7 +268,7 @@ inline std::ostream& operator<<(std::ostream& o, const Atom& a)
       << std::setw(1) << a.get_chain_ID()
       << std::setw(4) << a.get_resid_index()
       << std::setw(1) << a.get_icode() << "   "
-      << a.coordinates()
+      << a.get_coordinates()
       << std::setiosflags(std::ios_base::fixed) << std::setprecision(2)
       << std::setw(6) << a.get_occupancy()
       << std::setw(6) << a.get_temperature_factor() << "      "
@@ -392,7 +392,7 @@ std::istream& operator>>(std::istream& i, Atom& a)
 
 inline double atom_distance (Atom& a1, Atom& a2)
 {
-  Vec3d v3 = a1.coordinates() - a2.coordinates();
+  Vec3d v3 = a1.get_coordinates() - a2.get_coordinates();
   return v3.norm();
 }
 
