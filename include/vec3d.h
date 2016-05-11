@@ -106,7 +106,7 @@ double vec_angle (Vec3d& v1, Vec3d& v2)
   if ((v1*v2)/(v1.norm()*v2.norm()) >= 0.99999)
     return 0;
   if ((v1*v2)/(v1.norm()*v2.norm()) <= -0.99999)
-    return 3.1415926;
+    return k_pi;
   return acos((v1*v2)/(v1.norm()*v2.norm()));
 }
 double vec_angle_deg (Vec3d& v1, Vec3d& v2)
