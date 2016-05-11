@@ -555,12 +555,17 @@ void Chain::output_top_dihedral(std::ostream& o, int& n)
     }
     n += n_residue_;
   } else {
+    if (n_residue_ <= 2) {
+      n += 5;
+      return;
+    }
     v1 = residues_[0].get_S().get_coordinates()
          - residues_[1].get_P().get_coordinates();
     v2 = residues_[1].get_S().get_coordinates()
          - residues_[1].get_P().get_coordinates();
     v3 = residues_[1].get_S().get_coordinates()
          - residues_[2].get_P().get_coordinates();
+
     n1 = v1 ^ v2;
     n2 = v2 ^ v3;
     d = vec_angle_deg (n1, n2);
