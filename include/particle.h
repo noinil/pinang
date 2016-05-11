@@ -17,27 +17,27 @@ class Particle
 
   inline void reset();
 
-  inline std::string atom_name() const;
+  inline std::string get_atom_name() const;
   inline void set_atom_name(const std::string& s);
 
-  inline std::string resid_name() const;
+  inline std::string get_resid_name() const;
   inline void set_resid_name(const std::string& s);
 
-  inline int resid_index() const;
+  inline int get_resid_index() const;
   inline void set_resid_index(int i);
 
-  inline double charge() const;
+  inline double get_charge() const;
   inline void set_charge(double c);
 
-  inline double mass() const;
+  inline double get_mass() const;
   inline void set_mass(double m);
 
  protected:
-  std::string _atom_name;
-  std::string _resid_name;
-  int _resid_index;
-  double _charge;
-  double _mass;
+  std::string atom_name_;
+  std::string resid_name_;
+  int resid_index_;
+  double charge_;
+  double mass_;
 };
 
 /*        _
@@ -46,18 +46,18 @@ class Particle
 // | (_| | || (_) | | | | | | | | | | (_| | | | | | |  __/
 //  \__,_|\__\___/|_| |_| |_| |_| |_|\__,_|_| |_| |_|\___|
 */
-inline std::string Particle::atom_name() const
+inline std::string Particle::get_atom_name() const
 {
-  return _atom_name;
+  return atom_name_;
 }
 inline void Particle::set_atom_name(const std::string& s)
 {
   size_t sz = 3;
-  _atom_name = s;
+  atom_name_ = s;
 
-  if (_atom_name.size() < sz)
+  if (atom_name_.size() < sz)
   {
-    _atom_name.resize(sz, ' ');
+    atom_name_.resize(sz, ' ');
   }
 }
 
@@ -67,13 +67,13 @@ inline void Particle::set_atom_name(const std::string& s)
 // | | |  __/\__ \ | (_| | | | | | (_| | | | | | |  __/
 // |_|  \___||___/_|\__,_| |_| |_|\__,_|_| |_| |_|\___|
 */
-inline std::string Particle::resid_name() const
+inline std::string Particle::get_resid_name() const
 {
-  return _resid_name;
+  return resid_name_;
 }
 inline void Particle::set_resid_name(const std::string& s)
 {
-  _resid_name = s;
+  resid_name_ = s;
 }
 
 /*                _     _   _           _
@@ -82,13 +82,13 @@ inline void Particle::set_resid_name(const std::string& s)
 // | | |  __/\__ \ | (_| | | | | | | (_| |  __/>  <
 // |_|  \___||___/_|\__,_| |_|_| |_|\__,_|\___/_/\_\
 */
-inline int Particle::resid_index() const
+inline int Particle::get_resid_index() const
 {
-  return _resid_index;
+  return resid_index_;
 }
 inline void Particle::set_resid_index(int i)
 {
-  _resid_index = i;
+  resid_index_ = i;
 }
 
 /*       _
@@ -98,41 +98,41 @@ inline void Particle::set_resid_index(int i)
 //  \___|_| |_|\__,_|_|  \__, |\___|
 //                       |___/
 */
-inline double Particle::charge() const
+inline double Particle::get_charge() const
 {
-  return _charge;
+  return charge_;
 }
 inline void Particle::set_charge(double c)
 {
-  _charge = c;
+  charge_ = c;
 }
 
-inline double Particle::mass() const
+inline double Particle::get_mass() const
 {
-  return _mass;
+  return mass_;
 }
 inline void Particle::set_mass(double m)
 {
-  _mass = m;
+  mass_ = m;
 }
 
 // Particle::Particle ==============================================================
 inline Particle::Particle()
 {
-  _atom_name = "";
-  _resid_name = "";
-  _resid_index = 0;
-  _charge = 0;
-  _mass = 0;
+  atom_name_ = "";
+  resid_name_ = "";
+  resid_index_ = 0;
+  charge_ = 0;
+  mass_ = 0;
 }
 
 inline void Particle::reset()
 {
-  _atom_name = "";
-  _resid_name = "";
-  _resid_index = 0;
-  _charge = 0;
-  _mass = 0;
+  atom_name_ = "";
+  resid_name_ = "";
+  resid_index_ = 0;
+  charge_ = 0;
+  mass_ = 0;
 }
 
 /*   ___        _              _____                 _   _

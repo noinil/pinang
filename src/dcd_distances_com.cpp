@@ -220,8 +220,8 @@ int main(int argc, char *argv[])
 
         for (int j = 0; j < int(atom_group1_idx.size()); j++) {
             k = atom_group1_idx[j];
-            v = v + conformations[i].get_coor(k) * top.get_particle(k).mass();
-            total_mass += top.get_particle(k).mass();
+            v = v + conformations[i].get_coor(k) * top.get_particle(k).get_mass();
+            total_mass += top.get_particle(k).get_mass();
         }
         com1 = v * (1/total_mass);
 
@@ -229,8 +229,8 @@ int main(int argc, char *argv[])
         total_mass = 0;
         for (int j = 0; j < int(atom_group2_idx.size()); j++) {
             k = atom_group2_idx[j];
-            v = v + conformations[i].get_coor(k) * top.get_particle(k).mass();
-            total_mass += top.get_particle(k).mass();
+            v = v + conformations[i].get_coor(k) * top.get_particle(k).get_mass();
+            total_mass += top.get_particle(k).get_mass();
         }
         com2 = v * (1/total_mass);
 
