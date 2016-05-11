@@ -17,7 +17,7 @@ RM = rm -fr
 # vpath %.h /usr/local/include
 
 # rules
-.PHONY : all install clean uninstall
+.PHONY : all install clean uninstall purge
 
 all : $(TARGETS)
 
@@ -38,4 +38,5 @@ clean:
 	@$(RM) $(OBJECTS) $(TARGETS)
 uninstall:
 	@$(RM) ../bin/*
-
+purge: uninstall clean
+	@echo " Cleaning everything ..."

@@ -194,8 +194,8 @@ int main(int argc, char *argv[])
         for (int j = 0; j < int(v_inpa.size()); j++) {
             a = v_inpa[j].ii;
             b = v_inpa[j].jj;
-            v1 = conformations[i].atom(a);
-            v2 = conformations[i].atom(b);
+            v1 = conformations[i].get_coor(a);
+            v2 = conformations[i].get_coor(b);
             dist = vec_distance(v1, v2);
             dis_file << "  "
                      << std::setw(8) << dist;

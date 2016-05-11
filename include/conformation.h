@@ -22,7 +22,7 @@ class Conformation
   int get_size() {return n_atom_;}
 
   int set_conformation(std::vector<Vec3d> v);
-  inline const Vec3d& atom(int n) const;
+  inline const Vec3d& get_coor(int n) const;
 
  protected:
   std::vector<Vec3d> coordinates_;
@@ -61,7 +61,7 @@ int Conformation::set_conformation(std::vector<Vec3d> v)
   }
 }
 
-inline const Vec3d& Conformation::atom(int n) const
+inline const Vec3d& Conformation::get_coor(int n) const
 {
   if ( n >= n_atom_ || n < 0)
   {

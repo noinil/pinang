@@ -227,10 +227,10 @@ int main(int argc, char *argv[])
         contact_num = 0;
         for (int j = 0; j < int(atom_group1_idx.size()); j++) {
             f = atom_group1_idx[j];
-            v1 = conformations[i].atom(f);
+            v1 = conformations[i].get_coor(f);
             for (int k = 0; k < int(atom_group2_idx.size()); k++) {
                 g = atom_group2_idx[k];
-                v2 = conformations[i].atom(g);
+                v2 = conformations[i].get_coor(g);
                 dist = vec_distance(v1, v2);
                 if (dist <= pinang::g_cutoff)
                     contact_num++;

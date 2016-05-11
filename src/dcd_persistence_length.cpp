@@ -307,14 +307,14 @@ int main(int argc, char *argv[])
         int len = phosphate_strand1_idx.size();
         for (int i = 0; i < len; i++) {
             int j = phosphate_strand1_idx[i];
-            curve1_nodes.push_back(confm.atom(j));
+            curve1_nodes.push_back(confm.get_coor(j));
 
             int k = phosphate_strand2_idx[i];
-            curve2_nodes.push_back(confm.atom(k));
+            curve2_nodes.push_back(confm.get_coor(k));
         }
         for (int i = 0; i < len + 1; i++) {
             int j = base_strand1_idx[i];
-            base_positions.push_back(confm.atom(j));
+            base_positions.push_back(confm.get_coor(j));
         }
 
         pinang::Vec3d t_tmp(0,0,0);
