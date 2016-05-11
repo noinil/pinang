@@ -1,0 +1,59 @@
+#+TITLE: PINANG source code organization
+#+AUTHOR: Cheng Tan
+#+EMAIL: noinil@gmail.com
+#+CREATOR: Emacs Org-mode
+#+DATE: 2016-05-11 17:39
+#+DESCRIPTION: PINANG source files
+#+KEYWORDS: PINANG cpp
+#+LANGUAGE: en
+
+#+OPTIONS: H:4
+#+OPTIONS: toc:2
+#+STARTUP: showall indent
+
+* Head files
+
+** atom.h
+   - set_atom_flag(const std::string& s);
+   - set_serial(int i);
+   - set_atom_name(const std::string& s);
+   - set_alt_loc(char a);
+   - set_resid_name(const std::string& s);
+   - set_chain_ID(char a);
+   - set_resid_index(int i);
+   - set_icode(char a);
+   - set_coords(const Eigen::Vector3d& coors);
+   - set_occupancy(double o);
+   - set_temperature_factor(double f);
+   - set_segment_ID(const std::string& s);
+   - set_element(const std::string& s);
+   - set_charge(double s);
+
+** residue.h
+   - set_residue_by_name(const std::string& s);
+     + set_resid_name(const std::string& s);
+     + set_chain_type(ChainType ct);
+     + set_resid_mass(double c);
+     + set_resid_charge(double c);
+   - set_chain_ID(char a);
+   - set_resid_index(int i);
+   - set_term_flag(int i);
+   - set_C_alpha();
+   - set_C_beta();
+   - set_P(const Atom& a);
+   - set_S(const Atom& a);
+   - set_B(const Atom& a);
+
+** chain.h
+   - set_chain_ID(char a);
+   - set_chain_type(ChainType ct);
+
+** model.h
+   - set_model_ID(int n);
+
+** PDB.h
+
+
+
+
+* CPP files
