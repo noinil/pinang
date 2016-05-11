@@ -24,6 +24,7 @@ p_*
 # Test
 test/t*
 test/*.pdb
+test/b*.cpp
 bin/*
 data/*
 
