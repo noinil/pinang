@@ -17,7 +17,7 @@ RM = rm -fr
 # vpath %.h /usr/local/include
 
 # rules
-.PHONY : all install clean
+.PHONY : all install clean uninstall
 
 all : $(TARGETS)
 
@@ -35,5 +35,7 @@ $(OBJECTS) : %.o : %.cpp
 
 clean:
 	@echo " Cleaning ..."
-	@$(RM) ../bin/* $(OBJECTS) $(TARGETS)
+	@$(RM) $(OBJECTS) $(TARGETS)
+uninstall:
+	@$(RM) ../bin/*
 
