@@ -268,7 +268,10 @@ inline std::ostream& operator<<(std::ostream& o, const Atom& a)
       << std::setw(1) << a.get_chain_ID()
       << std::setw(4) << a.get_resid_index()
       << std::setw(1) << a.get_icode() << "   "
-      << a.get_coordinates()
+      << std::setiosflags(std::ios_base::fixed) << std::setprecision(3)
+      << std::setw(8) << a.get_coordinates().x()
+      << std::setw(8) << a.get_coordinates().y()
+      << std::setw(8) << a.get_coordinates().z()
       << std::setiosflags(std::ios_base::fixed) << std::setprecision(2)
       << std::setw(6) << a.get_occupancy()
       << std::setw(6) << a.get_temperature_factor() << "      "
