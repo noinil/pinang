@@ -141,15 +141,15 @@ void Model::output_top_mass(std::ostream& o)
   }
 
   o << "[ particles ]"
-    << std::setw(6) << n
+    << std::setw(8) << n
     << std::endl;
   o << "# "
     << std::setw(9) << "index"
-    << std::setw(8) << "resid"
-    << std::setw(8) << "resname"
-    << std::setw(8) << "atom"
-    << std::setw(10) << "mass"
-    << std::setw(8) << "charge"
+    << std::setw(9) << "resid"
+    << std::setw(10) << "resname"
+    << std::setw(10) << "atom"
+    << std::setw(17) << "mass"
+    << std::setw(13) << "charge"
     << std::endl;
 
   n = 0;
@@ -178,13 +178,13 @@ void Model::output_top_bond(std::ostream& o)
   }
 
   o << "[ bonds ]"
-    << std::setw(6) << n
+    << std::setw(8) << n
     << std::endl;
   o << "# "
     << std::setw(6) << "pi"
-    << std::setw(6) << "pj"
-    << std::setw(10) << "r0"
-    << std::setw(8) << "K_b"
+    << std::setw(9) << "pj"
+    << std::setw(17) << "r0"
+    << std::setw(9) << "K_b"
     << std::endl;
 
   n = 0;
@@ -213,14 +213,14 @@ void Model::output_top_angle(std::ostream& o)
   }
 
   o << "[ angles ]"
-    << std::setw(6) << n
+    << std::setw(8) << n
     << std::endl;
   o << "# "
     << std::setw(6) << "pi"
-    << std::setw(6) << "pj"
-    << std::setw(6) << "pk"
-    << std::setw(12) << "theta_0"
-    << std::setw(8) << "K_a"
+    << std::setw(9) << "pj"
+    << std::setw(9) << "pk"
+    << std::setw(13) << "theta_0"
+    << std::setw(9) << "K_a"
     << std::endl;
 
   n = 0;
@@ -249,16 +249,16 @@ void Model::output_top_dihedral(std::ostream& o)
   }
 
   o << "[ dihedrals ]"
-    << std::setw(6) << n
+    << std::setw(8) << n
     << std::endl;
   o << "# "
     << std::setw(6) << "pi"
-    << std::setw(6) << "pj"
-    << std::setw(6) << "pk"
-    << std::setw(6) << "pl"
-    << std::setw(12) << "phi_0"
-    << std::setw(8) << "K_d_1"
-    << std::setw(8) << "K_d_3"
+    << std::setw(9) << "pj"
+    << std::setw(9) << "pk"
+    << std::setw(9) << "pl"
+    << std::setw(13) << "phi_0"
+    << std::setw(9) << "K_d_1"
+    << std::setw(9) << "K_d_3"
     << std::endl;
 
   n = 0;
@@ -336,13 +336,13 @@ void Model::output_top_nonbonded(std::ostream& o)
   }
 
   o << "[ native ]"
-    << std::setw(6) << c0.get_native_contact_number()
+    << std::setw(8) << c0.get_native_contact_number()
     << std::endl;
   o << "# "
     << std::setw(6) << "pi"
-    << std::setw(6) << "pj"
-    << std::setw(8) << "eps"
-    << std::setw(10) << "sigma"
+    << std::setw(9) << "pj"
+    << std::setw(17) << "sigma"
+    << std::setw(13) << "eps"
     << std::endl;
 
   c0.output_top_native(o);

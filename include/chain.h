@@ -273,12 +273,12 @@ void Chain::output_top_mass(std::ostream& o, int& n)
   {
     for (const Residue& r : residues_) {
       o << std::setw(11) << ++n << " "
-        << std::setw(7) << r.get_resid_index() << " "
-        << std::setw(7) << r.get_resid_name() << " "
-        << std::setw(7) << "CA" << " "
+        << std::setw(8) << r.get_resid_index() << " "
+        << std::setw(9) << r.get_resid_name() << " "
+        << std::setw(9) << "CA" << " "
         << std::setiosflags(std::ios_base::fixed) << std::setprecision(2)
-        << std::setw(9) << r.get_resid_mass() << " "
-        << std::setw(7)
+        << std::setw(16) << r.get_resid_mass() << " "
+        << std::setw(12)
         << r.get_resid_charge()
         << std::endl;
     }
@@ -286,29 +286,29 @@ void Chain::output_top_mass(std::ostream& o, int& n)
     for (const Residue& r : residues_) {
       if (r.get_term_flag() != 5) {
         o << std::setw(11) << ++n << " "
-          << std::setw(7) << r.get_resid_index() << " "
-          << std::setw(7) << r.get_resid_name() << " "
-          << std::setw(7) << "P" << " "
+          << std::setw(8) << r.get_resid_index() << " "
+          << std::setw(9) << r.get_resid_name() << " "
+          << std::setw(9) << "P" << " "
           << std::setiosflags(std::ios_base::fixed) << std::setprecision(2)
-          << std::setw(9) << 94.93 << " "
-          << std::setw(7) << -1.0
+          << std::setw(16) << 94.93 << " "
+          << std::setw(12) << -1.0
           << std::endl;
       }
       o << std::setw(11) << ++n << " "
-        << std::setw(7) << r.get_resid_index() << " "
-        << std::setw(7) << r.get_resid_name() << " "
-        << std::setw(7) << "S" << " "
+        << std::setw(8) << r.get_resid_index() << " "
+        << std::setw(9) << r.get_resid_name() << " "
+        << std::setw(9) << "S" << " "
         << std::setiosflags(std::ios_base::fixed) << std::setprecision(2)
-        << std::setw(9) << 99.11 << " "
-        << std::setw(7) << 0.0
+        << std::setw(16) << 99.11 << " "
+        << std::setw(12) << 0.0
         << std::endl;
       o << std::setw(11) << ++n << " "
-        << std::setw(7) << r.get_resid_index() << " "
-        << std::setw(7) << r.get_resid_name() << " "
-        << std::setw(7) << "B" << " "
+        << std::setw(8) << r.get_resid_index() << " "
+        << std::setw(9) << r.get_resid_name() << " "
+        << std::setw(9) << "B" << " "
         << std::setiosflags(std::ios_base::fixed) << std::setprecision(2)
-        << std::setw(9) << r.get_resid_mass() - 94.93 - 99.11 << " "
-        << std::setw(7) << 0.0
+        << std::setw(16) << r.get_resid_mass() - 94.93 - 99.11 << " "
+        << std::setw(12) << 0.0
         << std::endl;
     }
   }
@@ -332,67 +332,71 @@ void Chain::output_top_bond(std::ostream& o, int& n)
     for (i = 0; i < n_residue_ - 1; i++) {
       d = resid_ca_distance(residues_[i], residues_[i+1]);
       n++;
-      o << std::setw(8) << n
-        << std::setw(8) << n + 1
+      o << std::setw(8) << n << " "
+        << std::setw(8) << n + 1 << " "
         << std::setiosflags(std::ios_base::fixed)
-        << std::setprecision(4)
-        << std::setw(10) << d
+        << std::setprecision(6)
+        << std::setw(16) << d << " "
         << std::setprecision(1)
-        << std::setw(8) << k_K_bond
+        << std::setw(8) << k_K_bond << " "
         << std::endl;
     }
     n++;
   } else {
     d_sb = atom_distance(residues_[0].get_S(), residues_[0].get_B());
-    o << std::setw(8) << n+1
-      << std::setw(8) << n+2
-      << std::setiosflags(std::ios_base::fixed) << std::setprecision(4)
-      << std::setw(10) << d_sb
-      << std::setprecision(1) << std::setw(8) << k_K_bond
+    o << std::setw(8) << n+1 << " "
+      << std::setw(8) << n+2 << " "
+      << std::setiosflags(std::ios_base::fixed) << std::setprecision(6)
+      << std::setw(16) << d_sb << " "
+      << std::setprecision(1) << std::setw(8) << k_K_bond << " "
       << std::endl;
     d_sp = atom_distance(residues_[1].get_P(), residues_[0].get_S());
-    o << std::setw(8) << n+1
-      << std::setw(8) << n+3
+    o << std::setw(8) << n+1 << " "
+      << std::setw(8) << n+3 << " "
       << std::setiosflags(std::ios_base::fixed)
-      << std::setprecision(4)
-      << std::setw(10) << d_sp
+      << std::setprecision(6)
+      << std::setw(16) << d_sp << " "
       << std::setprecision(1)
-      << std::setw(8) << k_K_bond
+      << std::setw(8) << k_K_bond << " "
       << std::endl;
     for (i = 1; i < n_residue_ - 1; i++) {
       n += 3;
       d_ps = atom_distance(residues_[i].get_P(), residues_[i].get_S());
-      o << std::setw(8) << n
-        << std::setw(8) << n+1 << std::setiosflags(std::ios_base::fixed)
-        << std::setprecision(4) << std::setw(10) << d_ps
-        << std::setprecision(1) << std::setw(8) << k_K_bond
+      o << std::setw(8) << n << " "
+        << std::setw(8) << n+1 << " " << std::setiosflags(std::ios_base::fixed)
+        << std::setprecision(6) << std::setw(16) << d_ps << " "
+        << std::setprecision(1) << std::setw(8) << k_K_bond << " "
         << std::endl;
       d_sb = atom_distance(residues_[i].get_S(), residues_[i].get_B());
-      o << std::setw(8) << n+1
-        << std::setw(8) << n+2 << std::setiosflags(std::ios_base::fixed)
-        << std::setprecision(4) << std::setw(10) << d_sb
-        << std::setprecision(1) << std::setw(8) << k_K_bond
+      o << std::setw(8) << n+1 << " "
+        << std::setw(8) << n+2 << " "
+        << std::setiosflags(std::ios_base::fixed)
+        << std::setprecision(6) << std::setw(16) << d_sb << " "
+        << std::setprecision(1) << std::setw(8) << k_K_bond << " "
         << std::endl;
       d_sp = atom_distance(residues_[i].get_S(), residues_[i+1].get_P());
-      o << std::setw(8) << n+1
-        << std::setw(8) << n+3 << std::setiosflags(std::ios_base::fixed)
-        << std::setprecision(4) << std::setw(10) << d_sp
-        << std::setprecision(1) << std::setw(8) << k_K_bond
+      o << std::setw(8) << n+1 << " "
+        << std::setw(8) << n+3 << " "
+        << std::setiosflags(std::ios_base::fixed)
+        << std::setprecision(6) << std::setw(16) << d_sp << " "
+        << std::setprecision(1) << std::setw(8) << k_K_bond << " "
         << std::endl;
     }
     i = n_residue_ - 1;
     n += 3;
     d_ps = atom_distance(residues_[i].get_P(), residues_[i].get_S());
-    o << std::setw(8) << n
-      << std::setw(8) << n+1 << std::setiosflags(std::ios_base::fixed)
-      << std::setprecision(4) << std::setw(10) << d_ps
-      << std::setprecision(1) << std::setw(8) << k_K_bond
+    o << std::setw(8) << n << " "
+      << std::setw(8) << n+1 << " "
+      << std::setiosflags(std::ios_base::fixed)
+      << std::setprecision(6) << std::setw(16) << d_ps << " "
+      << std::setprecision(1) << std::setw(8) << k_K_bond << " "
       << std::endl;
     d_sb = atom_distance(residues_[i].get_S(), residues_[i].get_B());
-    o << std::setw(8) << n+1
-      << std::setw(8) << n+2 << std::setiosflags(std::ios_base::fixed)
-      << std::setprecision(4) << std::setw(10) << d_sb
-      << std::setprecision(1) << std::setw(8) << k_K_bond
+    o << std::setw(8) << n+1 << " "
+      << std::setw(8) << n+2 << " "
+      << std::setiosflags(std::ios_base::fixed)
+      << std::setprecision(6) << std::setw(16) << d_sb << " "
+      << std::setprecision(1) << std::setw(8) << k_K_bond << " "
       << std::endl;
     n += 2;
   }
@@ -414,12 +418,12 @@ void Chain::output_top_angle(std::ostream& o, int& n)
       v2 = residues_[i+2].get_C_alpha().get_coordinates()
            - residues_[i+1].get_C_alpha().get_coordinates();
       a = vec_angle_deg (v1, v2);
-      o << std::setw(8) << i+1+n
-        << std::setw(8) << i+2+n
-        << std::setw(8) << i+3+n
+      o << std::setw(8) << i+1+n << " "
+        << std::setw(8) << i+2+n << " "
+        << std::setw(8) << i+3+n << " "
         << std::setiosflags(std::ios_base::fixed)
-        << std::setprecision(4)
-        << std::setw(12) << a
+        << std::setprecision(6)
+        << std::setw(12) << a << " "
         << std::setprecision(1)
         << std::setw(8) << k_K_angle
         << std::endl;
@@ -432,11 +436,12 @@ void Chain::output_top_angle(std::ostream& o, int& n)
     v2 = residues_[1].get_P().get_coordinates()
          - residues_[0].get_S().get_coordinates();
     a = vec_angle_deg (v1, v2);
-    o << std::setw(8) << n+2
-      << std::setw(8) << n+1
-      << std::setw(8) << n+3
-      << std::setiosflags(std::ios_base::fixed) << std::setprecision(4)
-      << std::setw(12) << a << std::setprecision(1)
+    o << std::setw(8) << n+2 << " "
+      << std::setw(8) << n+1 << " "
+      << std::setw(8) << n+3 << " "
+      << std::setiosflags(std::ios_base::fixed) << std::setprecision(6)
+      << std::setw(12) << a << " "
+      << std::setprecision(1)
       << std::setw(8) << k_K_angle << std::endl;
     // ---------- angle SPS ----------
     v1 = residues_[0].get_S().get_coordinates()
@@ -444,11 +449,12 @@ void Chain::output_top_angle(std::ostream& o, int& n)
     v2 = residues_[1].get_S().get_coordinates()
          - residues_[1].get_P().get_coordinates();
     a = vec_angle_deg (v1, v2);
-    o << std::setw(8) << n+1
-      << std::setw(8) << n+3
-      << std::setw(8) << n+4
-      << std::setiosflags(std::ios_base::fixed) << std::setprecision(4)
-      << std::setw(12) << a << std::setprecision(1)
+    o << std::setw(8) << n+1 << " "
+      << std::setw(8) << n+3 << " "
+      << std::setw(8) << n+4 << " "
+      << std::setiosflags(std::ios_base::fixed) << std::setprecision(6)
+      << std::setw(12) << a << " "
+      << std::setprecision(1)
       << std::setw(8) << k_K_angle << std::endl;
 
     // -------------------- loop --------------------
@@ -460,11 +466,12 @@ void Chain::output_top_angle(std::ostream& o, int& n)
       v2 = residues_[i].get_B().get_coordinates()
            - residues_[i].get_S().get_coordinates();
       a = vec_angle_deg (v1, v2);
-      o << std::setw(8) << n
-        << std::setw(8) << n+1
-        << std::setw(8) << n+2
-        << std::setiosflags(std::ios_base::fixed) << std::setprecision(4)
-        << std::setw(12) << a << std::setprecision(1)
+      o << std::setw(8) << n << " "
+        << std::setw(8) << n+1 << " "
+        << std::setw(8) << n+2 << " "
+        << std::setiosflags(std::ios_base::fixed) << std::setprecision(6)
+        << std::setw(12) << a << " "
+        << std::setprecision(1)
         << std::setw(8) << k_K_angle << std::endl;
       // ---------- angle PSP ----------
       v1 = residues_[i].get_P().get_coordinates()
@@ -472,11 +479,12 @@ void Chain::output_top_angle(std::ostream& o, int& n)
       v2 = residues_[i+1].get_P().get_coordinates()
            - residues_[i].get_S().get_coordinates();
       a = vec_angle_deg (v1, v2);
-      o << std::setw(8) << n
-        << std::setw(8) << n+1
-        << std::setw(8) << n+3
-        << std::setiosflags(std::ios_base::fixed) << std::setprecision(4)
-        << std::setw(12) << a << std::setprecision(1)
+      o << std::setw(8) << n << " "
+        << std::setw(8) << n+1 << " "
+        << std::setw(8) << n+3 << " "
+        << std::setiosflags(std::ios_base::fixed) << std::setprecision(6)
+        << std::setw(12) << a << " "
+        << std::setprecision(1)
         << std::setw(8) << k_K_angle << std::endl;
       // ---------- angle BSP ----------
       v1 = residues_[i].get_B().get_coordinates()
@@ -484,11 +492,12 @@ void Chain::output_top_angle(std::ostream& o, int& n)
       v2 = residues_[i+1].get_P().get_coordinates()
            - residues_[i].get_S().get_coordinates();
       a = vec_angle_deg (v1, v2);
-      o << std::setw(8) << n+2
-        << std::setw(8) << n+1
-        << std::setw(8) << n+3
-        << std::setiosflags(std::ios_base::fixed) << std::setprecision(4)
-        << std::setw(12) << a << std::setprecision(1)
+      o << std::setw(8) << n+2 << " "
+        << std::setw(8) << n+1 << " "
+        << std::setw(8) << n+3 << " "
+        << std::setiosflags(std::ios_base::fixed) << std::setprecision(6)
+        << std::setw(12) << a << " "
+        << std::setprecision(1)
         << std::setw(8) << k_K_angle << std::endl;
       // ---------- angle SPS ----------
       v1 = residues_[i].get_S().get_coordinates()
@@ -496,11 +505,12 @@ void Chain::output_top_angle(std::ostream& o, int& n)
       v2 = residues_[i+1].get_S().get_coordinates()
            - residues_[i+1].get_P().get_coordinates();
       a = vec_angle_deg (v1, v2);
-      o << std::setw(8) << n+1
-        << std::setw(8) << n+3
-        << std::setw(8) << n+4
-        << std::setiosflags(std::ios_base::fixed) << std::setprecision(4)
-        << std::setw(12) << a << std::setprecision(1)
+      o << std::setw(8) << n+1 << " "
+        << std::setw(8) << n+3 << " "
+        << std::setw(8) << n+4 << " "
+        << std::setiosflags(std::ios_base::fixed) << std::setprecision(6)
+        << std::setw(12) << a << " "
+        << std::setprecision(1)
         << std::setw(8) << k_K_angle << std::endl;
     }
     n += 3;
@@ -511,11 +521,12 @@ void Chain::output_top_angle(std::ostream& o, int& n)
     v2 = residues_[i].get_B().get_coordinates()
          - residues_[i].get_S().get_coordinates();
     a = vec_angle_deg (v1, v2);
-    o << std::setw(8) << n
-      << std::setw(8) << n+1
-      << std::setw(8) << n+2
-      << std::setiosflags(std::ios_base::fixed) << std::setprecision(4)
-      << std::setw(12) << a << std::setprecision(1)
+    o << std::setw(8) << n << " "
+      << std::setw(8) << n+1 << " "
+      << std::setw(8) << n+2 << " "
+      << std::setiosflags(std::ios_base::fixed) << std::setprecision(6)
+      << std::setw(12) << a << " "
+      << std::setprecision(1)
       << std::setw(8) << k_K_angle << std::endl;
     n += 2;
   }
@@ -541,15 +552,15 @@ void Chain::output_top_dihedral(std::ostream& o, int& n)
       n1 = v1 ^ v2;
       n2 = v2 ^ v3;
       d = vec_angle_deg (n1, n2);
-      o << std::setw(8) << i+1+n
-        << std::setw(8) << i+2+n
-        << std::setw(8) << i+3+n
-        << std::setw(8) << i+4+n
+      o << std::setw(8) << i+1+n << " "
+        << std::setw(8) << i+2+n << " "
+        << std::setw(8) << i+3+n << " "
+        << std::setw(8) << i+4+n << " "
         << std::setiosflags(std::ios_base::fixed)
-        << std::setprecision(4)
-        << std::setw(12) << d
+        << std::setprecision(6)
+        << std::setw(12) << d << " "
         << std::setprecision(1)
-        << std::setw(8) << k_K_dihedral_1
+        << std::setw(8) << k_K_dihedral_1 << " "
         << std::setw(8) << k_K_dihedral_3
         << std::endl;
     }
@@ -569,15 +580,15 @@ void Chain::output_top_dihedral(std::ostream& o, int& n)
     n1 = v1 ^ v2;
     n2 = v2 ^ v3;
     d = vec_angle_deg (n1, n2);
-    o << std::setw(8) << n + 1
-      << std::setw(8) << n + 3
-      << std::setw(8) << n + 4
-      << std::setw(8) << n + 6
+    o << std::setw(8) << n + 1 << " "
+      << std::setw(8) << n + 3 << " "
+      << std::setw(8) << n + 4 << " "
+      << std::setw(8) << n + 6 << " "
       << std::setiosflags(std::ios_base::fixed)
-      << std::setprecision(4)
-      << std::setw(12) << d
+      << std::setprecision(6)
+      << std::setw(12) << d << " "
       << std::setprecision(1)
-      << std::setw(8) << k_K_dihedral_1
+      << std::setw(8) << k_K_dihedral_1 << " "
       << std::setw(8) << k_K_dihedral_3
       << std::endl;
 
@@ -593,15 +604,15 @@ void Chain::output_top_dihedral(std::ostream& o, int& n)
       n1 = v1 ^ v2;
       n2 = v2 ^ v3;
       d = vec_angle_deg (n1, n2);
-      o << std::setw(8) << n
-        << std::setw(8) << n + 1
-        << std::setw(8) << n + 3
-        << std::setw(8) << 4 + n
+      o << std::setw(8) << n << " "
+        << std::setw(8) << n + 1 << " "
+        << std::setw(8) << n + 3 << " "
+        << std::setw(8) << 4 + n << " "
         << std::setiosflags(std::ios_base::fixed)
-        << std::setprecision(4)
-        << std::setw(12) << d
+        << std::setprecision(6)
+        << std::setw(12) << d << " "
         << std::setprecision(1)
-        << std::setw(8) << k_K_dihedral_1
+        << std::setw(8) << k_K_dihedral_1 << " "
         << std::setw(8) << k_K_dihedral_3
         << std::endl;
 
@@ -617,15 +628,15 @@ void Chain::output_top_dihedral(std::ostream& o, int& n)
       n1 = v1 ^ v2;
       n2 = v2 ^ v3;
       d = vec_angle_deg (n1, n2);
-      o << std::setw(8) << n + 1
-        << std::setw(8) << n + 3
-        << std::setw(8) << n + 4
-        << std::setw(8) << n + 6
+      o << std::setw(8) << n + 1 << " "
+        << std::setw(8) << n + 3 << " "
+        << std::setw(8) << n + 4 << " "
+        << std::setw(8) << n + 6 << " "
         << std::setiosflags(std::ios_base::fixed)
-        << std::setprecision(4)
-        << std::setw(12) << d
+        << std::setprecision(6)
+        << std::setw(12) << d << " "
         << std::setprecision(1)
-        << std::setw(8) << k_K_dihedral_1
+        << std::setw(8) << k_K_dihedral_1 << " "
         << std::setw(8) << k_K_dihedral_3
         << std::endl;
     }
@@ -650,13 +661,13 @@ void Chain::output_top_native(std::ostream& o)
       if ( d < g_cutoff)
       {
         f = resid_ca_distance(residues_[i], residues_[j]);
-        o << std::setw(8) << i+1
-          << std::setw(8) << j+1
+        o << std::setw(8) << i+1 << " "
+          << std::setw(8) << j+1 << " "
           << std::setiosflags(std::ios_base::fixed)
-          << std::setprecision(2)
-          << std::setw(8) << k_K_native
-          << std::setprecision(4)
-          << std::setw(10) << f
+          << std::setprecision(6)
+          << std::setw(16) << f << " "
+          << std::setprecision(5)
+          << std::setw(12) << k_K_native << " "
           << std::endl;
       }
     }
