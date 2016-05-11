@@ -195,16 +195,10 @@ void Chain::output_cg_pos(std::ostream& o, int& n)
     case RNA:
       o << "RNA";
       break;
-    case water:
-      o << "water";
-      break;
-    case ion:
+   case ion:
       o << "ion";
       break;
-    case other:
-      o << "other";
-      break;
-    case na:
+   case na:
       o << "na";
       break;
     default:
