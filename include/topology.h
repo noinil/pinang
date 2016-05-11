@@ -16,22 +16,22 @@ class Topology
 {
  public:
   Topology(const std::string& s);
-  virtual ~Topology() {_particles.clear();}
+  virtual ~Topology() {particles_.clear();}
 
   inline void reset();
 
-  int get_size() {return _n_particle;}
-  const Particle& particle(int n) const;
+  int get_size() {return n_particle_;}
+  const Particle& get_particle(int n) const;
 
  protected:
-  std::vector<Particle> _particles;
-  int _n_particle;
+  std::vector<Particle> particles_;
+  int n_particle_;
 };
 
 Topology::Topology(const std::string& s)
 {
-  _n_particle = 0;
-  _particles.clear();
+  n_particle_ = 0;
+  particles_.clear();
 
   Particle p;
 
@@ -54,14 +54,14 @@ Topology::Topology(const std::string& s)
       std::istringstream tmp_sstr;
       tmp_sstr.str ( inp_line );
       tmp_sstr >> stmp  >> stmp  >> stmp
-               >> _n_particle;
+               >> n_particle_;
       std::getline(ifile, inp_line);
-      for (int i = 0; i < _n_particle ; i++) {
+      for (int i = 0; i < n_particle_ ; i++) {
         ifile >> p;
-        _particles.push_back(p);
+        particles_.push_back(p);
       }
       std::cout << " Total particle number: "
-                << _n_particle
+                << n_particle_
                 << " in top file: " << s
                 << std::endl;
       break;
@@ -72,13 +72,13 @@ Topology::Topology(const std::string& s)
 
 inline void Topology::reset()
 {
-  _n_particle = 0;
-  _particles.clear();
+  n_particle_ = 0;
+  particles_.clear();
 }
 
-const Particle& Topology::particle(int n) const
+const Particle& Topology::get_particle(int n) const
 {
-  if ( n >= _n_particle || n < 0)
+  if ( n >= n_particle_ || n < 0)
   {
     std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
     std::cout << " ~             PINANG :: TOPOLOGY             ~ " << std::endl;
@@ -86,7 +86,7 @@ const Particle& Topology::particle(int n) const
     std::cerr << " ERROR: Atom index out of range in Topology. " << std::endl;
     exit(EXIT_SUCCESS);
   } else {
-    return _particles[n];
+    return particles_[n];
   }
 }
 

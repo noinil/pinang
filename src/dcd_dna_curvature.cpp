@@ -223,9 +223,9 @@ int main(int argc, char *argv[])
                     tmp_sstr >> tmp_i;
                     tmp_sstr >> tmp_j;
                     for (int j = tmp_i; j <= tmp_j; j++) {
-                        if (top.particle(j-1).atom_name()=="P  ")
+                        if (top.get_particle(j-1).atom_name()=="P  ")
                             phosphate_strand1_idx.push_back(j-1);
-                        if (top.particle(j-1).atom_name()=="B  ")
+                        if (top.get_particle(j-1).atom_name()=="B  ")
                             base_strand1_idx.push_back(j-1);
                     }
                     tmp_sstr.clear();
@@ -233,9 +233,9 @@ int main(int argc, char *argv[])
                     int tmp_i = 0;
                     tmp_sstr.str(tmp_s);
                     tmp_sstr >> tmp_i;
-                    if (top.particle(tmp_i-1).atom_name()=="P  ")
+                    if (top.get_particle(tmp_i-1).atom_name()=="P  ")
                         phosphate_strand1_idx.push_back(tmp_i-1);
-                    if (top.particle(tmp_i-1).atom_name()=="B  ")
+                    if (top.get_particle(tmp_i-1).atom_name()=="B  ")
                         base_strand1_idx.push_back(tmp_i-1);
                     tmp_sstr.clear();
                 }
@@ -261,9 +261,9 @@ int main(int argc, char *argv[])
                     tmp_sstr >> tmp_i;
                     tmp_sstr >> tmp_j;
                     for (int j = tmp_i; j <= tmp_j; j++) {
-                        if (top.particle(j-1).atom_name()=="P  ")
+                        if (top.get_particle(j-1).atom_name()=="P  ")
                             phosphate_strand2_idx.push_back(j-1);
-                        if (top.particle(j-1).atom_name()=="B  ")
+                        if (top.get_particle(j-1).atom_name()=="B  ")
                             base_strand2_idx.push_back(j-1);
                     }
                     tmp_sstr.clear();
@@ -271,9 +271,9 @@ int main(int argc, char *argv[])
                     int tmp_i = 0;
                     tmp_sstr.str(tmp_s);
                     tmp_sstr >> tmp_i;
-                    if (top.particle(tmp_i-1).atom_name()=="P  ")
+                    if (top.get_particle(tmp_i-1).atom_name()=="P  ")
                         phosphate_strand2_idx.push_back(tmp_i-1);
-                    if (top.particle(tmp_i-1).atom_name()=="B  ")
+                    if (top.get_particle(tmp_i-1).atom_name()=="B  ")
                         base_strand2_idx.push_back(tmp_i-1);
                     tmp_sstr.clear();
                 }
