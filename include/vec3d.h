@@ -31,6 +31,7 @@ class Vec3d
   // friend inline Vec3d operator^(const Vec3d&, const Vec3d&);
   friend inline Vec3d operator%(const Vec3d&, const Vec3d&);
   friend inline Vec3d operator*(const Vec3d&, double);
+  friend inline Vec3d operator/(const Vec3d&, double);
   friend inline Vec3d operator*(double, const Vec3d&);
   friend inline double operator*(const Vec3d&, const Vec3d&);
 
@@ -84,6 +85,11 @@ inline Vec3d operator*(const Vec3d & v, double x)
   return Vec3d(v.z1_ * x, v.z2_ * x, v.z3_ * x);
 }
 
+inline Vec3d operator/(const Vec3d & v, double x)
+{
+  return Vec3d(v.z1_ / x, v.z2_ / x, v.z3_ / x);
+}
+
 inline Vec3d operator*(double x, const Vec3d & v)
 {
   return Vec3d(v.z1_ * x, v.z2_ * x, v.z3_ * x);
@@ -112,10 +118,10 @@ inline Vec3d operator%(const Vec3d& u, const Vec3d& v)
 inline std::ostream& operator<<(std::ostream& o, const Vec3d& v)
 {
   o << std::setiosflags(std::ios_base::fixed)
-    << std::setprecision(3)
-    << std::setw(8) << v.z1_
-    << std::setw(8) << v.z2_
-    << std::setw(8) << v.z3_;
+    << std::setprecision(6)
+    << std::setw(16) << v.z1_ << " , "
+    << std::setw(16) << v.z2_ << " , "
+    << std::setw(16) << v.z3_;
   return o;
 }
 
