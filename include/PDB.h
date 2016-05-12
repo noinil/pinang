@@ -20,13 +20,13 @@ class PDB
 
   inline std::string get_pdb_name() const;
 
-  inline Model& get_model(unsigned int n);
+  inline Model& get_model(unsigned int);
   inline int get_n_models() const;
 
-  inline void print_sequence(int n) const;
-  inline void output_fasta(std::ostream & f_fasta) const;
+  inline void print_sequence(int) const;
+  inline void output_fasta(std::ostream&) const;
 
-  // void contact_map(double c);
+  friend inline std::ostream& operator<<(std::ostream&, PDB&);
 
  protected:
   std::string PDB_file_name_;
@@ -227,8 +227,8 @@ inline void PDB::output_fasta(std::ostream & f_fasta) const
 inline std::ostream& operator<<(std::ostream& o, PDB& p)
 {
   int i = 0;
-  for (i = 0; i < p.get_n_models(); i++) {
-    o << p.get_model(i) << std::endl;
+  for (i = 0; i < p.n_model_; i++) {
+    o << p.models_[i] << std::endl;
   }
   return o;
 }
