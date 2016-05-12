@@ -76,12 +76,18 @@ inline Residue& Chain::get_residue(int n)
 {
   if (residues_.empty())
   {
+    std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
+    std::cout << " ~             PINANG :: chain.h              ~ " << std::endl;
+    std::cout << " ============================================== " << std::endl;
     std::cerr << "ERROR: No Residues found in Chain: "
               << chain_ID_ << std::endl;
     exit(EXIT_SUCCESS);
   }
   if (n >= int(residues_.size()))
   {
+    std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
+    std::cout << " ~             PINANG :: chain.h              ~ " << std::endl;
+    std::cout << " ============================================== " << std::endl;
     std::cerr << "ERROR: Residue index out of range in Chain: "
               << chain_ID_ << std::endl;
     exit(EXIT_SUCCESS);
@@ -106,6 +112,9 @@ inline void Chain::self_check()
 {
   for (Residue& r : residues_) {
     if (r.get_chain_ID() != chain_ID_ || r.get_chain_type() != chain_type_) {
+      std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
+      std::cout << " ~             PINANG :: chain.h              ~ " << std::endl;
+      std::cout << " ============================================== " << std::endl;
       std::cerr << "ERROR: Inconsistent chain ID or chain type in Chain "
                 << chain_ID_ << std::endl;
       exit(EXIT_SUCCESS);

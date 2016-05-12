@@ -20,8 +20,8 @@ class Topology
 
   inline void reset();
 
-  int get_size() {return n_particle_;}
-  const Particle& get_particle(int n) const;
+  inline int get_size() {return n_particle_;}
+  const Particle& get_particle(int) const;
 
  protected:
   std::vector<Particle> particles_;
@@ -38,6 +38,9 @@ Topology::Topology(const std::string& s)
   std::ifstream ifile(s.c_str());
   if (!ifile.is_open())
   {
+    std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
+    std::cout << " ~             PINANG :: TOPOLOGY             ~ " << std::endl;
+    std::cout << " ============================================== " << std::endl;
     std::cerr << " ERROR: Cannot read top file: " << s << std::endl;
     exit(EXIT_FAILURE);
   }

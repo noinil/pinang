@@ -253,6 +253,9 @@ inline std::string PhysicalProperty::get_short_name(const std::string& s)
   if (search != map_resName_shortName.end()) {
     return search->second;
   } else {
+    std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
+    std::cout << " ~             PINANG :: constants.h          ~ " << std::endl;
+    std::cout << " ============================================== " << std::endl;
     std::cerr << " ERROR: Cannot find residue name for short name: "
               << s << std::endl;
     exit(EXIT_FAILURE);
@@ -265,6 +268,9 @@ inline double PhysicalProperty::get_charge(const std::string& s)
   if (search != map_resName_charge.end()) {
     return search->second;
   } else {
+    std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
+    std::cout << " ~             PINANG :: constants.h          ~ " << std::endl;
+    std::cout << " ============================================== " << std::endl;
     std::cerr << " ERROR: Cannot find residue name for charge: "
               << s << std::endl;
     exit(EXIT_FAILURE);
@@ -277,6 +283,9 @@ inline double PhysicalProperty::get_mass(const std::string& s)
   if (search != map_resName_mass.end()) {
     return search->second;
   } else {
+    std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
+    std::cout << " ~             PINANG :: constants.h          ~ " << std::endl;
+    std::cout << " ============================================== " << std::endl;
     std::cerr << " ERROR: Cannot find residue name for mass: "
               << s << std::endl;
     exit(EXIT_FAILURE);
@@ -289,6 +298,9 @@ inline ChainType PhysicalProperty::get_chain_type(const std::string& s)
   if (search != map_resName_chainType.end()) {
     return search->second;
   } else {
+    std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
+    std::cout << " ~             PINANG :: constants.h          ~ " << std::endl;
+    std::cout << " ============================================== " << std::endl;
     std::cerr << " ERROR: Cannot find residue name for chain type: "
               << s << std::endl;
     exit(EXIT_FAILURE);

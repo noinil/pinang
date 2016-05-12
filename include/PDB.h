@@ -48,6 +48,9 @@ PDB::PDB(const std::string& s)
   std::ifstream ifile(PDB_file_name_.c_str());
   if (!ifile.is_open())
   {
+    std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
+    std::cout << " ~             PINANG :: PDB.h                ~ " << std::endl;
+    std::cout << " ============================================== " << std::endl;
     std::cerr << " ERROR: Cannot read file: " << s << std::endl;
     exit(EXIT_FAILURE);
   }
@@ -178,12 +181,18 @@ inline Model& PDB::get_model(unsigned int n)
 {
   if (models_.empty())
   {
+    std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
+    std::cout << " ~             PINANG :: PDB.h                ~ " << std::endl;
+    std::cout << " ============================================== " << std::endl;
     std::cerr << "ERROR: No Model found in this PDB: "
               << PDB_file_name_ << std::endl;
     exit(EXIT_SUCCESS);
   }
   if (n >= models_.size())
   {
+    std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
+    std::cout << " ~             PINANG :: PDB.h                ~ " << std::endl;
+    std::cout << " ============================================== " << std::endl;
     std::cerr << "ERROR: Model number out of range in PDB: "
               << PDB_file_name_ << std::endl;
     exit(EXIT_SUCCESS);
