@@ -18,48 +18,51 @@ class Atom
   inline void reset();
 
   inline std::string get_atom_flag() const;
-  inline void set_atom_flag(const std::string& s);
+  inline void set_atom_flag(const std::string&);
 
   inline int get_serial() const;
-  inline void set_serial(int i);
+  inline void set_serial(int);
 
   inline std::string get_atom_name() const;
-  inline void set_atom_name(const std::string& s);
+  inline void set_atom_name(const std::string&);
 
   inline char get_alt_loc() const;
-  inline void set_alt_loc(char a);
+  inline void set_alt_loc(char);
 
   inline std::string get_resid_name() const;
-  inline void set_resid_name(const std::string& s);
+  inline void set_resid_name(const std::string&);
 
   inline char get_chain_ID() const;
-  inline void set_chain_ID(char a);
+  inline void set_chain_ID(char);
 
   inline int get_resid_index() const;
-  inline void set_resid_index(int i);
+  inline void set_resid_index(int);
 
   inline char get_icode() const;
-  inline void set_icode(char a);
+  inline void set_icode(char);
 
   inline const Vec3d& get_coordinates() const;
-  inline void set_coords(const Vec3d& coors);
-  inline void set_coords(double x, double y, double z);
+  inline void set_coords(const Vec3d&);
+  inline void set_coords(double, double, double);
 
   inline double get_occupancy() const;
-  inline void set_occupancy(double o);
+  inline void set_occupancy(double);
 
   inline double get_temperature_factor() const;
-  inline void set_temperature_factor(double f);
+  inline void set_temperature_factor(double);
 
   inline std::string get_segment_ID() const;
-  inline void set_segment_ID(const std::string& s);
+  inline void set_segment_ID(const std::string&);
 
   inline std::string get_element() const;
-  inline void set_element(const std::string& s);
+  inline void set_element(const std::string&);
 
   inline std::string get_charge() const;
-  inline void set_charge(const std::string& s);
+  inline void set_charge(const std::string&);
 
+  friend inline std::ostream& operator<<(std::ostream&, const Atom&);
+  friend inline std::istream& operator>>(std::istream&, Atom&);
+  friend inline double atom_distance (Atom&, Atom&);
  protected:
   std::string atom_flag_;
   int serial_;
@@ -255,31 +258,31 @@ inline void Atom::reset()
 }
 
 
-// other functions +++++++++++++++++++++++++++++++++++++++++++++
+// outer functions +++++++++++++++++++++++++++++++++++++++++++++
 inline std::ostream& operator<<(std::ostream& o, const Atom& a)
 {
   if (a.get_atom_flag() == "ATOM  " || a.get_atom_flag() == "HETATM")
   {
-    o << std::setw(6) << a.get_atom_flag()
-      << std::setw(5) << a.get_serial() << " "
-      << std::setw(4) << a.get_atom_name()
-      << std::setw(1) << a.get_alt_loc()
-      << std::setw(3) << a.get_resid_name() << " "
-      << std::setw(1) << a.get_chain_ID()
-      << std::setw(4) << a.get_resid_index()
-      << std::setw(1) << a.get_icode() << "   "
+    o << std::setw(6) << a.atom_flag_
+      << std::setw(5) << a.serial_ << " "
+      << std::setw(4) << a.atom_name_
+      << std::setw(1) << a.alt_loc_
+      << std::setw(3) << a.resid_name_ << " "
+      << std::setw(1) << a.chain_ID_
+      << std::setw(4) << a.resid_index_
+      << std::setw(1) << a.insert_code_ << "   "
       << std::setiosflags(std::ios_base::fixed) << std::setprecision(3)
-      << std::setw(8) << a.get_coordinates().x()
-      << std::setw(8) << a.get_coordinates().y()
-      << std::setw(8) << a.get_coordinates().z()
+      << std::setw(8) << a.coordinate_.x()
+      << std::setw(8) << a.coordinate_.y()
+      << std::setw(8) << a.coordinate_.z()
       << std::setiosflags(std::ios_base::fixed) << std::setprecision(2)
-      << std::setw(6) << a.get_occupancy()
-      << std::setw(6) << a.get_temperature_factor() << "      "
-      << std::setw(4) << a.get_segment_ID()
-      << std::setw(2) << a.get_element()
-      << std::setw(2) << a.get_charge();
+      << std::setw(6) << a.occupancy_
+      << std::setw(6) << a.temp_factor_ << "      "
+      << std::setw(4) << a.seg_ID_
+      << std::setw(2) << a.element_
+      << std::setw(2) << a.charge_;
   } else {
-    o << a.get_atom_flag();
+    o << a.atom_flag_;
   }
   return o;
 }
@@ -300,45 +303,45 @@ std::istream& operator>>(std::istream& i, Atom& a)
   std::getline(i, pdb_line);
   pdb_line.resize(80, ' ');
   tmp_str = pdb_line.substr(0,6);
-  a.set_atom_flag(tmp_str);
+  a.atom_flag_ = tmp_str;
 
   if (a.get_atom_flag() == "ATOM  " || a.get_atom_flag() == "HETATM")
   {
     tmp_sstr.str(pdb_line.substr(6,5));
     tmp_sstr >> tmp_ui;
-    a.set_serial(tmp_ui);
+    a.serial_ = tmp_ui;
     tmp_sstr.clear();
 
     tmp_sstr.str(pdb_line.substr(12,4));
     tmp_sstr >> tmp_str;
-    a.set_atom_name(tmp_str);
+    a.atom_name_ = tmp_str;
     tmp_sstr.clear();
     tmp_str.clear();
 
     tmp_sstr.str(pdb_line.substr(16,1));
     tmp_sstr.get(tmp_char);
-    a.set_alt_loc(tmp_char);
+    a.alt_loc_ = tmp_char;
     tmp_sstr.clear();
 
     tmp_sstr.str(pdb_line.substr(17,3));
     tmp_sstr >> tmp_str;
-    a.set_resid_name(tmp_str);
+    a.resid_name_ = tmp_str;
     tmp_sstr.clear();
     tmp_str.clear();
 
     tmp_sstr.str(pdb_line.substr(21,1));
     tmp_sstr >> tmp_char;
-    a.set_chain_ID(tmp_char);
+    a.chain_ID_ = tmp_char;
     tmp_sstr.clear();
 
     tmp_sstr.str(pdb_line.substr(22,4));
     tmp_sstr >> tmp_ui;
-    a.set_resid_index(tmp_ui);
+    a.resid_index_ = tmp_ui;
     tmp_sstr.clear();
 
     tmp_sstr.str(pdb_line.substr(26,1));
     tmp_sstr.get(tmp_char);
-    a.set_icode(tmp_char);
+    a.insert_code_ = tmp_char;
     tmp_sstr.clear();
 
     tmp_sstr.str(pdb_line.substr(30,8));
@@ -350,40 +353,40 @@ std::istream& operator>>(std::istream& i, Atom& a)
     tmp_sstr.str(pdb_line.substr(46,8));
     tmp_sstr >> tmp_coor_z;
     tmp_sstr.clear();
-    a.set_coords(tmp_coor_x, tmp_coor_y, tmp_coor_z);
+    a.coordinate_ = Vec3d(tmp_coor_x, tmp_coor_y, tmp_coor_z);
     tmp_sstr.clear();
 
     tmp_sstr.str(pdb_line.substr(54,6));
     tmp_sstr >> tmp_d;
-    a.set_occupancy(tmp_d);
+    a.occupancy_ = tmp_d;
     tmp_sstr.clear();
 
     tmp_sstr.str(pdb_line.substr(60,6));
     tmp_sstr >> tmp_d;
-    a.set_temperature_factor(tmp_d);
+    a.temp_factor_ = tmp_d;
     tmp_sstr.clear();
 
     tmp_sstr.str(pdb_line.substr(72,4));
     tmp_sstr >> tmp_str;
-    a.set_segment_ID(tmp_str);
+    a.seg_ID_ = tmp_str;
     tmp_sstr.clear();
     tmp_str.clear();
 
     tmp_sstr.str(pdb_line.substr(76,2));
     tmp_sstr >> tmp_str;
-    a.set_element(tmp_str);
+    a.element_ = tmp_str;
     tmp_sstr.clear();
     tmp_str.clear();
 
     tmp_sstr.str(pdb_line.substr(78,2));
     tmp_sstr >> tmp_str;
-    a.set_charge(tmp_str);
+    a.charge_ = tmp_str;
     tmp_sstr.clear();
     tmp_str.clear();
   } else if (a.get_atom_flag() == "MODEL ") {
     tmp_sstr.str(pdb_line.substr(10,4));
     tmp_sstr >> tmp_ui;
-    a.set_serial(tmp_ui);  // Actually this is the model index (serial);
+    a.serial_ = tmp_ui;  // Actually this is the model index (serial);
     tmp_sstr.clear();
   } else {
     // std::cerr << "ERROR: Wrong PDB ATOM format!" << std::endl;
@@ -395,7 +398,7 @@ std::istream& operator>>(std::istream& i, Atom& a)
 
 inline double atom_distance (Atom& a1, Atom& a2)
 {
-  Vec3d v3 = a1.get_coordinates() - a2.get_coordinates();
+  Vec3d v3 = a1.coordinate_ - a2.coordinate_;
   return v3.norm();
 }
 
