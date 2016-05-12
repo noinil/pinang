@@ -2,7 +2,7 @@
 CC = cc
 CXX = c++
 LINK = $(CXX)
-INCPATH = -I/usr/local/include -I../include
+INCPATH = -I/usr/local/include/eigen3 -I../include
 CXXFLAGS = -std=c++11 -O3
 OBJECTS = $(patsubst %.cpp,%.o,$(wildcard *.cpp))
 TARGETS = $(patsubst %.cpp,t_%,$(wildcard *.cpp))
