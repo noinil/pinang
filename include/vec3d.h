@@ -112,10 +112,10 @@ inline Vec3d operator%(const Vec3d& u, const Vec3d& v)
 inline std::ostream& operator<<(std::ostream& o, const Vec3d& v)
 {
   o << std::setiosflags(std::ios_base::fixed)
-    << std::setprecision(6)
-    << std::setw(16) << v.z1_ << " "
-    << std::setw(16) << v.z2_ << " "
-    << std::setw(16) << v.z3_;
+    << std::setprecision(3)
+    << std::setw(8) << v.z1_
+    << std::setw(8) << v.z2_
+    << std::setw(8) << v.z3_;
   return o;
 }
 

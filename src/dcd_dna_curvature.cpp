@@ -401,7 +401,7 @@ int main(int argc, char *argv[])
             int n = i % 10;
             pinang::Vec3d t1 = backbone1_tangents[i];
             pinang::Vec3d t2 = genline1_line_tangents[n][m];
-            pinang::Vec3d nm = t2 ^ t1;
+            pinang::Vec3d nm = t2 % t1;
             pinang::Vec3d n0 = nm * (1.0 / nm.norm());
             backbone1_normals.push_back(n0);
         }
@@ -410,7 +410,7 @@ int main(int argc, char *argv[])
             int n = i % 10;
             pinang::Vec3d t1 = backbone2_tangents[i];
             pinang::Vec3d t2 = genline2_line_tangents[n][m];
-            pinang::Vec3d nm = t2 ^ t1;
+            pinang::Vec3d nm = t2 % t1;
             pinang::Vec3d n0 = nm * (1.0 / nm.norm());
             backbone2_normals.push_back(n0);
         }
@@ -419,7 +419,7 @@ int main(int argc, char *argv[])
         for (i = 0; i < int(backbone1_normals.size()); i++) {
             pinang::Vec3d t1 = backbone1_normals[i];
             pinang::Vec3d t2 = genline1_line_tangents[i%10][i/10];
-            pinang::Vec3d t3 = t1 ^ t2;
+            pinang::Vec3d t3 = t1 % t2;
             pinang::Vec3d nm;       // normal vector of the fake plane
             double theta = 0;
             double alpha = 0;

@@ -270,10 +270,11 @@ inline std::ostream& operator<<(std::ostream& o, const Atom& a)
       << std::setw(1) << a.chain_ID_
       << std::setw(4) << a.resid_index_
       << std::setw(1) << a.insert_code_ << "   "
-      << std::setiosflags(std::ios_base::fixed) << std::setprecision(3)
-      << std::setw(8) << a.coordinate_.x()
-      << std::setw(8) << a.coordinate_.y()
-      << std::setw(8) << a.coordinate_.z()
+      // << std::setiosflags(std::ios_base::fixed) << std::setprecision(3)
+      // << std::setw(8) << a.coordinate_.x()
+      // << std::setw(8) << a.coordinate_.y()
+      // << std::setw(8) << a.coordinate_.z()
+      << a.coordinate_
       << std::setiosflags(std::ios_base::fixed) << std::setprecision(2)
       << std::setw(6) << a.occupancy_
       << std::setw(6) << a.temp_factor_ << "      "

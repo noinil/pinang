@@ -462,7 +462,7 @@ int main(int argc, char *argv[])
         int n = i % 10;
         pinang::Vec3d t1 = backbone1_tangents[i];
         pinang::Vec3d t2 = genline1_line_tangents[n][m];
-        pinang::Vec3d nm = t2 ^ t1;
+        pinang::Vec3d nm = t2 % t1;
         pinang::Vec3d n0 = nm * (1.0 / nm.norm());
         backbone1_normals.push_back(n0);
     }
@@ -471,7 +471,7 @@ int main(int argc, char *argv[])
         int n = i % 10;
         pinang::Vec3d t1 = backbone2_tangents[i];
         pinang::Vec3d t2 = genline2_line_tangents[n][m];
-        pinang::Vec3d nm = t2 ^ t1;
+        pinang::Vec3d nm = t2 % t1;
         pinang::Vec3d n0 = nm * (1.0 / nm.norm());
         backbone2_normals.push_back(n0);
     }
@@ -509,7 +509,7 @@ int main(int argc, char *argv[])
 
         pinang::Vec3d t1 = backbone1_normals[i];
         pinang::Vec3d t2 = genline1_line_tangents[i%10][i/10];
-        pinang::Vec3d t3 = t1 ^ t2;
+        pinang::Vec3d t3 = t1 % t2;
         // t3 = t3 * (1.0 / t3.norm());
         pinang::Vec3d nm;       // normal vector of the fake plane
         double theta = 0;
@@ -806,7 +806,7 @@ int main(int argc, char *argv[])
         vtmp = it2 - _O;
         v2 = vtmp * (1.0 / vtmp.norm());
         vtmp = v1 + v2;
-        groove_D1 = nm ^ v1;    // ****************************** OMG~
+        groove_D1 = nm % v1;    // ****************************** OMG~
         if (vtmp.norm() > 0.05) {
             if (vtmp * groove_D1 > 0)
                 groove_D1 = vtmp * (1.0 / vtmp.norm());
@@ -818,7 +818,7 @@ int main(int argc, char *argv[])
         // step 4: rotate the test plane around groove_D
         double minor_g_w = 100000.0;   // local minor groove width----
         double major_g_w = 100000.0;
-        pinang::Vec3d t3 = groove_D1 ^ nm; // plane normal vector
+        pinang::Vec3d t3 = groove_D1 % nm; // plane normal vector
         double theta = 0;
         double angle_lim = pinang::k_pi / 2;   // 90 degree;
         for (theta = - angle_lim; theta <= 0; theta += pi_over_60) {

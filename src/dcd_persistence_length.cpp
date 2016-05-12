@@ -335,18 +335,18 @@ int main(int argc, char *argv[])
             if (i == len-1) {
                 v1 = cross_vecs[i-1];
                 v2 = cross_vecs[i];
-                t_tmp = v1^v2;
+                t_tmp = v1%v2;
                 H = t_tmp * (1/t_tmp.norm()); // H is important, the local direction;
                 P1 = curve1_nodes[i] + (v2 * 0.5); // midpoint of cross_vecs;
-                t_tmp = H ^ v2;
+                t_tmp = H % v2;
                 n1 = t_tmp * (1/t_tmp.norm());
             } else {
                 v1 = cross_vecs[i];
                 v2 = cross_vecs[i+1];
-                t_tmp = v1^v2;
+                t_tmp = v1%v2;
                 H = t_tmp * (1/t_tmp.norm()); // H is important, the local direction;
                 P1 = curve1_nodes[i] + (v1 * 0.5); // midpoint of cross_vecs;
-                t_tmp = H ^ v1;
+                t_tmp = H % v1;
                 n1 = t_tmp * (1/t_tmp.norm());
             }
             axis_directions.push_back(H); // axis direction vectors!
