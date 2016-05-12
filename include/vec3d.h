@@ -25,6 +25,9 @@ class Vec3d
 
   inline double norm() const;
   inline double sqr_norm() const;
+  inline Vec3d unitv() const;
+
+  inline Vec3d operator-() const;
 
   friend inline Vec3d operator+(const Vec3d&, const Vec3d&);
   friend inline Vec3d operator-(const Vec3d&, const Vec3d&);
@@ -58,11 +61,39 @@ inline double Vec3d::operator[](unsigned int i) const
     case 1: return z2_;
     case 2: return z3_;
     default:
+      std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
+      std::cout << " ~             PINANG :: vec3d.h              ~ " << std::endl;
+      std::cout << " ============================================== " << std::endl;
       std::cerr << "ERROR: 3D Vector index out of range!" << std::endl;
       exit(EXIT_SUCCESS);
   }
 }
 
+inline Vec3d Vec3d::operator-() const
+{
+  Vec3d v0;
+  v0.z1_ = - z1_;
+  v0.z2_ = - z2_;
+  v0.z3_ = - z3_;
+  return v0;
+}
+
+inline Vec3d Vec3d::unitv() const
+{
+  Vec3d v0;
+  double d = sqrt(z1_ * z1_ + z2_ * z2_ + z3_ * z3_);
+  if (d < 0.00000001) {
+    std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
+    std::cout << " ~             PINANG :: vec3d.h              ~ " << std::endl;
+    std::cout << " ============================================== " << std::endl;
+    std::cerr << "ERROR: Vector length ~ 0!" << std::endl;
+    exit(EXIT_SUCCESS);
+  }
+  v0.z1_ = z1_ / d;
+  v0.z2_ = z2_ / d;
+  v0.z3_ = z3_ / d;
+  return v0;
+}
 inline double Vec3d::norm() const
 {
   double d = sqrt(z1_ * z1_ + z2_ * z2_ + z3_ * z3_);
