@@ -22,32 +22,32 @@ class Residue
 
   inline std::string get_resid_name() const;
   inline std::string get_short_name() const;
-  void set_resid_name(const std::string& s);
-  void set_residue_by_name(const std::string& s);
+  void set_resid_name(const std::string&);
+  void set_residue_by_name(const std::string&);
 
   inline char get_chain_ID() const;
-  inline void set_chain_ID(char a);
+  inline void set_chain_ID(char);
 
   inline ChainType get_chain_type() const;
-  inline void set_chain_type(ChainType ct);
+  inline void set_chain_type(ChainType);
 
   inline int get_resid_index() const;
-  inline void set_resid_index(int i);
+  inline void set_resid_index(int);
 
   inline int get_term_flag() const;
-  inline void set_term_flag(int i);
+  inline void set_term_flag(int);
 
   inline double get_resid_charge() const;
-  inline void set_resid_charge(double c);
+  inline void set_resid_charge(double);
 
   inline double get_resid_mass() const;
-  inline void set_resid_mass(double c);
+  inline void set_resid_mass(double);
 
   inline void self_check() const;
 
-  inline Atom& get_atom(int n);
-  inline int add_atom(const Atom& a);
-  inline int delete_atom(const int i);
+  inline Atom& get_atom(int);
+  inline int add_atom(const Atom&);
+  inline int delete_atom(const int);
 
   inline int get_residue_size() const;
 
@@ -58,12 +58,13 @@ class Residue
   inline Atom& get_B();
   inline void set_C_alpha();
   inline void set_C_beta();
-  inline void set_P(const Atom& a);
-  inline void set_S(const Atom& a);
-  inline void set_B(const Atom& a);
+  inline void set_P(const Atom&);
+  inline void set_S(const Atom&);
+  inline void set_B(const Atom&);
 
-  // void set_cg_na();
-
+  friend inline std::ostream& operator<<(std::ostream&, Residue&);
+  friend inline double resid_min_distance(Residue&, Residue&);
+  friend inline double resid_ca_distance(Residue&, Residue&);
  protected:
   std::string resid_name_;
   std::string short_name_;
@@ -487,24 +488,27 @@ inline void Residue::reset()
 inline std::ostream& operator<<(std::ostream& o, Residue& r)
 {
   int i = 0;
-  for (i = 0; i < r.get_residue_size(); i++) {
-    o << r.get_atom(i) << std::endl;
+  int s = r.n_atom_;
+  for (i = 0; i < s; i++) {
+    o << r.atoms_[i] << std::endl;
   }
   return o;
 }
 
-inline double resid_min_distance (Residue& r1, Residue& r2)
+inline double resid_min_distance(Residue& r1, Residue& r2)
 {
   int i, j;
-  double d = atom_distance(r1.get_atom(0), r2.get_atom(0));  // min_distance;
+  double d = atom_distance(r1.atoms_[0], r2.atoms_[0]);  // min_distance;
   double f = 0.0;           // tmp distance;
-  for (i = 0; i < r1.get_residue_size(); i++) {
-    if (r1.get_atom(i).get_element() == "H")
+  int s1 = r1.n_atom_;
+  int s2 = r2.n_atom_;
+  for (i = 0; i < s1; i++) {
+    if (r1.atoms_[i].get_element() == "H")
       continue;
-    for (j = 0; j < r2.get_residue_size(); j++) {
-      if (r2.get_atom(j).get_element() == "H")
+    for (j = 0; j < s2; j++) {
+      if (r2.atoms_[j].get_element() == "H")
         continue;
-      f = atom_distance(r1.get_atom(i), r2.get_atom(j));
+      f = atom_distance(r1.atoms_[i], r2.atoms_[j]);
       if (d > f)
         d = f;
     }
@@ -512,10 +516,10 @@ inline double resid_min_distance (Residue& r1, Residue& r2)
   return d;
 }
 
-inline double resid_ca_distance (Residue& r1, Residue& r2)
+inline double resid_ca_distance(Residue& r1, Residue& r2)
 {
   double d = -1;           // distance;
-  d = atom_distance(r1.get_C_alpha(), r2.get_C_alpha());
+  d = atom_distance(r1.C_alpha_, r2.C_alpha_);
   return d;
 }
 
