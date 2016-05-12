@@ -21,19 +21,22 @@ class Vec3d
   inline double y() const {return z2_;}
   inline double z() const {return z3_;}
 
-  inline Vec3d operator+(const Vec3d&) const;
-  inline Vec3d operator-(const Vec3d&) const;
-  inline Vec3d operator*(double) const;
-  inline double operator*(const Vec3d&) const;
-  inline Vec3d operator^(const Vec3d&) const;
   inline double operator[](unsigned int) const;
 
   inline double norm() const;
   inline double sqr_norm() const;
 
+  friend inline Vec3d operator+(const Vec3d&, const Vec3d&);
+  friend inline Vec3d operator-(const Vec3d&, const Vec3d&);
+  friend inline Vec3d operator^(const Vec3d&, const Vec3d&);
+  friend inline Vec3d operator%(const Vec3d&, const Vec3d&);
+  friend inline Vec3d operator*(const Vec3d&, double);
   friend inline Vec3d operator*(double, const Vec3d&);
+  friend inline double operator*(const Vec3d&, const Vec3d&);
+
   friend inline std::ostream& operator<<(std::ostream&, const Vec3d&);
   friend inline std::istream& operator>>(std::istream&, Vec3d&);
+
   friend inline double vec_distance(Vec3d&, Vec3d&);
   friend inline double vec_angle(Vec3d&, Vec3d&);
   friend inline double vec_angle_deg(Vec3d&, Vec3d&);
@@ -42,33 +45,6 @@ class Vec3d
   double z1_, z2_, z3_;
 };
 // ------------------------------ MEMBERS --------------------
-inline Vec3d Vec3d::operator+(const Vec3d& other) const
-{
-  return Vec3d(z1_ + other.z1_, z2_ + other.z2_, z3_ + other.z3_);
-}
-
-inline Vec3d Vec3d::operator-(const Vec3d& other) const
-{
-  return Vec3d(z1_ - other.z1_, z2_ - other.z2_, z3_ - other.z3_);
-}
-
-inline Vec3d Vec3d::operator*(double x) const
-{
-  return Vec3d(z1_ * x, z2_ * x, z3_ * x);
-}
-
-inline double Vec3d::operator*(const Vec3d& other) const
-{
-  return (z1_ * other.z1_ + z2_ * other.z2_ + z3_ * other.z3_);
-}
-
-inline Vec3d Vec3d::operator^(const Vec3d& other) const
-{
-  return Vec3d(z2_ * other.z3_ - z3_ * other.z2_,
-               z3_ * other.z1_ - z1_ * other.z3_,
-               z1_ * other.z2_ - z2_ * other.z1_);
-}
-
 inline double Vec3d::operator[](unsigned int i) const
 {
   switch(i)
@@ -93,36 +69,72 @@ inline double Vec3d::sqr_norm() const
 }
 
 // ------------------------------ FRIENDS --------------------
+inline Vec3d operator+(const Vec3d& v1, const Vec3d& v2)
+{
+  return Vec3d(v1.z1_ + v2.z1_, v1.z2_ + v2.z2_, v1.z3_ + v2.z3_);
+}
+
+inline Vec3d operator-(const Vec3d& v1, const Vec3d& v2)
+{
+  return Vec3d(v1.z1_ - v2.z1_, v1.z2_ - v2.z2_, v1.z3_ - v2.z3_);
+}
+
+inline Vec3d operator*(const Vec3d & v, double x)
+{
+  return Vec3d(v.z1_ * x, v.z2_ * x, v.z3_ * x);
+}
+
 inline Vec3d operator*(double x, const Vec3d & v)
 {
   return Vec3d(v.z1_ * x, v.z2_ * x, v.z3_ * x);
 }
 
+inline double operator*(const Vec3d& v1, const Vec3d& v2)
+{
+  double d = v1.z1_ * v2.z1_ + v1.z2_ * v2.z2_ + v1.z3_ * v2.z3_;
+  return d;
+}
+
+inline Vec3d operator^(const Vec3d& u, const Vec3d& v)
+{
+  return Vec3d(u.z2_ * v.z3_ - u.z3_ * v.z2_,
+               u.z3_ * v.z1_ - u.z1_ * v.z3_,
+               u.z1_ * v.z2_ - u.z2_ * v.z1_);
+}
+inline Vec3d operator%(const Vec3d& u, const Vec3d& v)
+{
+  return Vec3d(u.z2_ * v.z3_ - u.z3_ * v.z2_,
+               u.z3_ * v.z1_ - u.z1_ * v.z3_,
+               u.z1_ * v.z2_ - u.z2_ * v.z1_);
+}
+
+// ---------- other --------------------
 inline std::ostream& operator<<(std::ostream& o, const Vec3d& v)
 {
   o << std::setiosflags(std::ios_base::fixed)
     << std::setprecision(6)
-    << std::setw(16) << v.x() << " "
-    << std::setw(16) << v.y() << " "
-    << std::setw(16) << v.z();
-  // std::cout.unsetf(std::ios::floatfield);
-  // std::cout.precision(6);
+    << std::setw(16) << v.z1_ << " "
+    << std::setw(16) << v.z2_ << " "
+    << std::setw(16) << v.z3_;
   return o;
 }
 
 inline std::istream& operator>>(std::istream& i, Vec3d& v)
 {
-  double x,y,z;
+  double x, y, z;
   i >> x >> y >> z;
   if (!i) return i;
-  v = Vec3d(x,y,z);
+  v.z1_ = x;
+  v.z2_ = y;
+  v.z3_ = z;
   return i;
 }
 
 inline double vec_distance(Vec3d& v1, Vec3d& v2)
 {
   Vec3d v3 = v1-v2;
-  return v3.norm();
+  double d = v3.norm();
+  return d;
 }
 
 inline double vec_angle(Vec3d& v1, Vec3d& v2)
@@ -134,7 +146,8 @@ inline double vec_angle(Vec3d& v1, Vec3d& v2)
     return 0.0;
   if (f <= -0.99999)
     return k_pi;
-  return acos(f);
+  double c = acos(f);
+  return c;
 }
 
 inline double vec_angle_deg(Vec3d& v1, Vec3d& v2)
@@ -147,7 +160,8 @@ inline double vec_angle_deg(Vec3d& v1, Vec3d& v2)
   if (f <= -0.99999)
     return 180.0;
   double ang = acos(f);
-  return (180 * ang / k_pi);
+  d = (180 * ang / k_pi);
+  return d;
 }
 
 }

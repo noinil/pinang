@@ -313,7 +313,7 @@ std::istream& operator>>(std::istream& i, Atom& a)
 
     tmp_sstr.str(pdb_line.substr(12,4));
     tmp_sstr >> tmp_str;
-    a.atom_name_ = tmp_str;
+    a.set_atom_name(tmp_str);
     tmp_sstr.clear();
     tmp_str.clear();
 
@@ -324,7 +324,7 @@ std::istream& operator>>(std::istream& i, Atom& a)
 
     tmp_sstr.str(pdb_line.substr(17,3));
     tmp_sstr >> tmp_str;
-    a.resid_name_ = tmp_str;
+    a.set_resid_name(tmp_str);
     tmp_sstr.clear();
     tmp_str.clear();
 
