@@ -38,9 +38,9 @@ class Vec3d
   friend inline std::ostream& operator<<(std::ostream&, const Vec3d&);
   friend inline std::istream& operator>>(std::istream&, Vec3d&);
 
-  friend inline double vec_distance(Vec3d&, Vec3d&);
-  friend inline double vec_angle(Vec3d&, Vec3d&);
-  friend inline double vec_angle_deg(Vec3d&, Vec3d&);
+  friend inline double vec_distance(const Vec3d&, const Vec3d&);
+  friend inline double vec_angle(const Vec3d&, const Vec3d&);
+  friend inline double vec_angle_deg(const Vec3d&, const Vec3d&);
 
  protected:
   double z1_, z2_, z3_;
@@ -136,14 +136,14 @@ inline std::istream& operator>>(std::istream& i, Vec3d& v)
   return i;
 }
 
-inline double vec_distance(Vec3d& v1, Vec3d& v2)
+inline double vec_distance(const Vec3d& v1, const Vec3d& v2)
 {
   Vec3d v3 = v1-v2;
   double d = v3.norm();
   return d;
 }
 
-inline double vec_angle(Vec3d& v1, Vec3d& v2)
+inline double vec_angle(const Vec3d& v1, const Vec3d& v2)
 {
   double d = v1 * v2;
   double m = v1.norm() * v2.norm();
@@ -156,7 +156,7 @@ inline double vec_angle(Vec3d& v1, Vec3d& v2)
   return c;
 }
 
-inline double vec_angle_deg(Vec3d& v1, Vec3d& v2)
+inline double vec_angle_deg(const Vec3d& v1, const Vec3d& v2)
 {
   double d = v1 * v2;
   double m = v1.norm() * v2.norm();
