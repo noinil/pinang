@@ -63,8 +63,8 @@ class Residue
   inline void set_B(const Atom&);
 
   friend inline std::ostream& operator<<(std::ostream&, Residue&);
-  friend inline double resid_min_distance(Residue&, Residue&);
-  friend inline double resid_ca_distance(Residue&, Residue&);
+  friend inline double resid_min_distance(const Residue&, const Residue&);
+  friend inline double resid_ca_distance(const Residue&, const Residue&);
  protected:
   std::string resid_name_;
   std::string short_name_;
@@ -519,7 +519,7 @@ inline std::ostream& operator<<(std::ostream& o, Residue& r)
   return o;
 }
 
-inline double resid_min_distance(Residue& r1, Residue& r2)
+inline double resid_min_distance(const Residue& r1, const Residue& r2)
 {
   int i, j;
   double d = atom_distance(r1.atoms_[0], r2.atoms_[0]);  // min_distance;
@@ -540,7 +540,7 @@ inline double resid_min_distance(Residue& r1, Residue& r2)
   return d;
 }
 
-inline double resid_ca_distance(Residue& r1, Residue& r2)
+inline double resid_ca_distance(const Residue& r1, const Residue& r2)
 {
   double d = -1;           // distance;
   d = atom_distance(r1.C_alpha_, r2.C_alpha_);

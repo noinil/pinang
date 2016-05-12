@@ -20,7 +20,7 @@ class Conformation
   inline int get_size() {return n_atom_;}
 
   int set_conformation(std::vector<Vec3d>);
-  inline const Vec3d& get_coor(int) const;
+  inline Vec3d& get_coor(int);
 
  protected:
   std::vector<Vec3d> coordinates_;
@@ -62,9 +62,9 @@ int Conformation::set_conformation(std::vector<Vec3d> v)
   }
 }
 
-inline const Vec3d& Conformation::get_coor(int n) const
+inline Vec3d& Conformation::get_coor(int n)
 {
-  if ( n >= n_atom_ || n < 0)
+  if (n >= n_atom_ || n < 0)
   {
     std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
     std::cout << " ~             PINANG :: conformation.h       ~ " << std::endl;

@@ -12,6 +12,7 @@
 #include <string>
 
 namespace pinang {
+
 class Topology
 {
  public:
@@ -21,7 +22,7 @@ class Topology
   inline void reset();
 
   inline int get_size() {return n_particle_;}
-  const Particle& get_particle(int) const;
+  Particle& get_particle(int);
 
  protected:
   std::vector<Particle> particles_;
@@ -79,7 +80,7 @@ inline void Topology::reset()
   particles_.clear();
 }
 
-const Particle& Topology::get_particle(int n) const
+Particle& Topology::get_particle(int n)
 {
   if ( n >= n_particle_ || n < 0)
   {

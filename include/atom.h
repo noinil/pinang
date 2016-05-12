@@ -62,7 +62,7 @@ class Atom
 
   friend inline std::ostream& operator<<(std::ostream&, const Atom&);
   friend inline std::istream& operator>>(std::istream&, Atom&);
-  friend inline double atom_distance (Atom&, Atom&);
+  friend inline double atom_distance (const Atom&, const Atom&);
  protected:
   std::string atom_flag_;
   int serial_;
@@ -396,7 +396,7 @@ std::istream& operator>>(std::istream& i, Atom& a)
   return i;
 }
 
-inline double atom_distance (Atom& a1, Atom& a2)
+inline double atom_distance (const Atom& a1, const Atom& a2)
 {
   Vec3d v3 = a1.coordinate_ - a2.coordinate_;
   return v3.norm();

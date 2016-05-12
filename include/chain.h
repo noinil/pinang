@@ -40,7 +40,7 @@ class Chain
   inline void output_top_native(std::ostream&);
   inline int get_native_contact_number();
 
-  inline Chain operator+(Chain&);
+  friend inline Chain operator+(const Chain&, const Chain&);
 
   friend inline std::ostream& operator<<(std::ostream&, Chain&);
 
@@ -725,23 +725,25 @@ inline void Chain::reset()
   n_residue_ = 0;
 }
 
-Chain Chain::operator+(Chain& other)
+inline Chain operator+(const Chain& c1, const Chain& c2)
 {
   int i = 0;
-  Chain c1;
-  c1.set_chain_ID(other.chain_ID_);
-  if (n_residue_ > 0)
-    for (i = 0; i < n_residue_; i++) {
-      c1.residues_.push_back(residues_[i]);
-      c1.n_residue_++;
+  Chain c0;
+  c0.set_chain_ID(c2.chain_ID_);
+  int s1 = c1.n_residue_;
+  int s2 = c2.n_residue_;
+  if (s1 > 0)
+    for (i = 0; i < s1; i++) {
+      c0.residues_.push_back(c1.residues_[i]);
+      c0.n_residue_++;
     }
-  if (other.n_residue_ > 0)
-    for (i = 0; i < other.n_residue_; i++) {
-      c1.residues_.push_back(other.residues_[i]);
-      c1.n_residue_++;
+  if (s2 > 0)
+    for (i = 0; i < s2; i++) {
+      c0.residues_.push_back(c2.residues_[i]);
+      c0.n_residue_++;
     }
 
-  return c1;
+  return c0;
 }
 
 inline std::ostream& operator<<(std::ostream& o, Chain& c)

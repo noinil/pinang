@@ -28,12 +28,16 @@ class Vec3d
 
   friend inline Vec3d operator+(const Vec3d&, const Vec3d&);
   friend inline Vec3d operator-(const Vec3d&, const Vec3d&);
-  // friend inline Vec3d operator^(const Vec3d&, const Vec3d&);
-  friend inline Vec3d operator%(const Vec3d&, const Vec3d&);
-  friend inline Vec3d operator*(const Vec3d&, double);
+  friend inline Vec3d operator*(const Vec3d&, double);  // scalar multiplication;
+  friend inline Vec3d operator*(double, const Vec3d&);  // scalar multiplication;
   friend inline Vec3d operator/(const Vec3d&, double);
-  friend inline Vec3d operator*(double, const Vec3d&);
-  friend inline double operator*(const Vec3d&, const Vec3d&);
+  friend inline Vec3d operator%(const Vec3d&, const Vec3d&);  // cross product;
+  friend inline double operator*(const Vec3d&, const Vec3d&);  // dot product;
+
+  friend inline Vec3d& operator+=(Vec3d&, const Vec3d&);
+  friend inline Vec3d& operator-=(Vec3d&, const Vec3d&);
+  friend inline Vec3d& operator*=(Vec3d&, double);
+  friend inline Vec3d& operator/=(Vec3d&, double);
 
   friend inline std::ostream& operator<<(std::ostream&, const Vec3d&);
   friend inline std::istream& operator>>(std::istream&, Vec3d&);
@@ -61,12 +65,14 @@ inline double Vec3d::operator[](unsigned int i) const
 
 inline double Vec3d::norm() const
 {
-  return sqrt(z1_ * z1_ + z2_ * z2_ + z3_ * z3_);
+  double d = sqrt(z1_ * z1_ + z2_ * z2_ + z3_ * z3_);
+  return d;
 }
 
 inline double Vec3d::sqr_norm() const
 {
-  return (z1_ * z1_ + z2_ * z2_ + z3_ * z3_);
+  double d = z1_ * z1_ + z2_ * z2_ + z3_ * z3_;
+  return d;
 }
 
 // ------------------------------ FRIENDS --------------------
@@ -101,12 +107,6 @@ inline double operator*(const Vec3d& v1, const Vec3d& v2)
   return d;
 }
 
-// inline Vec3d operator^(const Vec3d& u, const Vec3d& v)
-// {
-//   return Vec3d(u.z2_ * v.z3_ - u.z3_ * v.z2_,
-//                u.z3_ * v.z1_ - u.z1_ * v.z3_,
-//                u.z1_ * v.z2_ - u.z2_ * v.z1_);
-// }
 inline Vec3d operator%(const Vec3d& u, const Vec3d& v)
 {
   return Vec3d(u.z2_ * v.z3_ - u.z3_ * v.z2_,
@@ -114,6 +114,34 @@ inline Vec3d operator%(const Vec3d& u, const Vec3d& v)
                u.z1_ * v.z2_ - u.z2_ * v.z1_);
 }
 
+inline Vec3d& operator+=(Vec3d& v0, const Vec3d& v1)
+{
+  v0.z1_ += v1.z1_;
+  v0.z2_ += v1.z2_;
+  v0.z3_ += v1.z3_;
+  return v0;
+}
+inline Vec3d& operator-=(Vec3d& v0, const Vec3d& v1)
+{
+  v0.z1_ -= v1.z1_;
+  v0.z2_ -= v1.z2_;
+  v0.z3_ -= v1.z3_;
+  return v0;
+}
+inline Vec3d& operator*=(Vec3d& v0, double d1)
+{
+  v0.z1_ *= d1;
+  v0.z2_ *= d1;
+  v0.z3_ *= d1;
+  return v0;
+}
+inline Vec3d& operator/=(Vec3d& v0, double d1)
+{
+  v0.z1_ /= d1;
+  v0.z2_ /= d1;
+  v0.z3_ /= d1;
+  return v0;
+}
 // ---------- other --------------------
 inline std::ostream& operator<<(std::ostream& o, const Vec3d& v)
 {
