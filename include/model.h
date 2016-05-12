@@ -17,24 +17,24 @@ class Model
   inline void reset();
 
   inline int get_model_ID() const;
-  inline void set_model_ID(int n);
+  inline void set_model_ID(int);
 
-  inline Chain& get_chain(unsigned int n);
-  inline void add_chain(Chain& c);
+  inline Chain& get_chain(unsigned int);
+  inline void add_chain(Chain&);
 
-  inline void print_sequence(int n) const;
-  inline void output_fasta(std::ostream & f_fasta, std::string s) const;
+  inline void print_sequence(int) const;
+  inline void output_fasta(std::ostream&, std::string) const;
 
   inline int get_model_size() const;
 
-  void output_cg_pos(std::ostream& o);
+  inline void output_cg_pos(std::ostream&);
+  inline void output_top_mass(std::ostream&);
+  inline void output_top_bond(std::ostream&);
+  inline void output_top_angle(std::ostream&);
+  inline void output_top_dihedral(std::ostream&);
+  inline void output_top_nonbonded(std::ostream&);
 
-  void output_top_mass(std::ostream& o);
-  void output_top_bond(std::ostream& o);
-  void output_top_angle(std::ostream& o);
-  void output_top_dihedral(std::ostream& o);
-
-  void output_top_nonbonded(std::ostream& o);
+  friend inline std::ostream& operator<<(std::ostream&, Model&);
 
  protected:
   int model_ID_;
@@ -353,11 +353,12 @@ void Model::output_top_nonbonded(std::ostream& o)
 inline std::ostream& operator<<(std::ostream& o, Model& m)
 {
   o << "MODEL "
-    << std::setw(8) << m.get_model_ID()
+    << std::setw(8) << m.model_ID_
     << std::endl;
   int i = 0;
-  for (i = 0; i < m.get_model_size(); i++) {
-    o << m.get_chain(i) ;
+  int s = m.n_chain_;
+  for (i = 0; i < s; i++) {
+    o << m.chains_[i];
   }
   o << "ENDMDL" << std::endl;
   return o;

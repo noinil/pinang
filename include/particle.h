@@ -18,20 +18,21 @@ class Particle
   inline void reset();
 
   inline std::string get_atom_name() const;
-  inline void set_atom_name(const std::string& s);
+  inline void set_atom_name(const std::string&);
 
   inline std::string get_resid_name() const;
-  inline void set_resid_name(const std::string& s);
+  inline void set_resid_name(const std::string&);
 
   inline int get_resid_index() const;
-  inline void set_resid_index(int i);
+  inline void set_resid_index(int);
 
   inline double get_charge() const;
-  inline void set_charge(double c);
+  inline void set_charge(double);
 
   inline double get_mass() const;
-  inline void set_mass(double m);
+  inline void set_mass(double);
 
+  friend inline std::istream& operator>>(std::istream&, Particle&);
  protected:
   std::string atom_name_;
   std::string resid_name_;
@@ -151,25 +152,24 @@ std::istream& operator>>(std::istream& i, Particle& p)
   double tmp_d;
 
   std::getline(i, top_line);
-  tmp_sstr.str (top_line);
+  tmp_sstr.str(top_line);
 
   tmp_sstr >> tmp_i;
-  // std::cout << ".";
 
   tmp_sstr >> tmp_i;
-  p.set_resid_index(tmp_i);
+  p.resid_index_ = tmp_i;
 
   tmp_sstr >> tmp_s;
-  p.set_resid_name(tmp_s);
+  p.resid_name_ = tmp_s;
 
   tmp_sstr >> tmp_s;
-  p.set_atom_name(tmp_s);
+  p.atom_name_ = tmp_s;
 
   tmp_sstr >> tmp_d;
-  p.set_mass(tmp_d);
+  p.mass_ = tmp_d;
 
   tmp_sstr >> tmp_d;
-  p.set_charge(tmp_d);
+  p.charge_ = tmp_d;
 
   if (!i) return i;
   return i;
