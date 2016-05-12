@@ -257,7 +257,6 @@ inline void Atom::reset()
   charge_ = "";
 }
 
-
 // outer functions +++++++++++++++++++++++++++++++++++++++++++++
 inline std::ostream& operator<<(std::ostream& o, const Atom& a)
 {

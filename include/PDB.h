@@ -227,7 +227,8 @@ inline void PDB::output_fasta(std::ostream & f_fasta) const
 inline std::ostream& operator<<(std::ostream& o, PDB& p)
 {
   int i = 0;
-  for (i = 0; i < p.n_model_; i++) {
+  int s = p.n_model_;
+  for (i = 0; i < s; i++) {
     o << p.models_[i] << std::endl;
   }
   return o;

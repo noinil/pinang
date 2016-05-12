@@ -18,29 +18,31 @@ class Chain
   inline void reset();
 
   inline char get_chain_ID() const;
-  inline void set_chain_ID(char a);
+  inline void set_chain_ID(char);
 
   inline ChainType get_chain_type() const;
-  inline void set_chain_type(ChainType ct);
+  inline void set_chain_type(ChainType);
 
-  inline Residue& get_residue(int n);
-  inline int add_residue(const Residue& r);
+  inline Residue& get_residue(int);
+  inline int add_residue(const Residue&);
 
   inline int get_chain_length() const;
 
-  inline void pr_seq(int n) const;
-  inline void output_fasta(std::ostream & f_fasta, std::string s) const;
+  inline void pr_seq(int) const;
+  inline void output_fasta(std::ostream&, std::string) const;
   inline void self_check();
 
-  void output_cg_pos(std::ostream& o, int& n);
-  void output_top_mass(std::ostream& o, int& n);
-  void output_top_bond(std::ostream& o, int& n);
-  void output_top_angle(std::ostream& o, int& n);
-  void output_top_dihedral(std::ostream& o, int& n);
-  void output_top_native(std::ostream& o);
-  int get_native_contact_number();
+  inline void output_cg_pos(std::ostream&, int&);
+  inline void output_top_mass(std::ostream&, int&);
+  inline void output_top_bond(std::ostream&, int&);
+  inline void output_top_angle(std::ostream&, int&);
+  inline void output_top_dihedral(std::ostream&, int&);
+  inline void output_top_native(std::ostream&);
+  inline int get_native_contact_number();
 
-  Chain operator+(Chain& other);
+  inline Chain operator+(Chain&);
+
+  friend inline std::ostream& operator<<(std::ostream&, Chain&);
 
  protected:
   char chain_ID_;
@@ -195,10 +197,10 @@ void Chain::output_cg_pos(std::ostream& o, int& n)
     case RNA:
       o << "RNA";
       break;
-   case ion:
+    case ion:
       o << "ion";
       break;
-   case na:
+    case na:
       o << "na";
       break;
     default:
@@ -736,8 +738,9 @@ Chain Chain::operator+(Chain& other)
 inline std::ostream& operator<<(std::ostream& o, Chain& c)
 {
   int i = 0;
-  for (i = 0; i < c.get_chain_length(); i++) {
-    o << c.get_residue(i) ;
+  int s = c.n_residue_;
+  for (i = 0; i < s; i++) {
+    o << c.residues_[i];
   }
   o << "TER   " << std::endl;
   return o;
