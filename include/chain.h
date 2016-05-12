@@ -560,8 +560,8 @@ void Chain::output_top_dihedral(std::ostream& o, int& n)
            - residues_[i+1].get_C_alpha().get_coordinates();
       v3 = residues_[i+2].get_C_alpha().get_coordinates()
            - residues_[i+3].get_C_alpha().get_coordinates();
-      n1 = v1 ^ v2;
-      n2 = v2 ^ v3;
+      n1 = v1 % v2;
+      n2 = v2 % v3;
       d = vec_angle_deg (n1, n2);
       o << std::setw(8) << i+1+n << " "
         << std::setw(8) << i+2+n << " "
@@ -588,8 +588,8 @@ void Chain::output_top_dihedral(std::ostream& o, int& n)
     v3 = residues_[1].get_S().get_coordinates()
          - residues_[2].get_P().get_coordinates();
 
-    n1 = v1 ^ v2;
-    n2 = v2 ^ v3;
+    n1 = v1 % v2;
+    n2 = v2 % v3;
     d = vec_angle_deg (n1, n2);
     o << std::setw(8) << n + 1 << " "
       << std::setw(8) << n + 3 << " "
@@ -612,8 +612,8 @@ void Chain::output_top_dihedral(std::ostream& o, int& n)
            - residues_[i].get_S().get_coordinates();
       v3 = residues_[i+1].get_P().get_coordinates()
            - residues_[i+1].get_S().get_coordinates();
-      n1 = v1 ^ v2;
-      n2 = v2 ^ v3;
+      n1 = v1 % v2;
+      n2 = v2 % v3;
       d = vec_angle_deg (n1, n2);
       o << std::setw(8) << n << " "
         << std::setw(8) << n + 1 << " "
@@ -636,8 +636,8 @@ void Chain::output_top_dihedral(std::ostream& o, int& n)
            - residues_[i+1].get_P().get_coordinates();
       v3 = residues_[i+1].get_S().get_coordinates()
            - residues_[i+2].get_P().get_coordinates();
-      n1 = v1 ^ v2;
-      n2 = v2 ^ v3;
+      n1 = v1 % v2;
+      n2 = v2 % v3;
       d = vec_angle_deg (n1, n2);
       o << std::setw(8) << n + 1 << " "
         << std::setw(8) << n + 3 << " "

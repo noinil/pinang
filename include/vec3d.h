@@ -28,7 +28,7 @@ class Vec3d
 
   friend inline Vec3d operator+(const Vec3d&, const Vec3d&);
   friend inline Vec3d operator-(const Vec3d&, const Vec3d&);
-  friend inline Vec3d operator^(const Vec3d&, const Vec3d&);
+  // friend inline Vec3d operator^(const Vec3d&, const Vec3d&);
   friend inline Vec3d operator%(const Vec3d&, const Vec3d&);
   friend inline Vec3d operator*(const Vec3d&, double);
   friend inline Vec3d operator*(double, const Vec3d&);
@@ -95,12 +95,12 @@ inline double operator*(const Vec3d& v1, const Vec3d& v2)
   return d;
 }
 
-inline Vec3d operator^(const Vec3d& u, const Vec3d& v)
-{
-  return Vec3d(u.z2_ * v.z3_ - u.z3_ * v.z2_,
-               u.z3_ * v.z1_ - u.z1_ * v.z3_,
-               u.z1_ * v.z2_ - u.z2_ * v.z1_);
-}
+// inline Vec3d operator^(const Vec3d& u, const Vec3d& v)
+// {
+//   return Vec3d(u.z2_ * v.z3_ - u.z3_ * v.z2_,
+//                u.z3_ * v.z1_ - u.z1_ * v.z3_,
+//                u.z1_ * v.z2_ - u.z2_ * v.z1_);
+// }
 inline Vec3d operator%(const Vec3d& u, const Vec3d& v)
 {
   return Vec3d(u.z2_ * v.z3_ - u.z3_ * v.z2_,
