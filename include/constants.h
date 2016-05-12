@@ -22,8 +22,8 @@ const double k_K_bond = 100.0;
 const double k_K_angle = 20.0;
 const double k_K_dihedral_1 = 1.0;
 const double k_K_dihedral_3 = 0.5;
-const double k_K_native = 1;
-const double k_K_nonnative = 1;
+const double k_K_native = 1.0;
+const double k_K_nonnative = 1.0;
 
 enum ChainType {none=0, protein=1, DNA=2, RNA=3, water=4, ion=5, other=6, na=7};
 
@@ -33,10 +33,10 @@ class PhysicalProperty
   PhysicalProperty();
   ~PhysicalProperty();
 
-  inline std::string get_short_name(const std::string& s);
-  inline double get_charge(const std::string& s);
-  inline double get_mass(const std::string& s);
-  inline ChainType get_chain_type(const std::string& s);
+  inline std::string get_short_name(const std::string&);
+  inline double get_charge(const std::string&);
+  inline double get_mass(const std::string&);
+  inline ChainType get_chain_type(const std::string&);
 
  private:
   std::map<std::string, std::string> map_resName_shortName;

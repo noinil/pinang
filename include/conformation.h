@@ -3,26 +3,24 @@
 #ifndef PINANG_CONFORMATION_H
 #define PINANG_CONFORMATION_H
 
+#include <vector>
 #include "constants.h"
 #include "vec3d.h"
-
-#include <vector>
-
 
 namespace pinang {
 class Conformation
 {
  public:
   Conformation();
-  Conformation(std::vector<Vec3d> v);
+  Conformation(std::vector<Vec3d>);
   virtual ~Conformation() {coordinates_.clear();}
 
   inline void reset();
 
-  int get_size() {return n_atom_;}
+  inline int get_size() {return n_atom_;}
 
-  int set_conformation(std::vector<Vec3d> v);
-  inline const Vec3d& get_coor(int n) const;
+  int set_conformation(std::vector<Vec3d>);
+  inline const Vec3d& get_coor(int) const;
 
  protected:
   std::vector<Vec3d> coordinates_;
@@ -73,4 +71,5 @@ inline const Vec3d& Conformation::get_coor(int n) const
 }
 
 }
+
 #endif
