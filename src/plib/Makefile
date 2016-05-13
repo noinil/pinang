@@ -16,8 +16,6 @@ all : $(OBJECTS)
 	ar r libpinang.a $?
 
 $(OBJECTS) : %.o : %.cpp $(HEADFILES)
-	@echo " ------------------------------------------------------------ "
-	@echo " Compiling $< ..."
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) $< -o $@
 
 clean:

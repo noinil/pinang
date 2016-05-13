@@ -15,8 +15,9 @@ MOVE = mv -f
 RM = rm -fr
 
 # searching path
-# vpath %.h ../indluce
-# vpath %.h /usr/local/include
+vpath %.h ../indluce
+vpath %.a plib
+vpath %.o plib
 
 # rules
 .PHONY : all install clean uninstall purge
