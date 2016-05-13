@@ -81,5 +81,6 @@ class Atom
   std::string charge_;
 };
 
+double atom_distance (const Atom&, const Atom&);
 }
 #endif

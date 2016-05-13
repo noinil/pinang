@@ -87,6 +87,8 @@ class Residue
   int term_flag_;  // 5: 5'; 3: 3'; -1: N;  1: C;  0: not terminus;
 };
 
+double resid_min_distance(const Residue&, const Residue&);
+double resid_ca_distance(const Residue&, const Residue&);
 }
 
 #endif

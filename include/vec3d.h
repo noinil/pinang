@@ -59,6 +59,9 @@ class Vec3d
   double z1_, z2_, z3_;
 };
 
+double vec_distance(const Vec3d&, const Vec3d&);
+double vec_angle(const Vec3d&, const Vec3d&);
+double vec_angle_deg(const Vec3d&, const Vec3d&);
 }
 
 #endif

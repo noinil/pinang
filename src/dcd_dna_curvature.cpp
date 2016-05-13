@@ -1,6 +1,7 @@
 #include "read_cafemol_dcd.h"
 #include "topology.h"
 #include "constants.h"
+#include "vec3d.h"
 
 #include <iostream>
 #include <iomanip>

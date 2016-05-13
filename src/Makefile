@@ -26,7 +26,7 @@ install:
 	cp p_* $(INSTALL_DIR)
 
 $(TARGETS) : p_% : %.o
-	$(LINK) $< -o $@
+	$(LINK) $< plib/libpinang.a -o $@
 
 $(OBJECTS) : %.o : %.cpp
 	@echo " ------------------------------------------------------------ "
