@@ -7,24 +7,27 @@ INCPATH = -I/usr/local/include -I../include
 CXXFLAGS = -std=c++11 -O3
 OBJECTS = $(patsubst %.cpp,%.o,$(wildcard *.cpp))
 TARGETS = $(patsubst %.cpp,p_%,$(wildcard *.cpp))
+PINANGLIBS = $(patsubst %.cpp,%.o,$(wildcard plib/*.cpp))
 CHK_DIR_EXISTS= test -d
 MKDIR = mkdir -p
 MOVE = mv -f
 RM = rm -fr
 
 # searching path
-# vpath %.h ../indluce
+vpath %.h ../indluce
 # vpath %.h /usr/local/include
 
 # rules
 .PHONY : all install clean uninstall purge
 
-all : $(TARGETS)
+all : $(PINANGLIBS) $(TARGETS)
 
 install:
 	@$(CHK_DIR_EXISTS) $(INSTALL_DIR) || $(MKDIR) $(INSTALL_DIR)
 	cp p_* $(INSTALL_DIR)
 
+$(PINANGLIBS) : 
+	cd plib; make
 $(TARGETS) : p_% : %.o
 	$(LINK) $< plib/libpinang.a -o $@
 

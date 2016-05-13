@@ -1,4 +1,4 @@
-#include "chain.h"
+#include "chain.hpp"
 
 namespace pinang {
 
@@ -25,14 +25,14 @@ Residue& Chain::get_residue(int n)
 {
   if (residues_.empty())
   {
-    std::cout << " ~             PINANG :: chain.h              ~ " << std::endl;
+    std::cout << " ~             PINANG :: chain.hpp              ~ " << std::endl;
     std::cerr << "ERROR: No Residues found in Chain: "
               << chain_ID_ << std::endl;
     exit(EXIT_SUCCESS);
   }
   if (n >= int(residues_.size()))
   {
-    std::cout << " ~             PINANG :: chain.h              ~ " << std::endl;
+    std::cout << " ~             PINANG :: chain.hpp              ~ " << std::endl;
     std::cerr << "ERROR: Residue index out of range in Chain: "
               << chain_ID_ << std::endl;
     exit(EXIT_SUCCESS);
@@ -57,7 +57,7 @@ void Chain::self_check()
 {
   for (Residue& r : residues_) {
     if (r.get_chain_ID() != chain_ID_ || r.get_chain_type() != chain_type_) {
-      std::cout << " ~             PINANG :: chain.h              ~ " << std::endl;
+      std::cout << " ~             PINANG :: chain.hpp              ~ " << std::endl;
       std::cerr << "ERROR: Inconsistent chain ID or chain type in Chain "
                 << chain_ID_ << std::endl;
       exit(EXIT_SUCCESS);

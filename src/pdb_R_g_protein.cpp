@@ -1,6 +1,6 @@
-#include "PDB.h"
-#include "constants.h"
-#include "vec3d.h"
+#include "PDB.hpp"
+#include "constants.hpp"
+#include "vec3d.hpp"
 
 #include <iostream>
 #include <fstream>

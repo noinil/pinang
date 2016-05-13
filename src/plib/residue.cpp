@@ -1,4 +1,4 @@
-#include "residue.h"
+#include "residue.hpp"
 
 namespace pinang {
 
@@ -102,14 +102,14 @@ Atom& Residue::get_atom(int n)
 {
   if (atoms_.empty())
   {
-    std::cout << " ~               PINANG :: residues.h         ~ " << std::endl;
+    std::cout << " ~               PINANG :: residues.hpp         ~ " << std::endl;
     std::cerr << "ERROR: No Atoms in Residue: "
               << resid_index_ << std::endl;
     exit(EXIT_SUCCESS);
   }
   if (n >= int(atoms_.size()))
   {
-    std::cout << " ~               PINANG :: residues.h         ~ " << std::endl;
+    std::cout << " ~               PINANG :: residues.hpp         ~ " << std::endl;
     std::cerr << "ERROR: Atom index out of range in Residue: "
               << resid_index_ << std::endl;
     exit(EXIT_SUCCESS);
@@ -173,7 +173,7 @@ int Residue::delete_atom(const int i)
 Atom& Residue::get_C_alpha()
 {
   if (C_alpha_.get_atom_name() == "") {
-    std::cout << " ~               PINANG :: residues.h         ~ " << std::endl;
+    std::cout << " ~               PINANG :: residues.hpp         ~ " << std::endl;
     std::cerr << "ERROR: C_alpha not set in Residue: "
               << resid_index_ << std::endl;
     exit(EXIT_SUCCESS);
@@ -184,7 +184,7 @@ Atom& Residue::get_C_alpha()
 Atom& Residue::get_C_beta()
 {
   if (C_beta_.get_atom_name() == "") {
-    std::cout << " ~               PINANG :: residues.h         ~ " << std::endl;
+    std::cout << " ~               PINANG :: residues.hpp         ~ " << std::endl;
     std::cerr << "ERROR: C_beta not set in Residue: "
               << resid_index_ << std::endl;
     exit(EXIT_SUCCESS);
@@ -195,7 +195,7 @@ Atom& Residue::get_C_beta()
 Atom& Residue::get_P()
 {
   if (P_.get_atom_name() == "") {
-    std::cout << " ~               PINANG :: residues.h         ~ " << std::endl;
+    std::cout << " ~               PINANG :: residues.hpp         ~ " << std::endl;
     std::cerr << "ERROR: CG Phosphate not set in Residue: "
               << resid_index_ << std::endl;
     exit(EXIT_SUCCESS);
@@ -206,7 +206,7 @@ Atom& Residue::get_P()
 Atom& Residue::get_S()
 {
   if (S_.get_atom_name() == "") {
-    std::cout << " ~               PINANG :: residues.h         ~ " << std::endl;
+    std::cout << " ~               PINANG :: residues.hpp         ~ " << std::endl;
     std::cerr << "ERROR: CG Sugar not set in Residue: "
               << resid_index_ << std::endl;
     exit(EXIT_SUCCESS);
@@ -217,7 +217,7 @@ Atom& Residue::get_S()
 Atom& Residue::get_B()
 {
   if (B_.get_atom_name() == "") {
-    std::cout << " ~               PINANG :: residues.h         ~ " << std::endl;
+    std::cout << " ~               PINANG :: residues.hpp         ~ " << std::endl;
     std::cerr << "ERROR: CG Base not set in Residue: "
               << resid_index_ << std::endl;
     exit(EXIT_SUCCESS);
@@ -262,7 +262,7 @@ void Residue::self_check() const
     if (a.get_chain_ID() != chain_ID_ || a.get_resid_index() != resid_index_
         || a.get_resid_name() != resid_name_)
     {
-      std::cout << " ~               PINANG :: residues.h         ~ " << std::endl;
+      std::cout << " ~               PINANG :: residues.hpp         ~ " << std::endl;
       std::cerr << "ERROR: Inconsistent chain ID or residue index or residue type in Residue "
                 << resid_index_ << std::endl;
       exit(EXIT_SUCCESS);

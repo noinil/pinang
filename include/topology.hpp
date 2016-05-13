@@ -3,8 +3,8 @@
 #ifndef PINANG_TOPOLOGY_H
 #define PINANG_TOPOLOGY_H
 
-#include "constants.h"
-#include "particle.h"
+#include "constants.hpp"
+#include "particle.hpp"
 
 #include <vector>
 #include <fstream>

@@ -4,7 +4,7 @@
 #define PINANG_CHAIN_H_
 
 #include <iostream>
-#include "residue.h"
+#include "residue.hpp"
 
 namespace pinang {
 

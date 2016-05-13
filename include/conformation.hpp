@@ -4,8 +4,8 @@
 #define PINANG_CONFORMATION_H
 
 #include <vector>
-#include "constants.h"
-#include "vec3d.h"
+#include "constants.hpp"
+#include "vec3d.hpp"
 
 namespace pinang {
 

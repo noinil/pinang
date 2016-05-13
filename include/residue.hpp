@@ -7,8 +7,8 @@
 #include <vector>
 #include <cstdlib>
 
-#include "vec3d.h"
-#include "atom.h"
+#include "vec3d.hpp"
+#include "atom.hpp"
 
 namespace pinang {
 

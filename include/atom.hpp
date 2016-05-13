@@ -3,7 +3,7 @@
 #ifndef PINANG_ATOM_H_
 #define PINANG_ATOM_H_
 
-#include "vec3d.h"
+#include "vec3d.hpp"
 
 #include <string>
 #include <sstream>

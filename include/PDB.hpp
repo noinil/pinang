@@ -3,7 +3,7 @@
 #ifndef PINANG_PDB_H
 #define PINANG_PDB_H
 
-#include "model.h"
+#include "model.hpp"
 
 #include <fstream>
 #include <string>

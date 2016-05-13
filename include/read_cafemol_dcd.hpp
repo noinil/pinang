@@ -3,7 +3,7 @@
 #ifndef PINANG_READ_DCD_H_
 #define PINANG_READ_DCD_H_
 
-#include "conformation.h"
+#include "conformation.hpp"
 
 #include <vector>
 #include <fstream>

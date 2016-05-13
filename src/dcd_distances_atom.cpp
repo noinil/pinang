@@ -1,4 +1,4 @@
-#include "read_cafemol_dcd.h"
+#include "read_cafemol_dcd.hpp"
 
 #include <iostream>
 #include <iomanip>

@@ -1,4 +1,4 @@
-#include "group.h"
+#include "group.hpp"
 
 namespace pinang {
 
@@ -31,7 +31,7 @@ int Group::set_conformation(std::vector<Vec3d> v)
   int m = v.size();
   if (m != n_atom_ && n_atom_ > 0)
   {
-    std::cout << " ~             PINANG :: group.h              ~ " << std::endl;
+    std::cout << " ~             PINANG :: group.hpp              ~ " << std::endl;
     std::cerr << " ERROR: Wrong atom number when set conformation. " << std::endl;
     return 1;
   } else {

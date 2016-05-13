@@ -1,4 +1,4 @@
-#include "conformation.h"
+#include "conformation.hpp"
 
 namespace pinang {
 
@@ -25,7 +25,7 @@ int Conformation::set_conformation(std::vector<Vec3d> v)
   int m = v.size();
   if (m != n_atom_ && n_atom_ > 0)
   {
-    std::cout << " ~             PINANG :: conformation.h       ~ " << std::endl;
+    std::cout << " ~             PINANG :: conformation.hpp       ~ " << std::endl;
     std::cerr << " ERROR: Wrong atom number when set conformation. " << std::endl;
     return 1;
   } else {
@@ -39,7 +39,7 @@ Vec3d& Conformation::get_coor(int n)
 {
   if (n >= n_atom_ || n < 0)
   {
-    std::cout << " ~             PINANG :: conformation.h       ~ " << std::endl;
+    std::cout << " ~             PINANG :: conformation.hpp       ~ " << std::endl;
     std::cerr << " ERROR: Atom index out of range in Conformation. " << std::endl;
     exit(EXIT_SUCCESS);
   } else {

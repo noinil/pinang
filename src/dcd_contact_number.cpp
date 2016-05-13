@@ -1,5 +1,5 @@
-#include "read_cafemol_dcd.h"
-#include "topology.h"
+#include "read_cafemol_dcd.hpp"
+#include "topology.hpp"
 
 #include <iostream>
 #include <iomanip>

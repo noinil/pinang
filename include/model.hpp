@@ -4,7 +4,7 @@
 #define PINANG_MODEL_H_
 
 #include <iostream>
-#include "chain.h"
+#include "chain.hpp"
 
 namespace pinang {
 
