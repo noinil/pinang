@@ -20,5 +20,5 @@ all : $(OBJECTS)
 # 	$(CXX) -c $(CXXFLAGS) $(INCPATH) $< -o $@
 
 clean:
-	@echo " Cleaning ..."
+	@echo " Cleaning pinang lib ..."
 	@$(RM) $(OBJECTS) libpinang.a

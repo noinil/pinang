@@ -14,7 +14,7 @@ MOVE = mv -f
 RM = rm -fr
 
 # searching path
-vpath %.h ../indluce
+# vpath %.h ../indluce
 # vpath %.h /usr/local/include
 
 # rules
@@ -26,8 +26,8 @@ install:
 	@$(CHK_DIR_EXISTS) $(INSTALL_DIR) || $(MKDIR) $(INSTALL_DIR)
 	cp p_* $(INSTALL_DIR)
 
-$(PINANGLIBS) : 
-	cd plib; make
+$(PINANGLIBS) :
+	@cd plib; make
 $(TARGETS) : p_% : %.o
 	$(LINK) $< plib/libpinang.a -o $@
 
@@ -38,6 +38,7 @@ $(OBJECTS) : %.o : %.cpp
 
 clean:
 	@echo " Cleaning ..."
+	@cd plib; make clean
 	@$(RM) $(OBJECTS) $(TARGETS)
 uninstall:
 	@$(RM) ../bin/*
