@@ -8,6 +8,7 @@
 #include "vec3d.h"
 
 namespace pinang {
+
 class Conformation
 {
  public:
