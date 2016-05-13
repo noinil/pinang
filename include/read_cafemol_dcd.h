@@ -57,9 +57,7 @@ int read_cafemol_dcd(std::ifstream& dcd_file, std::vector<Conformation>& cfms)
   */
   if (!dcd_file.is_open())
   {
-    std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
     std::cout << " ~               PINANG :: DCD                ~ " << std::endl;
-    std::cout << " ============================================== " << std::endl;
     std::cerr << " ERROR: Cannot read dcd file: not open." << std::endl;
     std::cerr << " Program terminating." << std::endl;
     return 1;
@@ -69,9 +67,7 @@ int read_cafemol_dcd(std::ifstream& dcd_file, std::vector<Conformation>& cfms)
   filesize = dcd_file.tellg();
   if (filesize == 0)
   {
-    std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
     std::cout << " ~               PINANG :: DCD                ~ " << std::endl;
-    std::cout << " ============================================== " << std::endl;
     std::cout << " !!! Error: empty dcd file! !!!" << std::endl;
     return 1;
   }
@@ -89,9 +85,7 @@ int read_cafemol_dcd(std::ifstream& dcd_file, std::vector<Conformation>& cfms)
   dcd_file.read((char *)&flag1, Si);
   if (flag1 != 84)
   {
-    std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
     std::cout << " ~               PINANG :: DCD                ~ " << std::endl;
-    std::cout << " ============================================== " << std::endl;
     std::cout << " !!! Magic number of block 1 error. !!!" << std::endl;
     return 1;
   }
@@ -173,9 +167,7 @@ int read_cafemol_dcd(std::ifstream& dcd_file, std::vector<Conformation>& cfms)
   dcd_file.read((char*)&flag3, Si);
   if (flag3 != 4)
   {
-    std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
     std::cout << " ~               PINANG :: DCD                ~ " << std::endl;
-    std::cout << " ============================================== " << std::endl;
     std::cout << " !!! Magic number of block 3 error. !!!" << std::endl;
     return 1;
   }
@@ -192,9 +184,7 @@ int read_cafemol_dcd(std::ifstream& dcd_file, std::vector<Conformation>& cfms)
   dcd_file.read((char*)&flag3, Si);
   if (flag3 != 4)
   {
-    std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
     std::cout << " ~               PINANG :: DCD                ~ " << std::endl;
-    std::cout << " ============================================== " << std::endl;
     std::cout << " !!! Magic number of block 3 error. !!!" << std::endl;
     return 1;
   }

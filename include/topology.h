@@ -39,9 +39,7 @@ Topology::Topology(const std::string& s)
   std::ifstream ifile(s.c_str());
   if (!ifile.is_open())
   {
-    std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
     std::cout << " ~             PINANG :: TOPOLOGY             ~ " << std::endl;
-    std::cout << " ============================================== " << std::endl;
     std::cerr << " ERROR: Cannot read top file: " << s << std::endl;
     exit(EXIT_FAILURE);
   }
@@ -84,9 +82,7 @@ Particle& Topology::get_particle(int n)
 {
   if ( n >= n_particle_ || n < 0)
   {
-    std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
     std::cout << " ~             PINANG :: TOPOLOGY             ~ " << std::endl;
-    std::cout << " ============================================== " << std::endl;
     std::cerr << " ERROR: Atom index out of range in Topology. " << std::endl;
     exit(EXIT_SUCCESS);
   } else {

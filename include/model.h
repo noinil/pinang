@@ -56,18 +56,14 @@ inline Chain& Model::get_chain(unsigned int n)
 {
   if (chains_.empty())
   {
-    std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
     std::cout << " ~             PINANG :: model.h              ~ " << std::endl;
-    std::cout << " ============================================== " << std::endl;
     std::cerr << "ERROR: No Chains found in Model: "
               << model_ID_ << std::endl;
     exit(EXIT_SUCCESS);
   }
   if (n >= chains_.size())
   {
-    std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
     std::cout << " ~             PINANG :: model.h              ~ " << std::endl;
-    std::cout << " ============================================== " << std::endl;
     std::cerr << "ERROR: Chain number out of range in Model: "
               << model_ID_ << std::endl;
     exit(EXIT_SUCCESS);

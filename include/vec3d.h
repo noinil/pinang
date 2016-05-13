@@ -62,9 +62,7 @@ inline double Vec3d::operator[](unsigned int i) const
     case 1: return z2_;
     case 2: return z3_;
     default:
-      std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
       std::cout << " ~             PINANG :: vec3d.h              ~ " << std::endl;
-      std::cout << " ============================================== " << std::endl;
       std::cerr << "ERROR: 3D Vector index out of range!" << std::endl;
       exit(EXIT_SUCCESS);
   }
@@ -90,9 +88,7 @@ inline Vec3d Vec3d::unitv() const
   Vec3d v0;
   double d = sqrt(z1_ * z1_ + z2_ * z2_ + z3_ * z3_);
   if (d < 0.00000001) {
-    std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
     std::cout << " ~             PINANG :: vec3d.h              ~ " << std::endl;
-    std::cout << " ============================================== " << std::endl;
     std::cerr << "ERROR: Vector length ~ 0!" << std::endl;
     exit(EXIT_SUCCESS);
   }
