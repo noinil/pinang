@@ -14,10 +14,6 @@ RM = rm -fr
 all : $(OBJECTS)
 	ar r libpinang.a $?
 
-# install:
-# 	@$(CHK_DIR_EXISTS) $(INSTALL_DIR) || $(MKDIR) $(INSTALL_DIR)
-# 	cp p_* $(INSTALL_DIR)
-
 # $(OBJECTS) : %.o : %.cpp
 # 	@echo " ------------------------------------------------------------ "
 # 	@echo " Compiling $< ..."
