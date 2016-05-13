@@ -2,16 +2,6 @@
 
 namespace pinang {
 
-// std::string Residue::get_resid_name() const
-// {
-//   return resid_name_;
-// }
-// std::string Residue::get_short_name() const
-// {
-//   return short_name_;
-// }
-
-
 void Residue::set_resid_name(const std::string& s)
 {
   size_t sz = 3;
@@ -35,68 +25,6 @@ void Residue::set_residue_by_name(const std::string& s)
   mass_ = p.get_mass(s);
   charge_ = p.get_charge(s);
 }
-
-
-// char Residue::get_chain_ID() const
-// {
-//   return chain_ID_;
-// }
-// void Residue::set_chain_ID(char a)
-// {
-//   chain_ID_ = a;
-// }
-
-
-// ChainType Residue::get_chain_type() const
-// {
-//   return chain_type_;
-// }
-// void Residue::set_chain_type(ChainType a)
-// {
-//   chain_type_ = a;
-// }
-
-
-// int Residue::get_resid_index() const
-// {
-//   return resid_index_;
-// }
-// void Residue::set_resid_index(int i)
-// {
-//   resid_index_ = i;
-// }
-
-
-// int Residue::get_term_flag() const
-// {
-//   return term_flag_;
-// }
-// void Residue::set_term_flag(int i)
-// {
-//   // 5: 5';   3: 3';   0: not terminus;
-//   // -1: N;   1: C;
-//   term_flag_ = i;
-// }
-
-
-// double Residue::get_resid_charge() const
-// {
-//   return charge_;
-// }
-// void Residue::set_resid_charge(double c)
-// {
-//   charge_ = c;
-// }
-
-// double Residue::get_resid_mass() const
-// {
-//   return mass_;
-// }
-// void Residue::set_resid_mass(double m)
-// {
-//   mass_ = m;
-// }
-
 
 Atom& Residue::get_atom(int n)
 {
@@ -243,19 +171,6 @@ void Residue::set_C_beta()
   }
 }
 
-// void Residue::set_P(const Atom& a)
-// {
-//   P_ = a;
-// }
-// void Residue::set_S(const Atom& a)
-// {
-//   S_ = a;
-// }
-// void Residue::set_B(const Atom& a)
-// {
-//   B_ = a;
-// }
-
 void Residue::self_check() const
 {
   for (const Atom& a : atoms_) {
@@ -370,11 +285,6 @@ void Residue::self_check() const
 //     B_.set_coords(com_B);
 // }
 
-
-// int Residue::get_residue_size() const
-// {
-//   return n_atom_;
-// }
 
 // Residue------------------------------------------------------------------
 Residue::Residue()

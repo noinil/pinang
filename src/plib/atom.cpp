@@ -2,28 +2,6 @@
 
 namespace pinang {
 
-// std::string Atom::get_atom_flag() const
-// {
-//   return atom_flag_;
-// }
-// void Atom::set_atom_flag(const std::string& s)
-// {
-//   atom_flag_ = s;
-// }
-
-// int Atom::get_serial() const
-// {
-//   return serial_;
-// }
-// void Atom::set_serial(int i)
-// {
-//   serial_ = i;
-// }
-
-// std::string Atom::get_atom_name() const
-// {
-//   return atom_name_;
-// }
 void Atom::set_atom_name(const std::string& s)
 {
   size_t sz = 4;
@@ -34,19 +12,6 @@ void Atom::set_atom_name(const std::string& s)
   }
 }
 
-// char Atom::get_alt_loc() const
-// {
-//   return alt_loc_;
-// }
-// void Atom::set_alt_loc(char a)
-// {
-//   alt_loc_ = a;
-// }
-
-// std::string Atom::get_resid_name() const
-// {
-//   return resid_name_;
-// }
 void Atom::set_resid_name(const std::string& s)
 {
   size_t sz = 3;
@@ -56,91 +21,6 @@ void Atom::set_resid_name(const std::string& s)
     resid_name_.resize(sz, ' ');
   }
 }
-
-// char Atom::get_chain_ID() const
-// {
-//   return chain_ID_;
-// }
-// void Atom::set_chain_ID(char a)
-// {
-//   chain_ID_ = a;
-// }
-
-// int Atom::get_resid_index() const
-// {
-//   return resid_index_;
-// }
-// void Atom::set_resid_index(int i)
-// {
-//   resid_index_ = i;
-// }
-
-// char Atom::get_icode() const
-// {
-//   return insert_code_;
-// }
-// void Atom::set_icode(char a)
-// {
-//   insert_code_ = a;
-// }
-
-// const Vec3d& Atom::get_coordinates() const
-// {
-//   return coordinate_;
-// }
-// void Atom::set_coords(const Vec3d& coors)
-// {
-//   coordinate_ = coors;
-// }
-// void Atom::set_coords(double x, double y, double z)
-// {
-//   coordinate_ = Vec3d(x, y, z);
-// }
-
-// double Atom::get_occupancy() const
-// {
-//   return occupancy_;
-// }
-// void Atom::set_occupancy(double o)
-// {
-//   occupancy_ = o;
-// }
-
-// double Atom::get_temperature_factor() const
-// {
-//   return temp_factor_;
-// }
-// void Atom::set_temperature_factor(double f)
-// {
-//   temp_factor_ = f;
-// }
-
-// std::string Atom::get_segment_ID() const
-// {
-//   return seg_ID_;
-// }
-// void Atom::set_segment_ID(const std::string& s)
-// {
-//   seg_ID_ = s;
-// }
-
-// std::string Atom::get_element() const
-// {
-//   return element_;
-// }
-// void Atom::set_element(const std::string& s)
-// {
-//   element_ = s;
-// }
-
-// std::string Atom::get_charge() const
-// {
-//   return charge_;
-// }
-// void Atom::set_charge(const std::string& s)
-// {
-//   charge_ = s;
-// }
 
 // Atom::Atom ==============================================================
 Atom::Atom()
@@ -196,7 +76,6 @@ std::ostream& operator<<(std::ostream& o, const Atom& a)
       << std::setw(8) << a.coordinate_.x()
       << std::setw(8) << a.coordinate_.y()
       << std::setw(8) << a.coordinate_.z()
-        // << a.coordinate_
       << std::setiosflags(std::ios_base::fixed) << std::setprecision(2)
       << std::setw(6) << a.occupancy_
       << std::setw(6) << a.temp_factor_ << "      "

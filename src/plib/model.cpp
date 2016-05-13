@@ -2,16 +2,6 @@
 
 namespace pinang {
 
-// int Model::get_model_ID() const
-// {
-//   return model_ID_;
-// }
-// void Model::set_model_ID(int n)
-// {
-//   model_ID_ = n;
-// }
-
-
 Chain& Model::get_chain(unsigned int n)
 {
   if (chains_.empty())
@@ -52,12 +42,6 @@ void Model::output_fasta(std::ostream & f_fasta, std::string s) const
   for (i = 0; i < n_chain_; ++i)
     chains_[i].output_fasta(f_fasta, s);
 }
-
-
-// int Model::get_model_size() const
-// {
-//   return n_chain_;
-// }
 
 // Model ===================================================================
 Model::Model()

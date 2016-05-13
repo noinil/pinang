@@ -162,15 +162,6 @@ Model& PDB::get_model(unsigned int n)
   return models_[n];
 }
 
-// std::string PDB::get_pdb_name() const
-// {
-//   return PDB_file_name_;
-// }
-// int PDB::get_n_models() const
-// {
-//   return n_model_;
-// }
-
 void PDB::print_sequence(int n) const
 {
   if (n != 1 && n != 3)

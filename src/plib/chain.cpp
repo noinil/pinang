@@ -2,25 +2,6 @@
 
 namespace pinang {
 
-// char Chain::get_chain_ID() const
-// {
-//   return chain_ID_;
-// }
-// void Chain::set_chain_ID(char a)
-// {
-//   chain_ID_ = a;
-// }
-
-// ChainType Chain::get_chain_type() const
-// {
-//   return chain_type_;
-// }
-// void Chain::set_chain_type(ChainType a)
-// {
-//   chain_type_ = a;
-// }
-
-
 Residue& Chain::get_residue(int n)
 {
   if (residues_.empty())
@@ -47,11 +28,6 @@ int Chain::add_residue(const Residue& r)
   n_residue_++;
   return 0;
 }
-
-// int Chain::get_chain_length() const
-// {
-//   return n_residue_;
-// }
 
 void Chain::self_check()
 {

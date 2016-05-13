@@ -201,24 +201,21 @@ int read_cafemol_dcd(std::ifstream& dcd_file, std::vector<Conformation>& cfms)
     // Read in all of X:
     for (int i = 0; i < natom; ++i) {
       dcd_file.read((char*)&f_tmp, Sf);
-      v_tmp = vv_tmp[i] + Vec3d(f_tmp, 0, 0);
-      vv_tmp[i] = v_tmp;
+      vv_tmp[i] += Vec3d(f_tmp, 0, 0);
     }
     dcd_file.read((char*)&flag4, Si);
     // Read in all of Y:
     dcd_file.read((char*)&flag4, Si);
     for (int i = 0; i < natom; ++i) {
       dcd_file.read((char*)&f_tmp, Sf);
-      v_tmp = vv_tmp[i] + Vec3d(0, f_tmp, 0);
-      vv_tmp[i] = v_tmp;
+      vv_tmp[i] += Vec3d(0, f_tmp, 0);
     }
     dcd_file.read((char*)&flag4, Si);
     // Read in all of Z:
     dcd_file.read((char*)&flag4, Si);
     for (int i = 0; i < natom; ++i) {
       dcd_file.read((char*)&f_tmp, Sf);
-      v_tmp = vv_tmp[i] + Vec3d(0, 0, f_tmp);
-      vv_tmp[i] = v_tmp;
+      vv_tmp[i] += Vec3d(0, 0, f_tmp);
     }
     dcd_file.read((char*)&flag4, Si);
 

@@ -2,10 +2,6 @@
 
 namespace pinang {
 
-// std::string Particle::get_atom_name() const
-// {
-//   return atom_name_;
-// }
 void Particle::set_atom_name(const std::string& s)
 {
   size_t sz = 4;
@@ -17,10 +13,6 @@ void Particle::set_atom_name(const std::string& s)
   }
 }
 
-// std::string Particle::get_resid_name() const
-// {
-//   return resid_name_;
-// }
 void Particle::set_resid_name(const std::string& s)
 {
   size_t sz = 3;
@@ -31,34 +23,6 @@ void Particle::set_resid_name(const std::string& s)
     resid_name_.resize(sz, ' ');
   }
 }
-
-// int Particle::get_resid_index() const
-// {
-//   return resid_index_;
-// }
-// void Particle::set_resid_index(int i)
-// {
-//   resid_index_ = i;
-// }
-
-
-// double Particle::get_charge() const
-// {
-//   return charge_;
-// }
-// void Particle::set_charge(double c)
-// {
-//   charge_ = c;
-// }
-
-// double Particle::get_mass() const
-// {
-//   return mass_;
-// }
-// void Particle::set_mass(double m)
-// {
-//   mass_ = m;
-// }
 
 // Particle::Particle ==============================================================
 Particle::Particle()

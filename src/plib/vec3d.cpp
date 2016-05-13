@@ -26,12 +26,6 @@ Vec3d Vec3d::operator-() const
   return v0;
 }
 
-// void Vec3d::set_coords(double x, double y, double z)
-// {
-//   z1_ = x;
-//   z2_ = y;
-//   z3_ = z;
-// }
 Vec3d Vec3d::unitv() const
 {
   Vec3d v0;
