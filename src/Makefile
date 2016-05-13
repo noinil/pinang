@@ -5,8 +5,9 @@ CXX = c++
 LINK = $(CXX)
 INCPATH = -I/usr/local/include -I../include
 CXXFLAGS = -std=c++11 -O3
-OBJECTS = $(patsubst %.cpp,%.o,$(wildcard *.cpp))
-TARGETS = $(patsubst %.cpp,p_%,$(wildcard *.cpp))
+SOURCES = $(wildcard *.cpp)
+OBJECTS = $(patsubst %.cpp,%.o,$(SOURCES))
+TARGETS = $(patsubst %.cpp,p_%,$(SOURCES))
 PINANGLIBS = $(patsubst %.cpp,%.o,$(wildcard plib/*.cpp))
 CHK_DIR_EXISTS= test -d
 MKDIR = mkdir -p
