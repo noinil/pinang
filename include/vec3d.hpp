@@ -9,7 +9,7 @@ namespace pinang{
 class Vec3d
 {
  public:
-  Vec3d(): z1_(0), z2_(0), z3_(0) {}
+  Vec3d(): z1_(0.0), z2_(0.0), z3_(0.0) {}
   Vec3d(double a, double b, double c): z1_(a), z2_(b), z3_(c) {}
 
   double x() const {return z1_;}

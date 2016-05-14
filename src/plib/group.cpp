@@ -13,7 +13,7 @@ Group::Group(std::vector<Vec3d> v)
 {
   coordinates_ = v;
   n_atom_ = coordinates_.size();
-  Vec3d com(0.0, 0.0, 0.0);
+  Vec3d com;
   for (int i = 0; i < n_atom_; ++i) {
     com += v[i];
   }
@@ -33,7 +33,7 @@ int Group::set_conformation(std::vector<Vec3d> v)
     coordinates_ = v;
     n_atom_ = m;
     // --- compute centroid ---
-    Vec3d com(0.0, 0.0, 0.0);
+    Vec3d com;
     for (int i = 0; i < m; ++i) {
       com += v[i];
     }
