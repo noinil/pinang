@@ -21,11 +21,6 @@ Group::Group(std::vector<Vec3d> v)
   centroid_ = com;
 }
 
-Vec3d Group::get_centroid() const
-{
-  return centroid_;
-}
-
 int Group::set_conformation(std::vector<Vec3d> v)
 {
   int m = v.size();
@@ -48,4 +43,11 @@ int Group::set_conformation(std::vector<Vec3d> v)
   }
 }
 
+Vec3d get_center_of_mass(const Group& grp, const Topology& tp)
+{
+  int m1 = grp.n_atom_;
+  int m2 = tp.n_particle_;
+
+
+}
 }

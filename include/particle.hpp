@@ -41,7 +41,5 @@ class Particle
   double mass_;
 };
 
-
-
 }
 #endif

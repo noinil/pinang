@@ -14,12 +14,16 @@ class Group : public Conformation
   Group();
   Group(std::vector<Vec3d>);
   virtual ~Group() {coordinates_.clear();}
-
   int set_conformation(std::vector<Vec3d>);
-  Vec3d get_centroid() const;
+
+  Vec3d get_centroid() const {  return centroid_; }
+
+  friend Vec3d get_center_of_mass(const Group&, const Topology&);
  protected:
   Vec3d centroid_;
 };
+
+Vec3d get_center_of_mass(const Group&, const Topology&);
 
 }
 
