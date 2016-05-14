@@ -1,3 +1,5 @@
+#include <iomanip>
+#include <sstream>
 #include "atom.hpp"
 
 namespace pinang {

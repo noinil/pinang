@@ -1,3 +1,4 @@
+#include <sstream>
 #include "particle.hpp"
 
 namespace pinang {

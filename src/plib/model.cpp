@@ -1,3 +1,4 @@
+#include <iomanip>
 #include "model.hpp"
 
 namespace pinang {

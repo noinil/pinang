@@ -1,3 +1,6 @@
+#include <iostream>
+#include <sstream>
+#include <fstream>
 #include "topology.hpp"
 
 namespace pinang {

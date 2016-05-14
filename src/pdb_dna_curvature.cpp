@@ -2,6 +2,8 @@
 #include "constants.hpp"
 #include "vec3d.hpp"
 
+#include <sstream>
+#include <iomanip>
 #include <iostream>
 #include <fstream>
 #include <cstdlib>

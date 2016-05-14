@@ -27,7 +27,7 @@ all : $(PINANGLIBS) $(TARGETS)
 
 install:
 	@$(CHK_DIR_EXISTS) $(INSTALL_DIR) || $(MKDIR) $(INSTALL_DIR)
-	cp p_* $(INSTALL_DIR)
+	cp -f p_* $(INSTALL_DIR)
 
 $(PINANGLIBS) :
 	@cd plib; make

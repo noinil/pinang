@@ -6,8 +6,6 @@
 #include "particle.hpp"
 
 #include <vector>
-#include <fstream>
-#include <iostream>
 #include <string>
 
 namespace pinang {

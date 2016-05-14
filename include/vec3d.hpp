@@ -4,9 +4,6 @@
 #define PINANG_VEC3D_H_
 
 #include <iostream>
-#include <iomanip>
-#include <cmath>
-#include <cstdlib>
 
 namespace pinang{
 class Vec3d

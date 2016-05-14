@@ -6,7 +6,6 @@
 #include "vec3d.hpp"
 
 #include <string>
-#include <sstream>
 
 namespace pinang {
 class Particle

@@ -1,3 +1,4 @@
+#include <iomanip>
 #include "chain.hpp"
 
 namespace pinang {

@@ -5,7 +5,6 @@
 
 #include <iostream>
 #include <vector>
-#include <cstdlib>
 
 #include "atom.hpp"
 #include "constants.hpp"

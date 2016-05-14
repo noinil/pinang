@@ -1,3 +1,5 @@
+#include <cmath>
+#include <iomanip>
 #include "vec3d.hpp"
 
 namespace pinang {
