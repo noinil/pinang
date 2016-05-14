@@ -18,12 +18,12 @@ class Group : public Conformation
 
   Vec3d get_centroid() const {  return centroid_; }
 
-  friend Vec3d get_center_of_mass(const Group&, const Topology&);
+  friend Vec3d get_center_of_mass(const Group&, std::vector<double>);
  protected:
   Vec3d centroid_;
 };
 
-Vec3d get_center_of_mass(const Group&, const Topology&);
+Vec3d get_center_of_mass(const Group&, std::vector<double>);
 
 }
 
