@@ -1,5 +1,6 @@
 # variables
 INSTALL_DIR = ../bin/
+LIB_DIR = ../lib
 CC = cc
 CXX = c++
 LINK = $(CXX)
@@ -31,7 +32,7 @@ install:
 $(PINANGLIBS) :
 	@cd plib; make
 $(TARGETS) : p_% : %.o
-	$(LINK) $< plib/libpinang.a -o $@
+	$(LINK) $< $(LIB_DIR)/libpinang.a -o $@
 
 $(OBJECTS) : %.o : %.cpp
 	@echo " ------------------------------------------------------------ "
