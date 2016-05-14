@@ -156,7 +156,7 @@ double vec_angle(const Vec3d& v1, const Vec3d& v2)
   if (f >= 0.99999)
     return 0.0;
   if (f <= -0.99999)
-    return k_pi;
+    return 3.1415926;
   double c = acos(f);
   return c;
 }
@@ -171,7 +171,7 @@ double vec_angle_deg(const Vec3d& v1, const Vec3d& v2)
   if (f <= -0.99999)
     return 180.0;
   double ang = acos(f);
-  d = (180 * ang / k_pi);
+  d = (180.0 * ang / 3.1415926535897933);
   return d;
 }
 

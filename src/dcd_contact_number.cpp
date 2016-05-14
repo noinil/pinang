@@ -1,5 +1,6 @@
 #include "read_cafemol_dcd.hpp"
 #include "topology.hpp"
+#include "constants.hpp"
 
 #include <iostream>
 #include <iomanip>

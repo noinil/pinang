@@ -3,7 +3,6 @@
 #ifndef PINANG_TOPOLOGY_H
 #define PINANG_TOPOLOGY_H
 
-#include "constants.hpp"
 #include "particle.hpp"
 
 #include <vector>

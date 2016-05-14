@@ -3,8 +3,6 @@
 #ifndef PINANG_VEC3D_H_
 #define PINANG_VEC3D_H_
 
-#include "constants.hpp"
-
 #include <iostream>
 #include <iomanip>
 #include <cmath>

@@ -4,9 +4,7 @@
 #define PINANG_GROUP_H
 
 #include <vector>
-#include "constants.hpp"
 #include "conformation.hpp"
-#include "vec3d.hpp"
 
 namespace pinang {
 
