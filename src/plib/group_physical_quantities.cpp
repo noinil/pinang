@@ -1,3 +1,4 @@
+#include <cmath>
 #include "group.hpp"
 
 namespace pinang {
@@ -25,6 +26,26 @@ Vec3d get_center_of_mass(const Group& grp, std::vector<double> masses)
   com /= M;
 
   return com;
+}
+
+double get_radius_of_gyration(const Group& grp)
+{
+  double rg = 0;
+  Vec3d ctr = grp.centroid_;
+  int m = grp.n_atom_;
+
+  Vec3d vtmp;
+  double dtmp;
+  double dtmp_sum = 0;
+
+  for (int i = 0; i < m; ++i) {
+    vtmp = grp.coordinates_[i] - ctr;
+    dtmp = vtmp.squared_norm();
+    dtmp_sum += dtmp;
+  }
+  rg = sqrt(dtmp_sum / m);
+
+  return rg;
 }
 
 

@@ -653,8 +653,8 @@ int main(int argc, char *argv[])
     double t2 = 0;
     v1 = axis_nodes[i + 3] - axis_nodes[i];
     v2 = axis_nodes[i] - axis_nodes[i - 3];
-    t1 = v1.sqr_norm();
-    t2 = v2.sqr_norm();
+    t1 = v1.squared_norm();
+    t2 = v2.squared_norm();
     s_tmp = v1 * t2 + v2 * t1;
     t_tmp = s_tmp * (1 / s_tmp.norm());
     axis_directions.push_back(t_tmp);
@@ -1079,8 +1079,8 @@ void gen_spline_fit(const std::vector<pinang::Vec3d>& nodes, int N,
     } else {
       v1 = nodes[i + 1] - nodes[i];
       v2 = nodes[i] - nodes[i - 1];
-      t1 = v1.sqr_norm();
-      t2 = v2.sqr_norm();
+      t1 = v1.squared_norm();
+      t2 = v2.squared_norm();
       s_tmp = v1 * t2 + v2 * t1;
       t_tmp = s_tmp * (1 / s_tmp.norm());
       tangents.push_back(t_tmp);

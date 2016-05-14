@@ -365,7 +365,7 @@ int main(int argc, char *argv[])
 
         int last = axis_nodes.size()-1;
         n1 = axis_nodes[0] - axis_nodes[last];
-        d_ee = n1.sqr_norm();
+        d_ee = n1.squared_norm();
         R_e_sqr.push_back(d_ee);
 
         for (int j = 0; j < int(base_rise.size()); j++) {

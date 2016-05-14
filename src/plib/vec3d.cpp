@@ -48,7 +48,7 @@ double Vec3d::norm() const
   return d;
 }
 
-double Vec3d::sqr_norm() const
+double Vec3d::squared_norm() const
 {
   double d = z1_ * z1_ + z2_ * z2_ + z3_ * z3_;
   return d;

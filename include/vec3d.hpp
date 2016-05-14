@@ -25,7 +25,7 @@ class Vec3d
     z3_ = z;
   }
   double norm() const;
-  double sqr_norm() const;
+  double squared_norm() const;
   Vec3d unitv() const;
 
   Vec3d operator-() const;
