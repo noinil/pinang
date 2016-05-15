@@ -126,8 +126,8 @@ std::ostream& operator<<(std::ostream& o, const Vec3d& v)
 {
   o << std::setiosflags(std::ios_base::fixed)
     << std::setprecision(6)
-    << std::setw(16) << v.z1_ << " , "
-    << std::setw(16) << v.z2_ << " , "
+    << std::setw(16) << v.z1_ << " "
+    << std::setw(16) << v.z2_ << " "
     << std::setw(16) << v.z3_;
   return o;
 }

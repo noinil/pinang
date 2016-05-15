@@ -3,10 +3,12 @@
 #ifndef PINANG_GROUP_H
 #define PINANG_GROUP_H
 
-#include <vector>
+#include "geometry.hpp"
 #include "conformation.hpp"
 
 namespace pinang {
+
+class Transform;
 
 class Group : public Conformation
 {
@@ -16,16 +18,17 @@ class Group : public Conformation
   virtual ~Group() {coordinates_.clear();}
   int set_conformation(std::vector<Vec3d>);
 
-  Vec3d get_centroid() const {  return centroid_; }
+  Vec3d get_centroid() const;
 
   friend Vec3d get_center_of_mass(const Group&, std::vector<double>);
   friend double get_radius_of_gyration(const Group&);
+  friend int find_transform(const Group&, const Group&, Transform&);
  protected:
-  Vec3d centroid_;
 };
 
 Vec3d get_center_of_mass(const Group&, std::vector<double>);
 double get_radius_of_gyration(const Group&);
+int find_transform(const Group&, const Group&, Transform&);
 
 }
 

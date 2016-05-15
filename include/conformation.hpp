@@ -17,7 +17,7 @@ class Conformation
 
   void reset();
 
-  int get_size() { return n_atom_; }
+  int get_size() const { return n_atom_; }
 
   int set_conformation(std::vector<Vec3d>);
   Vec3d& get_coor(int);
