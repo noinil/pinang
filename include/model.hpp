@@ -1,3 +1,17 @@
+/*!
+************************************************************
+@file model.hpp
+@brief Definition of class Model.
+
+In this file class Model is defined.  Model is a configuration of a biomolecule,
+usually including one or more chains.
+
+@author Cheng Tan (noinil@gmail.com)
+@date 2016-05-16 18:05
+@copyright GNU Public License V3.0
+************************************************************
+*/
+
 #ifndef PINANG_MODEL_H_
 #define PINANG_MODEL_H_
 

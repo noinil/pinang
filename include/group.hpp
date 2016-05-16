@@ -1,3 +1,17 @@
+/*!
+************************************************************
+@file group.hpp
+@brief Definition of class group.
+
+In this file class Group is defined, which is basically same as class
+Conformation, but contains more member and friend functions.
+
+@author Cheng Tan (noinil@gmail.com)
+@date 2016-05-16 18:03
+@copyright GNU Public License V3.0
+************************************************************
+*/
+
 #ifndef PINANG_GROUP_H
 #define PINANG_GROUP_H
 

@@ -1,3 +1,18 @@
+/*!
+************************************************************
+@file particle.hpp
+@brief Definition of class Particle.
+
+In this file class Particle is defined.  Particle can be an atom, a residue, or
+a cluster of many different basic molecule types, depending on the model.
+
+@author Cheng Tan (noinil@gmail.com)
+@date 2016-05-16 18:06
+@copyright GNU Public License V3.0
+************************************************************
+*/
+
+
 #ifndef PINANG_PARTICLE_H_
 #define PINANG_PARTICLE_H_
 

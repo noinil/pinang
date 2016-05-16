@@ -1,3 +1,18 @@
+/*!
+************************************************************
+@file residue.hpp
+@brief Definition of class Residue.
+
+In this file class Residue is defined.  Residue contains a list of atoms which
+are connected in a line.  Other than the basic physical atoms, residues have
+psudo atoms such as C-alpha beads.
+
+@author Cheng Tan (noinil@gmail.com)
+@date 2016-05-16 18:09
+@copyright GNU Public License V3.0
+************************************************************
+*/
+
 #ifndef PINANG_RESIDUE_H_
 #define PINANG_RESIDUE_H_
 

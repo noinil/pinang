@@ -1,3 +1,17 @@
+/*!
+************************************************************
+@file topology.hpp
+@brief Definition of class Topology.
+
+In this file class Topology is defined.  Topology is nothing more than a
+collection of particles.
+
+@author Cheng Tan (noinil@gmail.com)
+@date 2016-05-16 18:11
+@copyright GNU Public License V3.0
+************************************************************
+*/
+
 #ifndef PINANG_TOPOLOGY_H
 #define PINANG_TOPOLOGY_H
 

@@ -1,3 +1,17 @@
+/*!
+************************************************************
+@file conformation.hpp
+@brief Definition of class Conformation.
+
+In this file class Conformation is defined.  Each conformation contains a list
+of coordinates.
+
+@author Cheng Tan (noinil@gmail.com)
+@date 2016-05-16 17:57
+@copyright GNU Public License V3.0
+************************************************************
+*/
+
 #ifndef PINANG_CONFORMATION_H
 #define PINANG_CONFORMATION_H
 

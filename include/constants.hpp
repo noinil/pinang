@@ -1,3 +1,17 @@
+/*!
+************************************************************
+@file constants.hpp
+@brief Definition of basic constants.
+
+In this file a list of basic constants such as unit_of_mass, spring_constant for
+energy functions, cutoff, chain_type, and residue_name are defined.
+
+@author Cheng Tan (noinil@gmail.com)
+@date 2016-05-16 17:58
+@copyright GNU Public License V3.0
+************************************************************
+*/
+
 #ifndef PINANG_CONSTANTS_H_
 #define PINANG_CONSTANTS_H_
 

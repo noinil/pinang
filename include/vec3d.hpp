@@ -1,3 +1,16 @@
+/*!
+************************************************************
+@file vec3d.hpp
+@brief Definition of class Vec3d.
+
+In this file the most basic class in PINANG, Vec3d, is defined.
+
+@author Cheng Tan (noinil@gmail.com)
+@date 2016-05-16 18:12
+@copyright GNU Public License V3.0
+************************************************************
+*/
+
 #ifndef PINANG_VEC3D_H_
 #define PINANG_VEC3D_H_
 

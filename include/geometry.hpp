@@ -1,3 +1,18 @@
+/*!
+************************************************************
+@file geometry.hpp
+@brief Definition of geometric concepts.
+
+Class Quaternion is a type to store the (mathematical) quaternion which can be
+used to represent rotation matrix.  Class Transform is a class of geometrical
+transforms (including rotation and translation).
+
+@author Cheng Tan (noinil@gmail.com)
+@date 2016-05-16 18:00
+@copyright GNU Public License V3.0
+************************************************************
+*/
+
 #ifndef PINANG_GEOMETRY_H
 #define PINANG_GEOMETRY_H
 
