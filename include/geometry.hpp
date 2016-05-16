@@ -1,5 +1,3 @@
-// -*-c++-*-
-
 #ifndef PINANG_GEOMETRY_H
 #define PINANG_GEOMETRY_H
 
@@ -52,7 +50,6 @@ class Transform
   Vec3d rotv2_;
   Vec3d rotv3_;
 };
-
 
 }
 

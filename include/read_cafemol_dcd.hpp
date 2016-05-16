@@ -1,5 +1,3 @@
-// -*-c++-*-
-
 #ifndef PINANG_READ_DCD_H_
 #define PINANG_READ_DCD_H_
 

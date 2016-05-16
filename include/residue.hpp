@@ -1,5 +1,3 @@
-// -*-c++-*-
-
 #ifndef PINANG_RESIDUE_H_
 #define PINANG_RESIDUE_H_
 

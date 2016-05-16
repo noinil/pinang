@@ -1,5 +1,3 @@
-// -*-c++-*-
-
 #ifndef PINANG_PDB_H
 #define PINANG_PDB_H
 

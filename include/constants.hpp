@@ -1,12 +1,9 @@
-// -*-c++-*-
-
 #ifndef PINANG_CONSTANTS_H_
 #define PINANG_CONSTANTS_H_
 
 #include <map>
 #include <string>
 #include <iostream>
-// #include <cstdlib>
 
 namespace pinang {
 

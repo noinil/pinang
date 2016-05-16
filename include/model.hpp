@@ -1,5 +1,3 @@
-// -*-c++-*-
-
 #ifndef PINANG_MODEL_H_
 #define PINANG_MODEL_H_
 

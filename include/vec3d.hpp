@@ -1,5 +1,3 @@
-// -*-c++-*-
-
 #ifndef PINANG_VEC3D_H_
 #define PINANG_VEC3D_H_
 

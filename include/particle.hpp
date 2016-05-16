@@ -1,5 +1,3 @@
-// -*-c++-*-
-
 #ifndef PINANG_PARTICLE_H_
 #define PINANG_PARTICLE_H_
 

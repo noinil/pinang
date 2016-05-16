@@ -1,5 +1,3 @@
-// -*-c++-*-
-
 #ifndef PINANG_GROUP_H
 #define PINANG_GROUP_H
 

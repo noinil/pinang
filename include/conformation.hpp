@@ -1,5 +1,3 @@
-// -*-c++-*-
-
 #ifndef PINANG_CONFORMATION_H
 #define PINANG_CONFORMATION_H
 

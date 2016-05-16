@@ -1,5 +1,3 @@
-// -*-c++-*-
-
 #ifndef PINANG_TOPOLOGY_H
 #define PINANG_TOPOLOGY_H
 
