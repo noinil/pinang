@@ -15,7 +15,6 @@ usually including one or more chains.
 #ifndef PINANG_MODEL_H_
 #define PINANG_MODEL_H_
 
-#include <iostream>
 #include "chain.hpp"
 
 namespace pinang {

@@ -15,7 +15,6 @@ tandemly connected residues.
 #ifndef PINANG_CHAIN_H_
 #define PINANG_CHAIN_H_
 
-#include <iostream>
 #include "residue.hpp"
 
 namespace pinang {

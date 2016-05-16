@@ -18,9 +18,6 @@ clear PDB coordinates.
 
 #include "model.hpp"
 
-#include <iostream>
-#include <string>
-
 namespace pinang{
 
 class PDB

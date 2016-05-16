@@ -16,7 +16,6 @@ psudo atoms such as C-alpha beads.
 #ifndef PINANG_RESIDUE_H_
 #define PINANG_RESIDUE_H_
 
-#include <iostream>
 #include <vector>
 
 #include "atom.hpp"
