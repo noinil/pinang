@@ -35,12 +35,28 @@ The class Topology only contains physical properties of a set of particles.
 class Topology
 {
  public:
+  // ************************************************************
+  //! @brief Create an "empty" Topology object.
+  //! @return An Topology object.
+  // ************************************************************
   Topology(const std::string& s);
   virtual ~Topology() {particles_.clear();}
 
+  // ************************************************************
+  //! @brief Reset properties of Topology.
+  // ************************************************************
   void reset();
 
+  // ************************************************************
+  //! @brief Get Topology size.
+  //! @return Topology size.
+  // ************************************************************
   int get_size() { return n_particle_; }
+  // ************************************************************
+  //! @brief Get Particle object from Topology.
+  //! @param Serial number of the Particle.
+  //! @return Particle object from Topology.
+  // ************************************************************
   Particle& get_particle(int);
 
  protected:

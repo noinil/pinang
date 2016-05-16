@@ -50,12 +50,32 @@ chemical chain types.
 class PhysicalProperty
 {
  public:
+  // ************************************************************
+  //! @brief Create an "empty" PhysicalProperty object.
+  // ************************************************************
   PhysicalProperty();
   ~PhysicalProperty();
 
+  // ************************************************************
+  //! @brief Translate residue name into short name.
+  //! @param Residue name.
+  //! @return Short name.
+  // ************************************************************
   std::string get_short_name(const std::string&);
+  // ************************************************************
+  //! @brief Translate residue name into charge.
+  //! @param Residue name.
+  //! @return Charge.
   double get_charge(const std::string&);
+  // ************************************************************
+  //! @brief Translate residue name into mass.
+  //! @param Residue name.
+  //! @return Mass.
   double get_mass(const std::string&);
+  // ************************************************************
+  //! @brief Translate residue name into chain type.
+  //! @param Residue name.
+  //! @return Chain type.
   ChainType get_chain_type(const std::string&);
 
  private:

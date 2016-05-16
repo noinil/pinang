@@ -32,17 +32,47 @@ sequence or coordinates.
 class PDB
 {
  public:
+  // ************************************************************
+  //! @brief Create a PDB object by read from PDB flie.
+  //! @param PDB file name.
+  //! @return A PDB object.
+  // ************************************************************
   PDB(const std::string& s);
   virtual ~PDB() {models_.clear();}
 
+  // ************************************************************
+  //! @brief Get PDB file name.
+  //! @return PDB file name.
+  // ************************************************************
   std::string get_pdb_name() const { return PDB_file_name_; }
 
+  // ************************************************************
+  //! @brief Get access to a model in a PDB structure.
+  //! @param Index of the model.
+  //! @return A Model object.
+  // ************************************************************
   Model& get_model(unsigned int);
+
+  // ************************************************************
+  //! @brief Get the number of models in PDB.
+  //! @return Number of models.
+  // ************************************************************
   int get_n_models() const { return n_model_; }
 
+  // ************************************************************
+  //! @brief Print sequence of whole PDB.
+  //! @param Option to output short style (1) or full name (3).
+  // ************************************************************
   void print_sequence(int) const;
+
+  // ************************************************************
+  //! @brief Output sequence information to a fasta-style file.
+  // ************************************************************
   void output_fasta(std::ostream&) const;
 
+  // ************************************************************
+  //! @brief Output PDB format information to ostream.
+  // ************************************************************
   friend std::ostream& operator<<(std::ostream&, PDB&);
 
  protected:

@@ -21,6 +21,14 @@ In this file a function that can read CafeMol dcd file is provided.
 
 namespace pinang {
 
+// ************************************************************
+//! @brief Read DCD information into Conformations.
+//! @param DCD file.
+//! @param Conformation.
+//! @return Status of reading DCD file.
+//! @retval 1: Failure.
+//! @retval 0: Success.
+// ************************************************************
 int read_cafemol_dcd(std::ifstream&, std::vector<Conformation>&);
 
 }
