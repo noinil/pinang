@@ -23,12 +23,14 @@ class Group : public Conformation
   friend Vec3d get_center_of_mass(const Group&, std::vector<double>);
   friend double get_radius_of_gyration(const Group&);
   friend int find_transform(const Group&, const Group&, Transform&);
+  friend double get_rmsd(const Group&, const Group&);
  protected:
 };
 
 Vec3d get_center_of_mass(const Group&, std::vector<double>);
 double get_radius_of_gyration(const Group&);
 int find_transform(const Group&, const Group&, Transform&);
+double get_rmsd(const Group&, const Group&);
 
 }
 

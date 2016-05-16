@@ -90,5 +90,28 @@ int find_transform(const Group& grp1, const Group& grp2, Transform& t)
   return 1;
 }
 
+double get_rmsd(const Group& grp1, const Group& grp2)
+{
+  double rmsd = 0;
+  double d = 0;
+  Vec3d vtmp;
+
+  // Simple check...
+  int m1 = grp1.n_atom_;
+  int m2 = grp2.n_atom_;
+  if (m1 != m2) {
+    std::cout << " ERROR: inconsistent number of atoms when calculating Rg! (group_rmsd.cpp)\n";
+    exit(EXIT_SUCCESS);
+  }
+
+  // rmsd calculation loop
+  for (int i = 0; i < m1; ++i) {
+    vtmp = grp1.coordinates_[i] - grp2.coordinates_[i];
+    d += vtmp.squared_norm();
+  }
+
+  rmsd = sqrt(d / m1);
+  return rmsd;
+}
 
 }  // pinang
