@@ -46,11 +46,11 @@ class Particle
 
   friend std::istream& operator>>(std::istream&, Particle&);
  protected:
-  std::string atom_name_;
-  std::string resid_name_;
-  int resid_index_;
-  double charge_;
-  double mass_;
+  std::string atom_name_;   //!< Atom name of particle.
+  std::string resid_name_;  //!< Residue name of particle.
+  int resid_index_;         //!< Residue sequence number of particle.
+  double charge_;           //!< Charge of particle.
+  double mass_;             //!< Mass of particle.
 };
 
 }

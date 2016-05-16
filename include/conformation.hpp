@@ -35,8 +35,8 @@ class Conformation
   Vec3d& get_coor(int);
 
  protected:
-  std::vector<Vec3d> coordinates_;
-  int n_atom_;
+  std::vector<Vec3d> coordinates_;  //!< A set of coordinate objects in a certain conformation.
+  int n_atom_;                      //!< Number of coordinates in a conformation.
 };
 
 

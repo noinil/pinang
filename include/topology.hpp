@@ -34,8 +34,8 @@ class Topology
   Particle& get_particle(int);
 
  protected:
-  std::vector<Particle> particles_;
-  int n_particle_;
+  std::vector<Particle> particles_;  //!< A set of Particle objects.
+  int n_particle_;                   //!< Number of particles in Topology.
 };
 
 }

@@ -56,10 +56,10 @@ class Chain
   friend std::ostream& operator<<(std::ostream&, Chain&);
 
  protected:
-  char chain_ID_;
-  ChainType chain_type_;
-  int n_residue_;
-  std::vector<Residue> residues_;
+  char chain_ID_;                  //!< Chain identifier in PDB.
+  ChainType chain_type_;           //!< Chain chemical composition.
+  int n_residue_;                  //!< Number of residues.
+  std::vector<Residue> residues_;  //!< A collection of residue objects.
 };
 
 }

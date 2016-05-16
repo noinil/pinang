@@ -76,20 +76,20 @@ class Atom
   friend std::istream& operator>>(std::istream&, Atom&);
   friend double atom_distance (const Atom&, const Atom&);
  protected:
-  std::string atom_flag_;
-  int serial_;
-  std::string atom_name_;
-  char alt_loc_;
-  std::string resid_name_;
-  char chain_ID_;
-  int resid_index_;
-  char insert_code_;
-  Vec3d coordinate_;
-  double occupancy_;
-  double temp_factor_;
-  std::string seg_ID_;
-  std::string element_;
-  std::string charge_;
+  std::string atom_flag_;  //!< Atom flag from PDB.
+  int serial_;             //!< Atom serial number in PDB.
+  std::string atom_name_;  //!< Atom name in PDB.
+  char alt_loc_;           //!< Alternate location indicator from PDB.
+  std::string resid_name_; //!< Residue name of the atom in PDB.
+  char chain_ID_;          //!< Chain identifier in PDB.
+  int resid_index_;        //!< Residue sequence number in PDB.
+  char insert_code_;       //!< Code for insertion of residues from PDB.
+  Vec3d coordinate_;       //!< Orthogonal coordinates (x, y, z).
+  double occupancy_;       //!< Occupancy from PDB.
+  double temp_factor_;     //!< Temperature factor in PDB.
+  std::string seg_ID_;     //!< Segment identifier in PDB.
+  std::string element_;    //!< Element symbol in PDB.
+  std::string charge_;     //!< Charge on the atom.
 };
 
 double atom_distance (const Atom&, const Atom&);

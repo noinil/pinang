@@ -62,7 +62,9 @@ class Vec3d
   friend double vec_angle_deg(const Vec3d&, const Vec3d&);
 
  protected:
-  double z1_, z2_, z3_;
+  double z1_;
+  double z2_;
+  double z3_;
 };
 
 double vec_distance(const Vec3d&, const Vec3d&);

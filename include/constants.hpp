@@ -21,21 +21,22 @@ energy functions, cutoff, chain_type, and residue_name are defined.
 
 namespace pinang {
 
-extern double g_cutoff;
+extern double g_cutoff;  //!< Cutoff for atomistic distances.
 
-const long double k_pi = 3.14159265358979323846;
+const long double k_pi = 3.14159265358979323846;  //!< @f$\pi@f$.
 
 // Units.
-const double k_u_mass = 1.0;
+const double k_u_mass = 1.0;  //!< Unit of mass.
 
 // CG MD Parameters.
-const double k_K_bond = 100.0;
-const double k_K_angle = 20.0;
-const double k_K_dihedral_1 = 1.0;
-const double k_K_dihedral_3 = 0.5;
-const double k_K_native = 1.0;
-const double k_K_nonnative = 1.0;
+const double k_K_bond = 100.0;      //!< Energy function parameter for bonds.
+const double k_K_angle = 20.0;      //!< Energy function parameter for angles.
+const double k_K_dihedral_1 = 1.0;  //!< Energy function parameter for dihedral angles.
+const double k_K_dihedral_3 = 0.5;  //!< Energy function parameter for dihedral angles (optional).
+const double k_K_native = 1.0;      //!< Energy function parameter for native contacts.
+const double k_K_nonnative = 1.0;   //!< Energy function parameter for non-native contacts.
 
+//! Chain chemical types.
 enum ChainType {none=0, protein=1, DNA=2, RNA=3, water=4, ion=5, other=6, na=7};
 
 class PhysicalProperty
@@ -50,10 +51,10 @@ class PhysicalProperty
   ChainType get_chain_type(const std::string&);
 
  private:
-  std::map<std::string, std::string> map_resName_shortName;
-  std::map<std::string, double> map_resName_charge;
-  std::map<std::string, double> map_resName_mass;
-  std::map<std::string, ChainType> map_resName_chainType;
+  std::map<std::string, std::string> map_resName_shortName;  //!< Mapping of residue name to short name.
+  std::map<std::string, double> map_resName_charge;          //!< Mapping of residue name to residue charge.
+  std::map<std::string, double> map_resName_mass;            //!< Mapping of residue name to residue mass.
+  std::map<std::string, ChainType> map_resName_chainType;    //!< Mapping of residue name to chain type.
 };
 
 }

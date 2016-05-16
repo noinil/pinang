@@ -80,23 +80,24 @@ class Residue
   friend double resid_min_distance(const Residue&, const Residue&);
   friend double resid_ca_distance(const Residue&, const Residue&);
  protected:
-  std::string resid_name_;
-  std::string short_name_;
-  char chain_ID_;
-  int resid_index_;
-  std::vector<Atom> atoms_;
-  int n_atom_;
-  double charge_;
-  double mass_;
+  std::string resid_name_;   //!< Residue name from PDB.
+  std::string short_name_;   //!< Short name of residue.
+  char chain_ID_;            //!< Chain identifier from PDB.
+  int resid_index_;          //!< Residue sequence number in PDB.
+  std::vector<Atom> atoms_;  //!< A set of atom objects.
+  int n_atom_;               //!< Number of atoms in Residue.
+  double charge_;            //!< Charge of Residue.
+  double mass_;              //!< Mass of Residue.
 
-  Atom C_alpha_;
-  Atom C_beta_;
-  Atom P_;
-  Atom S_;
-  Atom B_;
-  ChainType chain_type_;
+  Atom C_alpha_;             //!< CG particle @f$C_\alpha@f$.
+  Atom C_beta_;              //!< CG particle @f$C_\beta@f$.
+  Atom P_;                   //!< CG particle P (phosphate).
+  Atom S_;                   //!< CG particle S (sugar).
+  Atom B_;                   //!< CG particle B (base).
+  ChainType chain_type_;     //!< Chain type.
 
-  int term_flag_;  // 5: 5'; 3: 3'; -1: N;  1: C;  0: not terminus;
+  // 5: 5'; 3: 3'; -1: N;  1: C;  0: not terminus;
+  int term_flag_;            //!< Flag indicating whether the Residue is at terminus.
 };
 
 double resid_min_distance(const Residue&, const Residue&);

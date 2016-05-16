@@ -40,9 +40,9 @@ class PDB
   friend std::ostream& operator<<(std::ostream&, PDB&);
 
  protected:
-  std::string PDB_file_name_;
-  std::vector<Model> models_;
-  int n_model_;
+  std::string PDB_file_name_;  //!< PDB flie name.
+  std::vector<Model> models_;  //!< A collection of model objects in PDB file.
+  int n_model_;                //!< Number of models in PDB flie.
 };
 
 }

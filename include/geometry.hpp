@@ -36,10 +36,10 @@ class Quaternion
   int normalize();
 
  protected:
-  double w_;
-  double x_;
-  double y_;
-  double z_;
+  double w_;  //!< The first element of a quaternion (w).
+  double x_;  //!< The first component of the vector part of a quaternion (x).
+  double y_;  //!< The second component of the vector part of a quaternion (y).
+  double z_;  //!< The third component of the vector part of a quaternion (z).
 };
 
 class Transform
@@ -57,13 +57,13 @@ class Transform
   Group apply(const Group&);
 
  protected:
-  Quaternion rotation_;
-  Vec3d translation_;
+  Quaternion rotation_;  //!< The "linear" part (rotation) of a transform.
+  Vec3d translation_;    //!< The translation part of a transform.
 
   // three vec3d for rotation matrix;
-  Vec3d rotv1_;
-  Vec3d rotv2_;
-  Vec3d rotv3_;
+  Vec3d rotv1_;  //!< The first row of rotation matrix converted from quaternion.
+  Vec3d rotv2_;  //!< The second row of rotation matrix converted from quaternion.
+  Vec3d rotv3_;  //!< The third row of rotation matrix converted from quaternion.
 };
 
 }

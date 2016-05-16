@@ -49,9 +49,9 @@ class Model
   friend std::ostream& operator<<(std::ostream&, Model&);
 
  protected:
-  int model_ID_;
-  std::vector<Chain> chains_;
-  int n_chain_;
+  int model_ID_;               //!< Model serial number.
+  std::vector<Chain> chains_;  //!< A set of chains objects.
+  int n_chain_;                //!< Number of chains in Model.
 };
 
 }
