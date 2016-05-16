@@ -17,6 +17,15 @@ In this file the most basic class in PINANG, Vec3d, is defined.
 #include <iostream>
 
 namespace pinang{
+
+/*!
+************************************************************
+@brief The most basic concept of 3D coordinates.
+
+Consisting of three components (x, y, z), the class Vec3d can perform many types
+of arithmetic computations, including cross/dot products.
+************************************************************
+*/
 class Vec3d
 {
  public:

@@ -21,6 +21,13 @@ PDB style.
 
 namespace pinang {
 
+/*!
+************************************************************
+@brief Physical atomistic type, with properties in the PDB format.
+
+Read in PDB lines and store the information together within this class.
+************************************************************
+*/
 class Atom
 {
  public:

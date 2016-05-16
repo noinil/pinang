@@ -19,6 +19,15 @@ usually including one or more chains.
 
 namespace pinang {
 
+/*!
+************************************************************
+@brief Certain configuration of molecules stored in PDB.
+
+A model is usually a certain conformation of biomolecules stored in PDB
+structures (especially in NMR structures).  A model consists of one or several
+chains.
+************************************************************
+*/
 class Model
 {
  public:

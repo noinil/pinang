@@ -20,6 +20,15 @@ of coordinates.
 
 namespace pinang {
 
+/*!
+************************************************************
+@brief A certain configuration of a biomolecule.
+
+The class Conformation consists of a set of coordinates, ignoring the physical
+properties such as mass or charge.  Usually objects of this class is read from
+PDB or dcd files.
+************************************************************
+*/
 class Conformation
 {
  public:

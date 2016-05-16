@@ -20,8 +20,18 @@ Conformation, but contains more member and friend functions.
 
 namespace pinang {
 
+
 class Transform;
 
+/*!
+************************************************************
+@brief A collection or sub-part of a conformation.
+
+A group of coordinates, usually as a sub-group of a conformation.  Geometric or
+Arithmetic claculations can be computed for different groups, such as RMSD,
+superimposition, or center-of-mass distances.
+************************************************************
+*/
 class Group : public Conformation
 {
  public:

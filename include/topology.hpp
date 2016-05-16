@@ -22,6 +22,16 @@ collection of particles.
 
 namespace pinang {
 
+/*!
+************************************************************
+@brief A set of particles.
+
+The class Topology only contains physical properties of a set of particles.
+
+@todo Add interaction (such as bonds, angles, dihedrals...) information.
+************************************************************
+*/
+
 class Topology
 {
  public:

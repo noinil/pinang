@@ -23,6 +23,16 @@ psudo atoms such as C-alpha beads.
 
 namespace pinang {
 
+/*!
+************************************************************
+@brief Biomolecular building block, made of a few atoms.
+
+A few atoms comprises a residue.  The class Residue records the coordinates of
+atoms, the atom names, residue name, residue serial number and other properties.
+
+@todo initialization or settings of CG particles in Residue (P_, S_, B_).
+************************************************************
+*/
 class Residue
 {
  public:

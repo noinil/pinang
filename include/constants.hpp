@@ -39,6 +39,14 @@ const double k_K_nonnative = 1.0;   //!< Energy function parameter for non-nativ
 //! Chain chemical types.
 enum ChainType {none=0, protein=1, DNA=2, RNA=3, water=4, ion=5, other=6, na=7};
 
+/*!
+************************************************************
+@brief Some of the physical properties of biomolecules.
+
+A collection of maps that can translate residue name into charges, masses and
+chemical chain types.
+************************************************************
+*/
 class PhysicalProperty
 {
  public:

@@ -23,6 +23,15 @@ namespace pinang {
 
 class Group;
 
+/*!
+************************************************************
+@brief Simply a set of four real numbers.
+
+In this stage, class quaternion does not follow its mathematical definition.
+But I used it to denote rotation operations in geometry, mainly used in class
+Transform.
+************************************************************
+*/
 class Quaternion
 {
  public:
@@ -42,6 +51,15 @@ class Quaternion
   double z_;  //!< The third component of the vector part of a quaternion (z).
 };
 
+/*!
+************************************************************
+@brief Geometric affine operation.
+
+Including two parts:
+- The linear part: rotation.  Rrepresented by a quaternion.
+- The translation part: represented by a Vec3d vector.
+************************************************************
+*/
 class Transform
 {
  public:

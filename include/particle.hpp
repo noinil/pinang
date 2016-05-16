@@ -21,6 +21,16 @@ a cluster of many different basic molecule types, depending on the model.
 #include <string>
 
 namespace pinang {
+
+/*!
+************************************************************
+@brief Whatever basic mass point.
+
+This class is designed to represent any mass point in molecular dynamics
+simulations.  The important thing are the mass and charge, which is used in the
+topology file.
+************************************************************
+*/
 class Particle
 {
  public:

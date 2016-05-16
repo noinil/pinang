@@ -19,6 +19,16 @@ tandemly connected residues.
 
 namespace pinang {
 
+/*!
+************************************************************
+@brief Biological molecule chains consisting of residues.
+
+This class represents biomolecular chains, composing a chain of residues, either
+amino acids or nucleic acids.   Read and store information from PDB files.
+
+@todo initialization or settings of CG particles in DNA residues (P_, S_, B_).
+************************************************************
+*/
 class Chain
 {
  public:

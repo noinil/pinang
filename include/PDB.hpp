@@ -20,6 +20,15 @@ clear PDB coordinates.
 
 namespace pinang{
 
+/*!
+************************************************************
+@brief Read in biomolecular structures from pdb file.
+
+Store the molecules (including coordinates, residue names, etc.) and output
+sequence or coordinates.
+************************************************************
+*/
+
 class PDB
 {
  public:
