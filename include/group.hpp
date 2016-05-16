@@ -24,6 +24,7 @@ class Group : public Conformation
   friend double get_radius_of_gyration(const Group&);
   friend int find_transform(const Group&, const Group&, Transform&);
   friend double get_rmsd(const Group&, const Group&);
+  friend class Transform;
  protected:
 };
 

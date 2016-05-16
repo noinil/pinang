@@ -30,7 +30,7 @@ Transform::Transform()
   rotv3_ = Vec3d(0.0, 0.0, 1.0);
 }
 
-Transform::Transform(Quaternion q, Vec3d v)
+Transform::Transform(const Quaternion& q, const Vec3d& v)
 {
   rotation_ = q;
   translation_ = v;
@@ -53,7 +53,7 @@ Transform::Transform(Quaternion q, Vec3d v)
   rotv3_ = Vec3d(zx - yw, yz + xw, 1 - x2 - y2);
 }
 
-void Transform::set_rotation(Quaternion q)
+void Transform::set_rotation(const Quaternion& q)
 {
   rotation_ = q;
   rotation_.normalize();
@@ -87,14 +87,14 @@ Vec3d Transform::apply(const Vec3d& v)
   return v_out;
 }
 
-Group Transform::apply(Group& g)
+Group Transform::apply(const Group& g)
 {
   std::vector<Vec3d> vv;
   Vec3d vtmp;
   double x1, y1, z1;
-  int s = g.get_size();
+  int s = g.n_atom_;
   for (int i = 0; i < s; ++i) {
-    vtmp = g.get_coor(i);
+    vtmp = g.coordinates_[i];
     x1 = rotv1_ * vtmp;
     y1 = rotv2_ * vtmp;
     z1 = rotv3_ * vtmp;

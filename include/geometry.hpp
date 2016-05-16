@@ -33,15 +33,15 @@ class Transform
 {
  public:
   Transform();
-  Transform(Quaternion, Vec3d);
+  Transform(const Quaternion&, const Vec3d&);
 
   Quaternion rotation() { return rotation_; }
   Vec3d translation() { return translation_; }
-  void set_rotation(Quaternion);
-  void set_translation(Vec3d v) { translation_ = v; }
+  void set_rotation(const Quaternion&);
+  void set_translation(const Vec3d& v) { translation_ = v; }
 
   Vec3d apply(const Vec3d&);
-  Group apply(Group&);
+  Group apply(const Group&);
 
  protected:
   Quaternion rotation_;
