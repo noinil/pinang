@@ -31,3 +31,6 @@ data/*
 # Figures
 *.png
 *.eps
+
+# Documentation
+share/doc/html/
