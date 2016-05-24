@@ -36,7 +36,7 @@ class Model
   //! @return A Model object.
   // ************************************************************
   Model();
-  virtual ~Model() {chains_.clear();}
+  virtual ~Model() {v_chains_.clear();}
 
   // ************************************************************
   //! @brief Reset properties of Model.
@@ -116,7 +116,7 @@ class Model
 
  protected:
   int model_ID_;               //!< Model serial number.
-  std::vector<Chain> chains_;  //!< A set of chains objects.
+  std::vector<Chain> v_chains_;  //!< A set of chains objects.
   int n_chain_;                //!< Number of chains in Model.
 };
 
