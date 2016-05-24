@@ -97,9 +97,9 @@ std::ostream& operator<<(std::ostream& o, const Atom& a)
       << std::setw(6) << a.temperature_factor_ << "      "
       << std::setw(4) << a.seg_ID_
       << std::setw(2) << a.element_
-      << std::setw(2) << a.charge_;
+      << std::setw(2) << a.charge_ << "\n";
   } else {
-    o << a.record_name_;
+    o << a.record_name_ << "\n";
   }
   return o;
 }
@@ -206,7 +206,7 @@ std::istream& operator>>(std::istream& i, Atom& a)
     a.atom_serial_ = tmp_ui;  // Actually this is the model index (serial);
     tmp_sstr.clear();
   } else {
-    // std::cerr << "ERROR: Wrong PDB ATOM format!" << std::endl;
+    // std::cerr << "ERROR: Wrong PDB ATOM format!" << "\n";
   }
 
   if (!i) return i;

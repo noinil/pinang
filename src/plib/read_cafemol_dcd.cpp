@@ -63,9 +63,9 @@ int read_cafemol_dcd(std::ifstream& dcd_file, std::vector<Conformation>& cfms)
   */
   if (!dcd_file.is_open())
   {
-    std::cout << " ~               PINANG :: DCD                ~ " << std::endl;
-    std::cerr << " ERROR: Cannot read dcd file: not open." << std::endl;
-    std::cerr << " Program terminating." << std::endl;
+    std::cout << " ~               PINANG :: DCD                ~ " << "\n";
+    std::cerr << " ERROR: Cannot read dcd file: not open." << "\n";
+    std::cerr << " Program terminating." << "\n";
     return 1;
   }
 
@@ -73,8 +73,8 @@ int read_cafemol_dcd(std::ifstream& dcd_file, std::vector<Conformation>& cfms)
   filesize = dcd_file.tellg();
   if (filesize == 0)
   {
-    std::cout << " ~               PINANG :: DCD                ~ " << std::endl;
-    std::cout << " !!! Error: empty dcd file! !!!" << std::endl;
+    std::cout << " ~               PINANG :: DCD                ~ " << "\n";
+    std::cout << " !!! Error: empty dcd file! !!!" << "\n";
     return 1;
   }
   dcd_file.seekg(0, dcd_file.beg);
@@ -91,8 +91,8 @@ int read_cafemol_dcd(std::ifstream& dcd_file, std::vector<Conformation>& cfms)
   dcd_file.read((char *)&flag1, Si);
   if (flag1 != 84)
   {
-    std::cout << " ~               PINANG :: DCD                ~ " << std::endl;
-    std::cout << " !!! Magic number of block 1 error. !!!" << std::endl;
+    std::cout << " ~               PINANG :: DCD                ~ " << "\n";
+    std::cout << " !!! Magic number of block 1 error. !!!" << "\n";
     return 1;
   }
   // ---------------------------------------------------------------------
@@ -173,8 +173,8 @@ int read_cafemol_dcd(std::ifstream& dcd_file, std::vector<Conformation>& cfms)
   dcd_file.read((char*)&flag3, Si);
   if (flag3 != 4)
   {
-    std::cout << " ~               PINANG :: DCD                ~ " << std::endl;
-    std::cout << " !!! Magic number of block 3 error. !!!" << std::endl;
+    std::cout << " ~               PINANG :: DCD                ~ " << "\n";
+    std::cout << " !!! Magic number of block 3 error. !!!" << "\n";
     return 1;
   }
   // ---------------------------------------------------------------------
@@ -190,8 +190,8 @@ int read_cafemol_dcd(std::ifstream& dcd_file, std::vector<Conformation>& cfms)
   dcd_file.read((char*)&flag3, Si);
   if (flag3 != 4)
   {
-    std::cout << " ~               PINANG :: DCD                ~ " << std::endl;
-    std::cout << " !!! Magic number of block 3 error. !!!" << std::endl;
+    std::cout << " ~               PINANG :: DCD                ~ " << "\n";
+    std::cout << " !!! Magic number of block 3 error. !!!" << "\n";
     return 1;
   }
   // ---------------------------------------------------------------------
@@ -209,7 +209,7 @@ int read_cafemol_dcd(std::ifstream& dcd_file, std::vector<Conformation>& cfms)
     if (flag4/4 != natom)
     {
       std::cout << " !!! Coordinates mismatch the atom number. !!! "
-                << std::endl;
+                << "\n";
       return 1;
     }
     // Read in all of X:
@@ -247,7 +247,7 @@ int read_cafemol_dcd(std::ifstream& dcd_file, std::vector<Conformation>& cfms)
     }
 
   }
-  // std::cout << cfms.size() << std::endl;
+  // std::cout << cfms.size() << "\n";
 
   delete [] hdr_buf;
 

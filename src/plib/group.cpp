@@ -33,8 +33,8 @@ int Group::set_conformation(std::vector<Vec3d> v)
   int m = v.size();
   if (m != n_atom_ && n_atom_ > 0)
   {
-    std::cout << " ~             PINANG :: group.hpp              ~ " << std::endl;
-    std::cerr << " ERROR: Wrong atom number when set conformation. " << std::endl;
+    std::cout << " ~             PINANG :: group.hpp              ~ " << "\n";
+    std::cerr << " ERROR: Wrong atom number when set conformation. " << "\n";
     return 1;
   } else {
     coordinates_ = v;

@@ -39,8 +39,8 @@ int Conformation::set_conformation(std::vector<Vec3d> v)
   int m = v.size();
   if (m != n_atom_ && n_atom_ > 0)
   {
-    std::cout << " ~             PINANG :: conformation.hpp       ~ " << std::endl;
-    std::cerr << " ERROR: Wrong atom number when set conformation. " << std::endl;
+    std::cout << " ~             PINANG :: conformation.hpp       ~ " << "\n";
+    std::cerr << " ERROR: Wrong atom number when set conformation. " << "\n";
     return 1;
   } else {
     coordinates_ = v;
@@ -53,8 +53,8 @@ Vec3d& Conformation::get_coordinate(int n)
 {
   if (n >= n_atom_ || n < 0)
   {
-    std::cout << " ~             PINANG :: conformation.hpp       ~ " << std::endl;
-    std::cerr << " ERROR: Atom index out of range in Conformation. " << std::endl;
+    std::cout << " ~             PINANG :: conformation.hpp       ~ " << "\n";
+    std::cerr << " ERROR: Atom index out of range in Conformation. " << "\n";
     exit(EXIT_SUCCESS);
   } else {
     return coordinates_[n];

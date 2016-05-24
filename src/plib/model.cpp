@@ -20,16 +20,16 @@ Chain& Model::get_chain(unsigned int n)
 {
   if (v_chains_.empty())
   {
-    std::cout << " ~             PINANG :: model.hpp              ~ " << std::endl;
+    std::cout << " ~             PINANG :: model.hpp              ~ " << "\n";
     std::cerr << "ERROR: No Chains found in Model: "
-              << model_serial_ << std::endl;
+              << model_serial_ << "\n";
     exit(EXIT_SUCCESS);
   }
   if (n >= v_chains_.size())
   {
-    std::cout << " ~             PINANG :: model.hpp              ~ " << std::endl;
+    std::cout << " ~             PINANG :: model.hpp              ~ " << "\n";
     std::cerr << "ERROR: Chain number out of range in Model: "
-              << model_serial_ << std::endl;
+              << model_serial_ << "\n";
     exit(EXIT_SUCCESS);
   }
   return v_chains_[n];
@@ -102,7 +102,7 @@ void Model::output_top_mass(std::ostream& o)
 
   o << "[ particles ]"
     << std::setw(8) << n
-    << std::endl;
+    << "\n";
   o << "# "
     << std::setw(9) << "index"
     << std::setw(9) << "resid"
@@ -110,7 +110,7 @@ void Model::output_top_mass(std::ostream& o)
     << std::setw(10) << "atom"
     << std::setw(17) << "mass"
     << std::setw(13) << "charge"
-    << std::endl;
+    << "\n";
 
   n = 0;
   for (i = 0; i < n_chain_; i++) {
@@ -119,7 +119,7 @@ void Model::output_top_mass(std::ostream& o)
       continue;
     v_chains_[i].output_top_mass(o, n);
   }
-  o << std::endl;
+  o << "\n";
 }
 
 void Model::output_top_bond(std::ostream& o)
@@ -139,13 +139,13 @@ void Model::output_top_bond(std::ostream& o)
 
   o << "[ bonds ]"
     << std::setw(8) << n
-    << std::endl;
+    << "\n";
   o << "# "
     << std::setw(6) << "pi"
     << std::setw(9) << "pj"
     << std::setw(17) << "r0"
     << std::setw(9) << "K_b"
-    << std::endl;
+    << "\n";
 
   n = 0;
   for (i = 0; i < n_chain_; i++) {
@@ -154,7 +154,7 @@ void Model::output_top_bond(std::ostream& o)
       continue;
     v_chains_[i].output_top_bond(o, n);
   }
-  o << std::endl;
+  o << "\n";
 }
 
 void Model::output_top_angle(std::ostream& o)
@@ -174,14 +174,14 @@ void Model::output_top_angle(std::ostream& o)
 
   o << "[ angles ]"
     << std::setw(8) << n
-    << std::endl;
+    << "\n";
   o << "# "
     << std::setw(6) << "pi"
     << std::setw(9) << "pj"
     << std::setw(9) << "pk"
     << std::setw(13) << "theta_0"
     << std::setw(9) << "K_a"
-    << std::endl;
+    << "\n";
 
   n = 0;
   for (i = 0; i < n_chain_; i++) {
@@ -190,7 +190,7 @@ void Model::output_top_angle(std::ostream& o)
       continue;
     v_chains_[i].output_top_angle(o, n);
   }
-  o << std::endl;
+  o << "\n";
 }
 
 void Model::output_top_dihedral(std::ostream& o)
@@ -210,7 +210,7 @@ void Model::output_top_dihedral(std::ostream& o)
 
   o << "[ dihedrals ]"
     << std::setw(8) << n
-    << std::endl;
+    << "\n";
   o << "# "
     << std::setw(6) << "pi"
     << std::setw(9) << "pj"
@@ -219,7 +219,7 @@ void Model::output_top_dihedral(std::ostream& o)
     << std::setw(13) << "phi_0"
     << std::setw(9) << "K_d_1"
     << std::setw(9) << "K_d_3"
-    << std::endl;
+    << "\n";
 
   n = 0;
   for (i = 0; i < n_chain_; i++) {
@@ -228,7 +228,7 @@ void Model::output_top_dihedral(std::ostream& o)
       continue;
     v_chains_[i].output_top_dihedral(o, n);
   }
-  o << std::endl;
+  o << "\n";
 }
 
 void Model::output_top_nonbonded(std::ostream& o)
@@ -297,16 +297,16 @@ void Model::output_top_nonbonded(std::ostream& o)
 
   o << "[ native ]"
     << std::setw(8) << c0.get_native_contact_number()
-    << std::endl;
+    << "\n";
   o << "# "
     << std::setw(6) << "pi"
     << std::setw(9) << "pj"
     << std::setw(17) << "sigma"
     << std::setw(13) << "eps"
-    << std::endl;
+    << "\n";
 
   c0.output_top_native(o);
-  o << std::endl;
+  o << "\n";
 }
 
 
@@ -314,13 +314,13 @@ std::ostream& operator<<(std::ostream& o, Model& m)
 {
   o << "MODEL "
     << std::setw(8) << m.model_serial_
-    << std::endl;
+    << "\n";
   int i = 0;
   int s = m.n_chain_;
   for (i = 0; i < s; i++) {
     o << m.v_chains_[i];
   }
-  o << "ENDMDL" << std::endl;
+  o << "ENDMDL" << "\n";
   return o;
 }
 

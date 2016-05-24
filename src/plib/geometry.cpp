@@ -22,8 +22,8 @@ int Quaternion::normalize()
   double d = w_ * w_ + x_ * x_ + y_ * y_ + z_ * z_;
   d = sqrt(d);
   if (d <= 0) {
-    std::cout << " ~             PINANG :: geometry.cpp       ~ " << std::endl;
-    std::cerr << " WARNING: wrong quaternion (equals to 0, 0, 0, 0). " << std::endl;
+    std::cout << " ~             PINANG :: geometry.cpp       ~ " << "\n";
+    std::cerr << " WARNING: wrong quaternion (equals to 0, 0, 0, 0). " << "\n";
     return 1;
   }
   w_ /= d;

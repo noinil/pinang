@@ -31,8 +31,8 @@ PDB::PDB(const std::string& s)
   std::ifstream ifile(PDB_file_name_.c_str());
   if (!ifile.is_open())
   {
-    std::cout << " ~             PINANG :: PDB.h                ~ " << std::endl;
-    std::cerr << " ERROR: Cannot read file: " << s << std::endl;
+    std::cout << " ~             PINANG :: PDB.h                ~ " << "\n";
+    std::cerr << " ERROR: Cannot read file: " << s << "\n";
     exit(EXIT_FAILURE);
   }
 
@@ -162,16 +162,16 @@ Model& PDB::get_model(unsigned int n)
 {
   if (v_models_.empty())
   {
-    std::cout << " ~             PINANG :: PDB.h                ~ " << std::endl;
+    std::cout << " ~             PINANG :: PDB.h                ~ " << "\n";
     std::cerr << "ERROR: No Model found in this PDB: "
-              << PDB_file_name_ << std::endl;
+              << PDB_file_name_ << "\n";
     exit(EXIT_SUCCESS);
   }
   if (n >= v_models_.size())
   {
-    std::cout << " ~             PINANG :: PDB.h                ~ " << std::endl;
+    std::cout << " ~             PINANG :: PDB.h                ~ " << "\n";
     std::cerr << "ERROR: Model number out of range in PDB: "
-              << PDB_file_name_ << std::endl;
+              << PDB_file_name_ << "\n";
     exit(EXIT_SUCCESS);
   }
   return v_models_[n];
@@ -184,7 +184,7 @@ void PDB::output_sequence(int n) const
     std::cerr << " Usage: PINANG::PDB.output_sequence(): \n"
               << "       n = 1: 1-char residue name;\n"
               << "       n = 3: 3-char residue name.\n"
-              << std::endl;
+              << "\n";
     exit(EXIT_SUCCESS);
   }
   v_models_[0].output_sequence(n);
@@ -205,7 +205,7 @@ std::ostream& operator<<(std::ostream& o, PDB& p)
   int i = 0;
   int s = p.n_model_;
   for (i = 0; i < s; i++) {
-    o << p.v_models_[i] << std::endl;
+    o << p.v_models_[i] << "\n";
   }
   return o;
 }

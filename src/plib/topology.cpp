@@ -28,8 +28,8 @@ Topology::Topology(const std::string& s)
   std::ifstream ifile(s.c_str());
   if (!ifile.is_open())
   {
-    std::cout << " ~             PINANG :: TOPOLOGY             ~ " << std::endl;
-    std::cerr << " ERROR: Cannot read top file: " << s << std::endl;
+    std::cout << " ~             PINANG :: TOPOLOGY             ~ " << "\n";
+    std::cerr << " ERROR: Cannot read top file: " << s << "\n";
     exit(EXIT_FAILURE);
   }
   std::string inp_line;
@@ -54,7 +54,7 @@ Topology::Topology(const std::string& s)
       std::cout << " Total particle number: "
                 << n_particle_
                 << " in top file: " << s
-                << std::endl;
+                << "\n";
       break;
     }
   }
@@ -71,8 +71,8 @@ Particle& Topology::get_particle(int n)
 {
   if ( n >= n_particle_ || n < 0)
   {
-    std::cout << " ~             PINANG :: TOPOLOGY             ~ " << std::endl;
-    std::cerr << " ERROR: Atom index out of range in Topology. " << std::endl;
+    std::cout << " ~             PINANG :: TOPOLOGY             ~ " << "\n";
+    std::cerr << " ERROR: Atom index out of range in Topology. " << "\n";
     exit(EXIT_SUCCESS);
   } else {
     return v_particles_[n];

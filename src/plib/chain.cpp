@@ -21,16 +21,16 @@ Residue& Chain::get_residue(int n)
 {
   if (v_residues_.empty())
   {
-    std::cout << " ~             PINANG :: chain.hpp              ~ " << std::endl;
+    std::cout << " ~             PINANG :: chain.hpp              ~ " << "\n";
     std::cerr << "ERROR: No Residues found in Chain: "
-              << chain_ID_ << std::endl;
+              << chain_ID_ << "\n";
     exit(EXIT_SUCCESS);
   }
   if (n >= int(v_residues_.size()))
   {
-    std::cout << " ~             PINANG :: chain.hpp              ~ " << std::endl;
+    std::cout << " ~             PINANG :: chain.hpp              ~ " << "\n";
     std::cerr << "ERROR: Residue index out of range in Chain: "
-              << chain_ID_ << std::endl;
+              << chain_ID_ << "\n";
     exit(EXIT_SUCCESS);
   }
   return v_residues_[n];
@@ -48,9 +48,9 @@ void Chain::self_check()
 {
   for (Residue& r : v_residues_) {
     if (r.get_chain_ID() != chain_ID_ || r.get_chain_type() != chain_type_) {
-      std::cout << " ~             PINANG :: chain.hpp              ~ " << std::endl;
+      std::cout << " ~             PINANG :: chain.hpp              ~ " << "\n";
       std::cerr << "ERROR: Inconsistent chain ID or chain type in Chain "
-                << chain_ID_ << std::endl;
+                << chain_ID_ << "\n";
       exit(EXIT_SUCCESS);
     }
   }
@@ -73,7 +73,7 @@ void Chain::output_sequence(int n) const
 
   std::cout << " - Chain " << chain_ID_
             << " : " << n_residue_ << " residues."
-            << std::endl;
+            << "\n";
 
   if (n == 1)
   {
@@ -86,21 +86,21 @@ void Chain::output_sequence(int n) const
         std::cout << " ";
       if (j%10 == 0)
       {
-        std::cout << "  " << std::setw(4) << r.get_residue_serial() << std::endl;
+        std::cout << "  " << std::setw(4) << r.get_residue_serial() << "\n";
         std::cout << " ";
       }
     }
-    std::cout << std::endl;
+    std::cout << "\n";
   } else if (n == 3) {
     for (const Residue& r : v_residues_) {
       std::cout << std::setw(4) << r.get_residue_name();
       j++;
       if (j%10 == 0)
       {
-        std::cout << "  " << std::setw(4) << r.get_residue_serial() << std::endl;
+        std::cout << "  " << std::setw(4) << r.get_residue_serial() << "\n";
       }
     }
-    std::cout << std::endl;
+    std::cout << "\n";
   }
 }
 
@@ -114,13 +114,13 @@ void Chain::output_sequence_fasta(std::ostream & f_fasta, std::string s0) const
   f_fasta << ">" << s0 << "_chain_"
           << chain_ID_ << "_type_"
           << chain_type_
-          << std::endl;
+          << "\n";
 
   for (const Residue& r : v_residues_) {
     std::string s_tmp =  r.get_short_name();
     f_fasta << std::setw(1) << s_tmp[1];
   }
-  f_fasta << std::endl;
+  f_fasta << "\n";
 }
 
 void Chain::output_cg_pos(std::ostream& o, int& n)
@@ -150,7 +150,7 @@ void Chain::output_cg_pos(std::ostream& o, int& n)
       o << "unknown";
   }
   o << " : " << n_residue_
-    << std::endl;
+    << "\n";
 
   int i = 0;
   if (chain_type_ != DNA && chain_type_ != RNA && chain_type_ != na)
@@ -165,7 +165,7 @@ void Chain::output_cg_pos(std::ostream& o, int& n)
         << std::setw(12) << coor_CA.x() << " "
         << std::setw(12) << coor_CA.y() << " "
         << std::setw(12) << coor_CA.z() << " "
-        << std::endl;
+        << "\n";
     }
   } else {
     for (Residue& r : v_residues_) {
@@ -181,7 +181,7 @@ void Chain::output_cg_pos(std::ostream& o, int& n)
           << std::setw(12) << coor_P.x() << " "
           << std::setw(12) << coor_P.y() << " "
           << std::setw(12) << coor_P.z() << " "
-          << std::endl;
+          << "\n";
       }
       coor_S = r.get_cg_S().get_coordinate();
       o << std::setw(8) << ++n
@@ -191,7 +191,7 @@ void Chain::output_cg_pos(std::ostream& o, int& n)
         << std::setw(12) << coor_S.x() << " "
         << std::setw(12) << coor_S.y() << " "
         << std::setw(12) << coor_S.z() << " "
-        << std::endl;
+        << "\n";
       coor_B = r.get_cg_B().get_coordinate();
       o << std::setw(8) << ++n
         << std::setw(5) << r.get_short_name()
@@ -200,10 +200,10 @@ void Chain::output_cg_pos(std::ostream& o, int& n)
         << std::setw(12) << coor_B.x() << " "
         << std::setw(12) << coor_B.y() << " "
         << std::setw(12) << coor_B.z() << " "
-        << std::endl;
+        << "\n";
     }
   }
-  o << std::endl;
+  o << "\n";
 }
 
 void Chain::output_top_mass(std::ostream& o, int& n)
@@ -225,7 +225,7 @@ void Chain::output_top_mass(std::ostream& o, int& n)
         << std::setw(16) << r.get_residue_mass() << " "
         << std::setw(12)
         << r.get_residue_charge()
-        << std::endl;
+        << "\n";
     }
   } else {
     for (const Residue& r : v_residues_) {
@@ -237,7 +237,7 @@ void Chain::output_top_mass(std::ostream& o, int& n)
           << std::setiosflags(std::ios_base::fixed) << std::setprecision(2)
           << std::setw(16) << 94.93 << " "
           << std::setw(12) << -1.0
-          << std::endl;
+          << "\n";
       }
       o << std::setw(11) << ++n << " "
         << std::setw(8) << r.get_residue_serial() << " "
@@ -246,7 +246,7 @@ void Chain::output_top_mass(std::ostream& o, int& n)
         << std::setiosflags(std::ios_base::fixed) << std::setprecision(2)
         << std::setw(16) << 99.11 << " "
         << std::setw(12) << 0.0
-        << std::endl;
+        << "\n";
       o << std::setw(11) << ++n << " "
         << std::setw(8) << r.get_residue_serial() << " "
         << std::setw(9) << r.get_residue_name() << " "
@@ -254,7 +254,7 @@ void Chain::output_top_mass(std::ostream& o, int& n)
         << std::setiosflags(std::ios_base::fixed) << std::setprecision(2)
         << std::setw(16) << r.get_residue_mass() - 94.93 - 99.11 << " "
         << std::setw(12) << 0.0
-        << std::endl;
+        << "\n";
     }
   }
 }
@@ -284,7 +284,7 @@ void Chain::output_top_bond(std::ostream& o, int& n)
         << std::setw(16) << d << " "
         << std::setprecision(1)
         << std::setw(8) << k_K_bond << " "
-        << std::endl;
+        << "\n";
     }
     n++;
   } else {
@@ -294,7 +294,7 @@ void Chain::output_top_bond(std::ostream& o, int& n)
       << std::setiosflags(std::ios_base::fixed) << std::setprecision(6)
       << std::setw(16) << d_sb << " "
       << std::setprecision(1) << std::setw(8) << k_K_bond << " "
-      << std::endl;
+      << "\n";
     d_sp = atom_distance(v_residues_[1].get_cg_P(), v_residues_[0].get_cg_S());
     o << std::setw(8) << n+1 << " "
       << std::setw(8) << n+3 << " "
@@ -303,7 +303,7 @@ void Chain::output_top_bond(std::ostream& o, int& n)
       << std::setw(16) << d_sp << " "
       << std::setprecision(1)
       << std::setw(8) << k_K_bond << " "
-      << std::endl;
+      << "\n";
     for (i = 1; i < n_residue_ - 1; i++) {
       n += 3;
       d_ps = atom_distance(v_residues_[i].get_cg_P(), v_residues_[i].get_cg_S());
@@ -311,21 +311,21 @@ void Chain::output_top_bond(std::ostream& o, int& n)
         << std::setw(8) << n+1 << " " << std::setiosflags(std::ios_base::fixed)
         << std::setprecision(6) << std::setw(16) << d_ps << " "
         << std::setprecision(1) << std::setw(8) << k_K_bond << " "
-        << std::endl;
+        << "\n";
       d_sb = atom_distance(v_residues_[i].get_cg_S(), v_residues_[i].get_cg_B());
       o << std::setw(8) << n+1 << " "
         << std::setw(8) << n+2 << " "
         << std::setiosflags(std::ios_base::fixed)
         << std::setprecision(6) << std::setw(16) << d_sb << " "
         << std::setprecision(1) << std::setw(8) << k_K_bond << " "
-        << std::endl;
+        << "\n";
       d_sp = atom_distance(v_residues_[i].get_cg_S(), v_residues_[i+1].get_cg_P());
       o << std::setw(8) << n+1 << " "
         << std::setw(8) << n+3 << " "
         << std::setiosflags(std::ios_base::fixed)
         << std::setprecision(6) << std::setw(16) << d_sp << " "
         << std::setprecision(1) << std::setw(8) << k_K_bond << " "
-        << std::endl;
+        << "\n";
     }
     i = n_residue_ - 1;
     n += 3;
@@ -335,14 +335,14 @@ void Chain::output_top_bond(std::ostream& o, int& n)
       << std::setiosflags(std::ios_base::fixed)
       << std::setprecision(6) << std::setw(16) << d_ps << " "
       << std::setprecision(1) << std::setw(8) << k_K_bond << " "
-      << std::endl;
+      << "\n";
     d_sb = atom_distance(v_residues_[i].get_cg_S(), v_residues_[i].get_cg_B());
     o << std::setw(8) << n+1 << " "
       << std::setw(8) << n+2 << " "
       << std::setiosflags(std::ios_base::fixed)
       << std::setprecision(6) << std::setw(16) << d_sb << " "
       << std::setprecision(1) << std::setw(8) << k_K_bond << " "
-      << std::endl;
+      << "\n";
     n += 2;
   }
 }
@@ -371,7 +371,7 @@ void Chain::output_top_angle(std::ostream& o, int& n)
         << std::setw(12) << a << " "
         << std::setprecision(1)
         << std::setw(8) << k_K_angle
-        << std::endl;
+        << "\n";
     }
     n += n_residue_;
   } else {
@@ -387,7 +387,7 @@ void Chain::output_top_angle(std::ostream& o, int& n)
       << std::setiosflags(std::ios_base::fixed) << std::setprecision(6)
       << std::setw(12) << a << " "
       << std::setprecision(1)
-      << std::setw(8) << k_K_angle << std::endl;
+      << std::setw(8) << k_K_angle << "\n";
     // ---------- angle SPS ----------
     v1 = v_residues_[0].get_cg_S().get_coordinate()
          - v_residues_[1].get_cg_P().get_coordinate();
@@ -400,7 +400,7 @@ void Chain::output_top_angle(std::ostream& o, int& n)
       << std::setiosflags(std::ios_base::fixed) << std::setprecision(6)
       << std::setw(12) << a << " "
       << std::setprecision(1)
-      << std::setw(8) << k_K_angle << std::endl;
+      << std::setw(8) << k_K_angle << "\n";
 
     // -------------------- loop --------------------
     for (i = 1; i < n_residue_-1; i++) {
@@ -417,7 +417,7 @@ void Chain::output_top_angle(std::ostream& o, int& n)
         << std::setiosflags(std::ios_base::fixed) << std::setprecision(6)
         << std::setw(12) << a << " "
         << std::setprecision(1)
-        << std::setw(8) << k_K_angle << std::endl;
+        << std::setw(8) << k_K_angle << "\n";
       // ---------- angle PSP ----------
       v1 = v_residues_[i].get_cg_P().get_coordinate()
            - v_residues_[i].get_cg_S().get_coordinate();
@@ -430,7 +430,7 @@ void Chain::output_top_angle(std::ostream& o, int& n)
         << std::setiosflags(std::ios_base::fixed) << std::setprecision(6)
         << std::setw(12) << a << " "
         << std::setprecision(1)
-        << std::setw(8) << k_K_angle << std::endl;
+        << std::setw(8) << k_K_angle << "\n";
       // ---------- angle BSP ----------
       v1 = v_residues_[i].get_cg_B().get_coordinate()
            - v_residues_[i].get_cg_S().get_coordinate();
@@ -443,7 +443,7 @@ void Chain::output_top_angle(std::ostream& o, int& n)
         << std::setiosflags(std::ios_base::fixed) << std::setprecision(6)
         << std::setw(12) << a << " "
         << std::setprecision(1)
-        << std::setw(8) << k_K_angle << std::endl;
+        << std::setw(8) << k_K_angle << "\n";
       // ---------- angle SPS ----------
       v1 = v_residues_[i].get_cg_S().get_coordinate()
            - v_residues_[i+1].get_cg_P().get_coordinate();
@@ -456,7 +456,7 @@ void Chain::output_top_angle(std::ostream& o, int& n)
         << std::setiosflags(std::ios_base::fixed) << std::setprecision(6)
         << std::setw(12) << a << " "
         << std::setprecision(1)
-        << std::setw(8) << k_K_angle << std::endl;
+        << std::setw(8) << k_K_angle << "\n";
     }
     n += 3;
     i = n_residue_ - 1;
@@ -472,7 +472,7 @@ void Chain::output_top_angle(std::ostream& o, int& n)
       << std::setiosflags(std::ios_base::fixed) << std::setprecision(6)
       << std::setw(12) << a << " "
       << std::setprecision(1)
-      << std::setw(8) << k_K_angle << std::endl;
+      << std::setw(8) << k_K_angle << "\n";
     n += 2;
   }
 }
@@ -507,7 +507,7 @@ void Chain::output_top_dihedral(std::ostream& o, int& n)
         << std::setprecision(1)
         << std::setw(8) << k_K_dihedral_1 << " "
         << std::setw(8) << k_K_dihedral_3
-        << std::endl;
+        << "\n";
     }
     n += n_residue_;
   } else {
@@ -535,7 +535,7 @@ void Chain::output_top_dihedral(std::ostream& o, int& n)
       << std::setprecision(1)
       << std::setw(8) << k_K_dihedral_1 << " "
       << std::setw(8) << k_K_dihedral_3
-      << std::endl;
+      << "\n";
 
     for (i = 1; i < n_residue_-1; i++) {
       n += 3;
@@ -559,7 +559,7 @@ void Chain::output_top_dihedral(std::ostream& o, int& n)
         << std::setprecision(1)
         << std::setw(8) << k_K_dihedral_1 << " "
         << std::setw(8) << k_K_dihedral_3
-        << std::endl;
+        << "\n";
 
       if (i == n_residue_ - 2)
         break;
@@ -583,7 +583,7 @@ void Chain::output_top_dihedral(std::ostream& o, int& n)
         << std::setprecision(1)
         << std::setw(8) << k_K_dihedral_1 << " "
         << std::setw(8) << k_K_dihedral_3
-        << std::endl;
+        << "\n";
     }
     n += 5;
   }
@@ -613,7 +613,7 @@ void Chain::output_top_native(std::ostream& o)
           << std::setw(16) << f << " "
           << std::setprecision(5)
           << std::setw(12) << k_K_native << " "
-          << std::endl;
+          << "\n";
       }
     }
   }
@@ -687,7 +687,7 @@ std::ostream& operator<<(std::ostream& o, Chain& c)
   for (i = 0; i < s; i++) {
     o << c.v_residues_[i];
   }
-  o << "TER   " << std::endl;
+  o << "TER   " << "\n";
   return o;
 }
 

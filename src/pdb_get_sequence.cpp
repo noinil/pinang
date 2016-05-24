@@ -49,24 +49,26 @@ int main(int argc, char *argv[])
 
   if (!in_flag)
   {
-    std::cout << " ERROR: need parameter for option -f: " << std::endl;
+    std::cout << " ERROR: need parameter for option -f: " << "\n";
     print_usage(argv[0]);
   }
   pinang::PDB pdb1(infilename);
 
-  std::cout << " Sequence of PDB " << pdb1.get_pdb_name() << " :" << std::endl;
-  std::cout << " Total number of chains: " << pdb1.get_model(0).get_size() << std::endl;
-  std::cout << std::endl;
-  std::cout << " 1-char-aa-name : ----------------------------- " << std::endl;
+  std::cout << " Sequence of PDB " << pdb1.get_pdb_name() << " :" << "\n";
+  std::cout << " Total number of chains: " << pdb1.get_model(0).get_size() << "\n";
+  std::cout << "\n";
+  std::cout << " 1-char-aa-name : ----------------------------- " << "\n";
   pdb1.output_sequence(1);
-  std::cout << " ---------------------------------------------- " << std::endl;
-  std::cout << " 3-char-aa-name : ----------------------------- " << std::endl;
+  std::cout << " ---------------------------------------------- " << "\n";
+  std::cout << " 3-char-aa-name : ----------------------------- " << "\n";
   pdb1.output_sequence(3);
-  std::cout << " ---------------------------------------------- " << std::endl;
+  std::cout << " ---------------------------------------------- " << "\n";
+  cout << std::endl;
 
   if (out_flag) {
     std::ofstream out_file(out_name.c_str());
     pdb1.output_sequence_fasta(out_file);
+    out_file.close();
   }
 
   return 0;
@@ -77,6 +79,6 @@ void print_usage(char* s)
   std::cout << " Usage: "
             << s
             << "\n\t -f some.pdb\n\t [-o seq.fasta]\n\t [-h]"
-            << std::endl;
+            << "\n";
   exit(EXIT_SUCCESS);
 }

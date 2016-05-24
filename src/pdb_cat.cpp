@@ -69,7 +69,8 @@ int main(int argc, char *argv[])
   }
 
   ofile << pdb1.get_model(mod_index);
-  ofile << "END" << std::endl;
+  ofile << "END" << "\n";
+  ofile.close();
 
   return 0;
 }
@@ -79,8 +80,8 @@ void print_usage(char* s)
   std::cout << "  Usage: "
             << s
             << "\n\t -f some.pdb\n\t [-o output.pdb]\n\t [-m module]\n\t [-h]"
-            << std::endl;
+            << "\n";
   std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ "
-            << std::endl;
+            << "\n";
   exit(EXIT_SUCCESS);
 }

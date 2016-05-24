@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
 
   if (!in_flag)
   {
-    std::cout << " ERROR: need parameter for option -f: " << std::endl;
+    std::cout << " ERROR: need parameter for option -f: " << "\n";
     print_usage(argv[0]);
   }
   pinang::PDB pdb1(infilename);
@@ -76,15 +76,18 @@ int main(int argc, char *argv[])
     }
   }
 
-  pos_file << "# CG positions for PDB " << infilename << std::endl;
+  pos_file << "# CG positions for PDB " << infilename << "\n";
   pdb1.get_model(mod_index).output_cg_pos(pos_file);
 
-  top_file << "# CG topology for PDB " << infilename << std::endl;
+  top_file << "# CG topology for PDB " << infilename << "\n";
   pdb1.get_model(mod_index).output_top_mass(top_file);
   pdb1.get_model(mod_index).output_top_bond(top_file);
   pdb1.get_model(mod_index).output_top_angle(top_file);
   pdb1.get_model(mod_index).output_top_dihedral(top_file);
   pdb1.get_model(mod_index).output_top_nonbonded(top_file);
+
+  pos_file.close();
+  top_file.close();
 
   return 0;
 }
@@ -95,6 +98,6 @@ void print_usage(char* s)
             << s
             << "\n\t -f some.pdb\n\t [-p out.pos]\n\t"
             << " [-t out.top]\n\t [-m module]\n\t [-h]"
-            << std::endl;
+            << "\n";
   exit(EXIT_SUCCESS);
 }
