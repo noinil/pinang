@@ -1,14 +1,9 @@
-#include "PDB.hpp"
-#include "constants.hpp"
-#include "vec3d.hpp"
-
 #include <sstream>
-#include <iostream>
 #include <fstream>
-#include <cstdlib>
 #include <unistd.h>
 #include <cmath>
 #include <boost/algorithm/string.hpp>
+#include "PDB.hpp"
 
 using namespace std;
 
@@ -16,16 +11,6 @@ void print_usage(char* s);
 
 int main(int argc, char *argv[])
 {
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // whatever
-
-  std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ "
-            << std::endl;
-  std::cout << " ~                  PINANG DNA curvature                  ~ "
-            << std::endl;
-  std::cout << " ========================================================== "
-            << std::endl;
-
   int opt, mod_index = 0;
   int mod_flag = 0;
   int pdbin_flag = 0;
@@ -70,7 +55,6 @@ int main(int argc, char *argv[])
 
   pinang::PDB pdb1(infilename);
 
-
   if (mod_flag != 1) {
     if (pdb1.get_size() == 1)
     {
@@ -99,7 +83,6 @@ int main(int argc, char *argv[])
 
   int i = 0;
   int j = 0;
-
 
   if (inp_flag == 1) {
     std::ifstream inp_file(inp_name.c_str());
@@ -133,7 +116,6 @@ int main(int argc, char *argv[])
   {
     std::cout << " WARNING: STRAND info not found!" << std::endl;
     chain_id.push_back('A');
-    // exit(EXIT_FAILURE);
   }
 
 
