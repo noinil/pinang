@@ -11,13 +11,6 @@ void print_usage(char* s);
 
 int main(int argc, char *argv[])
 {
-  std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ "
-            << std::endl;
-  std::cout << " ~               PINANG PDB output/extract                ~ "
-            << std::endl;
-  std::cout << " ========================================================== "
-            << std::endl;
-
   int opt, mod_index = 0;
   int mod_flag = 0;
   int in_flag = 0;
@@ -63,11 +56,6 @@ int main(int argc, char *argv[])
     }
   }
 
-
-  std::cout << " Extracting MODULE " << mod_index
-            << " of " << infilename
-            << " to " << outfilename
-            << std::endl;
   ofile << pdb1.get_model(mod_index - 1);
   ofile << "END" << std::endl;
 

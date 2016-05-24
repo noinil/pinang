@@ -11,13 +11,6 @@ void print_usage(char* s);
 
 int main(int argc, char *argv[])
 {
-  std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ "
-            << std::endl;
-  std::cout << " ~            PINANG PDB CG positions output              ~ "
-            << std::endl;
-  std::cout << " ========================================================== "
-            << std::endl;
-
   int opt, mod_index = 0;
   int mod_flag = 0;
   int in_flag = 0;
@@ -63,38 +56,23 @@ int main(int argc, char *argv[])
   if (mod_flag != 1) {
     if (pdb1.get_size() == 1)
     {
-      mod_index = 1;
+      mod_index = 0;
     } else {
       std::cout << " Please choose a MODULE: " ;
       std::cin >> mod_index;
+      --mod_index;
     }
   }
 
-  std::cout << " Extracting C-alpha coordinates of MODULE " << mod_index
-            << " of " << infilename
-            << " to " << pos_name << " ... "
-            << std::endl;
   pos_file << "# CG positions for PDB " << infilename << std::endl;
-  pdb1.get_model(mod_index - 1).output_cg_pos(pos_file);
-  std::cout << " Done! " << std::endl
-            << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ "
-            << std::endl;
+  pdb1.get_model(mod_index).output_cg_pos(pos_file);
 
-  std::cout << " Extracting topological information of MODULE "
-            << mod_index
-            << " of " << infilename
-            << " to " << top_name << " ... "
-            << std::endl;
   top_file << "# CG topology for PDB " << infilename << std::endl;
-  pdb1.get_model(mod_index - 1).output_top_mass(top_file);
-  pdb1.get_model(mod_index - 1).output_top_bond(top_file);
-  pdb1.get_model(mod_index - 1).output_top_angle(top_file);
-  pdb1.get_model(mod_index - 1).output_top_dihedral(top_file);
-  pdb1.get_model(mod_index - 1).output_top_nonbonded(top_file);
-  // std::cout << "everything OK by now......" << std::endl;
-  std::cout << " Done! " << std::endl
-            << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ "
-            << std::endl;
+  pdb1.get_model(mod_index).output_top_mass(top_file);
+  pdb1.get_model(mod_index).output_top_bond(top_file);
+  pdb1.get_model(mod_index).output_top_angle(top_file);
+  pdb1.get_model(mod_index).output_top_dihedral(top_file);
+  pdb1.get_model(mod_index).output_top_nonbonded(top_file);
 
   return 0;
 }

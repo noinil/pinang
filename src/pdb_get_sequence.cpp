@@ -11,10 +11,6 @@ void print_usage(char* s);
 
 int main(int argc, char *argv[])
 {
-  std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << std::endl;
-  std::cout << " ~           PINANG sequence print            ~ " << std::endl;
-  std::cout << " ============================================== " << std::endl;
-
   std::string infilename = "some.pdb";
   std::string out_name = "seq.fasta";
 
@@ -48,13 +44,8 @@ int main(int argc, char *argv[])
   pinang::PDB pdb1(infilename);
 
 
-  std::cout << " Sequence of PDB "
-            << pdb1.get_pdb_name()
-            << " :"
-            << std::endl;
-  std::cout << " Total number of chains: "
-            << pdb1.get_model(0).get_size()
-            << std::endl;
+  std::cout << " Sequence of PDB " << pdb1.get_pdb_name() << " :" << std::endl;
+  std::cout << " Total number of chains: " << pdb1.get_model(0).get_size() << std::endl;
   std::cout << std::endl;
   std::cout << " 1-char-aa-name : ----------------------------- " << std::endl;
   pdb1.output_sequence(1);
@@ -62,6 +53,7 @@ int main(int argc, char *argv[])
   std::cout << " 3-char-aa-name : ----------------------------- " << std::endl;
   pdb1.output_sequence(3);
   std::cout << " ---------------------------------------------- " << std::endl;
+
   if (out_flag) {
     std::ofstream out_file(out_name.c_str());
     pdb1.output_sequence_fasta(out_file);
