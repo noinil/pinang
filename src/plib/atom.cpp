@@ -64,7 +64,7 @@ void Atom::reset()
 // outer functions +++++++++++++++++++++++++++++++++++++++++++++
 std::ostream& operator<<(std::ostream& o, const Atom& a)
 {
-  if (a.get_atom_flag() == "ATOM  " || a.get_atom_flag() == "HETATM")
+  if (a.get_record_name() == "ATOM  " || a.get_record_name() == "HETATM")
   {
     o << std::setw(6) << a.record_name_
       << std::setw(5) << a.atom_serial_ << " "
@@ -108,7 +108,7 @@ std::istream& operator>>(std::istream& i, Atom& a)
   tmp_str = pdb_line.substr(0,6);
   a.record_name_ = tmp_str;
 
-  if (a.get_atom_flag() == "ATOM  " || a.get_atom_flag() == "HETATM")
+  if (a.get_record_name() == "ATOM  " || a.get_record_name() == "HETATM")
   {
     tmp_sstr.str(pdb_line.substr(6,5));
     tmp_sstr >> tmp_ui;
@@ -186,7 +186,7 @@ std::istream& operator>>(std::istream& i, Atom& a)
     a.charge_ = tmp_str;
     tmp_sstr.clear();
     tmp_str.clear();
-  } else if (a.get_atom_flag() == "MODEL ") {
+  } else if (a.get_record_name() == "MODEL ") {
     tmp_sstr.str(pdb_line.substr(10,4));
     tmp_sstr >> tmp_ui;
     a.atom_serial_ = tmp_ui;  // Actually this is the model index (serial);

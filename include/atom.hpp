@@ -47,12 +47,12 @@ class Atom
   //! @brief Get the "ATOM  " record keyword in PDB.
   //! @return Record word.
   // ************************************************************
-  std::string get_atom_flag() const { return record_name_; }
+  std::string get_record_name() const { return record_name_; }
   // ************************************************************
   //! @brief Set the "ATOM  " record keyword of atom.
   //! @param Record word.
   // ************************************************************
-  void set_atom_flag(const std::string& s) { record_name_ = s; }
+  void set_record_name(const std::string& s) { record_name_ = s; }
 
   // ************************************************************
   //! @brief Get serial number of atom.

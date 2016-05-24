@@ -29,7 +29,7 @@ PDB::PDB(const std::string& s)
       break;
     }
 
-    if (atom_tmp.get_atom_flag() == "MODEL ")
+    if (atom_tmp.get_record_name() == "MODEL ")
     {
       model_tmp.reset();
       model_tmp.set_model_serial(atom_tmp.get_atom_serial());
@@ -38,7 +38,7 @@ PDB::PDB(const std::string& s)
       resid_tmp.reset();
       atom_tmp.reset();
     }
-    if (atom_tmp.get_atom_flag() == "TER   ")
+    if (atom_tmp.get_record_name() == "TER   ")
     {
       if (resid_tmp.get_residue_size() != 0)
       {
@@ -52,7 +52,7 @@ PDB::PDB(const std::string& s)
       resid_tmp.reset();
       atom_tmp.reset();
     }
-    if (atom_tmp.get_atom_flag() == "ENDMDL")
+    if (atom_tmp.get_record_name() == "ENDMDL")
     {
       if (resid_tmp.get_residue_size() != 0)
       {
@@ -72,7 +72,7 @@ PDB::PDB(const std::string& s)
       resid_tmp.reset();
       atom_tmp.reset();
     }
-    if (atom_tmp.get_atom_flag() == "END   ")
+    if (atom_tmp.get_record_name() == "END   ")
     {
       if (resid_tmp.get_residue_size() != 0)
       {
@@ -95,14 +95,14 @@ PDB::PDB(const std::string& s)
       resid_tmp.reset();
       atom_tmp.reset();
     }
-    if (atom_tmp.get_atom_flag() == "ATOM  " )
+    if (atom_tmp.get_record_name() == "ATOM  " )
     {
       if (resid_tmp.add_atom(atom_tmp))
       {
         if (resid_tmp.get_residue_size() != 0)
         {
           chain_tmp.add_residue(resid_tmp);
-          if (resid_tmp.get_atom(0).get_atom_flag() == "HETATM")
+          if (resid_tmp.get_atom(0).get_record_name() == "HETATM")
           {
             chain_tmp.set_chain_ID(resid_tmp.get_chain_ID());
             chain_tmp.set_chain_type(resid_tmp.get_chain_type());
@@ -119,7 +119,7 @@ PDB::PDB(const std::string& s)
         resid_tmp.add_atom(atom_tmp);
       }
     }
-    if (atom_tmp.get_atom_flag() == "HETATM")
+    if (atom_tmp.get_record_name() == "HETATM")
     {
       if (resid_tmp.add_atom(atom_tmp))
       {

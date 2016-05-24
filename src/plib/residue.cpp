@@ -78,7 +78,7 @@ int Residue::add_atom(const Atom& a)
   {
     cg_B_ = a;
   }
-  if (a.get_atom_flag() == "HETATM" && a.get_element() != "H")
+  if (a.get_record_name() == "HETATM" && a.get_element() != "H")
   {
     cg_C_alpha_ = a;
   }
