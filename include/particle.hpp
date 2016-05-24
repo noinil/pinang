@@ -72,12 +72,12 @@ class Particle
   //! @brief Get residue serial number.
   //! @return Residue serial number.
   // ************************************************************
-  int get_resid_index() const { return resid_index_; }
+  int get_residue_serial() const { return residue_serial_; }
   // ************************************************************
   //! @brief Set residue serial number.
   //! @param Residue serial number.
   // ************************************************************
-  void set_resid_index(int i) { resid_index_ = i; }
+  void set_residue_serial(int i) { residue_serial_ = i; }
 
   // ************************************************************
   //! @brief Get particle charge.
@@ -109,7 +109,7 @@ class Particle
  protected:
   std::string atom_name_;   //!< Atom name of particle.
   std::string resid_name_;  //!< Residue name of particle.
-  int resid_index_;         //!< Residue sequence number of particle.
+  int residue_serial_;         //!< Residue sequence number of particle.
   double charge_;           //!< Charge of particle.
   double mass_;             //!< Mass of particle.
 };

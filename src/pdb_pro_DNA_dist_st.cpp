@@ -131,9 +131,9 @@ int main(int argc, char *argv[])
         atom_group0.push_back(atmp);
 
         pinang::Residue rtmp_P, rtmp_S, rtmp_B;
-        rtmp_P.set_resid_index(r0.get_resid_index());
-        rtmp_S.set_resid_index(r0.get_resid_index());
-        rtmp_B.set_resid_index(r0.get_resid_index());
+        rtmp_P.set_residue_serial(r0.get_residue_serial());
+        rtmp_S.set_residue_serial(r0.get_residue_serial());
+        rtmp_B.set_residue_serial(r0.get_residue_serial());
         for (int v = 0; v < r0.get_residue_size(); v++) {
           atmp = r0.get_atom(v);
           std::string aname = atmp.get_atom_name();
@@ -182,9 +182,9 @@ int main(int argc, char *argv[])
             atom_group1.push_back(atmp);
 
             pinang::Residue rtmp_P, rtmp_S, rtmp_B;
-            rtmp_P.set_resid_index(r1.get_resid_index());
-            rtmp_S.set_resid_index(r1.get_resid_index());
-            rtmp_B.set_resid_index(r1.get_resid_index());
+            rtmp_P.set_residue_serial(r1.get_residue_serial());
+            rtmp_S.set_residue_serial(r1.get_residue_serial());
+            rtmp_B.set_residue_serial(r1.get_residue_serial());
             for (int v = 0; v < r1.get_residue_size(); v++) {
               atmp = r1.get_atom(v);
               std::string aname = atmp.get_atom_name();

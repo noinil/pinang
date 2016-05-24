@@ -72,7 +72,7 @@ void Chain::pr_seq(int n) const
         std::cout << " ";
       if (j%10 == 0)
       {
-        std::cout << "  " << std::setw(4) << r.get_resid_index() << std::endl;
+        std::cout << "  " << std::setw(4) << r.get_residue_serial() << std::endl;
         std::cout << " ";
       }
     }
@@ -83,7 +83,7 @@ void Chain::pr_seq(int n) const
       j++;
       if (j%10 == 0)
       {
-        std::cout << "  " << std::setw(4) << r.get_resid_index() << std::endl;
+        std::cout << "  " << std::setw(4) << r.get_residue_serial() << std::endl;
       }
     }
     std::cout << std::endl;
@@ -146,7 +146,7 @@ void Chain::output_cg_pos(std::ostream& o, int& n)
       coor_CA = r.get_C_alpha().get_coordinates();
       o << std::setw(8) << ++n
         << std::setw(5) << r.get_resid_name()
-        << std::setw(5) << r.get_resid_index() << "   "
+        << std::setw(5) << r.get_residue_serial() << "   "
         << std::setiosflags(std::ios_base::fixed) << std::setprecision(3)
         << std::setw(12) << coor_CA.x() << " "
         << std::setw(12) << coor_CA.y() << " "
@@ -162,7 +162,7 @@ void Chain::output_cg_pos(std::ostream& o, int& n)
         coor_P = r.get_P().get_coordinates();
         o << std::setw(8) << ++n
           << std::setw(5) << "P"
-          << std::setw(5) << r.get_resid_index() << "   "
+          << std::setw(5) << r.get_residue_serial() << "   "
           << std::setiosflags(std::ios_base::fixed) << std::setprecision(3)
           << std::setw(12) << coor_P.x() << " "
           << std::setw(12) << coor_P.y() << " "
@@ -172,7 +172,7 @@ void Chain::output_cg_pos(std::ostream& o, int& n)
       coor_S = r.get_S().get_coordinates();
       o << std::setw(8) << ++n
         << std::setw(5) << "S"
-        << std::setw(5) << r.get_resid_index() << "   "
+        << std::setw(5) << r.get_residue_serial() << "   "
         << std::setiosflags(std::ios_base::fixed) << std::setprecision(3)
         << std::setw(12) << coor_S.x() << " "
         << std::setw(12) << coor_S.y() << " "
@@ -181,7 +181,7 @@ void Chain::output_cg_pos(std::ostream& o, int& n)
       coor_B = r.get_B().get_coordinates();
       o << std::setw(8) << ++n
         << std::setw(5) << r.get_short_name()
-        << std::setw(5) << r.get_resid_index() << "   "
+        << std::setw(5) << r.get_residue_serial() << "   "
         << std::setiosflags(std::ios_base::fixed) << std::setprecision(3)
         << std::setw(12) << coor_B.x() << " "
         << std::setw(12) << coor_B.y() << " "
@@ -204,7 +204,7 @@ void Chain::output_top_mass(std::ostream& o, int& n)
   {
     for (const Residue& r : residues_) {
       o << std::setw(11) << ++n << " "
-        << std::setw(8) << r.get_resid_index() << " "
+        << std::setw(8) << r.get_residue_serial() << " "
         << std::setw(9) << r.get_resid_name() << " "
         << std::setw(9) << "CA" << " "
         << std::setiosflags(std::ios_base::fixed) << std::setprecision(2)
@@ -217,7 +217,7 @@ void Chain::output_top_mass(std::ostream& o, int& n)
     for (const Residue& r : residues_) {
       if (r.get_term_flag() != 5) {
         o << std::setw(11) << ++n << " "
-          << std::setw(8) << r.get_resid_index() << " "
+          << std::setw(8) << r.get_residue_serial() << " "
           << std::setw(9) << r.get_resid_name() << " "
           << std::setw(9) << "P" << " "
           << std::setiosflags(std::ios_base::fixed) << std::setprecision(2)
@@ -226,7 +226,7 @@ void Chain::output_top_mass(std::ostream& o, int& n)
           << std::endl;
       }
       o << std::setw(11) << ++n << " "
-        << std::setw(8) << r.get_resid_index() << " "
+        << std::setw(8) << r.get_residue_serial() << " "
         << std::setw(9) << r.get_resid_name() << " "
         << std::setw(9) << "S" << " "
         << std::setiosflags(std::ios_base::fixed) << std::setprecision(2)
@@ -234,7 +234,7 @@ void Chain::output_top_mass(std::ostream& o, int& n)
         << std::setw(12) << 0.0
         << std::endl;
       o << std::setw(11) << ++n << " "
-        << std::setw(8) << r.get_resid_index() << " "
+        << std::setw(8) << r.get_residue_serial() << " "
         << std::setw(9) << r.get_resid_name() << " "
         << std::setw(9) << "B" << " "
         << std::setiosflags(std::ios_base::fixed) << std::setprecision(2)

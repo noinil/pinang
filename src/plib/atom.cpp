@@ -33,7 +33,7 @@ Atom::Atom()
   alt_loc_ = ' ';
   resid_name_ = "";
   chain_ID_ = ' ';
-  resid_index_ = 0;
+  residue_serial_ = 0;
   insert_code_ = ' ';
   coordinate_ = Vec3d(0.0, 0.0, 0.0);
   occupancy_ = 0.0;
@@ -51,7 +51,7 @@ void Atom::reset()
   alt_loc_ = ' ';
   resid_name_ = "";
   chain_ID_ = ' ';
-  resid_index_ = 0;
+  residue_serial_ = 0;
   insert_code_ = ' ';
   coordinate_ = Vec3d(0.0, 0.0, 0.0);
   occupancy_ = 0.0;
@@ -72,7 +72,7 @@ std::ostream& operator<<(std::ostream& o, const Atom& a)
       << std::setw(1) << a.alt_loc_
       << std::setw(3) << a.resid_name_ << " "
       << std::setw(1) << a.chain_ID_
-      << std::setw(4) << a.resid_index_
+      << std::setw(4) << a.residue_serial_
       << std::setw(1) << a.insert_code_ << "   "
       << std::setiosflags(std::ios_base::fixed) << std::setprecision(3)
       << std::setw(8) << a.coordinate_.x()
@@ -139,7 +139,7 @@ std::istream& operator>>(std::istream& i, Atom& a)
 
     tmp_sstr.str(pdb_line.substr(22,4));
     tmp_sstr >> tmp_ui;
-    a.resid_index_ = tmp_ui;
+    a.residue_serial_ = tmp_ui;
     tmp_sstr.clear();
 
     tmp_sstr.str(pdb_line.substr(26,1));

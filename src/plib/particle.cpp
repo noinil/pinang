@@ -30,7 +30,7 @@ Particle::Particle()
 {
   atom_name_ = "";
   resid_name_ = "";
-  resid_index_ = 0;
+  residue_serial_ = 0;
   charge_ = 0;
   mass_ = 0;
 }
@@ -39,7 +39,7 @@ void Particle::reset()
 {
   atom_name_ = "";
   resid_name_ = "";
-  resid_index_ = 0;
+  residue_serial_ = 0;
   charge_ = 0;
   mass_ = 0;
 }
@@ -60,7 +60,7 @@ std::istream& operator>>(std::istream& i, Particle& p)
   tmp_sstr >> tmp_i;
 
   tmp_sstr >> tmp_i;
-  p.resid_index_ = tmp_i;
+  p.residue_serial_ = tmp_i;
 
   tmp_sstr >> tmp_s;
   p.set_resid_name(tmp_s);

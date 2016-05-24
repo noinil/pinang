@@ -113,12 +113,12 @@ class Atom
   //! @brief Get residue serial number.
   //! @return Residue serial number.
   // ************************************************************
-  int get_resid_index() const { return resid_index_; }
+  int get_residue_serial() const { return residue_serial_; }
   // ************************************************************
   //! @brief Set residue serial number.
   //! @param Residue serial number.
   // ************************************************************
-  void set_resid_index(int i) { resid_index_ = i; }
+  void set_residue_serial(int i) { residue_serial_ = i; }
 
   // ************************************************************
   //! @brief Get Code for insertion of residues.
@@ -218,7 +218,7 @@ class Atom
   char alt_loc_;           //!< Alternate location indicator from PDB.
   std::string resid_name_; //!< Residue name of the atom in PDB.
   char chain_ID_;          //!< Chain identifier in PDB.
-  int resid_index_;        //!< Residue sequence number in PDB.
+  int residue_serial_;        //!< Residue sequence number in PDB.
   char insert_code_;       //!< Code for insertion of residues from PDB.
   Vec3d coordinate_;       //!< Orthogonal coordinates (x, y, z).
   double occupancy_;       //!< Occupancy from PDB.

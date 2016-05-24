@@ -133,9 +133,9 @@ int main(int argc, char *argv[])
                     else if (cti1 == pinang::DNA || cti1 == pinang::RNA || cti1 == pinang::na) {
                         pinang::Atom atmp = r1.get_P();
                         pinang::Residue rtmp_P, rtmp_S, rtmp_B;
-                        rtmp_P.set_resid_index(r1.get_resid_index());
-                        rtmp_S.set_resid_index(r1.get_resid_index());
-                        rtmp_B.set_resid_index(r1.get_resid_index());
+                        rtmp_P.set_residue_serial(r1.get_residue_serial());
+                        rtmp_S.set_residue_serial(r1.get_residue_serial());
+                        rtmp_B.set_residue_serial(r1.get_residue_serial());
                         rtmp_P.set_resid_name("P");
                         rtmp_S.set_resid_name("S");
                         rtmp_B.set_resid_name(r1.get_resid_name());

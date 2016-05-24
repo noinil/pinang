@@ -32,14 +32,14 @@ Atom& Residue::get_atom(int n)
   {
     std::cout << " ~               PINANG :: residues.hpp         ~ " << std::endl;
     std::cerr << "ERROR: No Atoms in Residue: "
-              << resid_index_ << std::endl;
+              << residue_serial_ << std::endl;
     exit(EXIT_SUCCESS);
   }
   if (n >= int(v_atoms_.size()))
   {
     std::cout << " ~               PINANG :: residues.hpp         ~ " << std::endl;
     std::cerr << "ERROR: Atom index out of range in Residue: "
-              << resid_index_ << std::endl;
+              << residue_serial_ << std::endl;
     exit(EXIT_SUCCESS);
   }
   return v_atoms_[n];
@@ -48,7 +48,7 @@ Atom& Residue::get_atom(int n)
 
 int Residue::add_atom(const Atom& a)
 {
-  if (a.get_resid_index() != resid_index_)
+  if (a.get_residue_serial() != residue_serial_)
   {
     return 1;
   }
@@ -103,7 +103,7 @@ Atom& Residue::get_C_alpha()
   if (cg_C_alpha_.get_atom_name() == "") {
     std::cout << " ~               PINANG :: residues.hpp         ~ " << std::endl;
     std::cerr << "ERROR: C_alpha not set in Residue: "
-              << resid_index_ << std::endl;
+              << residue_serial_ << std::endl;
     exit(EXIT_SUCCESS);
   }
   return cg_C_alpha_;
@@ -114,7 +114,7 @@ Atom& Residue::get_C_beta()
   if (cg_C_beta_.get_atom_name() == "") {
     std::cout << " ~               PINANG :: residues.hpp         ~ " << std::endl;
     std::cerr << "ERROR: C_beta not set in Residue: "
-              << resid_index_ << std::endl;
+              << residue_serial_ << std::endl;
     exit(EXIT_SUCCESS);
   }
   return cg_C_beta_;
@@ -125,7 +125,7 @@ Atom& Residue::get_P()
   if (cg_P_.get_atom_name() == "") {
     std::cout << " ~               PINANG :: residues.hpp         ~ " << std::endl;
     std::cerr << "ERROR: CG Phosphate not set in Residue: "
-              << resid_index_ << std::endl;
+              << residue_serial_ << std::endl;
     exit(EXIT_SUCCESS);
   }
   return cg_P_;
@@ -136,7 +136,7 @@ Atom& Residue::get_S()
   if (cg_S_.get_atom_name() == "") {
     std::cout << " ~               PINANG :: residues.hpp         ~ " << std::endl;
     std::cerr << "ERROR: CG Sugar not set in Residue: "
-              << resid_index_ << std::endl;
+              << residue_serial_ << std::endl;
     exit(EXIT_SUCCESS);
   }
   return cg_S_;
@@ -147,7 +147,7 @@ Atom& Residue::get_B()
   if (cg_B_.get_atom_name() == "") {
     std::cout << " ~               PINANG :: residues.hpp         ~ " << std::endl;
     std::cerr << "ERROR: CG Base not set in Residue: "
-              << resid_index_ << std::endl;
+              << residue_serial_ << std::endl;
     exit(EXIT_SUCCESS);
   }
   return cg_B_;
@@ -174,12 +174,12 @@ void Residue::set_C_beta()
 void Residue::self_check() const
 {
   for (const Atom& a : v_atoms_) {
-    if (a.get_chain_ID() != chain_ID_ || a.get_resid_index() != resid_index_
+    if (a.get_chain_ID() != chain_ID_ || a.get_residue_serial() != residue_serial_
         || a.get_resid_name() != resid_name_)
     {
       std::cout << " ~               PINANG :: residues.hpp         ~ " << std::endl;
       std::cerr << "ERROR: Inconsistent chain ID or residue index or residue type in Residue "
-                << resid_index_ << std::endl;
+                << residue_serial_ << std::endl;
       exit(EXIT_SUCCESS);
     }
   }
@@ -292,7 +292,7 @@ Residue::Residue()
   resid_name_ = "";
   short_name_ = "0";
   chain_ID_ = -1;
-  resid_index_ = -1;
+  residue_serial_ = -1;
   v_atoms_.clear();
   n_atom_ = 0;
   charge_ = 0.0;
@@ -312,7 +312,7 @@ void Residue::reset()
   resid_name_ = "";
   short_name_ = "0";
   chain_ID_ = -1;
-  resid_index_ = -1;
+  residue_serial_ = -1;
   v_atoms_.clear();
   n_atom_ = 0;
   charge_ = 0.0;

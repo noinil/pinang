@@ -95,12 +95,12 @@ class Residue
   //! @brief Get residue serial number.
   //! @return Residue serial number.
   // ************************************************************
-  int get_resid_index() const { return resid_index_; }
+  int get_residue_serial() const { return residue_serial_; }
   // ************************************************************
   //! @brief Set residue serial number.
   //! @param Residue serial number.
   // ************************************************************
-  void set_resid_index(int i) { resid_index_ = i; }
+  void set_residue_serial(int i) { residue_serial_ = i; }
 
   // ************************************************************
   //! @brief Get terminus information.
@@ -232,7 +232,7 @@ class Residue
   std::string resid_name_;   //!< Residue name from PDB.
   std::string short_name_;   //!< Short name of residue.
   char chain_ID_;            //!< Chain identifier from PDB.
-  int resid_index_;          //!< Residue sequence number in PDB.
+  int residue_serial_;          //!< Residue sequence number in PDB.
   std::vector<Atom> v_atoms_;  //!< A set of atom objects.
   int n_atom_;               //!< Number of atoms in Residue.
   double charge_;            //!< Charge of Residue.
