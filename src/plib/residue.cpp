@@ -98,7 +98,7 @@ int Residue::delete_atom(const int i)
 
 
 
-Atom& Residue::get_C_alpha()
+Atom& Residue::get_cg_C_alpha()
 {
   if (cg_C_alpha_.get_atom_name() == "") {
     std::cout << " ~               PINANG :: residues.hpp         ~ " << std::endl;
@@ -109,7 +109,7 @@ Atom& Residue::get_C_alpha()
   return cg_C_alpha_;
 }
 
-Atom& Residue::get_C_beta()
+Atom& Residue::get_cg_C_beta()
 {
   if (cg_C_beta_.get_atom_name() == "") {
     std::cout << " ~               PINANG :: residues.hpp         ~ " << std::endl;
@@ -120,7 +120,7 @@ Atom& Residue::get_C_beta()
   return cg_C_beta_;
 }
 
-Atom& Residue::get_P()
+Atom& Residue::get_cg_P()
 {
   if (cg_P_.get_atom_name() == "") {
     std::cout << " ~               PINANG :: residues.hpp         ~ " << std::endl;
@@ -131,7 +131,7 @@ Atom& Residue::get_P()
   return cg_P_;
 }
 
-Atom& Residue::get_S()
+Atom& Residue::get_cg_S()
 {
   if (cg_S_.get_atom_name() == "") {
     std::cout << " ~               PINANG :: residues.hpp         ~ " << std::endl;
@@ -142,7 +142,7 @@ Atom& Residue::get_S()
   return cg_S_;
 }
 
-Atom& Residue::get_B()
+Atom& Residue::get_cg_B()
 {
   if (cg_B_.get_atom_name() == "") {
     std::cout << " ~               PINANG :: residues.hpp         ~ " << std::endl;
@@ -153,7 +153,7 @@ Atom& Residue::get_B()
   return cg_B_;
 }
 
-void Residue::set_C_alpha()
+void Residue::set_cg_C_alpha()
 {
   for (const Atom& b : v_atoms_) {
     if (b.get_atom_name() == "CA  ")
@@ -162,7 +162,7 @@ void Residue::set_C_alpha()
   }
 }
 
-void Residue::set_C_beta()
+void Residue::set_cg_C_beta()
 {
   for (const Atom& b : v_atoms_) {
     if (b.get_atom_name() == "CB  ")

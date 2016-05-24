@@ -177,50 +177,50 @@ class Residue
   //! @brief Get CG particle @f$C_\alpha@f$.
   //! @return CG particle @f$C_\alpha@f$.
   // ************************************************************
-  Atom& get_C_alpha();
+  Atom& get_cg_C_alpha();
   // ************************************************************
   //! @brief Get CG particle @f$C_\beta@f$.
   //! @return CG particle @f$C_\beta@f$.
   // ************************************************************
-  Atom& get_C_beta();
+  Atom& get_cg_C_beta();
   // ************************************************************
   //! @brief Get CG particle P (phosphate).
   //! @return CG particle P (phosphate).
   // ************************************************************
-  Atom& get_P();
+  Atom& get_cg_P();
   // ************************************************************
   //! @brief Get CG particle S (sugar).
   //! @return CG particle S (sugar).
   // ************************************************************
-  Atom& get_S();
+  Atom& get_cg_S();
   // ************************************************************
   //! @brief Get CG particle B (base).
   //! @return CG particle B (base).
   // ************************************************************
-  Atom& get_B();
+  Atom& get_cg_B();
   // ************************************************************
   //! @brief Set CG particle @f$C_\alpha@f$.
   // ************************************************************
-  void set_C_alpha();
+  void set_cg_C_alpha();
   // ************************************************************
   //! @brief Set CG particle @f$C_\beta@f$.
   // ************************************************************
-  void set_C_beta();
+  void set_cg_C_beta();
   // ************************************************************
   //! @brief Set CG particle P.
   //! @param CG Atom phosphate.
   // ************************************************************
-  void set_P(const Atom& a) { cg_P_ = a; }
+  void set_cg_P(const Atom& a) { cg_P_ = a; }
   // ************************************************************
   //! @brief Set CG particle S.
   //! @param CG Atom sugar.
   // ************************************************************
-  void set_S(const Atom& a) { cg_S_ = a; }
+  void set_cg_S(const Atom& a) { cg_S_ = a; }
   // ************************************************************
   //! @brief Set CG particle B.
   //! @param CG Atom base.
   // ************************************************************
-  void set_B(const Atom& a) { cg_B_ = a; }
+  void set_cg_B(const Atom& a) { cg_B_ = a; }
 
   // ************************************************************
   //! @brief Output PDB format information of Atom.

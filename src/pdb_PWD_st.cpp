@@ -131,7 +131,7 @@ int main(int argc, char *argv[])
                         resi_group1.push_back(r1);
                     }
                     else if (cti1 == pinang::DNA || cti1 == pinang::RNA || cti1 == pinang::na) {
-                        pinang::Atom atmp = r1.get_P();
+                        pinang::Atom atmp = r1.get_cg_P();
                         pinang::Residue rtmp_P, rtmp_S, rtmp_B;
                         rtmp_P.set_residue_serial(r1.get_residue_serial());
                         rtmp_S.set_residue_serial(r1.get_residue_serial());

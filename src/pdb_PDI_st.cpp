@@ -111,19 +111,19 @@ int main(int argc, char *argv[])
             std::vector<pinang::Atom> atom_group0;
             std::vector<pinang::Residue> resi_group0;
             if (cti0 == pinang::protein) {
-                pinang::Atom atmp = r0.get_C_alpha();
+                pinang::Atom atmp = r0.get_cg_C_alpha();
                 atom_group0.push_back(atmp);
                 resi_group0.push_back(r0);
             }
             else if (cti0 == pinang::DNA || cti0 == pinang::RNA || cti0 == pinang::na) {
-                pinang::Atom atmp = r0.get_P();
+                pinang::Atom atmp = r0.get_cg_P();
                 atmp.set_residue_name("P");
                 if (m != 0)
                     atom_group0.push_back(atmp);
-                atmp = r0.get_S();
+                atmp = r0.get_cg_S();
                 atmp.set_residue_name("S");
                 atom_group0.push_back(atmp);
-                atmp = r0.get_B();
+                atmp = r0.get_cg_B();
                 atom_group0.push_back(atmp);
 
                 pinang::Residue rtmp_P, rtmp_S, rtmp_B;
@@ -159,19 +159,19 @@ int main(int argc, char *argv[])
                     std::vector<pinang::Atom> atom_group1;
                     std::vector<pinang::Residue> resi_group1;
                     if (cti1 == pinang::protein) {
-                        pinang::Atom atmp = r1.get_C_alpha();
+                        pinang::Atom atmp = r1.get_cg_C_alpha();
                         atom_group1.push_back(atmp);
                         resi_group1.push_back(r1);
                     }
                     else if (cti1 == pinang::DNA || cti1 == pinang::RNA || cti1 == pinang::na) {
-                        pinang::Atom atmp = r1.get_P();
+                        pinang::Atom atmp = r1.get_cg_P();
                         atmp.set_residue_name("P");
                         if (n != 0)
                             atom_group1.push_back(atmp);
-                        atmp = r1.get_S();
+                        atmp = r1.get_cg_S();
                         atmp.set_residue_name("S");
                         atom_group1.push_back(atmp);
-                        atmp = r1.get_B();
+                        atmp = r1.get_cg_B();
                         atmp.set_residue_name(r1.get_residue_name());
                         atom_group1.push_back(atmp);
 

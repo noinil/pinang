@@ -233,8 +233,8 @@ void Model::output_top_nonbonded(std::ostream& o)
     {
       c_tmp.reset();
 
-      Atom S = v_chains_[i].get_residue(0).get_S();
-      Atom B = v_chains_[i].get_residue(0).get_B();
+      Atom S = v_chains_[i].get_residue(0).get_cg_S();
+      Atom B = v_chains_[i].get_residue(0).get_cg_B();
       r_tmp.reset();
       r_tmp.set_residue_by_name(S.get_residue_name());
       r_tmp.set_chain_ID(S.get_chain_ID());
@@ -251,9 +251,9 @@ void Model::output_top_nonbonded(std::ostream& o)
 
 
       for (int j = 1; j < v_chains_[i].get_chain_length(); j++) {
-        Atom P = v_chains_[i].get_residue(j).get_P();
-        Atom S = v_chains_[i].get_residue(j).get_S();
-        Atom B = v_chains_[i].get_residue(j).get_B();
+        Atom P = v_chains_[i].get_residue(j).get_cg_P();
+        Atom S = v_chains_[i].get_residue(j).get_cg_S();
+        Atom B = v_chains_[i].get_residue(j).get_cg_B();
         r_tmp.reset();
         r_tmp.set_residue_by_name(P.get_residue_name());
         r_tmp.set_chain_ID(P.get_chain_ID());
