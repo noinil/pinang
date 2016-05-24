@@ -1,9 +1,21 @@
-#include "PDB.hpp"
+/*!
+************************************************************
+@file pdb_cg_top.cpp
+@brief Generate .top and .pos files from PDB structures.
 
-#include <iostream>
+Read PDB file, extract information for molecules, and generate .top / .pos files
+for additional analysis.
+
+@author Cheng Tan (noinil@gmail.com)
+@date 2016-05-24 18:11
+@copyright GNU Public License V3.0
+************************************************************
+*/
+
+
 #include <fstream>
-#include <cstdlib>
 #include <unistd.h>
+#include "PDB.hpp"
 
 using namespace std;
 

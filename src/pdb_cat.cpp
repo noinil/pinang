@@ -1,9 +1,20 @@
-#include "PDB.hpp"
+/*!
+************************************************************
+@file pdb_cat.cpp
+@brief Re-output PDB structures.
 
-#include <iostream>
+Extract model from PDB, and reoutput the ATOM records to new PDB file.
+
+@author Cheng Tan (noinil@gmail.com)
+@date 2016-05-24 18:10
+@copyright GNU Public License V3.0
+************************************************************
+*/
+
+
 #include <fstream>
-#include <cstdlib>
 #include <unistd.h>
+#include "PDB.hpp"
 
 using namespace std;
 
@@ -49,14 +60,15 @@ int main(int argc, char *argv[])
   if (mod_flag != 1) {
     if (pdb1.get_size() == 1)
     {
-      mod_index = 1;
+      mod_index = 0;
     } else {
       std::cout << " Please choose a MODULE: " ;
       std::cin >> mod_index;
+      --mod_index;
     }
   }
 
-  ofile << pdb1.get_model(mod_index - 1);
+  ofile << pdb1.get_model(mod_index);
   ofile << "END" << std::endl;
 
   return 0;

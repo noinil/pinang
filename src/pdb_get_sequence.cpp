@@ -1,9 +1,20 @@
-#include "PDB.hpp"
+/*!
+************************************************************
+@file pdb_get_sequence.cpp
+@brief Output sequence of protein/NA from PDB.
 
-#include <iostream>
+Read PDB, extract sequences of protein/DNA/RNA, and output sequence to screen or
+file.  Both 3-char name and 1-char name are output.
+
+@author Cheng Tan (noinil@gmail.com)
+@date 2016-05-24 18:06
+@copyright GNU Public License V3.0
+************************************************************
+*/
+
 #include <fstream>
-#include <cstdlib>
 #include <unistd.h>
+#include "PDB.hpp"
 
 using namespace std;
 

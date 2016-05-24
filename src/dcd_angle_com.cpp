@@ -11,15 +11,10 @@
 
 using namespace std;
 
+void print_usage(char* s);
+
 int main(int argc, char *argv[])
 {
-    std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ "
-              << std::endl;
-    std::cout << " ~           PINANG DCD distances calculation             ~ "
-              << std::endl;
-    std::cout << " ========================================================== "
-              << std::endl;
-
     int opt;
     int inp_flag = 0;
     int dcd_flag = 0;
@@ -48,19 +43,11 @@ int main(int argc, char *argv[])
             dis_name = optarg;
             break;
         case 'h':
-            std::cout << " Usage: "
-                      << argv[0]
-                      << " -f some.dcd -s some.top -i some.inp [-o some.dis] [-h]"
-                      << std::endl;
-            exit(EXIT_SUCCESS);
-            break;
+          print_usage(argv[0]);
+           break;
         default: /* '?' */
-            std::cout << " Usage: "
-                      << argv[0]
-                      << " -f some.dcd -s some.top -i some.inp [-o some.dis] [-h]"
-                      << std::endl;
-            exit(EXIT_FAILURE);
-        }
+          print_usage(argv[0]);
+       }
     }
 
     if (dcd_flag == 0)
@@ -295,4 +282,13 @@ int main(int argc, char *argv[])
     dis_file.close();
 
     return 0;
+}
+
+void print_usage(char* s)
+{
+  std::cout << " Usage: "
+            << s
+            << " -f some.dcd -s some.top -i some.inp [-o some.dis] [-h]"
+            << std::endl;
+  exit(EXIT_SUCCESS);
 }
