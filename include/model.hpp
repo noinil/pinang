@@ -47,12 +47,12 @@ class Model
   //! @brief Get model identifier.
   //! @return Model identifier.
   // ************************************************************
-  int get_model_ID() const { return model_ID_; }
+  int get_model_serial() const { return model_serial_; }
   // ************************************************************
   //! @brief Set model identifier.
   //! @param Model identifier.
   // ************************************************************
-  void set_model_ID(int n) { model_ID_ = n; }
+  void set_model_serial(int n) { model_serial_ = n; }
 
   // ************************************************************
   //! @brief Get a Chain object from Model.
@@ -115,7 +115,7 @@ class Model
   friend std::ostream& operator<<(std::ostream&, Model&);
 
  protected:
-  int model_ID_;               //!< Model serial number.
+  int model_serial_;               //!< Model serial number.
   std::vector<Chain> v_chains_;  //!< A set of chains objects.
   int n_chain_;                //!< Number of chains in Model.
 };

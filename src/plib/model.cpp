@@ -9,14 +9,14 @@ Chain& Model::get_chain(unsigned int n)
   {
     std::cout << " ~             PINANG :: model.hpp              ~ " << std::endl;
     std::cerr << "ERROR: No Chains found in Model: "
-              << model_ID_ << std::endl;
+              << model_serial_ << std::endl;
     exit(EXIT_SUCCESS);
   }
   if (n >= v_chains_.size())
   {
     std::cout << " ~             PINANG :: model.hpp              ~ " << std::endl;
     std::cerr << "ERROR: Chain number out of range in Model: "
-              << model_ID_ << std::endl;
+              << model_serial_ << std::endl;
     exit(EXIT_SUCCESS);
   }
   return v_chains_[n];
@@ -47,14 +47,14 @@ void Model::output_fasta(std::ostream & f_fasta, std::string s) const
 // Model ===================================================================
 Model::Model()
 {
-  model_ID_ = 0;
+  model_serial_ = 0;
   v_chains_.clear();
   n_chain_ = 0;
 }
 
 void Model::reset()
 {
-  model_ID_ = 0;
+  model_serial_ = 0;
   v_chains_.clear();
   n_chain_ = 0;
 }
@@ -300,7 +300,7 @@ void Model::output_top_nonbonded(std::ostream& o)
 std::ostream& operator<<(std::ostream& o, Model& m)
 {
   o << "MODEL "
-    << std::setw(8) << m.model_ID_
+    << std::setw(8) << m.model_serial_
     << std::endl;
   int i = 0;
   int s = m.n_chain_;
