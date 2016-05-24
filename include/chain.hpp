@@ -37,7 +37,7 @@ class Chain
   //! @return An Chain object.
   // ************************************************************
   Chain();
-  virtual ~Chain() {residues_.clear();}
+  virtual ~Chain() {v_residues_.clear();}
 
   // ************************************************************
   //! @brief Reset properties of Chain.
@@ -146,7 +146,7 @@ class Chain
   char chain_ID_;                  //!< Chain identifier in PDB.
   ChainType chain_type_;           //!< Chain chemical composition.
   int n_residue_;                  //!< Number of residues.
-  std::vector<Residue> residues_;  //!< A collection of residue objects.
+  std::vector<Residue> v_residues_;  //!< A collection of residue objects.
 };
 
 }
