@@ -57,14 +57,14 @@ int main(int argc, char *argv[])
             << std::endl;
   std::cout << std::endl;
   std::cout << " 1-char-aa-name : ----------------------------- " << std::endl;
-  pdb1.print_sequence(1);
+  pdb1.output_sequence(1);
   std::cout << " ---------------------------------------------- " << std::endl;
   std::cout << " 3-char-aa-name : ----------------------------- " << std::endl;
-  pdb1.print_sequence(3);
+  pdb1.output_sequence(3);
   std::cout << " ---------------------------------------------- " << std::endl;
   if (out_flag) {
     std::ofstream out_file(out_name.c_str());
-    pdb1.output_fasta(out_file);
+    pdb1.output_sequence_fasta(out_file);
   }
 
   return 0;

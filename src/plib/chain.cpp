@@ -50,7 +50,7 @@ void Chain::self_check()
   }
 }
 
-void Chain::pr_seq(int n) const
+void Chain::output_sequence(int n) const
 {
   if (chain_type_ == water)
     return;
@@ -90,7 +90,7 @@ void Chain::pr_seq(int n) const
   }
 }
 
-void Chain::output_fasta(std::ostream & f_fasta, std::string s0) const
+void Chain::output_sequence_fasta(std::ostream & f_fasta, std::string s0) const
 {
   if (chain_type_ == water)
     return;

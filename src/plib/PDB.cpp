@@ -163,27 +163,27 @@ Model& PDB::get_model(unsigned int n)
   return v_models_[n];
 }
 
-void PDB::print_sequence(int n) const
+void PDB::output_sequence(int n) const
 {
   if (n != 1 && n != 3)
   {
-    std::cerr << " Usage: PINANG::PDB.print_sequence(): \n"
+    std::cerr << " Usage: PINANG::PDB.output_sequence(): \n"
               << "       n = 1: 1-char residue name;\n"
               << "       n = 3: 3-char residue name.\n"
               << std::endl;
     exit(EXIT_SUCCESS);
   }
-  v_models_[0].print_sequence(n);
+  v_models_[0].output_sequence(n);
 }
 
-void PDB::output_fasta(std::ostream & f_fasta) const
+void PDB::output_sequence_fasta(std::ostream & f_fasta) const
 {
   std::string s = PDB_file_name_;
   for (int i = 0; i < 4; i++) {
     s.pop_back();
   }
 
-  v_models_[0].output_fasta(f_fasta, s);
+  v_models_[0].output_sequence_fasta(f_fasta, s);
 }
 
 std::ostream& operator<<(std::ostream& o, PDB& p)

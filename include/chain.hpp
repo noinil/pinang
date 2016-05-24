@@ -90,11 +90,11 @@ class Chain
   //! @brief Print sequence of the Chain.
   //! @param Option to output short style (1) or full name (3).
   // ************************************************************
-  void pr_seq(int) const;
+  void output_sequence(int) const;
   // ************************************************************
   //! @brief Output sequence information to a fasta-style file.
   // ************************************************************
-  void output_fasta(std::ostream&, std::string) const;
+  void output_sequence_fasta(std::ostream&, std::string) const;
   // ************************************************************
   //! @brief Self check before additional operations.
   // ************************************************************

@@ -30,18 +30,18 @@ void Model::add_chain(Chain& c)
 }
 
 
-void Model::print_sequence(int n) const
+void Model::output_sequence(int n) const
 {
   int i = 0;
   for (i = 0; i < n_chain_; ++i)
-    v_chains_[i].pr_seq(n);
+    v_chains_[i].output_sequence(n);
 }
 
-void Model::output_fasta(std::ostream & f_fasta, std::string s) const
+void Model::output_sequence_fasta(std::ostream & f_fasta, std::string s) const
 {
   int i = 0;
   for (i = 0; i < n_chain_; ++i)
-    v_chains_[i].output_fasta(f_fasta, s);
+    v_chains_[i].output_sequence_fasta(f_fasta, s);
 }
 
 // Model ===================================================================

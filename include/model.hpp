@@ -72,11 +72,11 @@ class Model
   //! @brief Print sequence of the Model.
   //! @param Option to output short style (1) or full name (3).
   // ************************************************************
-  void print_sequence(int) const;
+  void output_sequence(int) const;
   // ************************************************************
   //! @brief Output sequence information to a fasta-style file.
   // ************************************************************
-  void output_fasta(std::ostream&, std::string) const;
+  void output_sequence_fasta(std::ostream&, std::string) const;
 
   // ************************************************************
   //! @brief Get number of chains in the Model.
