@@ -1,3 +1,17 @@
+/*!
+************************************************************
+@file chain.cpp
+@brief Define functions of class Chain.
+
+Definitions of member or friend functions of class Chain.
+
+@author Cheng Tan (noinil@gmail.com)
+@date 2016-05-24 15:39
+@copyright GNU Public License V3.0
+************************************************************
+*/
+
+
 #include <iomanip>
 #include "chain.hpp"
 

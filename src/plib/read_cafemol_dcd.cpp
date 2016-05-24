@@ -1,3 +1,17 @@
+/*!
+************************************************************
+@file read_cafemol_dcd.cpp
+@brief Reading cafemol dcd file.
+
+Defines a function for reading CafeMol DCD format trajectory files.
+
+@author Cheng Tan (noinil@gmail.com)
+@date 2016-05-24 15:45
+@copyright GNU Public License V3.0
+************************************************************
+*/
+
+
 #include "read_cafemol_dcd.hpp"
 
 namespace pinang {

@@ -1,3 +1,18 @@
+/*!
+************************************************************
+@file group_physical_quantities.cpp
+@brief Define functions of class Group, indluding get com and other.
+
+Definitions of member or friend functions of class Group.  Functions to get the
+center of mass and radius of gyration are defined here.
+
+@author Cheng Tan (noinil@gmail.com)
+@date 2016-05-24 15:41
+@copyright GNU Public License V3.0
+************************************************************
+*/
+
+
 #include <cmath>
 #include "group.hpp"
 

@@ -1,3 +1,17 @@
+/*!
+************************************************************
+@file group_rmsd.cpp
+@brief Define function of RMSD calculation.
+
+Definition of function of superimposition transform and RMSD calculation.
+
+@author Cheng Tan (noinil@gmail.com)
+@date 2016-05-24 15:43
+@copyright GNU Public License V3.0
+************************************************************
+*/
+
+
 // Based on https://github.com/oleg-alexandrov/projects/blob/master/eigen/Kabsch.cpp;
 
 #include <cmath>
