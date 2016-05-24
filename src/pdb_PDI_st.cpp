@@ -217,7 +217,7 @@ int main(int argc, char *argv[])
                         for (int q = 0; q < int(resi_group1.size()); q++) {
                             pinang::Atom a1 = atom_group1[q];
                             pinang::Residue rr1 = resi_group1[q];
-                            double dist_min = pinang::resid_min_distance(rr0, rr1);
+                            double dist_min = pinang::residue_min_distance(rr0, rr1);
                             double cut_off = 6.5;
                             if (a1.get_residue_name() == "P") cut_off = 5.5;
                             if (a1.get_residue_name() == "S") cut_off = 6.5;

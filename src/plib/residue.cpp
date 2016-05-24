@@ -278,11 +278,11 @@ void Residue::self_check() const
 //             + (coor_C2 + coor_C4 + coor_C5 + coor_C6 + coor_C8)
 //             * mass_C )
 //           * (1/(n_nb*mass_N + n_ob*mass_O + n_cb*mass_C));
-//   cg_P_.set_coords(com_P);
+//   cg_P_.set_coordinate(com_P);
 //   if (cg_S_.get_atom_name() != "S  ")
-//     cg_S_.set_coords(com_S);
+//     cg_S_.set_coordinate(com_S);
 //   if (cg_B_.get_atom_name() != "B  ")
-//     cg_B_.set_coords(com_B);
+//     cg_B_.set_coordinate(com_B);
 // }
 
 
@@ -339,7 +339,7 @@ std::ostream& operator<<(std::ostream& o, Residue& r)
   return o;
 }
 
-double resid_min_distance(const Residue& r1, const Residue& r2)
+double residue_min_distance(const Residue& r1, const Residue& r2)
 {
   int i, j;
   double d = atom_distance(r1.v_atoms_[0], r2.v_atoms_[0]);  // min_distance;
@@ -360,7 +360,7 @@ double resid_min_distance(const Residue& r1, const Residue& r2)
   return d;
 }
 
-double resid_ca_distance(const Residue& r1, const Residue& r2)
+double residue_ca_distance(const Residue& r1, const Residue& r2)
 {
   double d = -1;           // distance;
   d = atom_distance(r1.cg_C_alpha_, r2.cg_C_alpha_);

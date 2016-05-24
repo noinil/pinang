@@ -127,7 +127,7 @@ class Residue
   //! @brief Set Residue charge.
   //! @param Residue charge.
   // ************************************************************
-  void set_resid_charge(double c) { charge_ = c; }
+  void set_residue_charge(double c) { charge_ = c; }
 
   // ************************************************************
   //! @brief Get Residue mass.
@@ -138,7 +138,7 @@ class Residue
   //! @brief Set Residue mass.
   //! @param Residue mass.
   // ************************************************************
-  void set_resid_mass(double m) { mass_ = m; }
+  void set_residue_mass(double m) { mass_ = m; }
 
   // ************************************************************
   //! @brief Self check before additional operations.
@@ -226,8 +226,8 @@ class Residue
   //! @brief Output PDB format information of Atom.
   // ************************************************************
   friend std::ostream& operator<<(std::ostream&, Residue&);
-  friend double resid_min_distance(const Residue&, const Residue&);
-  friend double resid_ca_distance(const Residue&, const Residue&);
+  friend double residue_min_distance(const Residue&, const Residue&);
+  friend double residue_ca_distance(const Residue&, const Residue&);
  protected:
   std::string residue_name_;   //!< Residue name from PDB.
   std::string short_name_;   //!< Short name of residue.
@@ -254,13 +254,13 @@ class Residue
 //! @param Two Residue objects.
 //! @return Distance.
 // ************************************************************
-double resid_min_distance(const Residue&, const Residue&);
+double residue_min_distance(const Residue&, const Residue&);
 // ************************************************************
 //! @brief Compute the @f$C_\alpha@f$ distance between two Residues.
 //! @param Two Residue objects.
 //! @return @f$C_\alpha@f$ Distance.
 // ************************************************************
-double resid_ca_distance(const Residue&, const Residue&);
+double residue_ca_distance(const Residue&, const Residue&);
 }
 
 #endif

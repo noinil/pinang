@@ -261,7 +261,7 @@ void Chain::output_top_bond(std::ostream& o, int& n)
   if (chain_type_ != DNA && chain_type_ != RNA && chain_type_ != na)
   {
     for (i = 0; i < n_residue_ - 1; i++) {
-      d = resid_ca_distance(v_residues_[i], v_residues_[i+1]);
+      d = residue_ca_distance(v_residues_[i], v_residues_[i+1]);
       n++;
       o << std::setw(8) << n << " "
         << std::setw(8) << n + 1 << " "
@@ -588,10 +588,10 @@ void Chain::output_top_native(std::ostream& o)
       ctj = v_residues_[j].get_chain_type();
       if (ctj == water || ctj == DNA || ctj == RNA || ctj == na || ctj == ion)
         continue;
-      d = resid_min_distance(v_residues_[i], v_residues_[j]);
+      d = residue_min_distance(v_residues_[i], v_residues_[j]);
       if ( d < g_cutoff)
       {
-        f = resid_ca_distance(v_residues_[i], v_residues_[j]);
+        f = residue_ca_distance(v_residues_[i], v_residues_[j]);
         o << std::setw(8) << i+1 << " "
           << std::setw(8) << j+1 << " "
           << std::setiosflags(std::ios_base::fixed)
@@ -620,7 +620,7 @@ int Chain::get_native_contact_number()
       ctj = v_residues_[j].get_chain_type();
       if (ctj == water || ctj == DNA || ctj == RNA || ctj == na || ctj == ion)
         continue;
-      d = resid_min_distance(v_residues_[i], v_residues_[j]);
+      d = residue_min_distance(v_residues_[i], v_residues_[j]);
       if ( d < g_cutoff)
         n++;
     }

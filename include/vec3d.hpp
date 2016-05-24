@@ -64,7 +64,7 @@ class Vec3d
   // ************************************************************
   //! @brief Set the value of a Vector based on three real numbers.
   // ************************************************************
-  void set_coords(double x, double y, double z)
+  void set_coordinate(double x, double y, double z)
   {
     z1_ = x;
     z2_ = y;

@@ -118,7 +118,7 @@ int main(int argc, char *argv[])
                 pinang::Residue special0;
                 for (int n = 0; n < pdb1.get_model(mod_index - 1).get_chain(j).get_size(); n++) {
                     r1 = pdb1.get_model(mod_index - 1).get_chain(j).get_residue(n);
-                    double dist_min = pinang::resid_min_distance(r0, r1);
+                    double dist_min = pinang::residue_min_distance(r0, r1);
                     if (min_dist_W_PRO == 0 || min_dist_W_PRO > dist_min){
                         min_dist_W_PRO = dist_min;
                         special0 = r1;
@@ -152,7 +152,7 @@ int main(int argc, char *argv[])
                     double dist2 = min_dist_w_pro[t];
                     if (dist2 > 5) continue;
                     pinang::Residue res2 = spec[t];
-                    double dist_PP = pinang::resid_min_distance(res1, res2);
+                    double dist_PP = pinang::residue_min_distance(res1, res2);
                     out_file << " WAT_MED_PRO  "
                              << res1.get_residue_name() << " "
                              << res2.get_residue_name() << " "

@@ -140,12 +140,12 @@ class Atom
   //! @brief Get coordinates of atom from Vec3d type coordinates.
   //! @param Vec3d type coordinates.
   // ************************************************************
-  void set_coords(const Vec3d& coors) { coordinate_ = coors; }
+  void set_coordinate(const Vec3d& coors) { coordinate_ = coors; }
   // ************************************************************
   //! @brief Get coordinates of atom from three real numbers.
   //! @param x, y, and z, three orthogonal coordinates.
   // ************************************************************
-  void set_coords(double x, double y, double z) { coordinate_ = Vec3d(x, y, z); }
+  void set_coordinate(double x, double y, double z) { coordinate_ = Vec3d(x, y, z); }
 
   // ************************************************************
   //! @brief Get occupancy.

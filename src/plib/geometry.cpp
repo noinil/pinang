@@ -81,7 +81,7 @@ Vec3d Transform::apply(const Vec3d& v)
   double x1 = rotv1_ * v;
   double y1 = rotv2_ * v;
   double z1 = rotv3_ * v;
-  v_out.set_coords(x1, y1, z1);
+  v_out.set_coordinate(x1, y1, z1);
   v_out += translation_;
 
   return v_out;
@@ -98,7 +98,7 @@ Group Transform::apply(const Group& g)
     x1 = rotv1_ * vtmp;
     y1 = rotv2_ * vtmp;
     z1 = rotv3_ * vtmp;
-    vtmp.set_coords(x1, y1, z1);
+    vtmp.set_coordinate(x1, y1, z1);
     vtmp += translation_;
     vv.push_back(vtmp);
   }

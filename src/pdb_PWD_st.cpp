@@ -160,7 +160,7 @@ int main(int argc, char *argv[])
                     // -------------------- Calculating distances --------------
                     for (int q = 0; q < int(resi_group1.size()); q++) {
                         pinang::Residue rr1 = resi_group1[q];
-                        double dist_min = pinang::resid_min_distance(r0, rr1);
+                        double dist_min = pinang::residue_min_distance(r0, rr1);
                         if (dist_min < 0)
                             continue;
 
@@ -254,23 +254,23 @@ int main(int argc, char *argv[])
                          << std::endl;
             if (min_dist_W_PRO < 5 && min_dist_W_PRO > 2.5) {
                 if (min_dist_W_P < 3.5 && min_dist_W_P > 2.5) {
-                    double dist_PP = pinang::resid_min_distance(special0, special_P);
+                    double dist_PP = pinang::residue_min_distance(special0, special_P);
                     out_file << " WAT_MED_PRO  P    " << std::setw(6) << dist_PP << std::endl;}
                 if (min_dist_W_S < 5.0 && min_dist_W_S > 2.5) {
-                    double dist_PS = pinang::resid_min_distance(special0, special_S);
+                    double dist_PS = pinang::residue_min_distance(special0, special_S);
                     out_file << " WAT_MED_PRO  S    " << std::setw(6) << dist_PS << std::endl;}
                 double dist_PB = 0;
                 if (min_dist_W_T > 2.5 && min_dist_W_T < 4){
-                    dist_PB = pinang::resid_min_distance(special0, special_T);
+                    dist_PB = pinang::residue_min_distance(special0, special_T);
                     out_file << " WAT_MED_PRO  T    " << std::setw(6) << dist_PB << std::endl;}
                 if (min_dist_W_C > 2.5 && min_dist_W_C < 4){
-                    dist_PB = pinang::resid_min_distance(special0, special_C);
+                    dist_PB = pinang::residue_min_distance(special0, special_C);
                     out_file << " WAT_MED_PRO  C    " << std::setw(6) << dist_PB << std::endl;}
                 if (min_dist_W_G > 2.5 && min_dist_W_G < 4){
-                    dist_PB = pinang::resid_min_distance(special0, special_G);
+                    dist_PB = pinang::residue_min_distance(special0, special_G);
                     out_file << " WAT_MED_PRO  G    " << std::setw(6) << dist_PB << std::endl;}
                 if (min_dist_W_A > 2.5 && min_dist_W_A < 4){
-                    dist_PB = pinang::resid_min_distance(special0, special_A);
+                    dist_PB = pinang::residue_min_distance(special0, special_A);
                     out_file << " WAT_MED_PRO  A    " << std::setw(6) << dist_PB << std::endl;}
             }
         }
