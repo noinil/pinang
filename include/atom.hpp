@@ -58,12 +58,12 @@ class Atom
   //! @brief Get serial number of atom.
   //! @return Serial number of atom.
   // ************************************************************
-  int get_serial() const { return serial_; }
+  int get_atom_serial() const { return atom_serial_; }
   // ************************************************************
   //! @brief Set serial number of atom.
   //! @param Serial number of atom.
   // ************************************************************
-  void set_serial(int i) { serial_ = i; }
+  void set_atom_serial(int i) { atom_serial_ = i; }
 
   // ************************************************************
   //! @brief Get atom name.
@@ -213,7 +213,7 @@ class Atom
   friend double atom_distance (const Atom&, const Atom&);
  protected:
   std::string record_name_;  //!< Atom flag from PDB.
-  int serial_;             //!< Atom serial number in PDB.
+  int atom_serial_;             //!< Atom serial number in PDB.
   std::string atom_name_;  //!< Atom name in PDB.
   char alt_loc_;           //!< Alternate location indicator from PDB.
   std::string residue_name_; //!< Residue name of the atom in PDB.

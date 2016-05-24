@@ -28,7 +28,7 @@ void Atom::set_residue_name(const std::string& s)
 Atom::Atom()
 {
   record_name_ = "";
-  serial_ = 0;
+  atom_serial_ = 0;
   atom_name_ = "";
   alt_loc_ = ' ';
   residue_name_ = "";
@@ -46,7 +46,7 @@ Atom::Atom()
 void Atom::reset()
 {
   record_name_ = "";
-  serial_ = 0;
+  atom_serial_ = 0;
   atom_name_ = "";
   alt_loc_ = ' ';
   residue_name_ = "";
@@ -67,7 +67,7 @@ std::ostream& operator<<(std::ostream& o, const Atom& a)
   if (a.get_atom_flag() == "ATOM  " || a.get_atom_flag() == "HETATM")
   {
     o << std::setw(6) << a.record_name_
-      << std::setw(5) << a.serial_ << " "
+      << std::setw(5) << a.atom_serial_ << " "
       << std::setw(4) << a.atom_name_
       << std::setw(1) << a.alt_loc_
       << std::setw(3) << a.residue_name_ << " "
@@ -112,7 +112,7 @@ std::istream& operator>>(std::istream& i, Atom& a)
   {
     tmp_sstr.str(pdb_line.substr(6,5));
     tmp_sstr >> tmp_ui;
-    a.serial_ = tmp_ui;
+    a.atom_serial_ = tmp_ui;
     tmp_sstr.clear();
 
     tmp_sstr.str(pdb_line.substr(12,4));
@@ -189,7 +189,7 @@ std::istream& operator>>(std::istream& i, Atom& a)
   } else if (a.get_atom_flag() == "MODEL ") {
     tmp_sstr.str(pdb_line.substr(10,4));
     tmp_sstr >> tmp_ui;
-    a.serial_ = tmp_ui;  // Actually this is the model index (serial);
+    a.atom_serial_ = tmp_ui;  // Actually this is the model index (serial);
     tmp_sstr.clear();
   } else {
     // std::cerr << "ERROR: Wrong PDB ATOM format!" << std::endl;
