@@ -76,7 +76,7 @@ int Residue::add_atom(const Atom& a)
   }
   if (a.get_atom_name() == "N1  " || a.get_atom_name() == "B   " || a.get_atom_name() == "DB  ")
   {
-    B_ = a;
+    cg_B_ = a;
   }
   if (a.get_atom_flag() == "HETATM" && a.get_element() != "H")
   {
@@ -144,13 +144,13 @@ Atom& Residue::get_S()
 
 Atom& Residue::get_B()
 {
-  if (B_.get_atom_name() == "") {
+  if (cg_B_.get_atom_name() == "") {
     std::cout << " ~               PINANG :: residues.hpp         ~ " << std::endl;
     std::cerr << "ERROR: CG Base not set in Residue: "
               << resid_index_ << std::endl;
     exit(EXIT_SUCCESS);
   }
-  return B_;
+  return cg_B_;
 }
 
 void Residue::set_C_alpha()
@@ -281,8 +281,8 @@ void Residue::self_check() const
 //   P_.set_coords(com_P);
 //   if (S_.get_atom_name() != "S  ")
 //     S_.set_coords(com_S);
-//   if (B_.get_atom_name() != "B  ")
-//     B_.set_coords(com_B);
+//   if (cg_B_.get_atom_name() != "B  ")
+//     cg_B_.set_coords(com_B);
 // }
 
 
@@ -303,7 +303,7 @@ Residue::Residue()
   C_beta_.reset();
   P_.reset();
   S_.reset();
-  B_.reset();
+  cg_B_.reset();
   chain_type_ = none;
 }
 
@@ -322,7 +322,7 @@ void Residue::reset()
   chain_type_ = none;
   P_.reset();
   S_.reset();
-  B_.reset();
+  cg_B_.reset();
   C_alpha_.reset();
   C_beta_.reset();
 }
