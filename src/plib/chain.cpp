@@ -41,12 +41,12 @@ void Chain::self_check()
     }
   }
   if (chain_type_ == protein) {
-    v_residues_[0].set_term_flag(-1);
-    v_residues_[n_residue_ - 1].set_term_flag(1);
+    v_residues_[0].set_terminus_flag(-1);
+    v_residues_[n_residue_ - 1].set_terminus_flag(1);
   }
   if (chain_type_ == DNA) {
-    v_residues_[0].set_term_flag(5);
-    v_residues_[n_residue_ - 1].set_term_flag(3);
+    v_residues_[0].set_terminus_flag(5);
+    v_residues_[n_residue_ - 1].set_terminus_flag(3);
   }
 }
 
@@ -158,7 +158,7 @@ void Chain::output_cg_pos(std::ostream& o, int& n)
       Vec3d coor_P;
       Vec3d coor_S;
       Vec3d coor_B;
-      if (r.get_term_flag() != 5) {
+      if (r.get_terminus_flag() != 5) {
         coor_P = r.get_P().get_coordinates();
         o << std::setw(8) << ++n
           << std::setw(5) << "P"
@@ -215,7 +215,7 @@ void Chain::output_top_mass(std::ostream& o, int& n)
     }
   } else {
     for (const Residue& r : v_residues_) {
-      if (r.get_term_flag() != 5) {
+      if (r.get_terminus_flag() != 5) {
         o << std::setw(11) << ++n << " "
           << std::setw(8) << r.get_residue_serial() << " "
           << std::setw(9) << r.get_residue_name() << " "

@@ -111,12 +111,12 @@ class Residue
   //! @retval 1: C-terminus of protein.
   //! @retval 0: Not terminus.
   // ************************************************************
-  int get_term_flag() const { return term_flag_; }
+  int get_terminus_flag() const { return terminus_flag_; }
   // ************************************************************
   //! @brief Set terminus information.
   //! @param Terminus flag.
   // ************************************************************
-  void set_term_flag(int i) { term_flag_ = i; }
+  void set_terminus_flag(int i) { terminus_flag_ = i; }
 
   // ************************************************************
   //! @brief Get Residue charge.
@@ -246,7 +246,7 @@ class Residue
   ChainType chain_type_;     //!< Chain type.
 
   // 5: 5'; 3: 3'; -1: N;  1: C;  0: not terminus;
-  int term_flag_;            //!< Flag indicating whether the Residue is at terminus.
+  int terminus_flag_;            //!< Flag indicating whether the Residue is at terminus.
 };
 
 // ************************************************************

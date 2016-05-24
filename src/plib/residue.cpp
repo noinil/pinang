@@ -297,7 +297,7 @@ Residue::Residue()
   n_atom_ = 0;
   charge_ = 0.0;
   mass_ = 100.0;
-  term_flag_ = 0;
+  terminus_flag_ = 0;
 
   cg_C_alpha_.reset();
   cg_C_beta_.reset();
@@ -317,7 +317,7 @@ void Residue::reset()
   n_atom_ = 0;
   charge_ = 0.0;
   mass_ = 100.0;
-  term_flag_ = 0;
+  terminus_flag_ = 0;
 
   chain_type_ = none;
   cg_P_.reset();
