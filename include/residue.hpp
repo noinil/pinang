@@ -238,8 +238,8 @@ class Residue
   double charge_;            //!< Charge of Residue.
   double mass_;              //!< Mass of Residue.
 
-  Atom C_alpha_;             //!< CG particle @f$C_\alpha@f$.
-  Atom C_beta_;              //!< CG particle @f$C_\beta@f$.
+  Atom cg_C_alpha_;             //!< CG particle @f$C_\alpha@f$.
+  Atom cg_C_beta_;              //!< CG particle @f$C_\beta@f$.
   Atom cg_P_;                   //!< CG particle P (phosphate).
   Atom cg_S_;                   //!< CG particle S (sugar).
   Atom cg_B_;                   //!< CG particle B (base).

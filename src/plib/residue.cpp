@@ -60,11 +60,11 @@ int Residue::add_atom(const Atom& a)
 
   if (a.get_atom_name() == "CA  ")
   {
-    C_alpha_ = a;
+    cg_C_alpha_ = a;
   }
   if (a.get_atom_name() == "CB  ")
   {
-    C_beta_ = a;
+    cg_C_beta_ = a;
   }
   if (a.get_atom_name() == "C3' " || a.get_atom_name() == "S   " || a.get_atom_name() == "DS  ")
   {
@@ -80,7 +80,7 @@ int Residue::add_atom(const Atom& a)
   }
   if (a.get_atom_flag() == "HETATM" && a.get_element() != "H")
   {
-    C_alpha_ = a;
+    cg_C_alpha_ = a;
   }
   n_atom_++;
   return 0;
@@ -100,24 +100,24 @@ int Residue::delete_atom(const int i)
 
 Atom& Residue::get_C_alpha()
 {
-  if (C_alpha_.get_atom_name() == "") {
+  if (cg_C_alpha_.get_atom_name() == "") {
     std::cout << " ~               PINANG :: residues.hpp         ~ " << std::endl;
     std::cerr << "ERROR: C_alpha not set in Residue: "
               << resid_index_ << std::endl;
     exit(EXIT_SUCCESS);
   }
-  return C_alpha_;
+  return cg_C_alpha_;
 }
 
 Atom& Residue::get_C_beta()
 {
-  if (C_beta_.get_atom_name() == "") {
+  if (cg_C_beta_.get_atom_name() == "") {
     std::cout << " ~               PINANG :: residues.hpp         ~ " << std::endl;
     std::cerr << "ERROR: C_beta not set in Residue: "
               << resid_index_ << std::endl;
     exit(EXIT_SUCCESS);
   }
-  return C_beta_;
+  return cg_C_beta_;
 }
 
 Atom& Residue::get_P()
@@ -157,7 +157,7 @@ void Residue::set_C_alpha()
 {
   for (const Atom& b : v_atoms_) {
     if (b.get_atom_name() == "CA  ")
-      C_alpha_ = b;
+      cg_C_alpha_ = b;
     break;
   }
 }
@@ -166,7 +166,7 @@ void Residue::set_C_beta()
 {
   for (const Atom& b : v_atoms_) {
     if (b.get_atom_name() == "CB  ")
-      C_beta_ = b;
+      cg_C_beta_ = b;
     break;
   }
 }
@@ -299,8 +299,8 @@ Residue::Residue()
   mass_ = 100.0;
   term_flag_ = 0;
 
-  C_alpha_.reset();
-  C_beta_.reset();
+  cg_C_alpha_.reset();
+  cg_C_beta_.reset();
   cg_P_.reset();
   cg_S_.reset();
   cg_B_.reset();
@@ -323,8 +323,8 @@ void Residue::reset()
   cg_P_.reset();
   cg_S_.reset();
   cg_B_.reset();
-  C_alpha_.reset();
-  C_beta_.reset();
+  cg_C_alpha_.reset();
+  cg_C_beta_.reset();
 }
 
 
@@ -363,7 +363,7 @@ double resid_min_distance(const Residue& r1, const Residue& r2)
 double resid_ca_distance(const Residue& r1, const Residue& r2)
 {
   double d = -1;           // distance;
-  d = atom_distance(r1.C_alpha_, r2.C_alpha_);
+  d = atom_distance(r1.cg_C_alpha_, r2.cg_C_alpha_);
   return d;
 }
 
