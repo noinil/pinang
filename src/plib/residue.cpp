@@ -28,21 +28,21 @@ void Residue::set_residue_by_name(const std::string& s)
 
 Atom& Residue::get_atom(int n)
 {
-  if (atoms_.empty())
+  if (v_atoms_.empty())
   {
     std::cout << " ~               PINANG :: residues.hpp         ~ " << std::endl;
     std::cerr << "ERROR: No Atoms in Residue: "
               << resid_index_ << std::endl;
     exit(EXIT_SUCCESS);
   }
-  if (n >= int(atoms_.size()))
+  if (n >= int(v_atoms_.size()))
   {
     std::cout << " ~               PINANG :: residues.hpp         ~ " << std::endl;
     std::cerr << "ERROR: Atom index out of range in Residue: "
               << resid_index_ << std::endl;
     exit(EXIT_SUCCESS);
   }
-  return atoms_[n];
+  return v_atoms_[n];
 }
 
 
@@ -52,11 +52,11 @@ int Residue::add_atom(const Atom& a)
   {
     return 1;
   }
-  for (const Atom& b : atoms_) {
+  for (const Atom& b : v_atoms_) {
     if (a.get_atom_name() == b.get_atom_name())
       return 0;
   }  // in case of NMR uncertain multi atoms
-  atoms_.push_back(a);
+  v_atoms_.push_back(a);
 
   if (a.get_atom_name() == "CA  ")
   {
@@ -91,7 +91,7 @@ int Residue::delete_atom(const int i)
   if (i >= n_atom_){
     return 1;
   }
-  atoms_.erase(atoms_.begin() + i);
+  v_atoms_.erase(v_atoms_.begin() + i);
   n_atom_--;
   return 0;
 }
@@ -155,7 +155,7 @@ Atom& Residue::get_B()
 
 void Residue::set_C_alpha()
 {
-  for (const Atom& b : atoms_) {
+  for (const Atom& b : v_atoms_) {
     if (b.get_atom_name() == "CA  ")
       C_alpha_ = b;
     break;
@@ -164,7 +164,7 @@ void Residue::set_C_alpha()
 
 void Residue::set_C_beta()
 {
-  for (const Atom& b : atoms_) {
+  for (const Atom& b : v_atoms_) {
     if (b.get_atom_name() == "CB  ")
       C_beta_ = b;
     break;
@@ -173,7 +173,7 @@ void Residue::set_C_beta()
 
 void Residue::self_check() const
 {
-  for (const Atom& a : atoms_) {
+  for (const Atom& a : v_atoms_) {
     if (a.get_chain_ID() != chain_ID_ || a.get_resid_index() != resid_index_
         || a.get_resid_name() != resid_name_)
     {
@@ -231,41 +231,41 @@ void Residue::self_check() const
 //     return;
 //   }
 //   for (i = 0; i < n_atom_; i++) {
-//     std::string aname = atoms_[i].get_atom_name();
+//     std::string aname = v_atoms_[i].get_atom_name();
 //     char c = aname[0];
 //     switch (c) {
 //       case 'C':
-//         if (aname == "C5'") {coor_C5p = atoms_[i].get_coordinates(); n_cs++;}
-//         else if (aname == "C1'") {coor_C1p = atoms_[i].get_coordinates(); n_cs++;}
-//         else if (aname == "C2'") {coor_C2p = atoms_[i].get_coordinates(); n_cs++;}
-//         else if (aname == "C3'") {coor_C3p = atoms_[i].get_coordinates(); n_cs++;}
-//         else if (aname == "C4'") {coor_C4p = atoms_[i].get_coordinates(); n_cs++;}
-//         else if (aname == "C2 ") { coor_C2 = atoms_[i].get_coordinates(); n_cb++;}
-//         else if (aname == "C4 ") { coor_C4 = atoms_[i].get_coordinates(); n_cb++;}
-//         else if (aname == "C5 ") { coor_C5 = atoms_[i].get_coordinates(); n_cb++;}
-//         else if (aname == "C6 ") { coor_C6 = atoms_[i].get_coordinates(); n_cb++;}
-//         else if (aname == "C8 ") { coor_C8 = atoms_[i].get_coordinates(); n_cb++;}
+//         if (aname == "C5'") {coor_C5p = v_atoms_[i].get_coordinates(); n_cs++;}
+//         else if (aname == "C1'") {coor_C1p = v_atoms_[i].get_coordinates(); n_cs++;}
+//         else if (aname == "C2'") {coor_C2p = v_atoms_[i].get_coordinates(); n_cs++;}
+//         else if (aname == "C3'") {coor_C3p = v_atoms_[i].get_coordinates(); n_cs++;}
+//         else if (aname == "C4'") {coor_C4p = v_atoms_[i].get_coordinates(); n_cs++;}
+//         else if (aname == "C2 ") { coor_C2 = v_atoms_[i].get_coordinates(); n_cb++;}
+//         else if (aname == "C4 ") { coor_C4 = v_atoms_[i].get_coordinates(); n_cb++;}
+//         else if (aname == "C5 ") { coor_C5 = v_atoms_[i].get_coordinates(); n_cb++;}
+//         else if (aname == "C6 ") { coor_C6 = v_atoms_[i].get_coordinates(); n_cb++;}
+//         else if (aname == "C8 ") { coor_C8 = v_atoms_[i].get_coordinates(); n_cb++;}
 //         break;
 //       case 'O':
-//         if (aname == "O4'") {coor_O4p = atoms_[i].get_coordinates(); n_os++;}
-//         else if (aname == "O2'") {coor_O2p = atoms_[i].get_coordinates(); n_os++;}
-//         else if (aname == "O3'") {coor_O3p = atoms_[i].get_coordinates();}
-//         else if (aname == "O5'") {coor_O5p = atoms_[i].get_coordinates();}
-//         else if (aname == "O2 ") {coor_O2 = atoms_[i].get_coordinates(); n_ob++;}
-//         else if (aname == "O4 ") {coor_O4 = atoms_[i].get_coordinates(); n_ob++;}
-//         else if (aname == "O6 ") {coor_O6 = atoms_[i].get_coordinates(); n_ob++;}
+//         if (aname == "O4'") {coor_O4p = v_atoms_[i].get_coordinates(); n_os++;}
+//         else if (aname == "O2'") {coor_O2p = v_atoms_[i].get_coordinates(); n_os++;}
+//         else if (aname == "O3'") {coor_O3p = v_atoms_[i].get_coordinates();}
+//         else if (aname == "O5'") {coor_O5p = v_atoms_[i].get_coordinates();}
+//         else if (aname == "O2 ") {coor_O2 = v_atoms_[i].get_coordinates(); n_ob++;}
+//         else if (aname == "O4 ") {coor_O4 = v_atoms_[i].get_coordinates(); n_ob++;}
+//         else if (aname == "O6 ") {coor_O6 = v_atoms_[i].get_coordinates(); n_ob++;}
 //         break;
 //       case 'N':
-//         if (aname == "N1 ") {coor_N1 = atoms_[i].get_coordinates(); n_nb++;}
-//         else if (aname == "N2 ") {coor_N2 = atoms_[i].get_coordinates(); n_nb++;}
-//         else if (aname == "N3 ") {coor_N3 = atoms_[i].get_coordinates(); n_nb++;}
-//         else if (aname == "N4 ") {coor_N4 = atoms_[i].get_coordinates(); n_nb++;}
-//         else if (aname == "N6 ") {coor_N6 = atoms_[i].get_coordinates(); n_nb++;}
-//         else if (aname == "N7 ") {coor_N7 = atoms_[i].get_coordinates(); n_nb++;}
-//         else if (aname == "N9 ") {coor_N9 = atoms_[i].get_coordinates(); n_nb++;}
+//         if (aname == "N1 ") {coor_N1 = v_atoms_[i].get_coordinates(); n_nb++;}
+//         else if (aname == "N2 ") {coor_N2 = v_atoms_[i].get_coordinates(); n_nb++;}
+//         else if (aname == "N3 ") {coor_N3 = v_atoms_[i].get_coordinates(); n_nb++;}
+//         else if (aname == "N4 ") {coor_N4 = v_atoms_[i].get_coordinates(); n_nb++;}
+//         else if (aname == "N6 ") {coor_N6 = v_atoms_[i].get_coordinates(); n_nb++;}
+//         else if (aname == "N7 ") {coor_N7 = v_atoms_[i].get_coordinates(); n_nb++;}
+//         else if (aname == "N9 ") {coor_N9 = v_atoms_[i].get_coordinates(); n_nb++;}
 //         break;
 //       default:
-//         if (aname == "P  ") coor_P = atoms_[i].get_coordinates();
+//         if (aname == "P  ") coor_P = v_atoms_[i].get_coordinates();
 //     }
 //   }
 //   com_P = coor_P;
@@ -293,7 +293,7 @@ Residue::Residue()
   short_name_ = "0";
   chain_ID_ = -1;
   resid_index_ = -1;
-  atoms_.clear();
+  v_atoms_.clear();
   n_atom_ = 0;
   charge_ = 0.0;
   mass_ = 100.0;
@@ -313,7 +313,7 @@ void Residue::reset()
   short_name_ = "0";
   chain_ID_ = -1;
   resid_index_ = -1;
-  atoms_.clear();
+  v_atoms_.clear();
   n_atom_ = 0;
   charge_ = 0.0;
   mass_ = 100.0;
@@ -334,7 +334,7 @@ std::ostream& operator<<(std::ostream& o, Residue& r)
   int i = 0;
   int s = r.n_atom_;
   for (i = 0; i < s; i++) {
-    o << r.atoms_[i] << std::endl;
+    o << r.v_atoms_[i] << std::endl;
   }
   return o;
 }
@@ -342,17 +342,17 @@ std::ostream& operator<<(std::ostream& o, Residue& r)
 double resid_min_distance(const Residue& r1, const Residue& r2)
 {
   int i, j;
-  double d = atom_distance(r1.atoms_[0], r2.atoms_[0]);  // min_distance;
+  double d = atom_distance(r1.v_atoms_[0], r2.v_atoms_[0]);  // min_distance;
   double f = 0.0;           // tmp distance;
   int s1 = r1.n_atom_;
   int s2 = r2.n_atom_;
   for (i = 0; i < s1; i++) {
-    if (r1.atoms_[i].get_element() == "H")
+    if (r1.v_atoms_[i].get_element() == "H")
       continue;
     for (j = 0; j < s2; j++) {
-      if (r2.atoms_[j].get_element() == "H")
+      if (r2.v_atoms_[j].get_element() == "H")
         continue;
-      f = atom_distance(r1.atoms_[i], r2.atoms_[j]);
+      f = atom_distance(r1.v_atoms_[i], r2.v_atoms_[j]);
       if (d > f)
         d = f;
     }

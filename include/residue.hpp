@@ -41,7 +41,7 @@ class Residue
   //! @return An Residue object.
   // ************************************************************
   Residue();
-  virtual ~Residue() {atoms_.clear();}
+  virtual ~Residue() {v_atoms_.clear();}
 
   // ************************************************************
   //! @brief Reset properties of Residue.
@@ -233,7 +233,7 @@ class Residue
   std::string short_name_;   //!< Short name of residue.
   char chain_ID_;            //!< Chain identifier from PDB.
   int resid_index_;          //!< Residue sequence number in PDB.
-  std::vector<Atom> atoms_;  //!< A set of atom objects.
+  std::vector<Atom> v_atoms_;  //!< A set of atom objects.
   int n_atom_;               //!< Number of atoms in Residue.
   double charge_;            //!< Charge of Residue.
   double mass_;              //!< Mass of Residue.
