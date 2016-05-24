@@ -47,12 +47,12 @@ class Atom
   //! @brief Get the "ATOM  " record keyword in PDB.
   //! @return Record word.
   // ************************************************************
-  std::string get_atom_flag() const { return atom_flag_; }
+  std::string get_atom_flag() const { return record_name_; }
   // ************************************************************
   //! @brief Set the "ATOM  " record keyword of atom.
   //! @param Record word.
   // ************************************************************
-  void set_atom_flag(const std::string& s) { atom_flag_ = s; }
+  void set_atom_flag(const std::string& s) { record_name_ = s; }
 
   // ************************************************************
   //! @brief Get serial number of atom.
@@ -212,7 +212,7 @@ class Atom
   friend std::istream& operator>>(std::istream&, Atom&);
   friend double atom_distance (const Atom&, const Atom&);
  protected:
-  std::string atom_flag_;  //!< Atom flag from PDB.
+  std::string record_name_;  //!< Atom flag from PDB.
   int serial_;             //!< Atom serial number in PDB.
   std::string atom_name_;  //!< Atom name in PDB.
   char alt_loc_;           //!< Alternate location indicator from PDB.

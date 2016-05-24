@@ -27,7 +27,7 @@ void Atom::set_resid_name(const std::string& s)
 // Atom::Atom ==============================================================
 Atom::Atom()
 {
-  atom_flag_ = "";
+  record_name_ = "";
   serial_ = 0;
   atom_name_ = "";
   alt_loc_ = ' ';
@@ -45,7 +45,7 @@ Atom::Atom()
 
 void Atom::reset()
 {
-  atom_flag_ = "";
+  record_name_ = "";
   serial_ = 0;
   atom_name_ = "";
   alt_loc_ = ' ';
@@ -66,7 +66,7 @@ std::ostream& operator<<(std::ostream& o, const Atom& a)
 {
   if (a.get_atom_flag() == "ATOM  " || a.get_atom_flag() == "HETATM")
   {
-    o << std::setw(6) << a.atom_flag_
+    o << std::setw(6) << a.record_name_
       << std::setw(5) << a.serial_ << " "
       << std::setw(4) << a.atom_name_
       << std::setw(1) << a.alt_loc_
@@ -85,7 +85,7 @@ std::ostream& operator<<(std::ostream& o, const Atom& a)
       << std::setw(2) << a.element_
       << std::setw(2) << a.charge_;
   } else {
-    o << a.atom_flag_;
+    o << a.record_name_;
   }
   return o;
 }
@@ -106,7 +106,7 @@ std::istream& operator>>(std::istream& i, Atom& a)
   std::getline(i, pdb_line);
   pdb_line.resize(80, ' ');
   tmp_str = pdb_line.substr(0,6);
-  a.atom_flag_ = tmp_str;
+  a.record_name_ = tmp_str;
 
   if (a.get_atom_flag() == "ATOM  " || a.get_atom_flag() == "HETATM")
   {
