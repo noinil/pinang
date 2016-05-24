@@ -116,11 +116,13 @@ class Transform
   void set_translation(const Vec3d& v) { translation_ = v; }
 
   // ************************************************************
-  //! @brief Apply the transform to a vector.
+  //! @brief Apply the transform to a vector. (Create a new one)
+  //! @return Vec3d which is a transformation of the original one.
   // ************************************************************
   Vec3d apply(const Vec3d&);
   // ************************************************************
-  //! @brief Apply the transform to a Group.
+  //! @brief Apply the transform to a Group. (Create a new one)
+  //! @return Conformation which is a transformation of the original one.
   // ************************************************************
   Group apply(const Group&);
 
