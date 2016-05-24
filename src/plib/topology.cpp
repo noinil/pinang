@@ -8,7 +8,7 @@ namespace pinang {
 Topology::Topology(const std::string& s)
 {
   n_particle_ = 0;
-  particles_.clear();
+  v_particles_.clear();
 
   Particle p;
 
@@ -36,7 +36,7 @@ Topology::Topology(const std::string& s)
       std::getline(ifile, inp_line);
       for (int i = 0; i < n_particle_ ; i++) {
         ifile >> p;
-        particles_.push_back(p);
+        v_particles_.push_back(p);
       }
       std::cout << " Total particle number: "
                 << n_particle_
@@ -51,7 +51,7 @@ Topology::Topology(const std::string& s)
 void Topology::reset()
 {
   n_particle_ = 0;
-  particles_.clear();
+  v_particles_.clear();
 }
 
 Particle& Topology::get_particle(int n)
@@ -62,7 +62,7 @@ Particle& Topology::get_particle(int n)
     std::cerr << " ERROR: Atom index out of range in Topology. " << std::endl;
     exit(EXIT_SUCCESS);
   } else {
-    return particles_[n];
+    return v_particles_[n];
   }
 }
 

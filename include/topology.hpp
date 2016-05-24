@@ -40,7 +40,7 @@ class Topology
   //! @return An Topology object.
   // ************************************************************
   Topology(const std::string& s);
-  virtual ~Topology() {particles_.clear();}
+  virtual ~Topology() {v_particles_.clear();}
 
   // ************************************************************
   //! @brief Reset properties of Topology.
@@ -60,7 +60,7 @@ class Topology
   Particle& get_particle(int);
 
  protected:
-  std::vector<Particle> particles_;  //!< A set of Particle objects.
+  std::vector<Particle> v_particles_;  //!< A set of Particle objects.
   int n_particle_;                   //!< Number of particles in Topology.
 };
 
