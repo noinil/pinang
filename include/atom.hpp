@@ -135,7 +135,7 @@ class Atom
   //! @brief Get coordinates of atom.
   //! @return Coordinates of atom.
   // ************************************************************
-  const Vec3d& get_coordinates() const { return coordinate_; }
+  const Vec3d& get_coordinate() const { return coordinate_; }
   // ************************************************************
   //! @brief Get coordinates of atom from Vec3d type coordinates.
   //! @param Vec3d type coordinates.

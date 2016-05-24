@@ -70,7 +70,7 @@ class Conformation
   //! @param Serial number of the coordinate.
   //! @return Vec3d type coordinate.
   // ************************************************************
-  Vec3d& get_coor(int);
+  Vec3d& get_coordinate(int);
 
  protected:
   std::vector<Vec3d> coordinates_;  //!< A set of coordinate objects in a certain conformation.

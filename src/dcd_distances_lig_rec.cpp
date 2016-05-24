@@ -221,14 +221,14 @@ int main(int argc, char *argv[])
 
         for (int j = 0; j < int(atom_group1_idx.size()); j++) {
             k = atom_group1_idx[j];
-            v = v + conformations[i].get_coor(k) * top.get_particle(k).get_mass();
+            v = v + conformations[i].get_coordinate(k) * top.get_particle(k).get_mass();
             total_mass += top.get_particle(k).get_mass();
         }
         com1 = v * (1/total_mass);
 
         for (int j = 0; j < int(atom_group2_idx.size()); j++) {
             k = atom_group2_idx[j];
-            v = conformations[i].get_coor(k);
+            v = conformations[i].get_coordinate(k);
             d_tmp = vec_distance(com1, v);
             // std::cout << d_tmp << std::endl;
             if (dist < 0 || dist > d_tmp) dist = d_tmp;

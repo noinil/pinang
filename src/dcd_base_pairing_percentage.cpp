@@ -279,7 +279,7 @@ int main(int argc, char *argv[])
         for (int j = 0; j < int(atom_group1_idx.size()); j++) {
             k = atom_group1_idx[j];
             l = atom_group2_idx[j];
-            v = conformations[i].get_coor(k) - conformations[i].get_coor(l);
+            v = conformations[i].get_coordinate(k) - conformations[i].get_coordinate(l);
             dist = v.norm();
             if (dist <= pinang::g_cutoff)
                 bp_number++;

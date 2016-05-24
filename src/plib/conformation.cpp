@@ -35,7 +35,7 @@ int Conformation::set_conformation(std::vector<Vec3d> v)
   }
 }
 
-Vec3d& Conformation::get_coor(int n)
+Vec3d& Conformation::get_coordinate(int n)
 {
   if (n >= n_atom_ || n < 0)
   {

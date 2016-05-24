@@ -247,7 +247,7 @@ int main(int argc, char *argv[])
 
         for (int j = 0; j < int(atom_group1_idx.size()); j++) {
             k = atom_group1_idx[j];
-            v = v + conformations[i].get_coor(k) * top.get_particle(k).get_mass();
+            v = v + conformations[i].get_coordinate(k) * top.get_particle(k).get_mass();
             total_mass += top.get_particle(k).get_mass();
             lig_resid[j] = 0;
         }
@@ -255,7 +255,7 @@ int main(int argc, char *argv[])
 
         for (int j = 0; j < int(atom_group2_idx.size()); j++) {
             k = atom_group2_idx[j];
-            v = conformations[i].get_coor(k);
+            v = conformations[i].get_coordinate(k);
             d_tmp = vec_distance(com1, v);
             rec_resid[j] = 0;
             // std::cout << d_tmp << std::endl;
@@ -269,10 +269,10 @@ int main(int argc, char *argv[])
 
         for (int j = 0; j < int(atom_group1_idx.size()); j++) {
             k = atom_group1_idx[j];
-            v1 = conformations[i].get_coor(k);
+            v1 = conformations[i].get_coordinate(k);
             for (l = 0; l < int(atom_group2_idx.size()); l++) {
                 m = atom_group2_idx[l];
-                v2 = conformations[i].get_coor(m);
+                v2 = conformations[i].get_coordinate(m);
                 d_tmp = vec_distance(v1, v2);
                 if (d_tmp < contact_cutoff) {
                     lig_resid[j] = 1;

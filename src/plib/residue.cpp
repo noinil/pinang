@@ -235,37 +235,37 @@ void Residue::self_check() const
 //     char c = aname[0];
 //     switch (c) {
 //       case 'C':
-//         if (aname == "C5'") {coor_C5p = v_atoms_[i].get_coordinates(); n_cs++;}
-//         else if (aname == "C1'") {coor_C1p = v_atoms_[i].get_coordinates(); n_cs++;}
-//         else if (aname == "C2'") {coor_C2p = v_atoms_[i].get_coordinates(); n_cs++;}
-//         else if (aname == "C3'") {coor_C3p = v_atoms_[i].get_coordinates(); n_cs++;}
-//         else if (aname == "C4'") {coor_C4p = v_atoms_[i].get_coordinates(); n_cs++;}
-//         else if (aname == "C2 ") { coor_C2 = v_atoms_[i].get_coordinates(); n_cb++;}
-//         else if (aname == "C4 ") { coor_C4 = v_atoms_[i].get_coordinates(); n_cb++;}
-//         else if (aname == "C5 ") { coor_C5 = v_atoms_[i].get_coordinates(); n_cb++;}
-//         else if (aname == "C6 ") { coor_C6 = v_atoms_[i].get_coordinates(); n_cb++;}
-//         else if (aname == "C8 ") { coor_C8 = v_atoms_[i].get_coordinates(); n_cb++;}
+//         if (aname == "C5'") {coor_C5p = v_atoms_[i].get_coordinate(); n_cs++;}
+//         else if (aname == "C1'") {coor_C1p = v_atoms_[i].get_coordinate(); n_cs++;}
+//         else if (aname == "C2'") {coor_C2p = v_atoms_[i].get_coordinate(); n_cs++;}
+//         else if (aname == "C3'") {coor_C3p = v_atoms_[i].get_coordinate(); n_cs++;}
+//         else if (aname == "C4'") {coor_C4p = v_atoms_[i].get_coordinate(); n_cs++;}
+//         else if (aname == "C2 ") { coor_C2 = v_atoms_[i].get_coordinate(); n_cb++;}
+//         else if (aname == "C4 ") { coor_C4 = v_atoms_[i].get_coordinate(); n_cb++;}
+//         else if (aname == "C5 ") { coor_C5 = v_atoms_[i].get_coordinate(); n_cb++;}
+//         else if (aname == "C6 ") { coor_C6 = v_atoms_[i].get_coordinate(); n_cb++;}
+//         else if (aname == "C8 ") { coor_C8 = v_atoms_[i].get_coordinate(); n_cb++;}
 //         break;
 //       case 'O':
-//         if (aname == "O4'") {coor_O4p = v_atoms_[i].get_coordinates(); n_os++;}
-//         else if (aname == "O2'") {coor_O2p = v_atoms_[i].get_coordinates(); n_os++;}
-//         else if (aname == "O3'") {coor_O3p = v_atoms_[i].get_coordinates();}
-//         else if (aname == "O5'") {coor_O5p = v_atoms_[i].get_coordinates();}
-//         else if (aname == "O2 ") {coor_O2 = v_atoms_[i].get_coordinates(); n_ob++;}
-//         else if (aname == "O4 ") {coor_O4 = v_atoms_[i].get_coordinates(); n_ob++;}
-//         else if (aname == "O6 ") {coor_O6 = v_atoms_[i].get_coordinates(); n_ob++;}
+//         if (aname == "O4'") {coor_O4p = v_atoms_[i].get_coordinate(); n_os++;}
+//         else if (aname == "O2'") {coor_O2p = v_atoms_[i].get_coordinate(); n_os++;}
+//         else if (aname == "O3'") {coor_O3p = v_atoms_[i].get_coordinate();}
+//         else if (aname == "O5'") {coor_O5p = v_atoms_[i].get_coordinate();}
+//         else if (aname == "O2 ") {coor_O2 = v_atoms_[i].get_coordinate(); n_ob++;}
+//         else if (aname == "O4 ") {coor_O4 = v_atoms_[i].get_coordinate(); n_ob++;}
+//         else if (aname == "O6 ") {coor_O6 = v_atoms_[i].get_coordinate(); n_ob++;}
 //         break;
 //       case 'N':
-//         if (aname == "N1 ") {coor_N1 = v_atoms_[i].get_coordinates(); n_nb++;}
-//         else if (aname == "N2 ") {coor_N2 = v_atoms_[i].get_coordinates(); n_nb++;}
-//         else if (aname == "N3 ") {coor_N3 = v_atoms_[i].get_coordinates(); n_nb++;}
-//         else if (aname == "N4 ") {coor_N4 = v_atoms_[i].get_coordinates(); n_nb++;}
-//         else if (aname == "N6 ") {coor_N6 = v_atoms_[i].get_coordinates(); n_nb++;}
-//         else if (aname == "N7 ") {coor_N7 = v_atoms_[i].get_coordinates(); n_nb++;}
-//         else if (aname == "N9 ") {coor_N9 = v_atoms_[i].get_coordinates(); n_nb++;}
+//         if (aname == "N1 ") {coor_N1 = v_atoms_[i].get_coordinate(); n_nb++;}
+//         else if (aname == "N2 ") {coor_N2 = v_atoms_[i].get_coordinate(); n_nb++;}
+//         else if (aname == "N3 ") {coor_N3 = v_atoms_[i].get_coordinate(); n_nb++;}
+//         else if (aname == "N4 ") {coor_N4 = v_atoms_[i].get_coordinate(); n_nb++;}
+//         else if (aname == "N6 ") {coor_N6 = v_atoms_[i].get_coordinate(); n_nb++;}
+//         else if (aname == "N7 ") {coor_N7 = v_atoms_[i].get_coordinate(); n_nb++;}
+//         else if (aname == "N9 ") {coor_N9 = v_atoms_[i].get_coordinate(); n_nb++;}
 //         break;
 //       default:
-//         if (aname == "P  ") coor_P = v_atoms_[i].get_coordinates();
+//         if (aname == "P  ") coor_P = v_atoms_[i].get_coordinate();
 //     }
 //   }
 //   com_P = coor_P;

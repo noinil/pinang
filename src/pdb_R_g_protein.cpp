@@ -147,7 +147,7 @@ int main(int argc, char *argv[])
         chain_tmp = mdl0.get_chain(j);
         int len1 = chain_tmp.get_chain_length();
         for (int k = 1; k < len1; k++) {
-          c_alpha_coors.push_back(chain_tmp.get_residue(k).get_cg_C_alpha().get_coordinates());
+          c_alpha_coors.push_back(chain_tmp.get_residue(k).get_cg_C_alpha().get_coordinate());
         }
         chain_tmp.reset();
       }

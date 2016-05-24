@@ -143,7 +143,7 @@ void Chain::output_cg_pos(std::ostream& o, int& n)
   {
     for (Residue& r : v_residues_) {
       Vec3d coor_CA;
-      coor_CA = r.get_cg_C_alpha().get_coordinates();
+      coor_CA = r.get_cg_C_alpha().get_coordinate();
       o << std::setw(8) << ++n
         << std::setw(5) << r.get_residue_name()
         << std::setw(5) << r.get_residue_serial() << "   "
@@ -159,7 +159,7 @@ void Chain::output_cg_pos(std::ostream& o, int& n)
       Vec3d coor_S;
       Vec3d coor_B;
       if (r.get_terminus_flag() != 5) {
-        coor_P = r.get_cg_P().get_coordinates();
+        coor_P = r.get_cg_P().get_coordinate();
         o << std::setw(8) << ++n
           << std::setw(5) << "P"
           << std::setw(5) << r.get_residue_serial() << "   "
@@ -169,7 +169,7 @@ void Chain::output_cg_pos(std::ostream& o, int& n)
           << std::setw(12) << coor_P.z() << " "
           << std::endl;
       }
-      coor_S = r.get_cg_S().get_coordinates();
+      coor_S = r.get_cg_S().get_coordinate();
       o << std::setw(8) << ++n
         << std::setw(5) << "S"
         << std::setw(5) << r.get_residue_serial() << "   "
@@ -178,7 +178,7 @@ void Chain::output_cg_pos(std::ostream& o, int& n)
         << std::setw(12) << coor_S.y() << " "
         << std::setw(12) << coor_S.z() << " "
         << std::endl;
-      coor_B = r.get_cg_B().get_coordinates();
+      coor_B = r.get_cg_B().get_coordinate();
       o << std::setw(8) << ++n
         << std::setw(5) << r.get_short_name()
         << std::setw(5) << r.get_residue_serial() << "   "
@@ -344,10 +344,10 @@ void Chain::output_top_angle(std::ostream& o, int& n)
   if (chain_type_ != DNA && chain_type_ != RNA && chain_type_ != na)
   {
     for (i = 0; i < n_residue_-2; i++) {
-      v1 = v_residues_[i].get_cg_C_alpha().get_coordinates()
-           - v_residues_[i+1].get_cg_C_alpha().get_coordinates();
-      v2 = v_residues_[i+2].get_cg_C_alpha().get_coordinates()
-           - v_residues_[i+1].get_cg_C_alpha().get_coordinates();
+      v1 = v_residues_[i].get_cg_C_alpha().get_coordinate()
+           - v_residues_[i+1].get_cg_C_alpha().get_coordinate();
+      v2 = v_residues_[i+2].get_cg_C_alpha().get_coordinate()
+           - v_residues_[i+1].get_cg_C_alpha().get_coordinate();
       a = vec_angle_deg (v1, v2);
       o << std::setw(8) << i+1+n << " "
         << std::setw(8) << i+2+n << " "
@@ -362,10 +362,10 @@ void Chain::output_top_angle(std::ostream& o, int& n)
     n += n_residue_;
   } else {
     // ---------- angle BSP ----------
-    v1 = v_residues_[0].get_cg_B().get_coordinates()
-         - v_residues_[0].get_cg_S().get_coordinates();
-    v2 = v_residues_[1].get_cg_P().get_coordinates()
-         - v_residues_[0].get_cg_S().get_coordinates();
+    v1 = v_residues_[0].get_cg_B().get_coordinate()
+         - v_residues_[0].get_cg_S().get_coordinate();
+    v2 = v_residues_[1].get_cg_P().get_coordinate()
+         - v_residues_[0].get_cg_S().get_coordinate();
     a = vec_angle_deg (v1, v2);
     o << std::setw(8) << n+2 << " "
       << std::setw(8) << n+1 << " "
@@ -375,10 +375,10 @@ void Chain::output_top_angle(std::ostream& o, int& n)
       << std::setprecision(1)
       << std::setw(8) << k_K_angle << std::endl;
     // ---------- angle SPS ----------
-    v1 = v_residues_[0].get_cg_S().get_coordinates()
-         - v_residues_[1].get_cg_P().get_coordinates();
-    v2 = v_residues_[1].get_cg_S().get_coordinates()
-         - v_residues_[1].get_cg_P().get_coordinates();
+    v1 = v_residues_[0].get_cg_S().get_coordinate()
+         - v_residues_[1].get_cg_P().get_coordinate();
+    v2 = v_residues_[1].get_cg_S().get_coordinate()
+         - v_residues_[1].get_cg_P().get_coordinate();
     a = vec_angle_deg (v1, v2);
     o << std::setw(8) << n+1 << " "
       << std::setw(8) << n+3 << " "
@@ -392,10 +392,10 @@ void Chain::output_top_angle(std::ostream& o, int& n)
     for (i = 1; i < n_residue_-1; i++) {
       n += 3;
       // ---------- angle PSB ----------
-      v1 = v_residues_[i].get_cg_P().get_coordinates()
-           - v_residues_[i].get_cg_S().get_coordinates();
-      v2 = v_residues_[i].get_cg_B().get_coordinates()
-           - v_residues_[i].get_cg_S().get_coordinates();
+      v1 = v_residues_[i].get_cg_P().get_coordinate()
+           - v_residues_[i].get_cg_S().get_coordinate();
+      v2 = v_residues_[i].get_cg_B().get_coordinate()
+           - v_residues_[i].get_cg_S().get_coordinate();
       a = vec_angle_deg (v1, v2);
       o << std::setw(8) << n << " "
         << std::setw(8) << n+1 << " "
@@ -405,10 +405,10 @@ void Chain::output_top_angle(std::ostream& o, int& n)
         << std::setprecision(1)
         << std::setw(8) << k_K_angle << std::endl;
       // ---------- angle PSP ----------
-      v1 = v_residues_[i].get_cg_P().get_coordinates()
-           - v_residues_[i].get_cg_S().get_coordinates();
-      v2 = v_residues_[i+1].get_cg_P().get_coordinates()
-           - v_residues_[i].get_cg_S().get_coordinates();
+      v1 = v_residues_[i].get_cg_P().get_coordinate()
+           - v_residues_[i].get_cg_S().get_coordinate();
+      v2 = v_residues_[i+1].get_cg_P().get_coordinate()
+           - v_residues_[i].get_cg_S().get_coordinate();
       a = vec_angle_deg (v1, v2);
       o << std::setw(8) << n << " "
         << std::setw(8) << n+1 << " "
@@ -418,10 +418,10 @@ void Chain::output_top_angle(std::ostream& o, int& n)
         << std::setprecision(1)
         << std::setw(8) << k_K_angle << std::endl;
       // ---------- angle BSP ----------
-      v1 = v_residues_[i].get_cg_B().get_coordinates()
-           - v_residues_[i].get_cg_S().get_coordinates();
-      v2 = v_residues_[i+1].get_cg_P().get_coordinates()
-           - v_residues_[i].get_cg_S().get_coordinates();
+      v1 = v_residues_[i].get_cg_B().get_coordinate()
+           - v_residues_[i].get_cg_S().get_coordinate();
+      v2 = v_residues_[i+1].get_cg_P().get_coordinate()
+           - v_residues_[i].get_cg_S().get_coordinate();
       a = vec_angle_deg (v1, v2);
       o << std::setw(8) << n+2 << " "
         << std::setw(8) << n+1 << " "
@@ -431,10 +431,10 @@ void Chain::output_top_angle(std::ostream& o, int& n)
         << std::setprecision(1)
         << std::setw(8) << k_K_angle << std::endl;
       // ---------- angle SPS ----------
-      v1 = v_residues_[i].get_cg_S().get_coordinates()
-           - v_residues_[i+1].get_cg_P().get_coordinates();
-      v2 = v_residues_[i+1].get_cg_S().get_coordinates()
-           - v_residues_[i+1].get_cg_P().get_coordinates();
+      v1 = v_residues_[i].get_cg_S().get_coordinate()
+           - v_residues_[i+1].get_cg_P().get_coordinate();
+      v2 = v_residues_[i+1].get_cg_S().get_coordinate()
+           - v_residues_[i+1].get_cg_P().get_coordinate();
       a = vec_angle_deg (v1, v2);
       o << std::setw(8) << n+1 << " "
         << std::setw(8) << n+3 << " "
@@ -447,10 +447,10 @@ void Chain::output_top_angle(std::ostream& o, int& n)
     n += 3;
     i = n_residue_ - 1;
     // ---------- angle PSB ----------
-    v1 = v_residues_[i].get_cg_P().get_coordinates()
-         - v_residues_[i].get_cg_S().get_coordinates();
-    v2 = v_residues_[i].get_cg_B().get_coordinates()
-         - v_residues_[i].get_cg_S().get_coordinates();
+    v1 = v_residues_[i].get_cg_P().get_coordinate()
+         - v_residues_[i].get_cg_S().get_coordinate();
+    v2 = v_residues_[i].get_cg_B().get_coordinate()
+         - v_residues_[i].get_cg_S().get_coordinate();
     a = vec_angle_deg (v1, v2);
     o << std::setw(8) << n << " "
       << std::setw(8) << n+1 << " "
@@ -474,12 +474,12 @@ void Chain::output_top_dihedral(std::ostream& o, int& n)
   if (chain_type_ != DNA && chain_type_ != RNA && chain_type_ != na)
   {
     for (i = 0; i < n_residue_-3; i++) {
-      v1 = v_residues_[i].get_cg_C_alpha().get_coordinates()
-           - v_residues_[i+1].get_cg_C_alpha().get_coordinates();
-      v2 = v_residues_[i+2].get_cg_C_alpha().get_coordinates()
-           - v_residues_[i+1].get_cg_C_alpha().get_coordinates();
-      v3 = v_residues_[i+2].get_cg_C_alpha().get_coordinates()
-           - v_residues_[i+3].get_cg_C_alpha().get_coordinates();
+      v1 = v_residues_[i].get_cg_C_alpha().get_coordinate()
+           - v_residues_[i+1].get_cg_C_alpha().get_coordinate();
+      v2 = v_residues_[i+2].get_cg_C_alpha().get_coordinate()
+           - v_residues_[i+1].get_cg_C_alpha().get_coordinate();
+      v3 = v_residues_[i+2].get_cg_C_alpha().get_coordinate()
+           - v_residues_[i+3].get_cg_C_alpha().get_coordinate();
       n1 = v1 % v2;
       n2 = v2 % v3;
       d = vec_angle_deg (n1, n2);
@@ -501,12 +501,12 @@ void Chain::output_top_dihedral(std::ostream& o, int& n)
       n += 5;
       return;
     }
-    v1 = v_residues_[0].get_cg_S().get_coordinates()
-         - v_residues_[1].get_cg_P().get_coordinates();
-    v2 = v_residues_[1].get_cg_S().get_coordinates()
-         - v_residues_[1].get_cg_P().get_coordinates();
-    v3 = v_residues_[1].get_cg_S().get_coordinates()
-         - v_residues_[2].get_cg_P().get_coordinates();
+    v1 = v_residues_[0].get_cg_S().get_coordinate()
+         - v_residues_[1].get_cg_P().get_coordinate();
+    v2 = v_residues_[1].get_cg_S().get_coordinate()
+         - v_residues_[1].get_cg_P().get_coordinate();
+    v3 = v_residues_[1].get_cg_S().get_coordinate()
+         - v_residues_[2].get_cg_P().get_coordinate();
 
     n1 = v1 % v2;
     n2 = v2 % v3;
@@ -526,12 +526,12 @@ void Chain::output_top_dihedral(std::ostream& o, int& n)
     for (i = 1; i < n_residue_-1; i++) {
       n += 3;
       // ---------- PSPS ----------
-      v1 = v_residues_[i].get_cg_P().get_coordinates()
-           - v_residues_[i].get_cg_S().get_coordinates();
-      v2 = v_residues_[i+1].get_cg_P().get_coordinates()
-           - v_residues_[i].get_cg_S().get_coordinates();
-      v3 = v_residues_[i+1].get_cg_P().get_coordinates()
-           - v_residues_[i+1].get_cg_S().get_coordinates();
+      v1 = v_residues_[i].get_cg_P().get_coordinate()
+           - v_residues_[i].get_cg_S().get_coordinate();
+      v2 = v_residues_[i+1].get_cg_P().get_coordinate()
+           - v_residues_[i].get_cg_S().get_coordinate();
+      v3 = v_residues_[i+1].get_cg_P().get_coordinate()
+           - v_residues_[i+1].get_cg_S().get_coordinate();
       n1 = v1 % v2;
       n2 = v2 % v3;
       d = vec_angle_deg (n1, n2);
@@ -550,12 +550,12 @@ void Chain::output_top_dihedral(std::ostream& o, int& n)
       if (i == n_residue_ - 2)
         break;
       // ---------- SPSP ----------
-      v1 = v_residues_[i].get_cg_S().get_coordinates()
-           - v_residues_[i+1].get_cg_P().get_coordinates();
-      v2 = v_residues_[i+1].get_cg_S().get_coordinates()
-           - v_residues_[i+1].get_cg_P().get_coordinates();
-      v3 = v_residues_[i+1].get_cg_S().get_coordinates()
-           - v_residues_[i+2].get_cg_P().get_coordinates();
+      v1 = v_residues_[i].get_cg_S().get_coordinate()
+           - v_residues_[i+1].get_cg_P().get_coordinate();
+      v2 = v_residues_[i+1].get_cg_S().get_coordinate()
+           - v_residues_[i+1].get_cg_P().get_coordinate();
+      v3 = v_residues_[i+1].get_cg_S().get_coordinate()
+           - v_residues_[i+2].get_cg_P().get_coordinate();
       n1 = v1 % v2;
       n2 = v2 % v3;
       d = vec_angle_deg (n1, n2);

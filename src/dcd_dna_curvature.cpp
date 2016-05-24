@@ -341,21 +341,21 @@ int main(int argc, char *argv[])
         backbone2_nodes.clear();
         for (i = 0; i < len1; i++) {
             j = phosphate_strand1_idx[i];
-            backbone1_nodes.push_back(confm.get_coor(j));
+            backbone1_nodes.push_back(confm.get_coordinate(j));
         }
         for (i = 0; i < len2; i++) {
             j = phosphate_strand2_idx[i];
-            backbone2_nodes.push_back(confm.get_coor(j));
+            backbone2_nodes.push_back(confm.get_coordinate(j));
         }
         len1 = base_strand1_idx.size();
         len2 = base_strand2_idx.size();
         for (i = 0; i < len1; i++) {
             j = base_strand1_idx[i];
-            base_positions1.push_back(confm.get_coor(j));
+            base_positions1.push_back(confm.get_coordinate(j));
         }
         for (i = 0; i < len2; i++) {
             j = base_strand2_idx[i];
-            base_positions2.push_back(confm.get_coor(j));
+            base_positions2.push_back(confm.get_coordinate(j));
         }
 
         // -------------------- backbone --------------------
