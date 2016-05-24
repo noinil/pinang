@@ -54,7 +54,6 @@ int main(int argc, char *argv[])
   }
   pinang::PDB pdb1(infilename);
 
-
   std::cout << " Sequence of PDB " << pdb1.get_pdb_name() << " :" << std::endl;
   std::cout << " Total number of chains: " << pdb1.get_model(0).get_size() << std::endl;
   std::cout << std::endl;
