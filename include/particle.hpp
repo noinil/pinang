@@ -61,12 +61,12 @@ class Particle
   //! @brief Get residue name.
   //! @return Residue name.
   // ************************************************************
-  std::string get_resid_name() const { return resid_name_; }
+  std::string get_residue_name() const { return residue_name_; }
   // ************************************************************
   //! @brief Set residue name.
   //! @param Residue name.
   // ************************************************************
-  void set_resid_name(const std::string&);
+  void set_residue_name(const std::string&);
 
   // ************************************************************
   //! @brief Get residue serial number.
@@ -108,7 +108,7 @@ class Particle
 
  protected:
   std::string atom_name_;   //!< Atom name of particle.
-  std::string resid_name_;  //!< Residue name of particle.
+  std::string residue_name_;  //!< Residue name of particle.
   int residue_serial_;         //!< Residue sequence number of particle.
   double charge_;           //!< Charge of particle.
   double mass_;             //!< Mass of particle.

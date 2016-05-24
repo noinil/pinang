@@ -14,14 +14,14 @@ void Particle::set_atom_name(const std::string& s)
   }
 }
 
-void Particle::set_resid_name(const std::string& s)
+void Particle::set_residue_name(const std::string& s)
 {
   size_t sz = 3;
-  resid_name_ = s;
+  residue_name_ = s;
 
-  if (resid_name_.size() < sz)
+  if (residue_name_.size() < sz)
   {
-    resid_name_.resize(sz, ' ');
+    residue_name_.resize(sz, ' ');
   }
 }
 
@@ -29,7 +29,7 @@ void Particle::set_resid_name(const std::string& s)
 Particle::Particle()
 {
   atom_name_ = "";
-  resid_name_ = "";
+  residue_name_ = "";
   residue_serial_ = 0;
   charge_ = 0;
   mass_ = 0;
@@ -38,7 +38,7 @@ Particle::Particle()
 void Particle::reset()
 {
   atom_name_ = "";
-  resid_name_ = "";
+  residue_name_ = "";
   residue_serial_ = 0;
   charge_ = 0;
   mass_ = 0;
@@ -63,7 +63,7 @@ std::istream& operator>>(std::istream& i, Particle& p)
   p.residue_serial_ = tmp_i;
 
   tmp_sstr >> tmp_s;
-  p.set_resid_name(tmp_s);
+  p.set_residue_name(tmp_s);
 
   tmp_sstr >> tmp_s;
   p.set_atom_name(tmp_s);

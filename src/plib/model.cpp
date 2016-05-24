@@ -236,14 +236,14 @@ void Model::output_top_nonbonded(std::ostream& o)
       Atom S = v_chains_[i].get_residue(0).get_S();
       Atom B = v_chains_[i].get_residue(0).get_B();
       r_tmp.reset();
-      r_tmp.set_residue_by_name(S.get_resid_name());
+      r_tmp.set_residue_by_name(S.get_residue_name());
       r_tmp.set_chain_ID(S.get_chain_ID());
       r_tmp.set_residue_serial(S.get_residue_serial());
       r_tmp.add_atom(S);
       c_tmp.add_residue(r_tmp);
 
       r_tmp.reset();
-      r_tmp.set_residue_by_name(B.get_resid_name());
+      r_tmp.set_residue_by_name(B.get_residue_name());
       r_tmp.set_chain_ID(B.get_chain_ID());
       r_tmp.set_residue_serial(B.get_residue_serial());
       r_tmp.add_atom(B);
@@ -255,21 +255,21 @@ void Model::output_top_nonbonded(std::ostream& o)
         Atom S = v_chains_[i].get_residue(j).get_S();
         Atom B = v_chains_[i].get_residue(j).get_B();
         r_tmp.reset();
-        r_tmp.set_residue_by_name(P.get_resid_name());
+        r_tmp.set_residue_by_name(P.get_residue_name());
         r_tmp.set_chain_ID(P.get_chain_ID());
         r_tmp.set_residue_serial(P.get_residue_serial());
         r_tmp.add_atom(P);
         c_tmp.add_residue(r_tmp);
 
         r_tmp.reset();
-        r_tmp.set_residue_by_name(S.get_resid_name());
+        r_tmp.set_residue_by_name(S.get_residue_name());
         r_tmp.set_chain_ID(S.get_chain_ID());
         r_tmp.set_residue_serial(S.get_residue_serial());
         r_tmp.add_atom(S);
         c_tmp.add_residue(r_tmp);
 
         r_tmp.reset();
-        r_tmp.set_residue_by_name(B.get_resid_name());
+        r_tmp.set_residue_by_name(B.get_residue_name());
         r_tmp.set_chain_ID(B.get_chain_ID());
         r_tmp.set_residue_serial(B.get_residue_serial());
         r_tmp.add_atom(B);

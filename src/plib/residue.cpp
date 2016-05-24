@@ -2,23 +2,23 @@
 
 namespace pinang {
 
-void Residue::set_resid_name(const std::string& s)
+void Residue::set_residue_name(const std::string& s)
 {
   size_t sz = 3;
-  resid_name_ = s;
-  if (resid_name_.size() < sz)
+  residue_name_ = s;
+  if (residue_name_.size() < sz)
   {
-    resid_name_.resize(sz, ' ');
+    residue_name_.resize(sz, ' ');
   }
 }
 void Residue::set_residue_by_name(const std::string& s)
 {
   PhysicalProperty p;
   size_t sz = 3;
-  resid_name_ = s;
-  if (resid_name_.size() < sz)
+  residue_name_ = s;
+  if (residue_name_.size() < sz)
   {
-    resid_name_.resize(sz, ' ');
+    residue_name_.resize(sz, ' ');
   }
   short_name_ = p.get_short_name(s);
   chain_type_ = p.get_chain_type(s);
@@ -175,7 +175,7 @@ void Residue::self_check() const
 {
   for (const Atom& a : v_atoms_) {
     if (a.get_chain_ID() != chain_ID_ || a.get_residue_serial() != residue_serial_
-        || a.get_resid_name() != resid_name_)
+        || a.get_residue_name() != residue_name_)
     {
       std::cout << " ~               PINANG :: residues.hpp         ~ " << std::endl;
       std::cerr << "ERROR: Inconsistent chain ID or residue index or residue type in Residue "
@@ -289,7 +289,7 @@ void Residue::self_check() const
 // Residue------------------------------------------------------------------
 Residue::Residue()
 {
-  resid_name_ = "";
+  residue_name_ = "";
   short_name_ = "0";
   chain_ID_ = -1;
   residue_serial_ = -1;
@@ -309,7 +309,7 @@ Residue::Residue()
 
 void Residue::reset()
 {
-  resid_name_ = "";
+  residue_name_ = "";
   short_name_ = "0";
   chain_ID_ = -1;
   residue_serial_ = -1;

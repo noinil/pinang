@@ -91,12 +91,12 @@ class Atom
   //! @brief Get residue name.
   //! @return Residue name.
   // ************************************************************
-  std::string get_resid_name() const { return resid_name_; }
+  std::string get_residue_name() const { return residue_name_; }
   // ************************************************************
   //! @brief Set residue name.
   //! @param Residue name.
   // ************************************************************
-  void set_resid_name(const std::string&);
+  void set_residue_name(const std::string&);
 
   // ************************************************************
   //! @brief Get chain identifier.
@@ -216,7 +216,7 @@ class Atom
   int serial_;             //!< Atom serial number in PDB.
   std::string atom_name_;  //!< Atom name in PDB.
   char alt_loc_;           //!< Alternate location indicator from PDB.
-  std::string resid_name_; //!< Residue name of the atom in PDB.
+  std::string residue_name_; //!< Residue name of the atom in PDB.
   char chain_ID_;          //!< Chain identifier in PDB.
   int residue_serial_;        //!< Residue sequence number in PDB.
   char insert_code_;       //!< Code for insertion of residues from PDB.

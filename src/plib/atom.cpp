@@ -14,13 +14,13 @@ void Atom::set_atom_name(const std::string& s)
   }
 }
 
-void Atom::set_resid_name(const std::string& s)
+void Atom::set_residue_name(const std::string& s)
 {
   size_t sz = 3;
-  resid_name_ = s;
-  if (resid_name_.size() < sz)
+  residue_name_ = s;
+  if (residue_name_.size() < sz)
   {
-    resid_name_.resize(sz, ' ');
+    residue_name_.resize(sz, ' ');
   }
 }
 
@@ -31,7 +31,7 @@ Atom::Atom()
   serial_ = 0;
   atom_name_ = "";
   alt_loc_ = ' ';
-  resid_name_ = "";
+  residue_name_ = "";
   chain_ID_ = ' ';
   residue_serial_ = 0;
   insert_code_ = ' ';
@@ -49,7 +49,7 @@ void Atom::reset()
   serial_ = 0;
   atom_name_ = "";
   alt_loc_ = ' ';
-  resid_name_ = "";
+  residue_name_ = "";
   chain_ID_ = ' ';
   residue_serial_ = 0;
   insert_code_ = ' ';
@@ -70,7 +70,7 @@ std::ostream& operator<<(std::ostream& o, const Atom& a)
       << std::setw(5) << a.serial_ << " "
       << std::setw(4) << a.atom_name_
       << std::setw(1) << a.alt_loc_
-      << std::setw(3) << a.resid_name_ << " "
+      << std::setw(3) << a.residue_name_ << " "
       << std::setw(1) << a.chain_ID_
       << std::setw(4) << a.residue_serial_
       << std::setw(1) << a.insert_code_ << "   "
@@ -128,7 +128,7 @@ std::istream& operator>>(std::istream& i, Atom& a)
 
     tmp_sstr.str(pdb_line.substr(17,3));
     tmp_sstr >> tmp_str;
-    a.set_resid_name(tmp_str);
+    a.set_residue_name(tmp_str);
     tmp_sstr.clear();
     tmp_str.clear();
 

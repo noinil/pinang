@@ -52,7 +52,7 @@ class Residue
   //! @brief Get residue name.
   //! @return Residue name.
   // ************************************************************
-  std::string get_resid_name() const { return resid_name_; }
+  std::string get_residue_name() const { return residue_name_; }
   // ************************************************************
   //! @brief Get short residue name.
   //! @return Short residue name.
@@ -62,7 +62,7 @@ class Residue
   //! @brief Set residue name.
   //! @param Residue name.
   // ************************************************************
-  void set_resid_name(const std::string&);
+  void set_residue_name(const std::string&);
   // ************************************************************
   //! @brief Set residue physical properties by residue name.
   //! @param Residue name.
@@ -229,7 +229,7 @@ class Residue
   friend double resid_min_distance(const Residue&, const Residue&);
   friend double resid_ca_distance(const Residue&, const Residue&);
  protected:
-  std::string resid_name_;   //!< Residue name from PDB.
+  std::string residue_name_;   //!< Residue name from PDB.
   std::string short_name_;   //!< Short name of residue.
   char chain_ID_;            //!< Chain identifier from PDB.
   int residue_serial_;          //!< Residue sequence number in PDB.
