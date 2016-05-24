@@ -162,12 +162,12 @@ class Atom
   //! @brief Get temperature factor.
   //! @return Temperature factor.
   // ************************************************************
-  double get_temperature_factor() const { return temp_factor_; }
+  double get_temperature_factor() const { return temperature_factor_; }
   // ************************************************************
   //! @brief Set temperature factor.
   //! @param Temperature factor.
   // ************************************************************
-  void set_temperature_factor(double f) { temp_factor_ = f; }
+  void set_temperature_factor(double f) { temperature_factor_ = f; }
 
   // ************************************************************
   //! @brief Get segment identifier.
@@ -222,7 +222,7 @@ class Atom
   char insert_code_;       //!< Code for insertion of residues from PDB.
   Vec3d coordinate_;       //!< Orthogonal coordinates (x, y, z).
   double occupancy_;       //!< Occupancy from PDB.
-  double temp_factor_;     //!< Temperature factor in PDB.
+  double temperature_factor_;     //!< Temperature factor in PDB.
   std::string seg_ID_;     //!< Segment identifier in PDB.
   std::string element_;    //!< Element symbol in PDB.
   std::string charge_;     //!< Charge on the atom.

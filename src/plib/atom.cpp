@@ -37,7 +37,7 @@ Atom::Atom()
   insert_code_ = ' ';
   coordinate_ = Vec3d(0.0, 0.0, 0.0);
   occupancy_ = 0.0;
-  temp_factor_ = 0.0;
+  temperature_factor_ = 0.0;
   seg_ID_ = "";
   element_ = "";
   charge_ = "";
@@ -55,7 +55,7 @@ void Atom::reset()
   insert_code_ = ' ';
   coordinate_ = Vec3d(0.0, 0.0, 0.0);
   occupancy_ = 0.0;
-  temp_factor_ = 0.0;
+  temperature_factor_ = 0.0;
   seg_ID_ = "";
   element_ = "";
   charge_ = "";
@@ -80,7 +80,7 @@ std::ostream& operator<<(std::ostream& o, const Atom& a)
       << std::setw(8) << a.coordinate_.z()
       << std::setiosflags(std::ios_base::fixed) << std::setprecision(2)
       << std::setw(6) << a.occupancy_
-      << std::setw(6) << a.temp_factor_ << "      "
+      << std::setw(6) << a.temperature_factor_ << "      "
       << std::setw(4) << a.seg_ID_
       << std::setw(2) << a.element_
       << std::setw(2) << a.charge_;
@@ -166,7 +166,7 @@ std::istream& operator>>(std::istream& i, Atom& a)
 
     tmp_sstr.str(pdb_line.substr(60,6));
     tmp_sstr >> tmp_d;
-    a.temp_factor_ = tmp_d;
+    a.temperature_factor_ = tmp_d;
     tmp_sstr.clear();
 
     tmp_sstr.str(pdb_line.substr(72,4));
