@@ -32,7 +32,7 @@ PDB::PDB(const std::string& s)
     if (atom_tmp.get_atom_flag() == "MODEL ")
     {
       model_tmp.reset();
-      model_tmp.set_model_serial(atom_tmp.get_serial());
+      model_tmp.set_model_serial(atom_tmp.get_atom_serial());
 
       chain_tmp.reset();
       resid_tmp.reset();
