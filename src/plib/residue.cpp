@@ -68,11 +68,11 @@ int Residue::add_atom(const Atom& a)
   }
   if (a.get_atom_name() == "C3' " || a.get_atom_name() == "S   " || a.get_atom_name() == "DS  ")
   {
-    S_ = a;
+    cg_S_ = a;
   }
   if (a.get_atom_name() == "P   " || a.get_atom_name() == "DP  ")
   {
-    P_ = a;
+    cg_P_ = a;
   }
   if (a.get_atom_name() == "N1  " || a.get_atom_name() == "B   " || a.get_atom_name() == "DB  ")
   {
@@ -122,24 +122,24 @@ Atom& Residue::get_C_beta()
 
 Atom& Residue::get_P()
 {
-  if (P_.get_atom_name() == "") {
+  if (cg_P_.get_atom_name() == "") {
     std::cout << " ~               PINANG :: residues.hpp         ~ " << std::endl;
     std::cerr << "ERROR: CG Phosphate not set in Residue: "
               << resid_index_ << std::endl;
     exit(EXIT_SUCCESS);
   }
-  return P_;
+  return cg_P_;
 }
 
 Atom& Residue::get_S()
 {
-  if (S_.get_atom_name() == "") {
+  if (cg_S_.get_atom_name() == "") {
     std::cout << " ~               PINANG :: residues.hpp         ~ " << std::endl;
     std::cerr << "ERROR: CG Sugar not set in Residue: "
               << resid_index_ << std::endl;
     exit(EXIT_SUCCESS);
   }
-  return S_;
+  return cg_S_;
 }
 
 Atom& Residue::get_B()
@@ -278,9 +278,9 @@ void Residue::self_check() const
 //             + (coor_C2 + coor_C4 + coor_C5 + coor_C6 + coor_C8)
 //             * mass_C )
 //           * (1/(n_nb*mass_N + n_ob*mass_O + n_cb*mass_C));
-//   P_.set_coords(com_P);
-//   if (S_.get_atom_name() != "S  ")
-//     S_.set_coords(com_S);
+//   cg_P_.set_coords(com_P);
+//   if (cg_S_.get_atom_name() != "S  ")
+//     cg_S_.set_coords(com_S);
 //   if (cg_B_.get_atom_name() != "B  ")
 //     cg_B_.set_coords(com_B);
 // }
@@ -301,8 +301,8 @@ Residue::Residue()
 
   C_alpha_.reset();
   C_beta_.reset();
-  P_.reset();
-  S_.reset();
+  cg_P_.reset();
+  cg_S_.reset();
   cg_B_.reset();
   chain_type_ = none;
 }
@@ -320,8 +320,8 @@ void Residue::reset()
   term_flag_ = 0;
 
   chain_type_ = none;
-  P_.reset();
-  S_.reset();
+  cg_P_.reset();
+  cg_S_.reset();
   cg_B_.reset();
   C_alpha_.reset();
   C_beta_.reset();

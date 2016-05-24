@@ -26,7 +26,7 @@ namespace pinang {
 This class represents biomolecular chains, composing a chain of residues, either
 amino acids or nucleic acids.   Read and store information from PDB files.
 
-@todo initialization or settings of CG particles in DNA residues (P_, S_, B_).
+@todo initialization or settings of CG particles in DNA residues (cg_P_, cg_S_, cg_B_).
 ************************************************************
 */
 class Chain

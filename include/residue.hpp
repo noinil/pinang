@@ -30,7 +30,7 @@ namespace pinang {
 A few atoms comprises a residue.  The class Residue records the coordinates of
 atoms, the atom names, residue name, residue serial number and other properties.
 
-@todo initialization or settings of CG particles in Residue (P_, S_, cg_B_).
+@todo initialization or settings of CG particles in Residue (cg_P_, cg_S_, cg_B_).
 ************************************************************
 */
 class Residue
@@ -210,12 +210,12 @@ class Residue
   //! @brief Set CG particle P.
   //! @param CG Atom phosphate.
   // ************************************************************
-  void set_P(const Atom& a) { P_ = a; }
+  void set_P(const Atom& a) { cg_P_ = a; }
   // ************************************************************
   //! @brief Set CG particle S.
   //! @param CG Atom sugar.
   // ************************************************************
-  void set_S(const Atom& a) { S_ = a; }
+  void set_S(const Atom& a) { cg_S_ = a; }
   // ************************************************************
   //! @brief Set CG particle B.
   //! @param CG Atom base.
@@ -240,8 +240,8 @@ class Residue
 
   Atom C_alpha_;             //!< CG particle @f$C_\alpha@f$.
   Atom C_beta_;              //!< CG particle @f$C_\beta@f$.
-  Atom P_;                   //!< CG particle P (phosphate).
-  Atom S_;                   //!< CG particle S (sugar).
+  Atom cg_P_;                   //!< CG particle P (phosphate).
+  Atom cg_S_;                   //!< CG particle S (sugar).
   Atom cg_B_;                   //!< CG particle B (base).
   ChainType chain_type_;     //!< Chain type.
 
