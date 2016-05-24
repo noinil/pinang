@@ -208,9 +208,9 @@ void Chain::output_top_mass(std::ostream& o, int& n)
         << std::setw(9) << r.get_residue_name() << " "
         << std::setw(9) << "CA" << " "
         << std::setiosflags(std::ios_base::fixed) << std::setprecision(2)
-        << std::setw(16) << r.get_resid_mass() << " "
+        << std::setw(16) << r.get_residue_mass() << " "
         << std::setw(12)
-        << r.get_resid_charge()
+        << r.get_residue_charge()
         << std::endl;
     }
   } else {
@@ -238,7 +238,7 @@ void Chain::output_top_mass(std::ostream& o, int& n)
         << std::setw(9) << r.get_residue_name() << " "
         << std::setw(9) << "B" << " "
         << std::setiosflags(std::ios_base::fixed) << std::setprecision(2)
-        << std::setw(16) << r.get_resid_mass() - 94.93 - 99.11 << " "
+        << std::setw(16) << r.get_residue_mass() - 94.93 - 99.11 << " "
         << std::setw(12) << 0.0
         << std::endl;
     }

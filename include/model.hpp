@@ -82,7 +82,7 @@ class Model
   //! @brief Get number of chains in the Model.
   //! @return Number of chains in the Model.
   // ************************************************************
-  int get_model_size() const { return n_chain_; }
+  int get_size() const { return n_chain_; }
 
   // ************************************************************
   //! @brief Output positions of CG beads.

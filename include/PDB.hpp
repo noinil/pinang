@@ -57,7 +57,7 @@ class PDB
   //! @brief Get the number of models in PDB.
   //! @return Number of models.
   // ************************************************************
-  int get_n_models() const { return n_model_; }
+  int get_size() const { return n_model_; }
 
   // ************************************************************
   //! @brief Print sequence of whole PDB.

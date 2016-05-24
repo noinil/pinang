@@ -122,7 +122,7 @@ class Residue
   //! @brief Get Residue charge.
   //! @return Residue charge.
   // ************************************************************
-  double get_resid_charge() const { return charge_; }
+  double get_residue_charge() const { return charge_; }
   // ************************************************************
   //! @brief Set Residue charge.
   //! @param Residue charge.
@@ -133,7 +133,7 @@ class Residue
   //! @brief Get Residue mass.
   //! @return Residue mass.
   // ************************************************************
-  double get_resid_mass() const { return mass_; }
+  double get_residue_mass() const { return mass_; }
   // ************************************************************
   //! @brief Set Residue mass.
   //! @param Residue mass.
@@ -171,7 +171,7 @@ class Residue
   //! @brief Get residue size.
   //! @return Residue size.
   // ************************************************************
-  int get_residue_size() const { return n_atom_; }
+  int get_size() const { return n_atom_; }
 
   // ************************************************************
   //! @brief Get CG particle @f$C_\alpha@f$.

@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
     std::ofstream out_file(out_name.c_str());
 
     if (mod_flag != 1) {
-        if (pdb1.get_n_models() == 1)
+        if (pdb1.get_size() == 1)
         {
             mod_index = 1;
         } else {
@@ -97,26 +97,26 @@ int main(int argc, char *argv[])
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     */
     pinang::Chain c0;
-    for (int i = 0; i < pdb1.get_model(mod_index - 1).get_model_size(); i++) {
+    for (int i = 0; i < pdb1.get_model(mod_index - 1).get_size(); i++) {
         c0 = c0 + pdb1.get_model(mod_index - 1).get_chain(i);
     }
     pinang::Residue r0, r1;
-    for (int i = 0; i < pdb1.get_model(mod_index - 1).get_model_size(); i++) {
+    for (int i = 0; i < pdb1.get_model(mod_index - 1).get_size(); i++) {
         if (pdb1.get_model(mod_index - 1).get_chain(i).get_chain_type() != pinang::water)
             continue;
-        for (int m = 0; m < pdb1.get_model(mod_index - 1).get_chain(i).get_chain_length(); m++) {
+        for (int m = 0; m < pdb1.get_model(mod_index - 1).get_chain(i).get_size(); m++) {
             r0 = pdb1.get_model(mod_index - 1).get_chain(i).get_residue(m);
             // std::cout << r0 << std::endl;
 
             std::vector<double> min_dist_w_pro; // min distance water -- protein
             std::vector<pinang::Residue> spec;
 
-            for (int j = 0; j < pdb1.get_model(mod_index - 1).get_model_size(); j++) {
+            for (int j = 0; j < pdb1.get_model(mod_index - 1).get_size(); j++) {
                 if (pdb1.get_model(mod_index - 1).get_chain(j).get_chain_type() != pinang::protein)
                     continue;
                 double min_dist_W_PRO = 0;
                 pinang::Residue special0;
-                for (int n = 0; n < pdb1.get_model(mod_index - 1).get_chain(j).get_chain_length(); n++) {
+                for (int n = 0; n < pdb1.get_model(mod_index - 1).get_chain(j).get_size(); n++) {
                     r1 = pdb1.get_model(mod_index - 1).get_chain(j).get_residue(n);
                     double dist_min = pinang::resid_min_distance(r0, r1);
                     if (min_dist_W_PRO == 0 || min_dist_W_PRO > dist_min){

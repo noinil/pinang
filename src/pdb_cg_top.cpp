@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
   std::ofstream top_file(top_name.c_str());
 
   if (mod_flag != 1) {
-    if (pdb1.get_n_models() == 1)
+    if (pdb1.get_size() == 1)
     {
       mod_index = 1;
     } else {

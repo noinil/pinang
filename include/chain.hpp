@@ -84,7 +84,7 @@ class Chain
   //! @brief Get chain length (number of residues included).
   //! @return Chain length.
   // ************************************************************
-  int get_chain_length() const { return n_residue_; }
+  int get_size() const { return n_residue_; }
 
   // ************************************************************
   //! @brief Print sequence of the Chain.

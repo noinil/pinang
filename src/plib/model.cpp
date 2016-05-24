@@ -82,9 +82,9 @@ void Model::output_top_mass(std::ostream& o)
     if (ct == water || ct == other || ct == none)
       continue;
     else if (ct == DNA || ct == RNA || ct == na)
-      n += v_chains_[i].get_chain_length() * 3 - 1;
+      n += v_chains_[i].get_size() * 3 - 1;
     else
-      n += v_chains_[i].get_chain_length();
+      n += v_chains_[i].get_size();
   }
 
   o << "[ particles ]"
@@ -119,9 +119,9 @@ void Model::output_top_bond(std::ostream& o)
     if (ct == water || ct == other || ct == none)
       continue;
     else if (ct == DNA || ct == RNA || ct == na)
-      n += v_chains_[i].get_chain_length() * 3 - 2;
+      n += v_chains_[i].get_size() * 3 - 2;
     else
-      n += v_chains_[i].get_chain_length() - 1;
+      n += v_chains_[i].get_size() - 1;
   }
 
   o << "[ bonds ]"
@@ -154,9 +154,9 @@ void Model::output_top_angle(std::ostream& o)
     if (ct == water || ct == other || ct == none)
       continue;
     else if (ct == DNA || ct == RNA || ct == na)
-      n += v_chains_[i].get_chain_length() * 4 - 5;
+      n += v_chains_[i].get_size() * 4 - 5;
     else
-      n += v_chains_[i].get_chain_length()-2;
+      n += v_chains_[i].get_size()-2;
   }
 
   o << "[ angles ]"
@@ -190,9 +190,9 @@ void Model::output_top_dihedral(std::ostream& o)
     if (ct == water || ct == other || ct == none)
       continue;
     else if (ct == DNA || ct == RNA || ct == na)
-      n += v_chains_[i].get_chain_length() * 2 - 4;
+      n += v_chains_[i].get_size() * 2 - 4;
     else
-      n += v_chains_[i].get_chain_length()-3;
+      n += v_chains_[i].get_size()-3;
   }
 
   o << "[ dihedrals ]"
@@ -250,7 +250,7 @@ void Model::output_top_nonbonded(std::ostream& o)
       c_tmp.add_residue(r_tmp);
 
 
-      for (int j = 1; j < v_chains_[i].get_chain_length(); j++) {
+      for (int j = 1; j < v_chains_[i].get_size(); j++) {
         Atom P = v_chains_[i].get_residue(j).get_cg_P();
         Atom S = v_chains_[i].get_residue(j).get_cg_S();
         Atom B = v_chains_[i].get_residue(j).get_cg_B();

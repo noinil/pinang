@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
   std::ofstream out_file(out_name.c_str());
 
   if (mod_flag != 1) {
-    if (pdb1.get_n_models() == 1)
+    if (pdb1.get_size() == 1)
     {
       mod_index = 1;
     } else {
@@ -100,13 +100,13 @@ int main(int argc, char *argv[])
   */
   pinang::Model mdl0 = pdb1.get_model(mod_index - 1);
   pinang::Chain c0;
-  for (int i = 0; i < mdl0.get_model_size(); i++) {
+  for (int i = 0; i < mdl0.get_size(); i++) {
     c0 = c0 + mdl0.get_chain(i);
   }
   pinang::Residue r0, r1;
   pinang::ChainType cti0, cti1;
-  for (int i = 0; i < mdl0.get_model_size(); i++) {
-    for (int m = 0; m < mdl0.get_chain(i).get_chain_length(); m++) {
+  for (int i = 0; i < mdl0.get_size(); i++) {
+    for (int m = 0; m < mdl0.get_chain(i).get_size(); m++) {
       r0 = mdl0.get_chain(i).get_residue(m);
       cti0 = r0.get_chain_type();
       if (cti0 == pinang::water || cti0 == pinang::ion)
@@ -134,7 +134,7 @@ int main(int argc, char *argv[])
         rtmp_P.set_residue_serial(r0.get_residue_serial());
         rtmp_S.set_residue_serial(r0.get_residue_serial());
         rtmp_B.set_residue_serial(r0.get_residue_serial());
-        for (int v = 0; v < r0.get_residue_size(); v++) {
+        for (int v = 0; v < r0.get_size(); v++) {
           atmp = r0.get_atom(v);
           std::string aname = atmp.get_atom_name();
           if (aname == "P  " || aname == "OP1"
@@ -151,8 +151,8 @@ int main(int argc, char *argv[])
         resi_group0.push_back(rtmp_S);
         resi_group0.push_back(rtmp_B);
       }
-      for (int j = i + 1; j < mdl0.get_model_size(); j++) {
-        for (int n = 0; n < mdl0.get_chain(j).get_chain_length(); n++) {
+      for (int j = i + 1; j < mdl0.get_size(); j++) {
+        for (int n = 0; n < mdl0.get_chain(j).get_size(); n++) {
           r1 = mdl0.get_chain(j).get_residue(n);
           cti1 = r1.get_chain_type();
           if (cti1 == pinang::water || cti1 == pinang::ion)
@@ -185,7 +185,7 @@ int main(int argc, char *argv[])
             rtmp_P.set_residue_serial(r1.get_residue_serial());
             rtmp_S.set_residue_serial(r1.get_residue_serial());
             rtmp_B.set_residue_serial(r1.get_residue_serial());
-            for (int v = 0; v < r1.get_residue_size(); v++) {
+            for (int v = 0; v < r1.get_size(); v++) {
               atmp = r1.get_atom(v);
               std::string aname = atmp.get_atom_name();
               if (aname == "P  " || aname == "OP1"
@@ -198,7 +198,7 @@ int main(int argc, char *argv[])
               }
             }
             // std::cout << rtmp_P << std::endl;
-            // std::cout << rtmp_S.get_residue_size() << std::endl;
+            // std::cout << rtmp_S.get_size() << std::endl;
             // std::cout << rtmp_B << std::endl;
             if (n != 0)
               resi_group1.push_back(rtmp_P);

@@ -72,7 +72,7 @@ int main(int argc, char *argv[])
 
 
   if (mod_flag != 1) {
-    if (pdb1.get_n_models() == 1)
+    if (pdb1.get_size() == 1)
     {
       mod_index = 1;
     } else {
@@ -140,12 +140,12 @@ int main(int argc, char *argv[])
   std::vector<pinang::Vec3d> c_alpha_coors;
   pinang::Model mdl0 = pdb1.get_model(mod_index-1);
   pinang::Chain chain_tmp;
-  int mdl_size = mdl0.get_model_size();
+  int mdl_size = mdl0.get_size();
   for (i = 0; i < int(chain_id.size()); ++i)
     for (j = 0; j < mdl_size; ++j)
       if (mdl0.get_chain(j).get_chain_ID() == chain_id[i]) {
         chain_tmp = mdl0.get_chain(j);
-        int len1 = chain_tmp.get_chain_length();
+        int len1 = chain_tmp.get_size();
         for (int k = 1; k < len1; k++) {
           c_alpha_coors.push_back(chain_tmp.get_residue(k).get_cg_C_alpha().get_coordinate());
         }

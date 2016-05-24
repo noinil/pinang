@@ -40,7 +40,7 @@ PDB::PDB(const std::string& s)
     }
     if (atom_tmp.get_record_name() == "TER   ")
     {
-      if (resid_tmp.get_residue_size() != 0)
+      if (resid_tmp.get_size() != 0)
       {
         chain_tmp.add_residue(resid_tmp);
         chain_tmp.set_chain_ID(resid_tmp.get_chain_ID());
@@ -54,13 +54,13 @@ PDB::PDB(const std::string& s)
     }
     if (atom_tmp.get_record_name() == "ENDMDL")
     {
-      if (resid_tmp.get_residue_size() != 0)
+      if (resid_tmp.get_size() != 0)
       {
         chain_tmp.add_residue(resid_tmp);
         chain_tmp.set_chain_ID(resid_tmp.get_chain_ID());
         chain_tmp.set_chain_type(resid_tmp.get_chain_type());
       }
-      if (chain_tmp.get_chain_length() != 0)
+      if (chain_tmp.get_size() != 0)
       {
         model_tmp.add_chain(chain_tmp);
       }
@@ -74,17 +74,17 @@ PDB::PDB(const std::string& s)
     }
     if (atom_tmp.get_record_name() == "END   ")
     {
-      if (resid_tmp.get_residue_size() != 0)
+      if (resid_tmp.get_size() != 0)
       {
         chain_tmp.add_residue(resid_tmp);
         chain_tmp.set_chain_ID(resid_tmp.get_chain_ID());
         chain_tmp.set_chain_type(resid_tmp.get_chain_type());
       }
-      if (chain_tmp.get_chain_length() != 0)
+      if (chain_tmp.get_size() != 0)
       {
         model_tmp.add_chain(chain_tmp);
       }
-      if (model_tmp.get_model_size() != 0)
+      if (model_tmp.get_size() != 0)
       {
         v_models_.push_back(model_tmp);
         n_model_++;
@@ -99,7 +99,7 @@ PDB::PDB(const std::string& s)
     {
       if (resid_tmp.add_atom(atom_tmp))
       {
-        if (resid_tmp.get_residue_size() != 0)
+        if (resid_tmp.get_size() != 0)
         {
           chain_tmp.add_residue(resid_tmp);
           if (resid_tmp.get_atom(0).get_record_name() == "HETATM")
@@ -123,7 +123,7 @@ PDB::PDB(const std::string& s)
     {
       if (resid_tmp.add_atom(atom_tmp))
       {
-        if (resid_tmp.get_residue_size() != 0)
+        if (resid_tmp.get_size() != 0)
         {
           chain_tmp.add_residue(resid_tmp);
           chain_tmp.set_chain_ID(resid_tmp.get_chain_ID());

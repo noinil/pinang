@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
             << " :"
             << std::endl;
   std::cout << " Total number of chains: "
-            << pdb1.get_model(0).get_model_size()
+            << pdb1.get_model(0).get_size()
             << std::endl;
   std::cout << std::endl;
   std::cout << " 1-char-aa-name : ----------------------------- " << std::endl;
