@@ -66,8 +66,8 @@ int main(int argc, char *argv[])
   }
 
   std::cout << " Analyzing Radius of Gyration (R_g) of MODULE " << mod_index
-            << " of " << infilename  << " ... " << std::endl
-            << std::endl;
+            << " of " << infilename  << " ... " << "\n"
+            << "\n";
 
   /* ============================================================
   //      _                   _
@@ -78,7 +78,7 @@ int main(int argc, char *argv[])
   //              |_|
   // ============================================================
   */
-  std::cout << " 1. Read in structures ..." << std::endl;
+  std::cout << " 1. Read in structures ..." << "\n";
   std::vector<char> chain_id;
 
   int i = 0;
@@ -114,7 +114,7 @@ int main(int argc, char *argv[])
   }
   if (chain_id.size() == 0)
   {
-    std::cout << " WARNING: STRAND info not found!" << std::endl;
+    std::cout << " WARNING: STRAND info not found!" << "\n";
     chain_id.push_back('A');
   }
 
@@ -134,10 +134,10 @@ int main(int argc, char *argv[])
         chain_tmp.reset();
       }
 
-  std::cout << " ... Calculating ... " << std::endl;
+  std::cout << " ... Calculating ... " << "\n";
 
   int len_ca_coors = c_alpha_coors.size();
-  std::cout << "number of C_alpha: " << len_ca_coors << std::endl;
+  std::cout << "number of C_alpha: " << len_ca_coors << "\n";
 
   pinang::Vec3d com_ca(0,0,0);
   pinang::Vec3d com_all(0,0,0);
@@ -154,15 +154,15 @@ int main(int argc, char *argv[])
   }
 
   double rg = sqrt(dist_square_sum / len_ca_coors);
-  std::cout << rg << std::endl;
+  std::cout << rg << "\n";
 
-  std::cout << " ... done." << std::endl;
+  std::cout << " ... done." << "\n";
 
 
   // ----------------------------------------------------------------------
   if (out_flag == 1) {
     std::ofstream out_file(out_name.c_str());
-    out_file << rg << std::endl;
+    out_file << rg << "\n";
     out_file.close();
   }
 
@@ -178,6 +178,6 @@ void print_usage(char* s)
             << " [-i protein_seq.inp]"
             << "\n\t [-o rg.dat]\n\t"
             << " [-m module]\n\t [-h]"
-            << std::endl;
+            << "\n";
   exit(EXIT_SUCCESS);
 }

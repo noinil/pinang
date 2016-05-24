@@ -17,11 +17,11 @@ int main(int argc, char *argv[])
     // whatever
 
     std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ "
-              << std::endl;
+              << "\n";
     std::cout << " ~                  PINANG DNA curvature                  ~ "
-              << std::endl;
+              << "\n";
     std::cout << " ========================================================== "
-              << std::endl;
+              << "\n";
 
     int opt, mod_index = 0;
     int mod_flag = 0;
@@ -48,25 +48,25 @@ int main(int argc, char *argv[])
             std::cout << " Usage: "
                       << argv[0]
                       << " -f some.pdb [-o PW_dist.dat] [-m module] [-h]"
-                      << std::endl;
+                      << "\n";
             exit(EXIT_SUCCESS);
             break;
         default: /* '?' */
             std::cout << " Usage: "
                       << argv[0]
                       << " -f some.pdb [-o PW_dist.dat] [-m module] [-h]"
-                      << std::endl;
+                      << "\n";
             exit(EXIT_FAILURE);
         }
     }
 
     if (!in_flag)
     {
-        std::cout << " ERROR: need parameter for option -f: " << std::endl
+        std::cout << " ERROR: need parameter for option -f: " << "\n"
                   << " Usage: "
                   << argv[0]
                   << " -f some.pdb [-o PW_dist.dat] [-m module] [-h]"
-                  << std::endl;
+                  << "\n";
         exit(EXIT_SUCCESS);
     }
     pinang::PDB pdb1(infilename);
@@ -85,7 +85,7 @@ int main(int argc, char *argv[])
 
     std::cout << " Analyzing DNA curvature of MODULE " << mod_index
               << " of " << infilename  << " ... "
-              << std::endl;
+              << "\n";
 
     /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // main
@@ -223,55 +223,55 @@ int main(int argc, char *argv[])
             //           << "  dists: T " << min_dist_W_T
             //           << "  dists: G " << min_dist_W_G
             //           << "  dists: C " << min_dist_W_C
-            //           << std::endl;
+            //           << "\n";
             if (min_dist_W_PRO < 100 && min_dist_W_PRO > 0)
                 out_file << " WAT_PAIR " << "PRO   "
                          << std::setw(6) << min_dist_W_PRO
-                         << std::endl;
+                         << "\n";
             if (min_dist_W_P < 100 && min_dist_W_P > 0)
                 out_file << " WAT_PAIR " << "P     "
                          << std::setw(6) << min_dist_W_P
-                         << std::endl;
+                         << "\n";
             if (min_dist_W_S < 100 && min_dist_W_S > 0)
                 out_file << " WAT_PAIR " << "S     "
                          << std::setw(6) << min_dist_W_S
-                         << std::endl;
+                         << "\n";
             if (min_dist_W_A < 100 && min_dist_W_A > 0)
                 out_file << " WAT_PAIR " << "A     "
                          << std::setw(6) << min_dist_W_A
-                         << std::endl;
+                         << "\n";
             if (min_dist_W_T < 100 && min_dist_W_T > 0)
                 out_file << " WAT_PAIR " << "T     "
                          << std::setw(6) << min_dist_W_T
-                         << std::endl;
+                         << "\n";
             if (min_dist_W_G < 100 && min_dist_W_G > 0)
                 out_file << " WAT_PAIR " << "G     "
                          << std::setw(6) << min_dist_W_G
-                         << std::endl;
+                         << "\n";
             if (min_dist_W_C < 100 && min_dist_W_C > 0)
                 out_file << " WAT_PAIR " << "C     "
                          << std::setw(6) << min_dist_W_C
-                         << std::endl;
+                         << "\n";
             if (min_dist_W_PRO < 5 && min_dist_W_PRO > 2.5) {
                 if (min_dist_W_P < 3.5 && min_dist_W_P > 2.5) {
                     double dist_PP = pinang::residue_min_distance(special0, special_P);
-                    out_file << " WAT_MED_PRO  P    " << std::setw(6) << dist_PP << std::endl;}
+                    out_file << " WAT_MED_PRO  P    " << std::setw(6) << dist_PP << "\n";}
                 if (min_dist_W_S < 5.0 && min_dist_W_S > 2.5) {
                     double dist_PS = pinang::residue_min_distance(special0, special_S);
-                    out_file << " WAT_MED_PRO  S    " << std::setw(6) << dist_PS << std::endl;}
+                    out_file << " WAT_MED_PRO  S    " << std::setw(6) << dist_PS << "\n";}
                 double dist_PB = 0;
                 if (min_dist_W_T > 2.5 && min_dist_W_T < 4){
                     dist_PB = pinang::residue_min_distance(special0, special_T);
-                    out_file << " WAT_MED_PRO  T    " << std::setw(6) << dist_PB << std::endl;}
+                    out_file << " WAT_MED_PRO  T    " << std::setw(6) << dist_PB << "\n";}
                 if (min_dist_W_C > 2.5 && min_dist_W_C < 4){
                     dist_PB = pinang::residue_min_distance(special0, special_C);
-                    out_file << " WAT_MED_PRO  C    " << std::setw(6) << dist_PB << std::endl;}
+                    out_file << " WAT_MED_PRO  C    " << std::setw(6) << dist_PB << "\n";}
                 if (min_dist_W_G > 2.5 && min_dist_W_G < 4){
                     dist_PB = pinang::residue_min_distance(special0, special_G);
-                    out_file << " WAT_MED_PRO  G    " << std::setw(6) << dist_PB << std::endl;}
+                    out_file << " WAT_MED_PRO  G    " << std::setw(6) << dist_PB << "\n";}
                 if (min_dist_W_A > 2.5 && min_dist_W_A < 4){
                     dist_PB = pinang::residue_min_distance(special0, special_A);
-                    out_file << " WAT_MED_PRO  A    " << std::setw(6) << dist_PB << std::endl;}
+                    out_file << " WAT_MED_PRO  A    " << std::setw(6) << dist_PB << "\n";}
             }
         }
     }

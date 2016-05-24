@@ -17,11 +17,11 @@ int main(int argc, char *argv[])
     // whatever
 
     std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ "
-              << std::endl;
+              << "\n";
     std::cout << " ~                  PINANG DNA curvature                  ~ "
-              << std::endl;
+              << "\n";
     std::cout << " ========================================================== "
-              << std::endl;
+              << "\n";
 
     int opt, mod_index = 0;
     int mod_flag = 0;
@@ -48,25 +48,25 @@ int main(int argc, char *argv[])
             std::cout << " Usage: "
                       << argv[0]
                       << " -f some.pdb [-o PDI_dist.dat] [-m module] [-h]"
-                      << std::endl;
+                      << "\n";
             exit(EXIT_SUCCESS);
             break;
         default: /* '?' */
             std::cout << " Usage: "
                       << argv[0]
                       << " -f some.pdb [-o PDI_dist.dat] [-m module] [-h]"
-                      << std::endl;
+                      << "\n";
             exit(EXIT_FAILURE);
         }
     }
 
     if (!in_flag)
     {
-        std::cout << " ERROR: need parameter for option -f: " << std::endl
+        std::cout << " ERROR: need parameter for option -f: " << "\n"
                   << " Usage: "
                   << argv[0]
                   << " -f some.pdb [-o PDI_dist.dat] [-m module] [-h]"
-                  << std::endl;
+                  << "\n";
         exit(EXIT_SUCCESS);
     }
     pinang::PDB pdb1(infilename);
@@ -85,7 +85,7 @@ int main(int argc, char *argv[])
 
     std::cout << " Analyzing DNA curvature of MODULE " << mod_index
               << " of " << infilename  << " ... "
-              << std::endl;
+              << "\n";
 
     /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // main
@@ -191,9 +191,9 @@ int main(int argc, char *argv[])
                                 rtmp_B.add_atom(atmp);
                             }
                         }
-                        // std::cout << rtmp_P << std::endl;
-                        // std::cout << rtmp_S.get_size() << std::endl;
-                        // std::cout << rtmp_B << std::endl;
+                        // std::cout << rtmp_P << "\n";
+                        // std::cout << rtmp_S.get_size() << "\n";
+                        // std::cout << rtmp_B << "\n";
                         if (n != 0)
                             resi_group1.push_back(rtmp_P);
                         resi_group1.push_back(rtmp_S);
@@ -203,12 +203,12 @@ int main(int argc, char *argv[])
                     // -------------------- Calculating distances --------------
                     if (resi_group0.size() != atom_group0.size()) {
                         std::cout << "ERROR in getting atom group 0 and resi group 0"
-                                  << std::endl;
+                                  << "\n";
                         return(1);
                     }
                     if (resi_group1.size() != atom_group1.size()) {
                         std::cout << "ERROR in getting atom group 1 and resi group 1"
-                                  << std::endl;
+                                  << "\n";
                         return(1);
                     }
                     for (int p = 0; p < int(resi_group0.size()); p++) {
@@ -236,14 +236,14 @@ int main(int argc, char *argv[])
                                          << std::setw(6) << a1.get_residue_name()
                                          << "   dist_min = "
                                          << std::setw(6) << dist_min
-                                         << std::endl;
+                                         << "\n";
                                 double dist_Ca = pinang::atom_distance(a0, a1);
                                 out_file << " CG_PAIR "
                                          << std::setw(5)<< a0.get_residue_name()
                                          << std::setw(5)<< a1.get_residue_name()
                                          << "  "
                                          << std::setw(6) << dist_Ca
-                                         << std::endl;
+                                         << "\n";
                             }
                         }
                     }

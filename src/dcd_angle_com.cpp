@@ -52,17 +52,17 @@ int main(int argc, char *argv[])
 
     if (dcd_flag == 0)
     {
-        std::cout << " ERROR: Please provide the DCD file. " << std::endl;
+        std::cout << " ERROR: Please provide the DCD file. " << "\n";
         exit(EXIT_SUCCESS);
     }
     if (top_flag == 0)
     {
-        std::cout << " ERROR: Please provide the top file. " << std::endl;
+        std::cout << " ERROR: Please provide the top file. " << "\n";
         exit(EXIT_SUCCESS);
     }
     if (inp_flag == 0)
     {
-        std::cout << " ERROR: Please provide the input file. " << std::endl;
+        std::cout << " ERROR: Please provide the input file. " << "\n";
         exit(EXIT_SUCCESS);
     }
     // -------------------------------------------------------------------------
@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
     pinang::Topology top(top_name);
     if (top.get_size() == 0)
     {
-        std::cout << " ERROR: No particles found in top file. " << std::endl;
+        std::cout << " ERROR: No particles found in top file. " << "\n";
         exit(EXIT_SUCCESS);
     }
 
@@ -197,15 +197,15 @@ int main(int argc, char *argv[])
     }
     if (flg_grp_1 == 0)
     {
-        std::cout << " ERROR: GROUP 1 not found!" << std::endl;
+        std::cout << " ERROR: GROUP 1 not found!" << "\n";
     }
     if (flg_grp_2 == 0)
     {
-        std::cout << " ERROR: GROUP 2 not found!" << std::endl;
+        std::cout << " ERROR: GROUP 2 not found!" << "\n";
     }
     if (flg_grp_3 == 0)
     {
-        std::cout << " ERROR: GROUP 2 not found!" << std::endl;
+        std::cout << " ERROR: GROUP 2 not found!" << "\n";
     }
     inp_file.close();
 
@@ -218,14 +218,14 @@ int main(int argc, char *argv[])
 
     if (nframe == 0)
     {
-        std::cout << " ERROR: Empty DCD file!  Please check! " << std::endl;
+        std::cout << " ERROR: Empty DCD file!  Please check! " << "\n";
         return 1;
     }
 
     if (top.get_size() != conformations[0].get_size())
     {
         std::cout << " ERROR: Particle number don't match in top and dcd! "
-                  << " Please check! " << std::endl;
+                  << " Please check! " << "\n";
         return 1;
     }
 
@@ -275,7 +275,7 @@ int main(int argc, char *argv[])
 
         dis_file << std::setw(6) << i
                  << "   " << std::setw(8) << angle
-                 << std::endl; // Output the distance!
+                 << "\n"; // Output the distance!
     }
 
     dcd_file.close();
@@ -289,6 +289,6 @@ void print_usage(char* s)
   std::cout << " Usage: "
             << s
             << " -f some.dcd -s some.top -i some.inp [-o some.dis] [-h]"
-            << std::endl;
+            << "\n";
   exit(EXIT_SUCCESS);
 }

@@ -17,11 +17,11 @@ int main(int argc, char *argv[])
     // whatever
 
     std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ "
-              << std::endl;
+              << "\n";
     std::cout << " ~                  PINANG DNA curvature                  ~ "
-              << std::endl;
+              << "\n";
     std::cout << " ========================================================== "
-              << std::endl;
+              << "\n";
 
     int opt, mod_index = 0;
     int mod_flag = 0;
@@ -48,25 +48,25 @@ int main(int argc, char *argv[])
             std::cout << " Usage: "
                       << argv[0]
                       << " -f some.pdb [-o PW_dist.dat] [-m module] [-h]"
-                      << std::endl;
+                      << "\n";
             exit(EXIT_SUCCESS);
             break;
         default: /* '?' */
             std::cout << " Usage: "
                       << argv[0]
                       << " -f some.pdb [-o PW_dist.dat] [-m module] [-h]"
-                      << std::endl;
+                      << "\n";
             exit(EXIT_FAILURE);
         }
     }
 
     if (!in_flag)
     {
-        std::cout << " ERROR: need parameter for option -f: " << std::endl
+        std::cout << " ERROR: need parameter for option -f: " << "\n"
                   << " Usage: "
                   << argv[0]
                   << " -f some.pdb [-o PW_dist.dat] [-m module] [-h]"
-                  << std::endl;
+                  << "\n";
         exit(EXIT_SUCCESS);
     }
     pinang::PDB pdb1(infilename);
@@ -85,7 +85,7 @@ int main(int argc, char *argv[])
 
     std::cout << " Analyzing DNA curvature of MODULE " << mod_index
               << " of " << infilename  << " ... "
-              << std::endl;
+              << "\n";
 
     /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // main
@@ -106,7 +106,7 @@ int main(int argc, char *argv[])
             continue;
         for (int m = 0; m < pdb1.get_model(mod_index - 1).get_chain(i).get_size(); m++) {
             r0 = pdb1.get_model(mod_index - 1).get_chain(i).get_residue(m);
-            // std::cout << r0 << std::endl;
+            // std::cout << r0 << "\n";
 
             std::vector<double> min_dist_w_pro; // min distance water -- protein
             std::vector<pinang::Residue> spec;
@@ -127,11 +127,11 @@ int main(int argc, char *argv[])
                 if (min_dist_W_PRO < 10 && min_dist_W_PRO > 2){
                     min_dist_w_pro.push_back(min_dist_W_PRO);
                     spec.push_back(special0);
-                    // out_file << special0 << std::endl;
+                    // out_file << special0 << "\n";
                     out_file << " WAT_PAIR "
                              << special0.get_residue_name() << " "
                              << std::setw(6) << min_dist_W_PRO
-                             << std::endl;
+                             << "\n";
                 }
             }
 
@@ -141,7 +141,7 @@ int main(int argc, char *argv[])
             {
                 std::cout << " ==================== ERROR! "
                           << " Vector size mismatch! -------------------- "
-                          << std::endl;
+                          << "\n";
             }
             for (int s = 0; s < len1; s++) {
                 double dist1 = min_dist_w_pro[s];
@@ -156,7 +156,7 @@ int main(int argc, char *argv[])
                     out_file << " WAT_MED_PRO  "
                              << res1.get_residue_name() << " "
                              << res2.get_residue_name() << " "
-                             << std::setw(6) << dist_PP << std::endl;
+                             << std::setw(6) << dist_PP << "\n";
                 }
             }
             min_dist_w_pro.clear();

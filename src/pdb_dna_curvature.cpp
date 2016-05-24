@@ -22,11 +22,11 @@ int main(int argc, char *argv[])
   // whatever
 
   std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ "
-            << std::endl;
+            << "\n";
   std::cout << " ~                  PINANG DNA curvature                  ~ "
-            << std::endl;
+            << "\n";
   std::cout << " ========================================================== "
-            << std::endl;
+            << "\n";
 
   int opt, mod_index = 0;
   int mod_flag = 0;
@@ -75,7 +75,7 @@ int main(int argc, char *argv[])
                   << " -f some.pdb [-o _curve.dat] [-x _axis.pdb] \n"
                   << " [-b _backbone.pdb] [-g _generating_lines.pdb]"
                   << " [-m module] [-h]"
-                  << std::endl;
+                  << "\n";
         exit(EXIT_SUCCESS);
         break;
       default: /* '?' */
@@ -84,7 +84,7 @@ int main(int argc, char *argv[])
                   << " -f some.pdb [-o _curve.dat] [-x _axis.pdb] \n"
                   << " [-b _backbone.pdb] [-g _generating_lines.pdb]"
                   << " [-m module] [-h]"
-                  << std::endl;
+                  << "\n";
         exit(EXIT_FAILURE);
     }
   }
@@ -92,11 +92,11 @@ int main(int argc, char *argv[])
   if (!in_flag || !inp_flag)
   {
     std::cout << " ERROR: need parameter for option -f and -i: "
-              << std::endl << " Usage: " << argv[0]
+              << "\n" << " Usage: " << argv[0]
               << " -f some.pdb [-o _curve.dat] [-x _axis.pdb] \n"
               << " [-b _backbone.pdb] [-g _generating_lines.pdb]"
               << " [-m module] [-h]"
-              << std::endl;
+              << "\n";
     exit(EXIT_SUCCESS);
   }
   pinang::PDB pdb1(infilename);
@@ -120,8 +120,8 @@ int main(int argc, char *argv[])
   }
 
   std::cout << " Analyzing DNA curvature of MODULE " << mod_index
-            << " of " << infilename  << " ... " << std::endl
-            << std::endl;
+            << " of " << infilename  << " ... " << "\n"
+            << "\n";
 
   /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // main
@@ -171,7 +171,7 @@ int main(int argc, char *argv[])
   //              |_|
   // ============================================================
   */
-  std::cout << " 1. Read in structures ..." << std::endl;
+  std::cout << " 1. Read in structures ..." << "\n";
   int i = 0;
   int j = 0;
 
@@ -232,24 +232,24 @@ int main(int argc, char *argv[])
   }
   if (flg_grp_1 == 0 || chain1_id.size() == 0)
   {
-    std::cout << " ERROR: STRAND1 not found!" << std::endl;
+    std::cout << " ERROR: STRAND1 not found!" << "\n";
     exit(EXIT_FAILURE);
   }
   if (flg_grp_2 == 0 || chain2_id.size() == 0)
   {
-    std::cout << " ERROR: STRAND2 not found!" << std::endl;
+    std::cout << " ERROR: STRAND2 not found!" << "\n";
     exit(EXIT_FAILURE);
   }
   // std::cout << "Strand 1: ";
   // for (i = 0; i < int(chain1_id.size()); i++) {
   //     std::cout << chain1_id[i] << ", ";
   // }
-  // std::cout << std::endl;
+  // std::cout << "\n";
   // std::cout << "Strand 2: ";
   // for (i = 0; i < int(chain2_id.size()); i++) {
   //     std::cout << chain2_id[i] << ", ";
   // }
-  // std::cout << std::endl;
+  // std::cout << "\n";
   inp_file.close();
 
   pinang::Model mdl0 = pdb1.get_model(mod_index-1);
@@ -283,15 +283,15 @@ int main(int argc, char *argv[])
       }
   if (backbone1_nodes.size() == 0 || base_positions1.size() == 0)
   {
-    std::cout << " ERROR: STRAND1 read in error!" << std::endl;
+    std::cout << " ERROR: STRAND1 read in error!" << "\n";
     exit(EXIT_FAILURE);
   }
   if (backbone2_nodes.size() == 0 || base_positions2.size() == 0)
   {
-    std::cout << " ERROR: STRAND2 read in error!" << std::endl;
+    std::cout << " ERROR: STRAND2 read in error!" << "\n";
     exit(EXIT_FAILURE);
   }
-  std::cout << " ... done." << std::endl;
+  std::cout << " ... done." << "\n";
 
 
   /* ============================================================
@@ -302,7 +302,7 @@ int main(int argc, char *argv[])
   // |_.__/ \__,_|\___|_|\_\_.__/ \___/|_| |_|\___|
   // ============================================================
   */
-  std::cout << " 2. Generating backbone curves ..." << std::endl;
+  std::cout << " 2. Generating backbone curves ..." << "\n";
   gen_spline_fit(backbone1_nodes, 10, backbone1_dots, backbone1_tangents);
   gen_spline_fit(backbone2_nodes, 10, backbone2_dots, backbone2_tangents);
 
@@ -319,7 +319,7 @@ int main(int argc, char *argv[])
                 << std::setw(8) << backbone1_dots[i][0]
                 << std::setw(8) << backbone1_dots[i][1]
                 << std::setw(8) << backbone1_dots[i][2]
-                << std::endl;
+                << "\n";
     } else {
       back_file << std::setw(6) << "HETATM" << std::setw(5) << i+1 << " "
                 << std::setw(4) << "O   " << std::setw(1) << " "
@@ -329,10 +329,10 @@ int main(int argc, char *argv[])
                 << std::setw(8) << backbone1_dots[i][0]
                 << std::setw(8) << backbone1_dots[i][1]
                 << std::setw(8) << backbone1_dots[i][2]
-                << std::endl;
+                << "\n";
     }
   }
-  back_file << "TER" << std::endl;
+  back_file << "TER" << "\n";
   for (i = 0; i < int(backbone2_dots.size()); i++) {
     if (i % 10 == 0) {
       back_file << std::setw(6) << "HETATM" << std::setw(5) << i+1+k << " "
@@ -343,7 +343,7 @@ int main(int argc, char *argv[])
                 << std::setw(8) << backbone2_dots[i][0]
                 << std::setw(8) << backbone2_dots[i][1]
                 << std::setw(8) << backbone2_dots[i][2]
-                << std::endl;
+                << "\n";
     } else {
       back_file << std::setw(6) << "HETATM" << std::setw(5) << i+1+k << " "
                 << std::setw(4) << "O   " << std::setw(1) << " "
@@ -353,7 +353,7 @@ int main(int argc, char *argv[])
                 << std::setw(8) << backbone2_dots[i][0]
                 << std::setw(8) << backbone2_dots[i][1]
                 << std::setw(8) << backbone2_dots[i][2]
-                << std::endl;
+                << "\n";
     }
   }
 
@@ -362,16 +362,16 @@ int main(int argc, char *argv[])
     back_file << std::setw(6) << "CONECT"
               << std::setw(5) << i+1
               << std::setw(5) << i+2
-              << std::endl;
+              << "\n";
   }
   for (i = 0; i < int(backbone2_dots.size())-2; i++) {
     back_file << std::setw(6) << "CONECT"
               << std::setw(5) << i+1+k
               << std::setw(5) << i+2+k
-              << std::endl;
+              << "\n";
   }
 
-  std::cout << " ... done." << std::endl;
+  std::cout << " ... done." << "\n";
 
   /* ============================================================
   //                     _ _
@@ -382,7 +382,7 @@ int main(int argc, char *argv[])
   //  |___/
   // ============================================================
   */
-  std::cout << " 3. Generating lines of cylinders ..." << std::endl;
+  std::cout << " 3. Generating lines of cylinders ..." << "\n";
   genline1_lines.clear();
   genline2_lines.clear();
   genline1_line_tangents.clear();
@@ -421,7 +421,7 @@ int main(int argc, char *argv[])
                    << std::setw(8) << genline1_dots[j][0]
                    << std::setw(8) << genline1_dots[j][1]
                    << std::setw(8) << genline1_dots[j][2]
-                   << std::endl;
+                   << "\n";
       } else {
         gline_file << std::setw(6) << "HETATM" << std::setw(5) << j+1 << " "
                    << std::setw(4) << "O   " << std::setw(1) << " "
@@ -431,10 +431,10 @@ int main(int argc, char *argv[])
                    << std::setw(8) << genline1_dots[j][0]
                    << std::setw(8) << genline1_dots[j][1]
                    << std::setw(8) << genline1_dots[j][2]
-                   << std::endl;
+                   << "\n";
       }
     }
-    gline_file << "TER" << std::endl;
+    gline_file << "TER" << "\n";
     for (j = 0; j < int(genline2_dots.size()); j++) {
       if (j % 10 == 0) {
         gline_file << std::setw(6) << "HETATM" << std::setw(5) << j+1+k << " "
@@ -445,7 +445,7 @@ int main(int argc, char *argv[])
                    << std::setw(8) << genline2_dots[j][0]
                    << std::setw(8) << genline2_dots[j][1]
                    << std::setw(8) << genline2_dots[j][2]
-                   << std::endl;
+                   << "\n";
       } else {
         gline_file << std::setw(6) << "HETATM" << std::setw(5) << j+1+k << " "
                    << std::setw(4) << "O   " << std::setw(1) << " "
@@ -455,23 +455,23 @@ int main(int argc, char *argv[])
                    << std::setw(8) << genline2_dots[j][0]
                    << std::setw(8) << genline2_dots[j][1]
                    << std::setw(8) << genline2_dots[j][2]
-                   << std::endl;
+                   << "\n";
       }
     }
-    gline_file << "TER" << std::endl;
+    gline_file << "TER" << "\n";
 
     // connecting points!
     for (j = 0; j < int(genline1_dots.size())-2; j++) {
       gline_file << std::setw(6) << "CONECT"
                  << std::setw(5) << j + 1
                  << std::setw(5) << j + 2
-                 << std::endl;
+                 << "\n";
     }
     for (j = 0; j < int(genline2_dots.size())-2; j++) {
       gline_file << std::setw(6) << "CONECT"
                  << std::setw(5) << j+1+k
                  << std::setw(5) << j+2+k
-                 << std::endl;
+                 << "\n";
     }
     genline1_nodes.clear();
     genline2_nodes.clear();
@@ -480,7 +480,7 @@ int main(int argc, char *argv[])
     genline1_tangents.clear();
     genline2_tangents.clear();
   }
-  std::cout << " ... done." << std::endl;
+  std::cout << " ... done." << "\n";
 
   /* ==================================================================
   //  _          _ _            _ _               _   _
@@ -490,7 +490,7 @@ int main(int argc, char *argv[])
   // |_| |_|\___|_|_/_/\_\  \__,_|_|_|  \___|\___|\__|_|\___/|_| |_|
   // ==================================================================
   */
-  std::cout << " 4. Calculating helix axis ..." << std::endl;
+  std::cout << " 4. Calculating helix axis ..." << "\n";
   for (i = 0; i < int(backbone1_nodes.size()); i++) {
     int m = i / 10;
     int n = i % 10;
@@ -519,7 +519,7 @@ int main(int argc, char *argv[])
               << std::setw(8) << backbone1_nodes[j][0]
               << std::setw(8) << backbone1_nodes[j][1]
               << std::setw(8) << backbone1_nodes[j][2]
-              << std::endl;
+              << "\n";
     norm_file << std::setw(6) << "HETATM" << std::setw(5) << 3 * j+2 << " "
               << std::setw(4) << "O   " << std::setw(1) << " "
               << std::setw(3) << "AXS" << " " << std::setw(1) << "A"
@@ -528,14 +528,14 @@ int main(int argc, char *argv[])
               << std::setw(8) << backbone1_nodes[j][0] + backbone1_normals[j][0] * 5
               << std::setw(8) << backbone1_nodes[j][1] + backbone1_normals[j][1] * 5
               << std::setw(8) << backbone1_nodes[j][2] + backbone1_normals[j][2] * 5
-              << std::endl;
+              << "\n";
   }
   // connecting points!
   for (j = 0; j < int(backbone1_nodes.size()); j++) {
     norm_file << std::setw(6) << "CONECT"
               << std::setw(5) << 3 * j + 1
               << std::setw(5) << 3 * j + 2
-              << std::endl;
+              << "\n";
   }
 
 
@@ -568,7 +568,7 @@ int main(int argc, char *argv[])
         cog_base_id = j;
       }
     }
-    // std::cout << i << "  vs  " << cog_base_id << " -> " << i + cog_base_id << std::endl;
+    // std::cout << i << "  vs  " << cog_base_id << " -> " << i + cog_base_id << "\n";
 
     double circle_radius_min = 1000.0;
     pinang::Vec3d circle_center;
@@ -669,7 +669,7 @@ int main(int argc, char *argv[])
               << std::setw(8) << axis_nodes[j][0]
               << std::setw(8) << axis_nodes[j][1]
               << std::setw(8) << axis_nodes[j][2]
-              << std::endl;
+              << "\n";
     norm_file << std::setw(6) << "HETATM" << std::setw(5) << 3 * j+3 << " "
               << std::setw(4) << "C   " << std::setw(1) << " "
               << std::setw(3) << "AXS" << " " << std::setw(1) << "A"
@@ -678,33 +678,33 @@ int main(int argc, char *argv[])
               << std::setw(8) << axis_nodes[j][0]
               << std::setw(8) << axis_nodes[j][1]
               << std::setw(8) << axis_nodes[j][2]
-              << std::endl;
+              << "\n";
   }
   // connecting points!
   for (j = 4; j < int(axis_nodes.size())-5; j++) {
     axis_file << std::setw(6) << "CONECT"
               << std::setw(5) << j + 1
               << std::setw(5) << j + 2
-              << std::endl;
+              << "\n";
     norm_file << std::setw(6) << "CONECT"
               << std::setw(5) << 3* j + 2
               << std::setw(5) << 3* j + 3
-              << std::endl;
+              << "\n";
   }
 
   // ============================================================
   // Calculate Curvature!
   out_file << "------------------------------------------------------------"
-           << std::endl;
-  out_file << "DNA curvature: " << std::endl
+           << "\n";
+  out_file << "DNA curvature: " << "\n"
            << std::setw(6) << "id" << "  "
            << std::setw(10) << "k1" << "   "
            << std::setw(10) << "k2" << "   "
            << std::setw(10) << "k3" << "   "
            << std::setw(10) << "k_ave" << "   "
-           << std::endl;
+           << "\n";
   out_file << "------------------------------------------------------------"
-           << std::endl;
+           << "\n";
 
   for (i = 4; i < int(axis_nodes.size())-4; i++) {
     j = i - 3;
@@ -762,10 +762,10 @@ int main(int argc, char *argv[])
              << std::setw(10) << k2 << "   "
              << std::setw(10) << k3 << "   "
              << std::setw(10) << k_ave << "   "
-             << std::endl;
+             << "\n";
   }
   out_file << "============================================================\n\n\n"
-           << std::endl;
+           << "\n";
 
   // ---------- Base rise ----------
   // pinang::Vec3d base_delta;
@@ -776,9 +776,9 @@ int main(int argc, char *argv[])
   //     base_rise.push_back(abs(proj));
   //     // std::cout << j << " - " << j + 1 << " : "
   //     //           << base_delta.norm() << "    "
-  //     //           << abs(proj) << std::endl;
+  //     //           << abs(proj) << "\n";
   // }
-  std::cout << " ... done." << std::endl;
+  std::cout << " ... done." << "\n";
 
   /* =========================================================================
   //   ____                                     _     _ _   _
@@ -788,14 +788,14 @@ int main(int argc, char *argv[])
   //  \____|_|  \___/ \___/ \_/ \___|   \_/\_/ |_|\__,_|\__|_| |_|
   // =========================================================================
   */
-  std::cout << " 5. Calculating groove width ..." << std::endl;
+  std::cout << " 5. Calculating groove width ..." << "\n";
   out_file << "------------------------------------------------------------"
-           << std::endl;
+           << "\n";
   out_file << std::setw(6) << "id" << "   "
            << std::setw(20) << "minor groove width" << "   "
-           << std::setw(20) <<  "major groove width" << std::endl;
+           << std::setw(20) <<  "major groove width" << "\n";
   out_file << "------------------------------------------------------------"
-           << std::endl;
+           << "\n";
 
   for (i = 0; i < int(axis_directions.size())-1; i++) {
     // step 1: plane perpendicular to direction Ox, O is the current point -
@@ -968,7 +968,7 @@ int main(int argc, char *argv[])
     }
     out_file << std::setw(6) << i+6 << "   "
              << std::setw(20) << minor_g_w << "   "
-             << std::setw(20) <<  major_g_w << std::endl;
+             << std::setw(20) <<  major_g_w << "\n";
     if (minor_g_w < 25) {
       groove_file << std::setw(6) << "HETATM" << std::setw(5) << 4 * i+1 << " "
                   << std::setw(4) << "C   " << std::setw(1) << " "
@@ -978,7 +978,7 @@ int main(int argc, char *argv[])
                   << std::setw(8) << I1_0[0]
                   << std::setw(8) << I1_0[1]
                   << std::setw(8) << I1_0[2]
-                  << std::endl;
+                  << "\n";
       groove_file << std::setw(6) << "HETATM" << std::setw(5) << 4 * i+2 << " "
                   << std::setw(4) << "N   " << std::setw(1) << " "
                   << std::setw(3) << "GRV" << " " << std::setw(1) << "B"
@@ -987,11 +987,11 @@ int main(int argc, char *argv[])
                   << std::setw(8) << I2_0[0]
                   << std::setw(8) << I2_0[1]
                   << std::setw(8) << I2_0[2]
-                  << std::endl;
+                  << "\n";
       groove_file << std::setw(6) << "CONECT"
                   << std::setw(5) << 4*i + 1
                   << std::setw(5) << 4*i + 2
-                  << std::endl;
+                  << "\n";
       minor_groove_width.push_back(minor_g_w);
     }
     if (major_g_w < 25) {
@@ -1003,7 +1003,7 @@ int main(int argc, char *argv[])
                   << std::setw(8) << I3_0[0]
                   << std::setw(8) << I3_0[1]
                   << std::setw(8) << I3_0[2]
-                  << std::endl;
+                  << "\n";
       groove_file << std::setw(6) << "HETATM" << std::setw(5) << 4 * i+4 << " "
                   << std::setw(4) << "S   " << std::setw(1) << " "
                   << std::setw(3) << "GRV" << " " << std::setw(1) << "B"
@@ -1012,16 +1012,16 @@ int main(int argc, char *argv[])
                   << std::setw(8) << I4_0[0]
                   << std::setw(8) << I4_0[1]
                   << std::setw(8) << I4_0[2]
-                  << std::endl;
+                  << "\n";
       groove_file << std::setw(6) << "CONECT"
                   << std::setw(5) << 4*i + 3
                   << std::setw(5) << 4*i + 4
-                  << std::endl;
+                  << "\n";
       major_groove_width.push_back(major_g_w);
     }
   }
 
-  std::cout << " ... done." << std::endl;
+  std::cout << " ... done." << "\n";
 
 
   // ----------------------------------------------------------------------

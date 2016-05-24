@@ -14,11 +14,11 @@ using namespace std;
 int main(int argc, char *argv[])
 {
     std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ "
-              << std::endl;
+              << "\n";
     std::cout << " ~           PINANG DCD distances calculation             ~ "
-              << std::endl;
+              << "\n";
     std::cout << " ========================================================== "
-              << std::endl;
+              << "\n";
 
     double cutoff = 0;
     double contact_cutoff = 7.0;
@@ -57,31 +57,31 @@ int main(int argc, char *argv[])
             std::cout << " Usage: "
                       << argv[0]
                       << " -f some.dcd -s some.top -i some.inp [-o some.dis] [-h]"
-                      << std::endl;
+                      << "\n";
             exit(EXIT_SUCCESS);
             break;
         default: /* '?' */
             std::cout << " Usage: "
                       << argv[0]
                       << " -f some.dcd -s some.top -i some.inp [-o some.dis] [-h]"
-                      << std::endl;
+                      << "\n";
             exit(EXIT_FAILURE);
         }
     }
 
     if (dcd_flag == 0)
     {
-        std::cout << " ERROR: Please provide the DCD file. " << std::endl;
+        std::cout << " ERROR: Please provide the DCD file. " << "\n";
         exit(EXIT_SUCCESS);
     }
     if (top_flag == 0)
     {
-        std::cout << " ERROR: Please provide the top file. " << std::endl;
+        std::cout << " ERROR: Please provide the top file. " << "\n";
         exit(EXIT_SUCCESS);
     }
     if (inp_flag == 0)
     {
-        std::cout << " ERROR: Please provide the input file. " << std::endl;
+        std::cout << " ERROR: Please provide the input file. " << "\n";
         exit(EXIT_SUCCESS);
     }
     // -------------------------------------------------------------------------
@@ -93,7 +93,7 @@ int main(int argc, char *argv[])
     pinang::Topology top(top_name);
     if (top.get_size() == 0)
     {
-        std::cout << " ERROR: No particles found in top file. " << std::endl;
+        std::cout << " ERROR: No particles found in top file. " << "\n";
         exit(EXIT_SUCCESS);
     }
 
@@ -192,15 +192,15 @@ int main(int argc, char *argv[])
     }
     if (flg_grp_1 == 0)
     {
-        std::cout << " ERROR: LIGAND not found!" << std::endl;
+        std::cout << " ERROR: LIGAND not found!" << "\n";
     }
     if (flg_grp_2 == 0)
     {
-        std::cout << " ERROR: RECEPTOR not found!" << std::endl;
+        std::cout << " ERROR: RECEPTOR not found!" << "\n";
     }
     if (flg_cut == 0 || cutoff <= 0.0001)
     {
-        std::cout << " ERROR: Please set a cutoff!" << std::endl;
+        std::cout << " ERROR: Please set a cutoff!" << "\n";
     }
     inp_file.close();
 
@@ -213,14 +213,14 @@ int main(int argc, char *argv[])
 
     if (nframe == 0)
     {
-        std::cout << " ERROR: Empty DCD file!  Please check! " << std::endl;
+        std::cout << " ERROR: Empty DCD file!  Please check! " << "\n";
         return 1;
     }
 
     if (top.get_size() != conformations[0].get_size())
     {
         std::cout << " ERROR: Particle number don't match in top and dcd! "
-                  << " Please check! " << std::endl;
+                  << " Please check! " << "\n";
         return 1;
     }
 
@@ -258,13 +258,13 @@ int main(int argc, char *argv[])
             v = conformations[i].get_coordinate(k);
             d_tmp = vec_distance(com1, v);
             rec_resid[j] = 0;
-            // std::cout << d_tmp << std::endl;
+            // std::cout << d_tmp << "\n";
             if (dist < 0 || dist > d_tmp) dist = d_tmp;
         }
 
         // dis_file << std::setw(6) << i
         //          << "   " << std::setw(8) << dist
-        //          << std::endl; // Output the distance!
+        //          << "\n"; // Output the distance!
         if (dist > cutoff) continue;
 
         for (int j = 0; j < int(atom_group1_idx.size()); j++) {
@@ -285,14 +285,14 @@ int main(int argc, char *argv[])
             if (lig_resid[j] > 0)
                 dis_file << std::setw(6) << i
                          << " lig  " << std::setw(8) << k
-                         << std::endl;
+                         << "\n";
         }
         for (int j = 0; j < int(atom_group2_idx.size()); j++) {
             k = atom_group2_idx[j];
             if (rec_resid[j] > 0)
                 dis_file << std::setw(6) << i
                          << " rec  " << std::setw(8) << k
-                         << std::endl;
+                         << "\n";
         }
     }
 

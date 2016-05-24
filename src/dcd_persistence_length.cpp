@@ -16,11 +16,11 @@ using namespace std;
 int main(int argc, char *argv[])
 {
     std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ "
-              << std::endl;
+              << "\n";
     std::cout << " ~      PINANG DCD persistence length calculation         ~ "
-              << std::endl;
+              << "\n";
     std::cout << " ========================================================== "
-              << std::endl;
+              << "\n";
 
     int opt;
     int inp_flag = 0;
@@ -66,7 +66,7 @@ int main(int argc, char *argv[])
                       << argv[0]
                       << " -f some.dcd -s some.top -i some.inp [-o some.lp]\n"
                       << " [-b] beginning_frame [-e] ending_frame [-h]"
-                      << std::endl;
+                      << "\n";
             exit(EXIT_SUCCESS);
             break;
         default: /* '?' */
@@ -74,24 +74,24 @@ int main(int argc, char *argv[])
                       << argv[0]
                       << " -f some.dcd -s some.top -i some.inp [-o some.lp]\n"
                       << " [-b] beginning_frame [-e] ending_frame [-h]"
-                      << std::endl;
+                      << "\n";
             exit(EXIT_FAILURE);
         }
     }
 
     if (dcd_flag == 0)
     {
-        std::cout << " ERROR: Please provide the DCD file. " << std::endl;
+        std::cout << " ERROR: Please provide the DCD file. " << "\n";
         exit(EXIT_SUCCESS);
     }
     if (top_flag == 0)
     {
-        std::cout << " ERROR: Please provide the top file. " << std::endl;
+        std::cout << " ERROR: Please provide the top file. " << "\n";
         exit(EXIT_SUCCESS);
     }
     if (inp_flag == 0)
     {
-        std::cout << " ERROR: Please provide the input file. " << std::endl;
+        std::cout << " ERROR: Please provide the input file. " << "\n";
         exit(EXIT_SUCCESS);
     }
 
@@ -101,10 +101,10 @@ int main(int argc, char *argv[])
 
     // ==================== topology file read in ====================
     pinang::Topology top(top_name);
-    std::cout << " (i.e. " << (top.get_size()+2)/6 << " bp.)" << std::endl;
+    std::cout << " (i.e. " << (top.get_size()+2)/6 << " bp.)" << "\n";
     if (top.get_size() == 0)
     {
-        std::cout << " ERROR: No particles found in top file. " << std::endl;
+        std::cout << " ERROR: No particles found in top file. " << "\n";
         exit(EXIT_SUCCESS);
     }
 
@@ -210,30 +210,30 @@ int main(int argc, char *argv[])
     }
     if (flg_grp_1 == 0)
     {
-        std::cout << " ERROR: STRAND 1 not found!" << std::endl;
+        std::cout << " ERROR: STRAND 1 not found!" << "\n";
     }
     if (flg_grp_2 == 0)
     {
-        std::cout << " ERROR: STRAND 2 not found!" << std::endl;
+        std::cout << " ERROR: STRAND 2 not found!" << "\n";
     }
     inp_file.close();
     if (phosphate_strand1_idx.size() != phosphate_strand2_idx.size())
     {
         std::cout << " ERROR: STRAND 1 Phosphate != STRAND 2 Phosphate!"
-                  << std::endl;
+                  << "\n";
         exit(EXIT_SUCCESS);
     }
     if (base_strand1_idx.size() != base_strand2_idx.size())
     {
         std::cout << " ERROR: STRAND 1 and STRAND 2 bases do not match!"
-                  << std::endl;
+                  << "\n";
         exit(EXIT_SUCCESS);
     }
     if (base_strand1_idx.size() != phosphate_strand1_idx.size() + 1)
     {
         std::cout << " ERROR: Number of Bases should be \n"
                   << " one more than number of phosphates!"
-                  << std::endl;
+                  << "\n";
         exit(EXIT_SUCCESS);
     }
 
@@ -243,18 +243,18 @@ int main(int argc, char *argv[])
 
     pinang::read_cafemol_dcd(dcd_file, conformations);
     int nframe = conformations.size();
-    std::cout << " Total " << nframe << " frames in dcd file." << std::endl;
+    std::cout << " Total " << nframe << " frames in dcd file." << "\n";
 
     if (nframe == 0)
     {
-        std::cout << " ERROR: Empty DCD file!  Please check! " << std::endl;
+        std::cout << " ERROR: Empty DCD file!  Please check! " << "\n";
         return 1;
     }
 
     if (top.get_size() != conformations[0].get_size())
     {
         std::cout << " ERROR: Particle number don't match in top and dcd! "
-                  << " Please check! " << std::endl;
+                  << " Please check! " << "\n";
         return 1;
     }
     if (beg_flag == 0)
@@ -269,7 +269,7 @@ int main(int argc, char *argv[])
         end_frame = nframe;
     }
     std::cout << " Calculating from " << begin_frame << "th frame to "
-              << end_frame << "th frame..." << std::endl;
+              << end_frame << "th frame..." << "\n";
     /*                  _         _
     //  _ __ ___   __ _(_)_ __   | | ___   ___  _ __
     // | '_ ` _ \ / _` | | '_ \  | |/ _ \ / _ \| '_ \
@@ -388,15 +388,15 @@ int main(int argc, char *argv[])
     double sum = std::accumulate(lc.begin(), lc.end(), 0.0);
     contour_length = sum / lc.size() + 3.43;
     std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ "
-              << std::endl;
+              << "\n";
     std::cout << " Contour length = "
               << std::setw(8) << contour_length
-              << std::endl;
+              << "\n";
     lp_file << " Contour Length: "
             << " L_c = " << std::setw(8) << contour_length
-            << std::endl;
+            << "\n";
     lp_file << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-            << std::endl;
+            << "\n";
 
     // ---------- calculating <Re^2> ----------
     sum = std::accumulate(R_e_sqr.begin(), R_e_sqr.end(), 0.0);
@@ -405,30 +405,30 @@ int main(int argc, char *argv[])
 
     // ~~~~~~~~~~ output ~~~~~~~~~~
     std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ "
-              << std::endl;
+              << "\n";
     std::cout << " Def 1 of persistence length: "
-              << " lp = <Re^2>/2L" << std::endl
+              << " lp = <Re^2>/2L" << "\n"
               << " Result: " << std::setw(8) << persistence_length_1
-              << std::endl;
+              << "\n";
     lp_file << " Def 1 of persistence length: "
-            << " lp = <Re^2>/2L" << std::endl
+            << " lp = <Re^2>/2L" << "\n"
             << " Result: " << std::setw(8) << persistence_length_1
-            << std::endl;
+            << "\n";
     lp_file << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-            << std::endl;
+            << "\n";
 
     // ==================== Calculating Def2 of Lp ====================
     std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ "
-              << std::endl;
+              << "\n";
     std::cout << " Def 2 of persistence length: "
-              << " <u(0) * u(s)> = e^(-s/lp)" << std::endl;
+              << " <u(0) * u(s)> = e^(-s/lp)" << "\n";
 
     lp_file <<  " Def 2 of persistence length: "
-            << " <u(0) * u(s)> = e^(-s/lp)" << std::endl;
+            << " <u(0) * u(s)> = e^(-s/lp)" << "\n";
     lp_file << std::setw(8) << "s" << "  "
             << std::setw(8) << "<u*u>"<< "  "
             << std::setw(8) << "-Ln<u*u>"<< "  "
-            << std::setw(8) << "l_p" << std::endl;
+            << std::setw(8) << "l_p" << "\n";
 
     double p2; // all calculated persistence lengthes;
 
@@ -448,25 +448,25 @@ int main(int argc, char *argv[])
                 << std::setw(8) << mean << "  "
                 << std::setw(8) << -log(mean) << "  "
                 << std::setw(8) << p2
-                << std::endl;
+                << "\n";
         std::cout << " Result (s=" << 1.0 * (i + 1) / dna_len
                   << "% contour length): "
                   << std::setw(8)
                   << p2
-                  << std::endl;
+                  << "\n";
     }
 
     sum = std::accumulate(lp2.begin(), lp2.end(), 0.0);
     persistence_length_2 = sum / dna_len;
 
     std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ "
-              << std::endl;
+              << "\n";
     lp_file << " Averaged from above:"
             << std::setw(8) << persistence_length_2
-            << std::endl;
+            << "\n";
     std::cout << " Averaged from above:"
               << std::setw(8) << persistence_length_2
-              << std::endl;
+              << "\n";
 
     // ending ------------------------------
     dcd_file.close();

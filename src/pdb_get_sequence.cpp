@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
   std::cout << " 3-char-aa-name : ----------------------------- " << "\n";
   pdb1.output_sequence(3);
   std::cout << " ---------------------------------------------- " << "\n";
-  cout << std::endl;
+  cout << "\n";
 
   if (out_flag) {
     std::ofstream out_file(out_name.c_str());

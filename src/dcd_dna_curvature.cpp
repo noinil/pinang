@@ -21,11 +21,11 @@ void gen_spline_fit(const std::vector<pinang::Vec3d>&, int N,
 int main(int argc, char *argv[])
 {
     std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ "
-              << std::endl;
+              << "\n";
     std::cout << " ~           PINANG DCD DNA bending curvature             ~ "
-              << std::endl;
+              << "\n";
     std::cout << " ========================================================== "
-              << std::endl;
+              << "\n";
 
     int opt;
     int dt = 100;
@@ -81,7 +81,7 @@ int main(int argc, char *argv[])
                       << argv[0]
                       << " -f some.dcd -s some.top -i some.inp [-o some.curve]\n"
                       << " [-b] beginning_frame [-e] ending_frame [-h]"
-                      << std::endl;
+                      << "\n";
             exit(EXIT_SUCCESS);
             break;
         default: /* '?' */
@@ -89,24 +89,24 @@ int main(int argc, char *argv[])
                       << argv[0]
                       << " -f some.dcd -s some.top -i some.inp [-o some.curve]\n"
                       << " [-b] beginning_frame [-e] ending_frame [-h]"
-                      << std::endl;
+                      << "\n";
             exit(EXIT_FAILURE);
         }
     }
 
     if (dcd_flag == 0)
     {
-        std::cout << " ERROR: Please provide the DCD file. " << std::endl;
+        std::cout << " ERROR: Please provide the DCD file. " << "\n";
         exit(EXIT_SUCCESS);
     }
     if (top_flag == 0)
     {
-        std::cout << " ERROR: Please provide the top file. " << std::endl;
+        std::cout << " ERROR: Please provide the top file. " << "\n";
         exit(EXIT_SUCCESS);
     }
     if (inp_flag == 0)
     {
-        std::cout << " ERROR: Please provide the input file. " << std::endl;
+        std::cout << " ERROR: Please provide the input file. " << "\n";
         exit(EXIT_SUCCESS);
     }
 
@@ -119,7 +119,7 @@ int main(int argc, char *argv[])
     pinang::Topology top(top_name);
     if (top.get_size() == 0)
     {
-        std::cout << " ERROR: No particles found in top file. " << std::endl;
+        std::cout << " ERROR: No particles found in top file. " << "\n";
         exit(EXIT_SUCCESS);
     }
 
@@ -129,18 +129,18 @@ int main(int argc, char *argv[])
 
     pinang::read_cafemol_dcd(dcd_file, conformations);
     int nframe = conformations.size();
-    std::cout << " Total " << nframe << " frames in dcd file." << std::endl;
+    std::cout << " Total " << nframe << " frames in dcd file." << "\n";
 
     if (nframe == 0)
     {
-        std::cout << " ERROR: Empty DCD file!  Please check! " << std::endl;
+        std::cout << " ERROR: Empty DCD file!  Please check! " << "\n";
         return 1;
     }
 
     if (top.get_size() != conformations[0].get_size())
     {
         std::cout << " ERROR: Particle number don't match in top and dcd! "
-                  << " Please check! " << std::endl;
+                  << " Please check! " << "\n";
         return 1;
     }
     if (beg_flag == 0)
@@ -155,7 +155,7 @@ int main(int argc, char *argv[])
         end_frame = nframe;
     }
     std::cout << " Calculating from " << begin_frame << "th frame to "
-              << end_frame << "th frame..." << std::endl;
+              << end_frame << "th frame..." << "\n";
 
 
 
@@ -284,11 +284,11 @@ int main(int argc, char *argv[])
 
     if (flg_grp_1 == 0)
     {
-        std::cout << " ERROR: STRAND 1 not found!" << std::endl;
+        std::cout << " ERROR: STRAND 1 not found!" << "\n";
     }
     if (flg_grp_2 == 0)
     {
-        std::cout << " ERROR: STRAND 2 not found!" << std::endl;
+        std::cout << " ERROR: STRAND 2 not found!" << "\n";
     }
     inp_file.close();
 
@@ -305,10 +305,10 @@ int main(int argc, char *argv[])
     for (int h = begin_frame; h < end_frame; h+=step) {
         count++;
         if (log_flag == 1) {
-            std::cout << " Time : " << h << std::endl;
+            std::cout << " Time : " << h << "\n";
             log_file << " ----------------------------------------------------- \n"
-                     << " step " << std::setw(6) << h << std::endl
-                     << " -------------------- " << std::endl;
+                     << " step " << std::setw(6) << h << "\n"
+                     << " -------------------- " << "\n";
         }
 
         std::vector<pinang::Vec3d> backbone1_nodes; // P atoms in the 1st backbone;
@@ -572,7 +572,7 @@ int main(int argc, char *argv[])
             if (log_flag == 1) {
                 log_file << std::setw(6) << i + 2 << "  "
                          << std::setw(10) << k_ave << "   "
-                         << std::endl;
+                         << "\n";
             }
             curv.push_back(k_ave);
         }
@@ -580,7 +580,7 @@ int main(int argc, char *argv[])
         curv.clear();
     }
 
-    std::cout << " Totally " << count << " frames analyzed."<< std::endl;
+    std::cout << " Totally " << count << " frames analyzed."<< "\n";
 
     std::vector<double> curv_ana;
     int len_strand = curvature_all[0].size();
@@ -593,7 +593,7 @@ int main(int argc, char *argv[])
     }
     for (i = 0; i < len_strand; i++) {
         curv_ana[i] /= count;
-        crv_file << curv_ana[i] << std::endl;
+        crv_file << curv_ana[i] << "\n";
     }
 
 
