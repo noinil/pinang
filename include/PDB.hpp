@@ -38,7 +38,7 @@ class PDB
   //! @return A PDB object.
   // ************************************************************
   PDB(const std::string& s);
-  virtual ~PDB() {models_.clear();}
+  virtual ~PDB() {v_models_.clear();}
 
   // ************************************************************
   //! @brief Get PDB file name.
@@ -77,7 +77,7 @@ class PDB
 
  protected:
   std::string PDB_file_name_;  //!< PDB flie name.
-  std::vector<Model> models_;  //!< A collection of model objects in PDB file.
+  std::vector<Model> v_models_;  //!< A collection of model objects in PDB file.
   int n_model_;                //!< Number of models in PDB flie.
 };
 

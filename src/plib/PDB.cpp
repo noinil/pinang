@@ -12,7 +12,7 @@ PDB::PDB(const std::string& s)
 
   PDB_file_name_ = s;
   n_model_ = 0;
-  models_.clear();
+  v_models_.clear();
 
   std::ifstream ifile(PDB_file_name_.c_str());
   if (!ifile.is_open())
@@ -64,7 +64,7 @@ PDB::PDB(const std::string& s)
       {
         model_tmp.add_chain(chain_tmp);
       }
-      models_.push_back(model_tmp);
+      v_models_.push_back(model_tmp);
       n_model_++;
 
       model_tmp.reset();
@@ -86,7 +86,7 @@ PDB::PDB(const std::string& s)
       }
       if (model_tmp.get_model_size() != 0)
       {
-        models_.push_back(model_tmp);
+        v_models_.push_back(model_tmp);
         n_model_++;
       }
 
@@ -146,21 +146,21 @@ PDB::PDB(const std::string& s)
 
 Model& PDB::get_model(unsigned int n)
 {
-  if (models_.empty())
+  if (v_models_.empty())
   {
     std::cout << " ~             PINANG :: PDB.h                ~ " << std::endl;
     std::cerr << "ERROR: No Model found in this PDB: "
               << PDB_file_name_ << std::endl;
     exit(EXIT_SUCCESS);
   }
-  if (n >= models_.size())
+  if (n >= v_models_.size())
   {
     std::cout << " ~             PINANG :: PDB.h                ~ " << std::endl;
     std::cerr << "ERROR: Model number out of range in PDB: "
               << PDB_file_name_ << std::endl;
     exit(EXIT_SUCCESS);
   }
-  return models_[n];
+  return v_models_[n];
 }
 
 void PDB::print_sequence(int n) const
@@ -173,7 +173,7 @@ void PDB::print_sequence(int n) const
               << std::endl;
     exit(EXIT_SUCCESS);
   }
-  models_[0].print_sequence(n);
+  v_models_[0].print_sequence(n);
 }
 
 void PDB::output_fasta(std::ostream & f_fasta) const
@@ -183,7 +183,7 @@ void PDB::output_fasta(std::ostream & f_fasta) const
     s.pop_back();
   }
 
-  models_[0].output_fasta(f_fasta, s);
+  v_models_[0].output_fasta(f_fasta, s);
 }
 
 std::ostream& operator<<(std::ostream& o, PDB& p)
@@ -191,7 +191,7 @@ std::ostream& operator<<(std::ostream& o, PDB& p)
   int i = 0;
   int s = p.n_model_;
   for (i = 0; i < s; i++) {
-    o << p.models_[i] << std::endl;
+    o << p.v_models_[i] << std::endl;
   }
   return o;
 }
