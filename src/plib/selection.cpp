@@ -1,12 +1,12 @@
 /*!
-@file selection.cpp
-@brief Define functions of class Selection.
+  @file selection.cpp
+  @brief Define functions of class Selection.
 
-Definitions of member or friend functions of class Selection.
+  Definitions of member or friend functions of class Selection.
 
-@author Cheng Tan (noinil@gmail.com)
-@date 2016-05-25 22:58
-@copyright GNU Public License V3.0
+  @author Cheng Tan (noinil@gmail.com)
+  @date 2016-05-25 22:58
+  @copyright GNU Public License V3.0
 */
 
 #include <iostream>

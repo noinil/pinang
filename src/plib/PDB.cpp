@@ -1,12 +1,12 @@
 /*!
-@file PDB.cpp
-@brief Functions of class PDB.
+  @file PDB.cpp
+  @brief Functions of class PDB.
 
-In this file I define the member and friend functions of class PDB.
+  In this file I define the member and friend functions of class PDB.
 
-@author Cheng Tan (noinil@gmail.com)
-@date 2016-05-24 15:26
-@copyright GNU Public License V3.0
+  @author Cheng Tan (noinil@gmail.com)
+  @date 2016-05-24 15:26
+  @copyright GNU Public License V3.0
 */
 
 

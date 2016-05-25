@@ -1,13 +1,13 @@
 /*!
-@file constants.hpp
-@brief Definition of basic constants.
+  @file constants.hpp
+  @brief Definition of basic constants.
 
-In this file a list of basic constants such as unit_of_mass, spring_constant for
-energy functions, cutoff, chain_type, and residue_name are defined.
+  In this file a list of basic constants such as unit_of_mass, spring_constant for
+  energy functions, cutoff, chain_type, and residue_name are defined.
 
-@author Cheng Tan (noinil@gmail.com)
-@date 2016-05-16 17:58
-@copyright GNU Public License V3.0
+  @author Cheng Tan (noinil@gmail.com)
+  @date 2016-05-16 17:58
+  @copyright GNU Public License V3.0
 */
 
 #ifndef PINANG_CONSTANTS_H_
@@ -38,10 +38,10 @@ const double k_K_nonnative = 1.0;   //!< Energy function parameter for non-nativ
 enum ChainType {none=0, protein=1, DNA=2, RNA=3, water=4, ion=5, other=6, na=7};
 
 /*!
-@brief Some of the physical properties of biomolecules.
+  @brief Some of the physical properties of biomolecules.
 
-A collection of maps that can translate residue name into charges, masses and
-chemical chain types.
+  A collection of maps that can translate residue name into charges, masses and
+  chemical chain types.
 */
 class PhysicalProperty
 {

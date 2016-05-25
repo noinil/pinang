@@ -1,13 +1,13 @@
 /*!
-@file selection.hpp
-@brief Definition of class Selection.
+  @file selection.hpp
+  @brief Definition of class Selection.
 
-In this file class Selection is defined.  Each selection contains a list of
-atom/residue indeces.
+  In this file class Selection is defined.  Each selection contains a list of
+  atom/residue indeces.
 
-@author Cheng Tan (noinil@gmail.com)
-@date 2016-05-25 22:37
-@copyright GNU Public License V3.0
+  @author Cheng Tan (noinil@gmail.com)
+  @date 2016-05-25 22:37
+  @copyright GNU Public License V3.0
 */
 
 #ifndef PINANG_SELECTION_H
@@ -19,10 +19,10 @@ atom/residue indeces.
 namespace pinang {
 
 /*!
-@brief A set of index of selected atoms/residues.
+  @brief A set of index of selected atoms/residues.
 
-The class Selection consists of a set of indeces, which are of atoms/residues
-selected from a molecule.
+  The class Selection consists of a set of indeces, which are of atoms/residues
+  selected from a molecule.
 */
 class Selection
 {
@@ -56,7 +56,7 @@ class Selection
   //! @retval 1: Failure.
   //! @retval 0: Success.
   int set_selection(std::vector<int>);
- 
+
   //! @brief Set Selection by reading from input file.
   //! @param An input file.
   //! @param KEYWORD.

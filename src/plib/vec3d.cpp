@@ -1,12 +1,12 @@
 /*!
-@file vec3d.cpp
-@brief Define functions of class Vec3d.
+  @file vec3d.cpp
+  @brief Define functions of class Vec3d.
 
-Definitions of member or friend functions of class Vec3d.
+  Definitions of member or friend functions of class Vec3d.
 
-@author Cheng Tan (noinil@gmail.com)
-@date 2016-05-24 15:47
-@copyright GNU Public License V3.0
+  @author Cheng Tan (noinil@gmail.com)
+  @date 2016-05-24 15:47
+  @copyright GNU Public License V3.0
 */
 
 

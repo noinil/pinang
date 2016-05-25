@@ -1,12 +1,12 @@
 /*!
-@file model.cpp
-@brief Define functions of class Model.
+  @file model.cpp
+  @brief Define functions of class Model.
 
-Definitions of member or friend functions of class Model.
+  Definitions of member or friend functions of class Model.
 
-@author Cheng Tan (noinil@gmail.com)
-@date 2016-05-24 15:43
-@copyright GNU Public License V3.0
+  @author Cheng Tan (noinil@gmail.com)
+  @date 2016-05-24 15:43
+  @copyright GNU Public License V3.0
 */
 
 #include <iomanip>

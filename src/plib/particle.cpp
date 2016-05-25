@@ -1,12 +1,12 @@
 /*!
-@file particle.cpp
-@brief Define functions of class Particle.
+  @file particle.cpp
+  @brief Define functions of class Particle.
 
-Definitions of member or friend functions of class Particle.
+  Definitions of member or friend functions of class Particle.
 
-@author Cheng Tan (noinil@gmail.com)
-@date 2016-05-24 15:44
-@copyright GNU Public License V3.0
+  @author Cheng Tan (noinil@gmail.com)
+  @date 2016-05-24 15:44
+  @copyright GNU Public License V3.0
 */
 
 #include <sstream>

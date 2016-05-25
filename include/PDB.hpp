@@ -1,14 +1,14 @@
 /*!
-@file PDB.hpp
-@brief Definition of class PDB.
+  @file PDB.hpp
+  @brief Definition of class PDB.
 
-This file defines class PDB, which contains structure to store information
-from PDB structure files and provides functions to print sequence, re-print
-clear PDB coordinates.
+  This file defines class PDB, which contains structure to store information
+  from PDB structure files and provides functions to print sequence, re-print
+  clear PDB coordinates.
 
-@author Cheng Tan (noinil@gmail.com)
-@date 2016-05-16 17:00
-@copyright GNU Public License V3.0
+  @author Cheng Tan (noinil@gmail.com)
+  @date 2016-05-16 17:00
+  @copyright GNU Public License V3.0
 */
 
 #ifndef PINANG_PDB_H
@@ -19,10 +19,10 @@ clear PDB coordinates.
 namespace pinang{
 
 /*!
-@brief Read in biomolecular structures from pdb file.
+  @brief Read in biomolecular structures from pdb file.
 
-Store the molecules (including coordinates, residue names, etc.) and output
-sequence or coordinates.
+  Store the molecules (including coordinates, residue names, etc.) and output
+  sequence or coordinates.
 */
 
 class PDB

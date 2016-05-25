@@ -1,13 +1,13 @@
 /*!
-@file model.hpp
-@brief Definition of class Model.
+  @file model.hpp
+  @brief Definition of class Model.
 
-In this file class Model is defined.  Model is a configuration of a biomolecule,
-usually including one or more chains.
+  In this file class Model is defined.  Model is a configuration of a biomolecule,
+  usually including one or more chains.
 
-@author Cheng Tan (noinil@gmail.com)
-@date 2016-05-16 18:05
-@copyright GNU Public License V3.0
+  @author Cheng Tan (noinil@gmail.com)
+  @date 2016-05-16 18:05
+  @copyright GNU Public License V3.0
 */
 
 #ifndef PINANG_MODEL_H_
@@ -18,11 +18,11 @@ usually including one or more chains.
 namespace pinang {
 
 /*!
-@brief Certain configuration of molecules stored in PDB.
+  @brief Certain configuration of molecules stored in PDB.
 
-A model is usually a certain conformation of biomolecules stored in PDB
-structures (especially in NMR structures).  A model consists of one or several
-chains.
+  A model is usually a certain conformation of biomolecules stored in PDB
+  structures (especially in NMR structures).  A model consists of one or several
+  chains.
 */
 class Model
 {

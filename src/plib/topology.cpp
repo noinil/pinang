@@ -1,12 +1,12 @@
 /*!
-@file topology.cpp
-@brief Define functions of class Topology.
+  @file topology.cpp
+  @brief Define functions of class Topology.
 
-Definitions of member or friend functions of class Topology.
+  Definitions of member or friend functions of class Topology.
 
-@author Cheng Tan (noinil@gmail.com)
-@date 2016-05-24 15:46
-@copyright GNU Public License V3.0
+  @author Cheng Tan (noinil@gmail.com)
+  @date 2016-05-24 15:46
+  @copyright GNU Public License V3.0
 */
 
 #include <iostream>

@@ -1,12 +1,12 @@
 /*!
-@file vec3d.hpp
-@brief Definition of class Vec3d.
+  @file vec3d.hpp
+  @brief Definition of class Vec3d.
 
-In this file the most basic class in PINANG, Vec3d, is defined.
+  In this file the most basic class in PINANG, Vec3d, is defined.
 
-@author Cheng Tan (noinil@gmail.com)
-@date 2016-05-16 18:12
-@copyright GNU Public License V3.0
+  @author Cheng Tan (noinil@gmail.com)
+  @date 2016-05-16 18:12
+  @copyright GNU Public License V3.0
 */
 
 #ifndef PINANG_VEC3D_H_
@@ -17,10 +17,10 @@ In this file the most basic class in PINANG, Vec3d, is defined.
 namespace pinang{
 
 /*!
-@brief The most basic concept of 3D coordinates.
+  @brief The most basic concept of 3D coordinates.
 
-Consisting of three components (x, y, z), the class Vec3d can perform many types
-of arithmetic computations, including cross/dot products.
+  Consisting of three components (x, y, z), the class Vec3d can perform many types
+  of arithmetic computations, including cross/dot products.
 */
 class Vec3d
 {

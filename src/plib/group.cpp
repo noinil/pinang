@@ -1,12 +1,12 @@
 /*!
-@file group.cpp
-@brief Define functions of class Group.
+  @file group.cpp
+  @brief Define functions of class Group.
 
-Definitions of member or friend functions of class Group.
+  Definitions of member or friend functions of class Group.
 
-@author Cheng Tan (noinil@gmail.com)
-@date 2016-05-24 15:41
-@copyright GNU Public License V3.0
+  @author Cheng Tan (noinil@gmail.com)
+  @date 2016-05-24 15:41
+  @copyright GNU Public License V3.0
 */
 
 

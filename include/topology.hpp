@@ -1,13 +1,13 @@
 /*!
-@file topology.hpp
-@brief Definition of class Topology.
+  @file topology.hpp
+  @brief Definition of class Topology.
 
-In this file class Topology is defined.  Topology is nothing more than a
-collection of particles.
+  In this file class Topology is defined.  Topology is nothing more than a
+  collection of particles.
 
-@author Cheng Tan (noinil@gmail.com)
-@date 2016-05-16 18:11
-@copyright GNU Public License V3.0
+  @author Cheng Tan (noinil@gmail.com)
+  @date 2016-05-16 18:11
+  @copyright GNU Public License V3.0
 */
 
 #ifndef PINANG_TOPOLOGY_H
@@ -21,11 +21,11 @@ collection of particles.
 namespace pinang {
 
 /*!
-@brief A set of particles.
+  @brief A set of particles.
 
-The class Topology only contains physical properties of a set of particles.
+  The class Topology only contains physical properties of a set of particles.
 
-@todo Add interaction (such as bonds, angles, dihedrals...) information.
+  @todo Add interaction (such as bonds, angles, dihedrals...) information.
 */
 
 class Topology

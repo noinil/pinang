@@ -1,14 +1,14 @@
 /*!
-@file geometry.hpp
-@brief Definition of geometric concepts.
+  @file geometry.hpp
+  @brief Definition of geometric concepts.
 
-Class Quaternion is a type to store the (mathematical) quaternion which can be
-used to represent rotation matrix.  Class Transform is a class of geometrical
-transforms (including rotation and translation).
+  Class Quaternion is a type to store the (mathematical) quaternion which can be
+  used to represent rotation matrix.  Class Transform is a class of geometrical
+  transforms (including rotation and translation).
 
-@author Cheng Tan (noinil@gmail.com)
-@date 2016-05-16 18:00
-@copyright GNU Public License V3.0
+  @author Cheng Tan (noinil@gmail.com)
+  @date 2016-05-16 18:00
+  @copyright GNU Public License V3.0
 */
 
 #ifndef PINANG_GEOMETRY_H
@@ -22,11 +22,11 @@ namespace pinang {
 class Group;
 
 /*!
-@brief Simply a set of four real numbers.
+  @brief Simply a set of four real numbers.
 
-In this stage, class quaternion does not follow its mathematical definition.
-But I used it to denote rotation operations in geometry, mainly used in class
-Transform.
+  In this stage, class quaternion does not follow its mathematical definition.
+  But I used it to denote rotation operations in geometry, mainly used in class
+  Transform.
 */
 class Quaternion
 {
@@ -56,11 +56,11 @@ class Quaternion
 };
 
 /*!
-@brief Geometric affine operation.
+  @brief Geometric affine operation.
 
-Including two parts:
-- The linear part: rotation.  Rrepresented by a quaternion.
-- The translation part: represented by a Vec3d vector.
+  Including two parts:
+  - The linear part: rotation.  Rrepresented by a quaternion.
+  - The translation part: represented by a Vec3d vector.
 */
 class Transform
 {

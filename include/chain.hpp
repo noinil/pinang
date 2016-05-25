@@ -1,13 +1,13 @@
 /*!
-@file chain.hpp
-@brief Definition of class Chain.
+  @file chain.hpp
+  @brief Definition of class Chain.
 
-In this file class Chain is defined.  Chain is biologically a collection of
-tandemly connected residues.
+  In this file class Chain is defined.  Chain is biologically a collection of
+  tandemly connected residues.
 
-@author Cheng Tan (noinil@gmail.com)
-@date 2016-05-16 17:56
-@copyright GNU Public License V3.0
+  @author Cheng Tan (noinil@gmail.com)
+  @date 2016-05-16 17:56
+  @copyright GNU Public License V3.0
 */
 
 #ifndef PINANG_CHAIN_H_
@@ -18,12 +18,12 @@ tandemly connected residues.
 namespace pinang {
 
 /*!
-@brief Biological molecule chains consisting of residues.
+  @brief Biological molecule chains consisting of residues.
 
-This class represents biomolecular chains, composing a chain of residues, either
-amino acids or nucleic acids.   Read and store information from PDB files.
+  This class represents biomolecular chains, composing a chain of residues, either
+  amino acids or nucleic acids.   Read and store information from PDB files.
 
-@todo initialization or settings of CG particles in DNA residues (cg_P_, cg_S_, cg_B_).
+  @todo initialization or settings of CG particles in DNA residues (cg_P_, cg_S_, cg_B_).
 */
 class Chain
 {

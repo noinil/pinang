@@ -1,13 +1,13 @@
 /*!
-@file atom.hpp
-@brief Definition of class ATOM.
+  @file atom.hpp
+  @brief Definition of class ATOM.
 
-In this file class ATOM is defined.  The data format is defined according to the
-PDB style.
+  In this file class ATOM is defined.  The data format is defined according to the
+  PDB style.
 
-@author Cheng Tan (noinil@gmail.com)
-@date 2016-05-16 17:53
-@copyright GNU Public License V3.0
+  @author Cheng Tan (noinil@gmail.com)
+  @date 2016-05-16 17:53
+  @copyright GNU Public License V3.0
 */
 
 #ifndef PINANG_ATOM_H_
@@ -20,9 +20,9 @@ PDB style.
 namespace pinang {
 
 /*!
-@brief Physical atomistic type, with properties in the PDB format.
+  @brief Physical atomistic type, with properties in the PDB format.
 
-Read in PDB lines and store the information together within this class.
+  Read in PDB lines and store the information together within this class.
 */
 class Atom
 {

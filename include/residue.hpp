@@ -1,14 +1,14 @@
 /*!
-@file residue.hpp
-@brief Definition of class Residue.
+  @file residue.hpp
+  @brief Definition of class Residue.
 
-In this file class Residue is defined.  Residue contains a list of atoms which
-are connected in a line.  Other than the basic physical atoms, residues have
-psudo atoms such as C-alpha beads.
+  In this file class Residue is defined.  Residue contains a list of atoms which
+  are connected in a line.  Other than the basic physical atoms, residues have
+  psudo atoms such as C-alpha beads.
 
-@author Cheng Tan (noinil@gmail.com)
-@date 2016-05-16 18:09
-@copyright GNU Public License V3.0
+  @author Cheng Tan (noinil@gmail.com)
+  @date 2016-05-16 18:09
+  @copyright GNU Public License V3.0
 */
 
 #ifndef PINANG_RESIDUE_H_
@@ -22,12 +22,12 @@ psudo atoms such as C-alpha beads.
 namespace pinang {
 
 /*!
-@brief Biomolecular building block, made of a few atoms.
+  @brief Biomolecular building block, made of a few atoms.
 
-A few atoms comprises a residue.  The class Residue records the coordinates of
-atoms, the atom names, residue name, residue serial number and other properties.
+  A few atoms comprises a residue.  The class Residue records the coordinates of
+  atoms, the atom names, residue name, residue serial number and other properties.
 
-@todo initialization or settings of CG particles in Residue (cg_P_, cg_S_, cg_B_).
+  @todo initialization or settings of CG particles in Residue (cg_P_, cg_S_, cg_B_).
 */
 class Residue
 {

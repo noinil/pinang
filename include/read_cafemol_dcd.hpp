@@ -1,12 +1,12 @@
 /*!
-@file read_cafemol_dcd.hpp
-@brief Basic function of reading CafeMol style dcd files.
+  @file read_cafemol_dcd.hpp
+  @brief Basic function of reading CafeMol style dcd files.
 
-In this file a function that can read CafeMol dcd file is provided.
+  In this file a function that can read CafeMol dcd file is provided.
 
-@author Cheng Tan (noinil@gmail.com)
-@date 2016-05-16 18:08
-@copyright GNU Public License V3.0
+  @author Cheng Tan (noinil@gmail.com)
+  @date 2016-05-16 18:08
+  @copyright GNU Public License V3.0
 */
 
 #ifndef PINANG_READ_DCD_H_

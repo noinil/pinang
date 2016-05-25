@@ -1,12 +1,12 @@
 /*!
-@file residue.cpp
-@brief Define functions of class Residue.
+  @file residue.cpp
+  @brief Define functions of class Residue.
 
-Definitions of member or friend functions of class Residue.
+  Definitions of member or friend functions of class Residue.
 
-@author Cheng Tan (noinil@gmail.com)
-@date 2016-05-24 15:45
-@copyright GNU Public License V3.0
+  @author Cheng Tan (noinil@gmail.com)
+  @date 2016-05-24 15:45
+  @copyright GNU Public License V3.0
 */
 
 

@@ -1,12 +1,12 @@
 /*!
-@file utilities.hpp
-@brief Basic useful functions.
+  @file utilities.hpp
+  @brief Basic useful functions.
 
-In this file a few useful handy functions are provided.
+  In this file a few useful handy functions are provided.
 
-@author Cheng Tan (noinil@gmail.com)
-@date 2016-05-26 00:01
-@copyright GNU Public License V3.0
+  @author Cheng Tan (noinil@gmail.com)
+  @date 2016-05-26 00:01
+  @copyright GNU Public License V3.0
 */
 
 #ifndef PINANG_UTILITIES_

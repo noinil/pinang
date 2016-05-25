@@ -1,13 +1,13 @@
 /*!
-@file group.hpp
-@brief Definition of class group.
+  @file group.hpp
+  @brief Definition of class group.
 
-In this file class Group is defined, which is basically same as class
-Conformation, but contains more member and friend functions.
+  In this file class Group is defined, which is basically same as class
+  Conformation, but contains more member and friend functions.
 
-@author Cheng Tan (noinil@gmail.com)
-@date 2016-05-16 18:03
-@copyright GNU Public License V3.0
+  @author Cheng Tan (noinil@gmail.com)
+  @date 2016-05-16 18:03
+  @copyright GNU Public License V3.0
 */
 
 #ifndef PINANG_GROUP_H
@@ -22,11 +22,11 @@ namespace pinang {
 class Transform;
 
 /*!
-@brief A collection or sub-part of a conformation.
+  @brief A collection or sub-part of a conformation.
 
-A group of coordinates, usually as a sub-group of a conformation.  Geometric or
-Arithmetic claculations can be computed for different groups, such as RMSD,
-superimposition, or center-of-mass distances.
+  A group of coordinates, usually as a sub-group of a conformation.  Geometric or
+  Arithmetic claculations can be computed for different groups, such as RMSD,
+  superimposition, or center-of-mass distances.
 */
 class Group : public Conformation
 {

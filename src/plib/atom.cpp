@@ -1,12 +1,12 @@
 /*!
-@file atom.cpp
-@brief Define functions of class Atom.
+  @file atom.cpp
+  @brief Define functions of class Atom.
 
-Definitions of member or friend functions of class Atom.
+  Definitions of member or friend functions of class Atom.
 
-@author Cheng Tan (noinil@gmail.com)
-@date 2016-05-24 15:36
-@copyright GNU Public License V3.0
+  @author Cheng Tan (noinil@gmail.com)
+  @date 2016-05-24 15:36
+  @copyright GNU Public License V3.0
 */
 
 
