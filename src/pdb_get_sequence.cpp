@@ -1,5 +1,4 @@
 /*!
-************************************************************
 @file pdb_get_sequence.cpp
 @brief Output sequence of protein/NA from PDB.
 
@@ -9,7 +8,6 @@ file.  Both 3-char name and 1-char name are output.
 @author Cheng Tan (noinil@gmail.com)
 @date 2016-05-24 18:06
 @copyright GNU Public License V3.0
-************************************************************
 */
 
 #include <fstream>

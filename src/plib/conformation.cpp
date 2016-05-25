@@ -1,5 +1,4 @@
 /*!
-************************************************************
 @file conformation.cpp
 @brief Define functions of class Conformation.
 
@@ -8,7 +7,6 @@ Definitions of member or friend functions of class Conformation.
 @author Cheng Tan (noinil@gmail.com)
 @date 2016-05-24 15:38
 @copyright GNU Public License V3.0
-************************************************************
 */
 
 

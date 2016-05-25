@@ -1,5 +1,4 @@
 /*!
-************************************************************
 @file geometry.cpp
 @brief Define functions of classes Quaternion and Transform.
 
@@ -8,7 +7,6 @@ Definitions of member or friend functions of classes Quaternion and Transform.
 @author Cheng Tan (noinil@gmail.com)
 @date 2016-05-24 15:40
 @copyright GNU Public License V3.0
-************************************************************
 */
 
 

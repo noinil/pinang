@@ -1,5 +1,4 @@
 /*!
-************************************************************
 @file pdb_cat.cpp
 @brief Re-output PDB structures.
 
@@ -8,7 +7,6 @@ Extract model from PDB, and reoutput the ATOM records to new PDB file.
 @author Cheng Tan (noinil@gmail.com)
 @date 2016-05-24 18:10
 @copyright GNU Public License V3.0
-************************************************************
 */
 
 

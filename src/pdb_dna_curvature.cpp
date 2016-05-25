@@ -856,7 +856,6 @@ int main(int argc, char *argv[])
     vtmp = it2 - _O;
     v2 = vtmp * (1.0 / vtmp.norm());
     vtmp = v1 + v2;
-    groove_D1 = nm % v1;    // ****************************** OMG~
     if (vtmp.norm() > 0.05) {
       if (vtmp * groove_D1 > 0)
         groove_D1 = vtmp * (1.0 / vtmp.norm());

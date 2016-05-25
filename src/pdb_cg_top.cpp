@@ -1,5 +1,4 @@
 /*!
-************************************************************
 @file pdb_cg_top.cpp
 @brief Generate .top and .pos files from PDB structures.
 
@@ -9,7 +8,6 @@ for additional analysis.
 @author Cheng Tan (noinil@gmail.com)
 @date 2016-05-24 18:11
 @copyright GNU Public License V3.0
-************************************************************
 */
 
 

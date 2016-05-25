@@ -1,5 +1,4 @@
 /*!
-************************************************************
 @file utilities.cpp
 @brief Defines lots of useful functions.
 
@@ -8,7 +7,6 @@ Definitions of useful functions.
 @author Cheng Tan (noinil@gmail.com)
 @date 2016-05-25 23:59
 @copyright GNU Public License V3.0
-************************************************************
 */
 
 #include "utilities.hpp"

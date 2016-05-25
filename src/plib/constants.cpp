@@ -1,5 +1,4 @@
 /*!
-************************************************************
 @file constants.cpp
 @brief Defines lots of physical constants.
 
@@ -8,7 +7,6 @@ Definitions of physical constants and functions.
 @author Cheng Tan (noinil@gmail.com)
 @date 2016-05-24 15:39
 @copyright GNU Public License V3.0
-************************************************************
 */
 
 #include "constants.hpp"

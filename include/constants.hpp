@@ -1,5 +1,4 @@
 /*!
-************************************************************
 @file constants.hpp
 @brief Definition of basic constants.
 
@@ -9,7 +8,6 @@ energy functions, cutoff, chain_type, and residue_name are defined.
 @author Cheng Tan (noinil@gmail.com)
 @date 2016-05-16 17:58
 @copyright GNU Public License V3.0
-************************************************************
 */
 
 #ifndef PINANG_CONSTANTS_H_
@@ -40,39 +38,30 @@ const double k_K_nonnative = 1.0;   //!< Energy function parameter for non-nativ
 enum ChainType {none=0, protein=1, DNA=2, RNA=3, water=4, ion=5, other=6, na=7};
 
 /*!
-************************************************************
 @brief Some of the physical properties of biomolecules.
 
 A collection of maps that can translate residue name into charges, masses and
 chemical chain types.
-************************************************************
 */
 class PhysicalProperty
 {
  public:
-  // ************************************************************
   //! @brief Create an "empty" PhysicalProperty object.
-  // ************************************************************
   PhysicalProperty();
   ~PhysicalProperty();
 
-  // ************************************************************
   //! @brief Translate residue name into short name.
   //! @param Residue name.
   //! @return Short name.
-  // ************************************************************
   std::string get_short_name(const std::string&);
-  // ************************************************************
   //! @brief Translate residue name into charge.
   //! @param Residue name.
   //! @return Charge.
   double get_charge(const std::string&);
-  // ************************************************************
   //! @brief Translate residue name into mass.
   //! @param Residue name.
   //! @return Mass.
   double get_mass(const std::string&);
-  // ************************************************************
   //! @brief Translate residue name into chain type.
   //! @param Residue name.
   //! @return Chain type.
