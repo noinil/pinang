@@ -23,10 +23,8 @@ extern double g_cutoff;  //!< Cutoff for atomistic distances.
 
 const long double k_pi = 3.14159265358979323846;  //!< @f$\pi@f$.
 
-// Units.
 const double k_u_mass = 1.0;  //!< Unit of mass.
 
-// CG MD Parameters.
 const double k_K_bond = 100.0;      //!< Energy function parameter for bonds.
 const double k_K_angle = 20.0;      //!< Energy function parameter for angles.
 const double k_K_dihedral_1 = 1.0;  //!< Energy function parameter for dihedral angles.

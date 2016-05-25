@@ -67,17 +67,17 @@ class Vec3d
   //! @brief Perform the arithmetic computation - for two vectors.
   friend Vec3d operator-(const Vec3d&, const Vec3d&);
   //! @brief Perform scalar multiplication for a vector.
-  friend Vec3d operator*(const Vec3d&, double);  // scalar multiplication;
+  friend Vec3d operator*(const Vec3d&, double);
   //! @brief Perform scalar multiplication for a vector.
-  friend Vec3d operator*(double, const Vec3d&);  // scalar multiplication;
+  friend Vec3d operator*(double, const Vec3d&);
   //! @brief Perform scalar division for a vector.
   friend Vec3d operator/(const Vec3d&, double);
   //! @brief Get the cross product for two vectors.
   //! @return The cross product for two vectors.
-  friend Vec3d operator%(const Vec3d&, const Vec3d&);  // cross product;
+  friend Vec3d operator%(const Vec3d&, const Vec3d&);
   //! @brief Get the dot product for two vectors.
   //! @return The dot product for two vectors.
-  friend double operator*(const Vec3d&, const Vec3d&);  // dot product;
+  friend double operator*(const Vec3d&, const Vec3d&);
 
   //! @brief Add another vector to a vector.
   friend Vec3d& operator+=(Vec3d&, const Vec3d&);

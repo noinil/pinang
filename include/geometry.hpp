@@ -94,7 +94,6 @@ class Transform
   Quaternion rotation_;  //!< The "linear" part (rotation) of a transform.
   Vec3d translation_;    //!< The translation part of a transform.
 
-  // three vec3d for rotation matrix;
   Vec3d rotv1_;  //!< The first row of rotation matrix converted from quaternion.
   Vec3d rotv2_;  //!< The second row of rotation matrix converted from quaternion.
   Vec3d rotv3_;  //!< The third row of rotation matrix converted from quaternion.
