@@ -11,7 +11,6 @@ Definitions of physical constants and functions.
 ************************************************************
 */
 
-
 #include "constants.hpp"
 
 namespace pinang {
