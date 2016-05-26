@@ -59,6 +59,13 @@ class Particle
   //! @param Residue serial number.
   void set_residue_serial(int i) { residue_serial_ = i; }
 
+  //! @brief Get Chain ID.
+  //! @return Chain ID.
+  char get_chain_ID() const { return chain_ID_; }
+  //! @brief Set Chain ID.
+  //! @param Chain ID.
+  void set_chain_ID(char c) { chain_ID_ = c; }
+
   //! @brief Get particle charge.
   //! @return Particle charge.
   double get_charge() const { return charge_; }
@@ -77,11 +84,12 @@ class Particle
   friend std::istream& operator>>(std::istream&, Particle&);
 
  protected:
-  std::string atom_name_;   //!< Atom name of particle.
-  std::string residue_name_;  //!< Residue name of particle.
+  std::string atom_name_;      //!< Atom name of particle.
+  std::string residue_name_;   //!< Residue name of particle.
   int residue_serial_;         //!< Residue sequence number of particle.
-  double charge_;           //!< Charge of particle.
-  double mass_;             //!< Mass of particle.
+  char chain_ID_;              //!< Chain ID.
+  double charge_;              //!< Charge of particle.
+  double mass_;                //!< Mass of particle.
 };
 
 }

@@ -37,13 +37,12 @@ Topology::Topology(const std::string& s)
     if (ifile.fail())
       break;
 
-    std::size_t found = inp_line.find("particles");
+    std::size_t found = inp_line.find("!NATOM");
     if (found!=std::string::npos){
       std::string stmp;
       std::istringstream tmp_sstr;
       tmp_sstr.str ( inp_line );
-      tmp_sstr >> stmp  >> stmp  >> stmp >> n_particle_;
-      std::getline(ifile, inp_line);
+      tmp_sstr >> n_particle_;
       for (int i = 0; i < n_particle_ ; ++i) {
         ifile >> p;
         v_particles_.push_back(p);

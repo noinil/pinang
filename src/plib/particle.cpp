@@ -64,11 +64,15 @@ std::istream& operator>>(std::istream& i, Particle& p)
   std::string tmp_s;
   int tmp_i;
   double tmp_d;
+  char tmp_c;
 
   std::getline(i, top_line);
   tmp_sstr.str(top_line);
 
   tmp_sstr >> tmp_i;
+
+  tmp_sstr >> tmp_c;
+  p.chain_ID_ = tmp_c;
 
   tmp_sstr >> tmp_i;
   p.residue_serial_ = tmp_i;
@@ -79,11 +83,13 @@ std::istream& operator>>(std::istream& i, Particle& p)
   tmp_sstr >> tmp_s;
   p.set_atom_name(tmp_s);
 
-  tmp_sstr >> tmp_d;
-  p.mass_ = tmp_d;
+  tmp_sstr >> tmp_s;
 
   tmp_sstr >> tmp_d;
   p.charge_ = tmp_d;
+
+  tmp_sstr >> tmp_d;
+  p.mass_ = tmp_d;
 
   if (!i) return i;
   return i;
