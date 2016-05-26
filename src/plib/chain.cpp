@@ -110,7 +110,7 @@ void Chain::output_sequence_fasta(std::ostream & f_fasta, std::string s0) const
   f_fasta << "\n";
 }
 
-void Chain::output_cg_crd(std::ostream& o, int& n)
+void Chain::output_cg_crd(std::ostream& o, int& n, int& m)
 {
   if (chain_type_ == water || chain_type_ == other || chain_type_ == none)
     return;
@@ -122,6 +122,7 @@ void Chain::output_cg_crd(std::ostream& o, int& n)
       Atom pseudo_ca = r.get_cg_C_alpha();
       pseudo_ca.set_atom_serial(++n);
       pseudo_ca.set_atom_name("CA");
+      pseudo_ca.set_chain_ID(m + 97);
       o << pseudo_ca;
     }
   } else {
@@ -131,56 +132,63 @@ void Chain::output_cg_crd(std::ostream& o, int& n)
         Atom pseudo_P = r.get_cg_P();
         pseudo_P.set_atom_serial(++n);
         pseudo_P.set_atom_name("DP");
+        pseudo_P.set_chain_ID(m + 97);
         o << pseudo_P;
       }
       Atom pseudo_S = r.get_cg_S();
       pseudo_S.set_atom_serial(++n);
       pseudo_S.set_atom_name("DS");
+      pseudo_S.set_chain_ID(m + 97);
       o << pseudo_S;
 
       Atom pseudo_B = r.get_cg_B();
       pseudo_B.set_atom_serial(++n);
       pseudo_B.set_atom_name("DB");
+      pseudo_B.set_chain_ID(m + 97);
       o << pseudo_B;
     }
   }
+  ++m;
   o << "TER\n";
 }
 
 void output_top_mass_line(std::ostream& o, int i, char s, int r, std::string rn,
                           std::string an, std::string at, double c, double m)
 {
-  o << std::setw(8) << i << std::setw(5) << s << std::setw(4) << r << std::setw(4) << rn
+  o << std::setw(8) << i << std::setw(2) << s  << " " << std::setw(6) << r
+    << " " << std::setw(3) << rn
     << std::setw(4) << an << " " << std::setw(4) << at << " " 
     << std::setiosflags(std::ios_base::fixed) << std::setprecision(6)
     << std::setw(12) << c << " " << std::setprecision(6)
     << std::setw(12) << m << "             " << "0\n";
 }
 
-void Chain::output_top_mass(std::ostream& o, int& n)
+void Chain::output_top_mass(std::ostream& o, int& n, int& m)
 {
   if (chain_type_ == water || chain_type_ == other || chain_type_ == none)
     return;
 
   int i = 0;
+  char cid = m + 97;
   if (chain_type_ != DNA && chain_type_ != RNA && chain_type_ != na)
   {
     for (const Residue& r : v_residues_) {
-      output_top_mass_line(o, ++n, r.get_chain_ID(), r.get_residue_serial(), r.get_residue_name(),
+      output_top_mass_line(o, ++n, cid, r.get_residue_serial(), r.get_residue_name(),
                            "CA", "cC", r.get_residue_charge(), r.get_residue_mass());
     }
   } else {
     for (const Residue& r : v_residues_) {
       if (r.get_terminus_flag() != 5) {
-        output_top_mass_line(o, ++n, r.get_chain_ID(), r.get_residue_serial(), r.get_residue_name(),
+        output_top_mass_line(o, ++n, cid, r.get_residue_serial(), r.get_residue_name(),
                              "DP", "cP", -0.6, 94.93);
       }
-      output_top_mass_line(o, ++n, r.get_chain_ID(), r.get_residue_serial(), r.get_residue_name(),
+      output_top_mass_line(o, ++n, cid, r.get_residue_serial(), r.get_residue_name(),
                            "DS", "cS", 0.0, 99.11);
-      output_top_mass_line(o, ++n, r.get_chain_ID(), r.get_residue_serial(), r.get_residue_name(),
+      output_top_mass_line(o, ++n, cid, r.get_residue_serial(), r.get_residue_name(),
                            "DB", "cdB", 0.0, r.get_residue_mass() - 99.11 - 94.93);
     }
   }
+  ++m;
 }
 
 void Chain::output_top_bond(std::ostream& o, int& n, int& m)

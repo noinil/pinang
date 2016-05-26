@@ -75,11 +75,12 @@ void Model::output_cg_crd(std::ostream& o)
 {
   int i = 0;
   int n = 0;
+  int m = 0;
   for (i = 0; i < n_chain_; ++i) {
     ChainType ct = v_chains_[i].get_chain_type();
     if (ct == water || ct == other || ct == none)
       continue;
-    v_chains_[i].output_cg_crd(o, n);
+    v_chains_[i].output_cg_crd(o, n, m);
   }
   o << "ENDMDL" << std::endl;
 }
@@ -88,6 +89,7 @@ void Model::output_top_mass(std::ostream& o)
 {
   int i = 0;
   int n = 0;
+  int m = 0;
 
   for (i = 0; i < n_chain_; ++i) {
     ChainType ct = v_chains_[i].get_chain_type();
@@ -106,7 +108,7 @@ void Model::output_top_mass(std::ostream& o)
     ChainType ct = v_chains_[i].get_chain_type();
     if (ct == water || ct == other || ct == none)
       continue;
-    v_chains_[i].output_top_mass(o, n);
+    v_chains_[i].output_top_mass(o, n, m);
   }
   o << std::endl;
 }
