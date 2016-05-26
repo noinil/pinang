@@ -74,8 +74,8 @@ int main(int argc, char *argv[])
     }
   }
 
-  pos_file << "# CG positions for PDB " << infilename << "\n";
   pdb1.get_model(mod_index).output_cg_pos(pos_file);
+  pos_file << "END" << std::endl;
 
   top_file << "# CG topology for PDB " << infilename << "\n";
   pdb1.get_model(mod_index).output_top_mass(top_file);

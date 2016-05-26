@@ -23,15 +23,16 @@ vpath %.o plib
 # rules
 .PHONY : all install clean uninstall purge
 
-all : $(PINANGLIBS) $(TARGETS)
+all : pinanglibs $(TARGETS)
 
 install:
 	@$(CHK_DIR_EXISTS) $(INSTALL_DIR) || $(MKDIR) $(INSTALL_DIR)
 	cp -f p_* $(INSTALL_DIR)
 
-$(PINANGLIBS) :
+pinanglibs :
 	@cd plib; make
-$(TARGETS) : p_% : %.o
+
+$(TARGETS) : p_% : %.o $(LIB_DIR)/libpinang.a
 	$(LINK) $< $(LIB_DIR)/libpinang.a -o $@
 
 $(OBJECTS) : %.o : %.cpp

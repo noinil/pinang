@@ -81,6 +81,7 @@ void Model::output_cg_pos(std::ostream& o)
       continue;
     v_chains_[i].output_cg_pos(o, n);
   }
+  o << "ENDMDL\n";
 }
 
 void Model::output_top_mass(std::ostream& o)

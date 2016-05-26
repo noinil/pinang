@@ -19,16 +19,14 @@ Residue& Chain::get_residue(int n)
 {
   if (v_residues_.empty())
   {
-    std::cout << " ~             PINANG :: chain.hpp              ~ " << "\n";
-    std::cerr << "ERROR: No Residues found in Chain: "
-              << chain_ID_ << "\n";
+    std::cout << " ~             PINANG :: chain.hpp            ~ " << "\n";
+    std::cerr << "ERROR: No Residues found in Chain: " << chain_ID_ << "\n";
     exit(EXIT_SUCCESS);
   }
   if (n >= int(v_residues_.size()))
   {
-    std::cout << " ~             PINANG :: chain.hpp              ~ " << "\n";
-    std::cerr << "ERROR: Residue index out of range in Chain: "
-              << chain_ID_ << "\n";
+    std::cout << " ~             PINANG :: chain.hpp        ~ " << "\n";
+    std::cerr << "ERROR: Residue index out of range in Chain: " << chain_ID_ << "\n";
     exit(EXIT_SUCCESS);
   }
   return v_residues_[n];
@@ -47,8 +45,7 @@ void Chain::self_check()
   for (Residue& r : v_residues_) {
     if (r.get_chain_ID() != chain_ID_ || r.get_chain_type() != chain_type_) {
       std::cout << " ~             PINANG :: chain.hpp              ~ " << "\n";
-      std::cerr << "ERROR: Inconsistent chain ID or chain type in Chain "
-                << chain_ID_ << "\n";
+      std::cerr << "ERROR: Inconsistent chain ID or type in Chain " << chain_ID_ << "\n";
       exit(EXIT_SUCCESS);
     }
   }
@@ -66,12 +63,8 @@ void Chain::output_sequence(int n) const
 {
   if (chain_type_ == water)
     return;
-
   int j = 0;
-
-  std::cout << " - Chain " << chain_ID_
-            << " : " << n_residue_ << " residues."
-            << "\n";
+  std::cout << " - Chain " << chain_ID_ << " : " << n_residue_ << " residues.\n";
 
   if (n == 1)
   {
@@ -84,8 +77,7 @@ void Chain::output_sequence(int n) const
         std::cout << " ";
       if (j%10 == 0)
       {
-        std::cout << "  " << std::setw(4) << r.get_residue_serial() << "\n";
-        std::cout << " ";
+        std::cout << "  " << std::setw(4) << r.get_residue_serial() << "\n ";
       }
     }
     std::cout << "\n";
@@ -109,10 +101,7 @@ void Chain::output_sequence_fasta(std::ostream & f_fasta, std::string s0) const
   if (n_residue_ <= 3)
     return;
 
-  f_fasta << ">" << s0 << "_chain_"
-          << chain_ID_ << "_type_"
-          << chain_type_
-          << "\n";
+  f_fasta << ">" << s0 << "_chain_" << chain_ID_ << "_type_" << chain_type_ << "\n";
 
   for (const Residue& r : v_residues_) {
     std::string s_tmp =  r.get_short_name();
@@ -126,72 +115,47 @@ void Chain::output_cg_pos(std::ostream& o, int& n)
   if (chain_type_ == water || chain_type_ == other || chain_type_ == none)
     return;
 
-  o << " - Chain " << chain_ID_;
-  o << " : " ;
-  o << chainType_2_string(chain_type_);
-  o << " : " << n_residue_
-    << "\n";
-
   int i = 0;
   if (chain_type_ != DNA && chain_type_ != RNA && chain_type_ != na)
   {
     for (Residue& r : v_residues_) {
-      Vec3d coor_CA;
-      coor_CA = r.get_cg_C_alpha().get_coordinate();
-      o << std::setw(8) << ++n
-        << std::setw(5) << r.get_residue_name()
-        << std::setw(5) << r.get_residue_serial() << "   "
-        << std::setiosflags(std::ios_base::fixed) << std::setprecision(3)
-        << std::setw(12) << coor_CA.x() << " "
-        << std::setw(12) << coor_CA.y() << " "
-        << std::setw(12) << coor_CA.z() << " "
-        << "\n";
+      Atom pseudo_ca = r.get_cg_C_alpha();
+      pseudo_ca.set_atom_serial(++n);
+      pseudo_ca.set_atom_name("cCA");
+      o << pseudo_ca;
     }
   } else {
     for (Residue& r : v_residues_) {
-      Vec3d coor_P;
-      Vec3d coor_S;
       Vec3d coor_B;
       if (r.get_terminus_flag() != 5) {
-        coor_P = r.get_cg_P().get_coordinate();
-        o << std::setw(8) << ++n
-          << std::setw(5) << "P"
-          << std::setw(5) << r.get_residue_serial() << "   "
-          << std::setiosflags(std::ios_base::fixed) << std::setprecision(3)
-          << std::setw(12) << coor_P.x() << " "
-          << std::setw(12) << coor_P.y() << " "
-          << std::setw(12) << coor_P.z() << " "
-          << "\n";
+        Atom pseudo_P = r.get_cg_P();
+        pseudo_P.set_atom_serial(++n);
+        pseudo_P.set_atom_name("cP");
+        o << pseudo_P;
       }
-      coor_S = r.get_cg_S().get_coordinate();
-      o << std::setw(8) << ++n
-        << std::setw(5) << "S"
-        << std::setw(5) << r.get_residue_serial() << "   "
-        << std::setiosflags(std::ios_base::fixed) << std::setprecision(3)
-        << std::setw(12) << coor_S.x() << " "
-        << std::setw(12) << coor_S.y() << " "
-        << std::setw(12) << coor_S.z() << " "
-        << "\n";
-      coor_B = r.get_cg_B().get_coordinate();
-      o << std::setw(8) << ++n
-        << std::setw(5) << r.get_short_name()
-        << std::setw(5) << r.get_residue_serial() << "   "
-        << std::setiosflags(std::ios_base::fixed) << std::setprecision(3)
-        << std::setw(12) << coor_B.x() << " "
-        << std::setw(12) << coor_B.y() << " "
-        << std::setw(12) << coor_B.z() << " "
-        << "\n";
+      Atom pseudo_S = r.get_cg_S();
+      pseudo_S.set_atom_serial(++n);
+      pseudo_S.set_atom_name("cS");
+      o << pseudo_S;
+
+      Atom pseudo_B = r.get_cg_B();
+      pseudo_B.set_atom_serial(++n);
+      std::string bname = "c" + r.get_short_name();
+      pseudo_B.set_atom_name(bname);
+      o << pseudo_B;
     }
   }
-  o << "\n";
+  o << "TER\n";
 }
 
 void Chain::output_top_mass(std::ostream& o, int& n)
 {
   if (chain_type_ == water || chain_type_ == other || chain_type_ == none)
-  {
     return;
-  }
+
+  o << " - Chain " << chain_ID_ << " : ";
+  o << chainType_2_string(chain_type_);
+  o << " : " << n_residue_ << "\n";
 
   int i = 0;
   if (chain_type_ != DNA && chain_type_ != RNA && chain_type_ != na)
@@ -586,14 +550,10 @@ void Chain::output_top_native(std::ostream& o)
       if ( d < g_cutoff)
       {
         f = residue_ca_distance(v_residues_[i], v_residues_[j]);
-        o << std::setw(8) << i+1 << " "
-          << std::setw(8) << j+1 << " "
-          << std::setiosflags(std::ios_base::fixed)
-          << std::setprecision(6)
-          << std::setw(16) << f << " "
-          << std::setprecision(5)
-          << std::setw(12) << k_K_native << " "
-          << "\n";
+        o << std::setw(8) << i+1 << " " << std::setw(8) << j+1 << " "
+          << std::setiosflags(std::ios_base::fixed) << std::setprecision(6)
+          << std::setw(16) << f << " " << std::setprecision(5)
+          << std::setw(12) << k_K_native << " " << "\n";
       }
     }
   }
@@ -656,7 +616,6 @@ Chain operator+(const Chain& c1, const Chain& c2)
       c0.v_residues_.push_back(c2.v_residues_[i]);
       c0.n_residue_++;
     }
-
   return c0;
 }
 

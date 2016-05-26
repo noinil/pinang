@@ -7,6 +7,7 @@ INCPATH = -I/usr/local/include/eigen3 -I../../include
 CXXFLAGS = -std=c++11 -O3
 OBJECTS = $(patsubst %.cpp,%.o,$(wildcard *.cpp))
 LIB_DIR = ../../lib
+PLIB = ../../lib/libpinang.a
 CHK_DIR_EXISTS= test -d
 MKDIR = mkdir -p
 RM = rm -fr
@@ -14,7 +15,9 @@ RM = rm -fr
 # rules
 .PHONY : all clean
 
-all : $(OBJECTS)
+all : $(PLIB)
+
+$(PLIB) : $(OBJECTS)
 	ar r libpinang.a $?
 	@$(CHK_DIR_EXISTS) $(LIB_DIR) || $(MKDIR) $(LIB_DIR)
 	cp libpinang.a $(LIB_DIR)
