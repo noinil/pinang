@@ -121,7 +121,6 @@ PDB::PDB(const std::string& s)
             model_tmp.add_chain(chain_tmp);
             chain_tmp.reset();
           }
-
           resid_tmp.reset();
         }
         resid_tmp.set_residue_by_name(atom_tmp.get_residue_name());

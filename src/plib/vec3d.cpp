@@ -9,7 +9,6 @@
   @copyright GNU Public License V3.0
 */
 
-
 #include <cmath>
 #include <iomanip>
 #include "vec3d.hpp"

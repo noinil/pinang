@@ -121,7 +121,7 @@ void Chain::output_cg_crd(std::ostream& o, int& n)
     for (Residue& r : v_residues_) {
       Atom pseudo_ca = r.get_cg_C_alpha();
       pseudo_ca.set_atom_serial(++n);
-      pseudo_ca.set_atom_name("cCA");
+      pseudo_ca.set_atom_name("CA");
       o << pseudo_ca;
     }
   } else {
@@ -130,18 +130,17 @@ void Chain::output_cg_crd(std::ostream& o, int& n)
       if (r.get_terminus_flag() != 5) {
         Atom pseudo_P = r.get_cg_P();
         pseudo_P.set_atom_serial(++n);
-        pseudo_P.set_atom_name("cP");
+        pseudo_P.set_atom_name("DP");
         o << pseudo_P;
       }
       Atom pseudo_S = r.get_cg_S();
       pseudo_S.set_atom_serial(++n);
-      pseudo_S.set_atom_name("cS");
+      pseudo_S.set_atom_name("DS");
       o << pseudo_S;
 
       Atom pseudo_B = r.get_cg_B();
       pseudo_B.set_atom_serial(++n);
-      std::string bname = "c" + r.get_short_name();
-      pseudo_B.set_atom_name(bname);
+      pseudo_B.set_atom_name("DB");
       o << pseudo_B;
     }
   }
@@ -168,18 +167,18 @@ void Chain::output_top_mass(std::ostream& o, int& n)
   {
     for (const Residue& r : v_residues_) {
       output_top_mass_line(o, ++n, r.get_chain_ID(), r.get_residue_serial(), r.get_residue_name(),
-                           "cCA", "C", r.get_residue_charge(), r.get_residue_mass());
+                           "CA", "cC", r.get_residue_charge(), r.get_residue_mass());
     }
   } else {
     for (const Residue& r : v_residues_) {
       if (r.get_terminus_flag() != 5) {
         output_top_mass_line(o, ++n, r.get_chain_ID(), r.get_residue_serial(), r.get_residue_name(),
-                             "cP", "cP", -0.6, 94.93);
+                             "DP", "cP", -0.6, 94.93);
       }
       output_top_mass_line(o, ++n, r.get_chain_ID(), r.get_residue_serial(), r.get_residue_name(),
-                           "cS", "cS", 0.0, 99.11);
+                           "DS", "cS", 0.0, 99.11);
       output_top_mass_line(o, ++n, r.get_chain_ID(), r.get_residue_serial(), r.get_residue_name(),
-                           "cdB", "cdB", 0.0, r.get_residue_mass() - 99.11 - 94.93);
+                           "DB", "cdB", 0.0, r.get_residue_mass() - 99.11 - 94.93);
     }
   }
 }
