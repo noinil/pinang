@@ -70,23 +70,24 @@ int Residue::add_atom(const Atom& a)
   }  // in case of NMR uncertain multi atoms
   v_atoms_.push_back(a);
 
-  if (a.get_atom_name() == "CA  ")
+  std::string an = a.get_atom_name();
+  if (an == "CA  ")
   {
     cg_C_alpha_ = a;
   }
-  if (a.get_atom_name() == "CB  ")
+  if (an == "CB  ")
   {
     cg_C_beta_ = a;
   }
-  if (a.get_atom_name() == "C3' " || a.get_atom_name() == "S   " || a.get_atom_name() == "DS  ")
+  if (an == "C3' " || an == "S   " || an == "DS  ")
   {
     cg_S_ = a;
   }
-  if (a.get_atom_name() == "P   " || a.get_atom_name() == "DP  ")
+  if (an == "P   " || an == "DP  ")
   {
     cg_P_ = a;
   }
-  if (a.get_atom_name() == "N1  " || a.get_atom_name() == "B   " || a.get_atom_name() == "DB  ")
+  if (an == "N1  " || an == "B   " || an == "DB  ")
   {
     cg_B_ = a;
   }
@@ -198,107 +199,6 @@ void Residue::self_check() const
 }
 
 
-// void Residue::set_cg_na()
-// {
-//   int i = 0;
-//   Vec3d coor_P(0,0,0);
-//   Vec3d coor_C5p(0,0,0),
-//       coor_C4p(0,0,0),
-//       coor_O4p(0,0,0),
-//       coor_C1p(0,0,0),
-//       coor_C2p(0,0,0),
-//       coor_C3p(0,0,0),
-//       coor_O2p(0,0,0),
-//       coor_O3p(0,0,0),
-//       coor_O5p(0,0,0);
-//   Vec3d coor_N1(0,0,0),
-//       coor_C2(0,0,0),
-//       coor_N3(0,0,0),
-//       coor_C4(0,0,0),
-//       coor_C5(0,0,0),
-//       coor_C6(0,0,0),
-//       coor_O2(0,0,0),
-//       coor_N4(0,0,0),
-//       coor_O4(0,0,0),
-//       coor_N6(0,0,0),
-//       coor_O6(0,0,0),
-//       coor_N2(0,0,0),
-//       coor_N7(0,0,0),
-//       coor_C8(0,0,0),
-//       coor_N9(0,0,0);
-//   Vec3d com_P(0,0,0);
-//   Vec3d com_S(0,0,0);
-//   Vec3d com_B(0,0,0);
-//   double mass_C = 12.011;
-//   double mass_O = 15.999;
-//   double mass_N = 14.001;
-//   int n_cs=0;
-//   int n_cb=0;
-//   int n_os=0;
-//   int n_ob=0;
-//   int n_nb=0;
-
-//   if (chain_type_ != DNA && chain_type_ != RNA && chain_type_ != na)
-//   {
-//     return;
-//   }
-//   for (i = 0; i < n_atom_; ++i) {
-//     std::string aname = v_atoms_[i].get_atom_name();
-//     char c = aname[0];
-//     switch (c) {
-//       case 'C':
-//         if (aname == "C5'") {coor_C5p = v_atoms_[i].get_coordinate(); ++n_cs;}
-//         else if (aname == "C1'") {coor_C1p = v_atoms_[i].get_coordinate(); n_cs++;}
-//         else if (aname == "C2'") {coor_C2p = v_atoms_[i].get_coordinate(); n_cs++;}
-//         else if (aname == "C3'") {coor_C3p = v_atoms_[i].get_coordinate(); n_cs++;}
-//         else if (aname == "C4'") {coor_C4p = v_atoms_[i].get_coordinate(); n_cs++;}
-//         else if (aname == "C2 ") { coor_C2 = v_atoms_[i].get_coordinate(); n_cb++;}
-//         else if (aname == "C4 ") { coor_C4 = v_atoms_[i].get_coordinate(); n_cb++;}
-//         else if (aname == "C5 ") { coor_C5 = v_atoms_[i].get_coordinate(); n_cb++;}
-//         else if (aname == "C6 ") { coor_C6 = v_atoms_[i].get_coordinate(); n_cb++;}
-//         else if (aname == "C8 ") { coor_C8 = v_atoms_[i].get_coordinate(); n_cb++;}
-//         break;
-//       case 'O':
-//         if (aname == "O4'") {coor_O4p = v_atoms_[i].get_coordinate(); n_os++;}
-//         else if (aname == "O2'") {coor_O2p = v_atoms_[i].get_coordinate(); n_os++;}
-//         else if (aname == "O3'") {coor_O3p = v_atoms_[i].get_coordinate();}
-//         else if (aname == "O5'") {coor_O5p = v_atoms_[i].get_coordinate();}
-//         else if (aname == "O2 ") {coor_O2 = v_atoms_[i].get_coordinate(); n_ob++;}
-//         else if (aname == "O4 ") {coor_O4 = v_atoms_[i].get_coordinate(); n_ob++;}
-//         else if (aname == "O6 ") {coor_O6 = v_atoms_[i].get_coordinate(); n_ob++;}
-//         break;
-//       case 'N':
-//         if (aname == "N1 ") {coor_N1 = v_atoms_[i].get_coordinate(); n_nb++;}
-//         else if (aname == "N2 ") {coor_N2 = v_atoms_[i].get_coordinate(); n_nb++;}
-//         else if (aname == "N3 ") {coor_N3 = v_atoms_[i].get_coordinate(); n_nb++;}
-//         else if (aname == "N4 ") {coor_N4 = v_atoms_[i].get_coordinate(); n_nb++;}
-//         else if (aname == "N6 ") {coor_N6 = v_atoms_[i].get_coordinate(); n_nb++;}
-//         else if (aname == "N7 ") {coor_N7 = v_atoms_[i].get_coordinate(); n_nb++;}
-//         else if (aname == "N9 ") {coor_N9 = v_atoms_[i].get_coordinate(); n_nb++;}
-//         break;
-//       default:
-//         if (aname == "P  ") coor_P = v_atoms_[i].get_coordinate();
-//     }
-//   }
-//   com_P = coor_P;
-//   com_S = ( (coor_C1p + coor_C2p + coor_C3p + coor_C4p + coor_C5p)
-//             * mass_C
-//             + ( coor_O2p + coor_O4p ) * mass_O ) * (1/( n_os * mass_O + n_cs * mass_C ));
-//   com_B = ( (coor_N1 + coor_N2 + coor_N3 + coor_N4 + coor_N6 + coor_N7 + coor_N9)
-//             * mass_N
-//             + (coor_O2 + coor_O4 + coor_O6) * mass_O
-//             + (coor_C2 + coor_C4 + coor_C5 + coor_C6 + coor_C8)
-//             * mass_C )
-//           * (1/(n_nb*mass_N + n_ob*mass_O + n_cb*mass_C));
-//   cg_P_.set_coordinate(com_P);
-//   if (cg_S_.get_atom_name() != "S  ")
-//     cg_S_.set_coordinate(com_S);
-//   if (cg_B_.get_atom_name() != "B  ")
-//     cg_B_.set_coordinate(com_B);
-// }
-
-
-// Residue------------------------------------------------------------------
 Residue::Residue()
 {
   residue_name_ = "";
@@ -340,7 +240,6 @@ void Residue::reset()
 }
 
 
-// Other functions -----------------------------------------------------------
 std::ostream& operator<<(std::ostream& o, Residue& r)
 {
   int i = 0;

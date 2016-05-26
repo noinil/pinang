@@ -40,6 +40,24 @@ int Chain::add_residue(const Residue& r)
   return 0;
 }
 
+double get_mass_from_atom_name_tmp(const std::string& s)
+{
+  char c = s[0];
+  switch (c) {
+    case 'C':
+      return 12.011;
+    case 'O':
+      return 15.999;
+    case 'N':
+      return 14.001;
+    case 'P':
+      return 30.974;
+    case 'H':
+      return 1.008;
+    default:
+      return 0.000;
+  }
+}
 void Chain::self_check()
 {
   for (Residue& r : v_residues_) {
@@ -56,6 +74,89 @@ void Chain::self_check()
   if (chain_type_ == DNA) {
     v_residues_[0].set_terminus_flag(5);
     v_residues_[n_residue_ - 1].set_terminus_flag(3);
+
+    // Recalculate CG coordinates for DNA particles.
+    Vec3d com_P(0.0, 0.0, 0.0);
+    Vec3d com_S(0.0, 0.0, 0.0);
+    Vec3d com_B(0.0, 0.0, 0.0);
+    double mass_P = 0.0;
+    double mass_S = 0.0;
+    double mass_B = 0.0;
+    double mass_tmp_atom = 0.0;
+    Vec3d tmp_O3p(0.0, 0.0, 0.0);
+    int O3p_flag = 0;
+    for (int i = 0; i < n_residue_; ++i) {
+      Residue& r = v_residues_[i];
+      if (r.get_cg_S().get_atom_name() == "DS  " && r.get_cg_B().get_atom_name() == "DB  ")
+        continue;
+
+      if (O3p_flag == 1) {
+        com_P += tmp_O3p * 15.999;
+        mass_P += 15.999;
+      }
+      O3p_flag = 0;
+      int natom = r.get_size();
+      for (int j = 0; j < natom; ++j) {
+        Atom ta = r.get_atom(j);
+        std::string aname = ta.get_atom_name();
+        mass_tmp_atom = get_mass_from_atom_name_tmp(aname);
+        if (aname == "O3' ") {
+          tmp_O3p = ta.get_coordinate();
+          O3p_flag = 1;
+        } else if (aname == "P   " || aname == "OP1 " || aname == "OP2 " || aname == "O5' ") {
+          com_P += ta.get_coordinate() * mass_tmp_atom;
+          mass_P += mass_tmp_atom;
+        } else {
+          std::string::size_type np;
+          np = aname.find("'");
+          if (np == std::string::npos) {
+            com_B += ta.get_coordinate() * mass_tmp_atom;
+            mass_B += mass_tmp_atom;
+          } else {
+            com_S += ta.get_coordinate() * mass_tmp_atom;
+            mass_S += mass_tmp_atom;
+          }
+        }
+      }
+      if (i > 0) {
+        if (mass_P > 94.5) {
+          com_P /= mass_P;
+          r.get_cg_P().set_coordinate(com_P);
+          r.get_cg_P().set_atom_name("DP");
+        } else {
+          std::cout << " ~             PINANG :: chain.hpp            ~ " << "\n";
+          std::cerr << "ERROR: missing DNA atoms in Chain: " << chain_ID_ << "\n";
+          std::cerr << "      in Residue: " << i << " 's phosphate group. \n";
+          exit(EXIT_SUCCESS);
+        }
+      }
+      if (mass_S > 75.5) {
+        com_S /= mass_S;
+        r.get_cg_S().set_coordinate(com_S);
+        r.get_cg_S().set_atom_name("DS");
+      } else {
+        std::cout << " ~             PINANG :: chain.hpp            ~ " << "\n";
+        std::cerr << "ERROR: missing DNA atoms in Chain: " << chain_ID_ << "\n";
+        std::cerr << "      in Residue: " << i << " 's sugar group. \n";
+        exit(EXIT_SUCCESS);
+      }
+      if (mass_B > r.get_residue_mass() - 94.97 - 83.11 - 8.0) {
+        com_B /= mass_B;
+        r.get_cg_B().set_coordinate(com_B);
+        r.get_cg_B().set_atom_name("DB");
+      } else {
+        std::cout << " ~             PINANG :: chain.hpp            ~ " << "\n";
+        std::cerr << "ERROR: missing DNA atoms in Chain: " << chain_ID_ << "\n";
+        std::cerr << "      in Residue: " << i << " 's base. \n";
+        exit(EXIT_SUCCESS);
+      }
+      mass_P = 0.0;
+      mass_S = 0.0;
+      mass_B = 0.0;
+      com_P *= 0.0;
+      com_S *= 0.0;
+      com_B *= 0.0;
+    }
   }
 }
 
@@ -121,7 +222,6 @@ void Chain::output_cg_crd(std::ostream& o, int& n, int& m)
     for (Residue& r : v_residues_) {
       Atom pseudo_ca = r.get_cg_C_alpha();
       pseudo_ca.set_atom_serial(++n);
-      pseudo_ca.set_atom_name("CA");
       pseudo_ca.set_chain_ID(m + 97);
       o << pseudo_ca;
     }
@@ -131,19 +231,19 @@ void Chain::output_cg_crd(std::ostream& o, int& n, int& m)
       if (r.get_terminus_flag() != 5) {
         Atom pseudo_P = r.get_cg_P();
         pseudo_P.set_atom_serial(++n);
-        pseudo_P.set_atom_name("DP");
+        // pseudo_P.set_atom_name("DP");
         pseudo_P.set_chain_ID(m + 97);
         o << pseudo_P;
       }
       Atom pseudo_S = r.get_cg_S();
       pseudo_S.set_atom_serial(++n);
-      pseudo_S.set_atom_name("DS");
+      // pseudo_S.set_atom_name("DS");
       pseudo_S.set_chain_ID(m + 97);
       o << pseudo_S;
 
       Atom pseudo_B = r.get_cg_B();
       pseudo_B.set_atom_serial(++n);
-      pseudo_B.set_atom_name("DB");
+      // pseudo_B.set_atom_name("DB");
       pseudo_B.set_chain_ID(m + 97);
       o << pseudo_B;
     }
@@ -157,7 +257,7 @@ void output_top_mass_line(std::ostream& o, int i, char s, int r, std::string rn,
 {
   o << std::setw(8) << i << std::setw(3) << s  << " " << std::setw(6) << r
     << " " << std::setw(3) << rn
-    << std::setw(4) << an << " " << std::setw(4) << at << " " 
+    << std::setw(4) << an << " " << std::setw(4) << at << " "
     << std::setiosflags(std::ios_base::fixed) << std::setprecision(6)
     << std::setw(12) << c << " " << std::setprecision(6)
     << std::setw(13) << m << "           " << "0 \n";
