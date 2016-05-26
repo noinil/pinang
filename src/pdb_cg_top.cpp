@@ -1,8 +1,8 @@
 /*!
 @file pdb_cg_top.cpp
-@brief Generate .top and .pos files from PDB structures.
+@brief Generate .psf and .pdb files from PDB structures.
 
-Read PDB file, extract information for molecules, and generate .top / .pos files
+Read PDB file, extract information for molecules, and generate .psf / .pdb files
 for additional analysis.
 
 @author Cheng Tan (noinil@gmail.com)
@@ -26,13 +26,17 @@ int main(int argc, char *argv[])
   int in_flag = 0;
 
   std::string infilename = "some.pdb";
-  std::string pos_name = "cg.pos";
-  std::string top_name = "cg.top";
+  std::string crd_name = "cg.pdb";
+  std::string top_name = "cg.psf";
+  std::string parm_name = "cg.ffp";
 
-  while ((opt = getopt(argc, argv, "p:t:m:f:h")) != -1) {
+  while ((opt = getopt(argc, argv, "p:t:c:m:f:h")) != -1) {
     switch (opt) {
       case 'p':
-        pos_name = optarg;
+        parm_name = optarg;
+        break;
+      case 'c':
+        crd_name = optarg;
         break;
       case 't':
         top_name = optarg;
@@ -60,8 +64,9 @@ int main(int argc, char *argv[])
   }
   pinang::PDB pdb1(infilename);
 
-  std::ofstream pos_file(pos_name.c_str());
+  std::ofstream crd_file(crd_name.c_str());
   std::ofstream top_file(top_name.c_str());
+  std::ofstream parm_file(parm_name.c_str());
 
   if (mod_flag != 1) {
     if (pdb1.get_size() == 1)
@@ -74,18 +79,23 @@ int main(int argc, char *argv[])
     }
   }
 
-  pdb1.get_model(mod_index).output_cg_pos(pos_file);
-  pos_file << "END" << std::endl;
+  pinang::Model m0 = pdb1.get_model(mod_index);
+  m0.output_cg_crd(crd_file);
+  crd_file << "END" << std::endl;
 
-  top_file << "# CG topology for PDB " << infilename << "\n";
-  pdb1.get_model(mod_index).output_top_mass(top_file);
-  pdb1.get_model(mod_index).output_top_bond(top_file);
-  pdb1.get_model(mod_index).output_top_angle(top_file);
-  pdb1.get_model(mod_index).output_top_dihedral(top_file);
-  pdb1.get_model(mod_index).output_top_nonbonded(top_file);
+  m0.output_top_mass(top_file);
+  m0.output_top_bond(top_file);
+  m0.output_top_angle(top_file);
+  m0.output_top_dihedral(top_file);
 
-  pos_file.close();
+  m0.output_ffparm_bond(parm_file);
+  m0.output_ffparm_angle(parm_file);
+  m0.output_ffparm_dihedral(parm_file);
+  m0.output_ffparm_nonbonded(parm_file);
+
+  crd_file.close();
   top_file.close();
+  parm_file.close();
 
   return 0;
 }
@@ -94,7 +104,7 @@ void print_usage(char* s)
 {
   std::cout << " Usage: "
             << s
-            << "\n\t -f some.pdb\n\t [-p out.pos]\n\t"
+            << "\n\t -f some.pdb\n\t [-p out.crd]\n\t"
             << " [-t out.top]\n\t [-m module]\n\t [-h]"
             << "\n";
   exit(EXIT_SUCCESS);

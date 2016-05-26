@@ -71,7 +71,7 @@ void Model::reset()
 }
 
 
-void Model::output_cg_pos(std::ostream& o)
+void Model::output_cg_crd(std::ostream& o)
 {
   int i = 0;
   int n = 0;
@@ -79,9 +79,9 @@ void Model::output_cg_pos(std::ostream& o)
     ChainType ct = v_chains_[i].get_chain_type();
     if (ct == water || ct == other || ct == none)
       continue;
-    v_chains_[i].output_cg_pos(o, n);
+    v_chains_[i].output_cg_crd(o, n);
   }
-  o << "ENDMDL\n";
+  o << "ENDMDL" << std::endl;
 }
 
 void Model::output_top_mass(std::ostream& o)
@@ -99,17 +99,7 @@ void Model::output_top_mass(std::ostream& o)
       n += v_chains_[i].get_size();
   }
 
-  o << "[ particles ]"
-    << std::setw(8) << n
-    << "\n";
-  o << "# "
-    << std::setw(9) << "index"
-    << std::setw(9) << "resid"
-    << std::setw(10) << "resname"
-    << std::setw(10) << "atom"
-    << std::setw(17) << "mass"
-    << std::setw(13) << "charge"
-    << "\n";
+  o << std::setw(8) << n << " !NATOM \n";
 
   n = 0;
   for (i = 0; i < n_chain_; i++) {
@@ -118,10 +108,94 @@ void Model::output_top_mass(std::ostream& o)
       continue;
     v_chains_[i].output_top_mass(o, n);
   }
-  o << "\n";
+  o << std::endl;
 }
 
 void Model::output_top_bond(std::ostream& o)
+{
+  int i = 0;
+  int n = 0;
+  int m = 0;
+
+  for (i = 0; i < n_chain_; i++) {
+    ChainType ct = v_chains_[i].get_chain_type();
+    if (ct == water || ct == other || ct == none)
+      continue;
+    else if (ct == DNA || ct == RNA || ct == na)
+      n += v_chains_[i].get_size() * 3 - 2;
+    else
+      n += v_chains_[i].get_size() - 1;
+  }
+
+  o << std::setw(8) << n << " !NBOND: bonds \n";
+
+  n = 0;
+  for (i = 0; i < n_chain_; i++) {
+    ChainType ct = v_chains_[i].get_chain_type();
+    if (ct == water || ct == other || ct == none)
+      continue;
+    v_chains_[i].output_top_bond(o, n, m);
+  }
+  o << " \n" << std::endl;
+}
+
+void Model::output_top_angle(std::ostream& o)
+{
+  int i = 0;
+  int n = 0;
+  int m = 0;
+
+  for (i = 0; i < n_chain_; i++) {
+    ChainType ct = v_chains_[i].get_chain_type();
+    if (ct == water || ct == other || ct == none)
+      continue;
+    else if (ct == DNA || ct == RNA || ct == na)
+      n += v_chains_[i].get_size() * 4 - 5;
+    else
+      n += v_chains_[i].get_size() - 2;
+  }
+
+  o << std::setw(8) << n << " !NTHETA: angles \n";
+
+  n = 0;
+  for (i = 0; i < n_chain_; i++) {
+    ChainType ct = v_chains_[i].get_chain_type();
+    if (ct == water || ct == other || ct == none)
+      continue;
+    v_chains_[i].output_top_angle(o, n, m);
+  }
+  o << " \n" << std::endl;
+}
+
+void Model::output_top_dihedral(std::ostream& o)
+{
+  int i = 0;
+  int n = 0;
+  int m = 0;
+
+  for (i = 0; i < n_chain_; i++) {
+    ChainType ct = v_chains_[i].get_chain_type();
+    if (ct == water || ct == other || ct == none)
+      continue;
+    else if (ct == DNA || ct == RNA || ct == na)
+      n += v_chains_[i].get_size() * 2 - 4;
+    else
+      n += v_chains_[i].get_size()-3;
+  }
+
+  o << std::setw(8) << n << " !NPHI: dihedrals \n";
+
+  n = 0;
+  for (i = 0; i < n_chain_; i++) {
+    ChainType ct = v_chains_[i].get_chain_type();
+    if (ct == water || ct == other || ct == none)
+      continue;
+    v_chains_[i].output_top_dihedral(o, n, m);
+  }
+  o << "\n" << std::endl;
+}
+
+void Model::output_ffparm_bond(std::ostream& o)
 {
   int i = 0;
   int n = 0;
@@ -136,27 +210,21 @@ void Model::output_top_bond(std::ostream& o)
       n += v_chains_[i].get_size() - 1;
   }
 
-  o << "[ bonds ]"
-    << std::setw(8) << n
-    << "\n";
-  o << "# "
-    << std::setw(6) << "pi"
-    << std::setw(9) << "pj"
-    << std::setw(17) << "r0"
-    << std::setw(9) << "K_b"
-    << "\n";
+  o << "[ bonds ]" << std::setw(8) << n << "\n";
+  o << "# " << std::setw(6) << "pi" << std::setw(9) << "pj"
+    << std::setw(17) << "r0" << std::setw(9) << "K_b" << "\n";
 
   n = 0;
   for (i = 0; i < n_chain_; i++) {
     ChainType ct = v_chains_[i].get_chain_type();
     if (ct == water || ct == other || ct == none)
       continue;
-    v_chains_[i].output_top_bond(o, n);
+    v_chains_[i].output_ffparm_bond(o, n);
   }
-  o << "\n";
+  o << " \n" << std::endl;
 }
 
-void Model::output_top_angle(std::ostream& o)
+void Model::output_ffparm_angle(std::ostream& o)
 {
   int i = 0;
   int n = 0;
@@ -171,28 +239,21 @@ void Model::output_top_angle(std::ostream& o)
       n += v_chains_[i].get_size()-2;
   }
 
-  o << "[ angles ]"
-    << std::setw(8) << n
-    << "\n";
-  o << "# "
-    << std::setw(6) << "pi"
-    << std::setw(9) << "pj"
-    << std::setw(9) << "pk"
-    << std::setw(13) << "theta_0"
-    << std::setw(9) << "K_a"
-    << "\n";
+  o << "[ angles ]" << std::setw(8) << n << "\n";
+  o << "# " << std::setw(6) << "pi" << std::setw(9) << "pj" << std::setw(9) << "pk"
+    << std::setw(13) << "theta_0" << std::setw(9) << "K_a" << "\n";
 
   n = 0;
   for (i = 0; i < n_chain_; i++) {
     ChainType ct = v_chains_[i].get_chain_type();
     if (ct == water || ct == other || ct == none)
       continue;
-    v_chains_[i].output_top_angle(o, n);
+    v_chains_[i].output_ffparm_angle(o, n);
   }
-  o << "\n";
+  o << "\n" << std::endl;
 }
 
-void Model::output_top_dihedral(std::ostream& o)
+void Model::output_ffparm_dihedral(std::ostream& o)
 {
   int i = 0;
   int n = 0;
@@ -207,30 +268,23 @@ void Model::output_top_dihedral(std::ostream& o)
       n += v_chains_[i].get_size()-3;
   }
 
-  o << "[ dihedrals ]"
-    << std::setw(8) << n
-    << "\n";
-  o << "# "
-    << std::setw(6) << "pi"
-    << std::setw(9) << "pj"
-    << std::setw(9) << "pk"
-    << std::setw(9) << "pl"
-    << std::setw(13) << "phi_0"
-    << std::setw(9) << "K_d_1"
-    << std::setw(9) << "K_d_3"
-    << "\n";
+  o << "[ dihedrals ]" << std::setw(8) << n << "\n";
+  o << "# " << std::setw(6) << "pi" << std::setw(9) << "pj"
+    << std::setw(9) << "pk" << std::setw(9) << "pl"
+    << std::setw(13) << "phi_0" << std::setw(9) << "K_d_1"
+    << std::setw(9) << "K_d_3" << "\n";
 
   n = 0;
   for (i = 0; i < n_chain_; i++) {
     ChainType ct = v_chains_[i].get_chain_type();
     if (ct == water || ct == other || ct == none)
       continue;
-    v_chains_[i].output_top_dihedral(o, n);
+    v_chains_[i].output_ffparm_dihedral(o, n);
   }
-  o << "\n";
+  o << "\n" << std::endl;
 }
 
-void Model::output_top_nonbonded(std::ostream& o)
+void Model::output_ffparm_nonbonded(std::ostream& o)
 {
   int i = 0;
   Chain c0;
@@ -245,46 +299,51 @@ void Model::output_top_nonbonded(std::ostream& o)
     {
       c_tmp.reset();
 
+      Atom P;
       Atom S = v_chains_[i].get_residue(0).get_cg_S();
       Atom B = v_chains_[i].get_residue(0).get_cg_B();
       r_tmp.reset();
-      r_tmp.set_residue_by_name(S.get_residue_name());
+      r_tmp.add_atom(S);
       r_tmp.set_chain_ID(S.get_chain_ID());
       r_tmp.set_residue_serial(S.get_residue_serial());
-      r_tmp.add_atom(S);
+      r_tmp.set_residue_name(S.get_residue_name());
+      r_tmp.set_chain_type(ct);
       c_tmp.add_residue(r_tmp);
 
       r_tmp.reset();
-      r_tmp.set_residue_by_name(B.get_residue_name());
+      r_tmp.add_atom(B);
       r_tmp.set_chain_ID(B.get_chain_ID());
       r_tmp.set_residue_serial(B.get_residue_serial());
-      r_tmp.add_atom(B);
+      r_tmp.set_residue_name(B.get_residue_name());
+      r_tmp.set_chain_type(ct);
       c_tmp.add_residue(r_tmp);
 
-
       for (int j = 1; j < v_chains_[i].get_size(); j++) {
-        Atom P = v_chains_[i].get_residue(j).get_cg_P();
-        Atom S = v_chains_[i].get_residue(j).get_cg_S();
-        Atom B = v_chains_[i].get_residue(j).get_cg_B();
+        P = v_chains_[i].get_residue(j).get_cg_P();
+        S = v_chains_[i].get_residue(j).get_cg_S();
+        B = v_chains_[i].get_residue(j).get_cg_B();
         r_tmp.reset();
-        r_tmp.set_residue_by_name(P.get_residue_name());
+        r_tmp.add_atom(P);
         r_tmp.set_chain_ID(P.get_chain_ID());
         r_tmp.set_residue_serial(P.get_residue_serial());
-        r_tmp.add_atom(P);
+        r_tmp.set_residue_name(P.get_residue_name());
+        r_tmp.set_chain_type(ct);
         c_tmp.add_residue(r_tmp);
 
         r_tmp.reset();
-        r_tmp.set_residue_by_name(S.get_residue_name());
+        r_tmp.add_atom(S);
         r_tmp.set_chain_ID(S.get_chain_ID());
         r_tmp.set_residue_serial(S.get_residue_serial());
-        r_tmp.add_atom(S);
+        r_tmp.set_residue_name(S.get_residue_name());
+        r_tmp.set_chain_type(ct);
         c_tmp.add_residue(r_tmp);
 
         r_tmp.reset();
-        r_tmp.set_residue_by_name(B.get_residue_name());
+        r_tmp.add_atom(B);
         r_tmp.set_chain_ID(B.get_chain_ID());
         r_tmp.set_residue_serial(B.get_residue_serial());
-        r_tmp.add_atom(B);
+        r_tmp.set_residue_name(B.get_residue_name());
+        r_tmp.set_chain_type(ct);
         c_tmp.add_residue(r_tmp);
       }
       c_tmp.set_chain_type(ct);
@@ -293,19 +352,14 @@ void Model::output_top_nonbonded(std::ostream& o)
     }
     c0 = c0 + v_chains_[i];
   }
+  std::cout << "WTF!!!!!" << "\n";
 
-  o << "[ native ]"
-    << std::setw(8) << c0.get_native_contact_number()
-    << "\n";
-  o << "# "
-    << std::setw(6) << "pi"
-    << std::setw(9) << "pj"
-    << std::setw(17) << "sigma"
-    << std::setw(13) << "eps"
-    << "\n";
+  o << "[ native ]" << std::setw(8) << c0.get_native_contact_number() << "\n";
+  o << "# " << std::setw(6) << "pi" << std::setw(9) << "pj"
+    << std::setw(17) << "sigma" << std::setw(13) << "eps" << "\n";
 
-  c0.output_top_native(o);
-  o << "\n";
+  c0.output_ffparm_native(o);
+  o << "\n" << std::endl;
 }
 
 

@@ -72,7 +72,7 @@ void Chain::output_sequence(int n) const
     for (const Residue& r : v_residues_) {
       std::string s_tmp =  r.get_short_name();
       std::cout << std::setw(1) << s_tmp[1];
-      j++;
+      ++j;
       if (j%10 == 5)
         std::cout << " ";
       if (j%10 == 0)
@@ -84,7 +84,7 @@ void Chain::output_sequence(int n) const
   } else if (n == 3) {
     for (const Residue& r : v_residues_) {
       std::cout << std::setw(4) << r.get_residue_name();
-      j++;
+      ++j;
       if (j%10 == 0)
       {
         std::cout << "  " << std::setw(4) << r.get_residue_serial() << "\n";
@@ -110,7 +110,7 @@ void Chain::output_sequence_fasta(std::ostream & f_fasta, std::string s0) const
   f_fasta << "\n";
 }
 
-void Chain::output_cg_pos(std::ostream& o, int& n)
+void Chain::output_cg_crd(std::ostream& o, int& n)
 {
   if (chain_type_ == water || chain_type_ == other || chain_type_ == none)
     return;
@@ -148,67 +148,240 @@ void Chain::output_cg_pos(std::ostream& o, int& n)
   o << "TER\n";
 }
 
+void output_top_mass_line(std::ostream& o, int i, char s, int r, std::string rn,
+                          std::string an, std::string at, double c, double m)
+{
+  o << std::setw(8) << i << std::setw(5) << s << std::setw(4) << r << std::setw(4) << rn
+    << std::setw(4) << an << " " << std::setw(4) << at << " " 
+    << std::setiosflags(std::ios_base::fixed) << std::setprecision(6)
+    << std::setw(12) << c << " " << std::setprecision(6)
+    << std::setw(12) << m << "             " << "0\n";
+}
+
 void Chain::output_top_mass(std::ostream& o, int& n)
 {
   if (chain_type_ == water || chain_type_ == other || chain_type_ == none)
     return;
 
-  o << " - Chain " << chain_ID_ << " : ";
-  o << chainType_2_string(chain_type_);
-  o << " : " << n_residue_ << "\n";
-
   int i = 0;
   if (chain_type_ != DNA && chain_type_ != RNA && chain_type_ != na)
   {
     for (const Residue& r : v_residues_) {
-      o << std::setw(11) << ++n << " "
-        << std::setw(8) << r.get_residue_serial() << " "
-        << std::setw(9) << r.get_residue_name() << " "
-        << std::setw(9) << "CA" << " "
-        << std::setiosflags(std::ios_base::fixed) << std::setprecision(2)
-        << std::setw(16) << r.get_residue_mass() << " "
-        << std::setw(12)
-        << r.get_residue_charge()
-        << "\n";
+      output_top_mass_line(o, ++n, r.get_chain_ID(), r.get_residue_serial(), r.get_residue_name(),
+                           "cCA", "C", r.get_residue_charge(), r.get_residue_mass());
     }
   } else {
     for (const Residue& r : v_residues_) {
       if (r.get_terminus_flag() != 5) {
-        o << std::setw(11) << ++n << " "
-          << std::setw(8) << r.get_residue_serial() << " "
-          << std::setw(9) << r.get_residue_name() << " "
-          << std::setw(9) << "P" << " "
-          << std::setiosflags(std::ios_base::fixed) << std::setprecision(2)
-          << std::setw(16) << 94.93 << " "
-          << std::setw(12) << -1.0
-          << "\n";
+        output_top_mass_line(o, ++n, r.get_chain_ID(), r.get_residue_serial(), r.get_residue_name(),
+                             "cP", "cP", -0.6, 94.93);
       }
-      o << std::setw(11) << ++n << " "
-        << std::setw(8) << r.get_residue_serial() << " "
-        << std::setw(9) << r.get_residue_name() << " "
-        << std::setw(9) << "S" << " "
-        << std::setiosflags(std::ios_base::fixed) << std::setprecision(2)
-        << std::setw(16) << 99.11 << " "
-        << std::setw(12) << 0.0
-        << "\n";
-      o << std::setw(11) << ++n << " "
-        << std::setw(8) << r.get_residue_serial() << " "
-        << std::setw(9) << r.get_residue_name() << " "
-        << std::setw(9) << "B" << " "
-        << std::setiosflags(std::ios_base::fixed) << std::setprecision(2)
-        << std::setw(16) << r.get_residue_mass() - 94.93 - 99.11 << " "
-        << std::setw(12) << 0.0
-        << "\n";
+      output_top_mass_line(o, ++n, r.get_chain_ID(), r.get_residue_serial(), r.get_residue_name(),
+                           "cS", "cS", 0.0, 99.11);
+      output_top_mass_line(o, ++n, r.get_chain_ID(), r.get_residue_serial(), r.get_residue_name(),
+                           "cdB", "cdB", 0.0, r.get_residue_mass() - 99.11 - 94.93);
     }
   }
 }
 
-void Chain::output_top_bond(std::ostream& o, int& n)
+void Chain::output_top_bond(std::ostream& o, int& n, int& m)
 {
   if (chain_type_ == water || chain_type_ == other || chain_type_ == none)
-  {
     return;
+
+  int i = 0;
+  std::vector<int> out_bond_list;
+
+  if (chain_type_ != DNA && chain_type_ != RNA && chain_type_ != na)
+  {
+    for (i = 0; i < n_residue_ - 1; ++i) {
+      out_bond_list.push_back(++n);
+      out_bond_list.push_back(n + 1);
+    }
+    ++n;
+  } else {
+    out_bond_list.push_back(n + 1);
+    out_bond_list.push_back(n + 2);
+    out_bond_list.push_back(n + 1);
+    out_bond_list.push_back(n + 3);
+    for (i = 1; i < n_residue_ - 1; ++i) {
+      n += 3;
+      out_bond_list.push_back(n);
+      out_bond_list.push_back(n + 1);
+      out_bond_list.push_back(n + 1);
+      out_bond_list.push_back(n + 2);
+      out_bond_list.push_back(n + 1);
+      out_bond_list.push_back(n + 3);
+    }
+    n += 3;
+    out_bond_list.push_back(n);
+    out_bond_list.push_back(n + 1);
+    out_bond_list.push_back(n + 1);
+    out_bond_list.push_back(n + 2);
+    n += 2;
   }
+
+  for (int j : out_bond_list) {
+    o << std::setw(8) << j;
+    if (++m == 8) {
+      o << "\n";
+      m = 0;
+    }
+  }
+}
+
+void Chain::output_top_angle(std::ostream& o, int& n, int& m)
+{
+  if (chain_type_ == water || chain_type_ == other || chain_type_ == none)
+    return;
+
+  std::vector<int> out_angle_list;
+  int i = 0;
+
+  if (chain_type_ != DNA && chain_type_ != RNA && chain_type_ != na)
+  {
+    for (i = 0; i < n_residue_-2; ++i) {
+      int ni = i + n;
+      out_angle_list.push_back(ni + 1);
+      out_angle_list.push_back(ni + 2);
+      out_angle_list.push_back(ni + 3);
+    }
+    n += n_residue_;
+  } else {
+    // ---------- angle BSP ----------
+    out_angle_list.push_back(n + 2);
+    out_angle_list.push_back(n + 1);
+    out_angle_list.push_back(n + 3);
+    // ---------- angle SPS ----------
+    out_angle_list.push_back(n + 1);
+    out_angle_list.push_back(n + 3);
+    out_angle_list.push_back(n + 4);
+
+    // -------------------- loop --------------------
+    for (i = 1; i < n_residue_-1; ++i) {
+      n += 3;
+      // ---------- angle PSB ----------
+      out_angle_list.push_back(n);
+      out_angle_list.push_back(n + 1);
+      out_angle_list.push_back(n + 2);
+      // ---------- angle PSP ----------
+      out_angle_list.push_back(n);
+      out_angle_list.push_back(n + 1);
+      out_angle_list.push_back(n + 3);
+      // ---------- angle BSP ----------
+      out_angle_list.push_back(n + 2);
+      out_angle_list.push_back(n + 1);
+      out_angle_list.push_back(n + 3);
+      // ---------- angle SPS ----------
+      out_angle_list.push_back(n + 1);
+      out_angle_list.push_back(n + 3);
+      out_angle_list.push_back(n + 4);
+    }
+    n += 3;
+    // ---------- angle PSB ----------
+    out_angle_list.push_back(n);
+    out_angle_list.push_back(n + 1);
+    out_angle_list.push_back(n + 2);
+    n += 2;
+  }
+  for (int j : out_angle_list) {
+    o << std::setw(8) << j;
+    if (++m == 9) {
+      o << "\n";
+      m = 0;
+    }
+  }
+}
+
+void Chain::output_top_dihedral(std::ostream& o, int& n, int& m)
+{
+  if (chain_type_ == water || chain_type_ == other || chain_type_ == none)
+    return;
+
+  int i = 0;
+  std::vector<int> out_dih_list;
+
+  if (chain_type_ != DNA && chain_type_ != RNA && chain_type_ != na)
+  {
+    for (i = 0; i < n_residue_-3; ++i) {
+      int ni = i + n;
+      out_dih_list.push_back(ni + 1);
+      out_dih_list.push_back(ni + 2);
+      out_dih_list.push_back(ni + 3);
+      out_dih_list.push_back(ni + 4);
+    }
+    n += n_residue_;
+  } else {
+    if (n_residue_ <= 2) {
+      n += 5;
+      return;
+    }
+    out_dih_list.push_back(n + 1);
+    out_dih_list.push_back(n + 3);
+    out_dih_list.push_back(n + 4);
+    out_dih_list.push_back(n + 6);
+
+    for (i = 1; i < n_residue_-1; ++i) {
+      n += 3;
+      // ---------- PSPS ----------
+      out_dih_list.push_back(n);
+      out_dih_list.push_back(n + 1);
+      out_dih_list.push_back(n + 3);
+      out_dih_list.push_back(n + 4);
+
+      if (i == n_residue_ - 2)
+        break;
+      // ---------- SPSP ----------
+      out_dih_list.push_back(n + 1);
+      out_dih_list.push_back(n + 3);
+      out_dih_list.push_back(n + 4);
+      out_dih_list.push_back(n + 6);
+    }
+    n += 5;
+  }
+  for (int j : out_dih_list) {
+    o << std::setw(8) << j;
+    if (++m == 8) {
+      o << "\n";
+      m = 0;
+    }
+  }
+}
+
+int Chain::get_native_contact_number()
+{
+  int i = 0, j = 0;
+  double d = -1;
+  int n = 0;
+  ChainType cti, ctj;
+
+  for (i = 0; i < n_residue_-4; ++i) {
+    cti = v_residues_[i].get_chain_type();
+    if (cti == water || cti == DNA || cti == RNA || cti == na || cti == ion)
+      continue;
+    for (j = i + 4; j < n_residue_; ++j) {
+      ctj = v_residues_[j].get_chain_type();
+      if (ctj == water || ctj == DNA || ctj == RNA || ctj == na || ctj == ion)
+        continue;
+      d = residue_min_distance(v_residues_[i], v_residues_[j]);
+      if ( d < g_cutoff)
+        ++n;
+    }
+  }
+  return n;
+}
+
+void output_ff_bond_line(std::ostream& o, int i, int j, double d, double k)
+{
+  o << std::setw(8) << i << " " << std::setw(8) << j << " "
+    << std::setiosflags(std::ios_base::fixed) << std::setprecision(6)
+    << std::setw(16) << d << " " << std::setprecision(1)
+    << std::setw(8) << k << " \n";
+}
+void Chain::output_ffparm_bond(std::ostream& o, int& n)
+{
+  if (chain_type_ == water || chain_type_ == other || chain_type_ == none)
+    return;
 
   int i = 0;
   double d = 0;
@@ -218,80 +391,43 @@ void Chain::output_top_bond(std::ostream& o, int& n)
 
   if (chain_type_ != DNA && chain_type_ != RNA && chain_type_ != na)
   {
-    for (i = 0; i < n_residue_ - 1; i++) {
+    for (i = 0; i < n_residue_ - 1; ++i) {
       d = residue_ca_distance(v_residues_[i], v_residues_[i+1]);
-      n++;
-      o << std::setw(8) << n << " "
-        << std::setw(8) << n + 1 << " "
-        << std::setiosflags(std::ios_base::fixed)
-        << std::setprecision(6)
-        << std::setw(16) << d << " "
-        << std::setprecision(1)
-        << std::setw(8) << k_K_bond << " "
-        << "\n";
+      ++n;
+      output_ff_bond_line(o, n, n + 1, d, k_K_bond);
     }
-    n++;
+    ++n;
   } else {
     d_sb = atom_distance(v_residues_[0].get_cg_S(), v_residues_[0].get_cg_B());
-    o << std::setw(8) << n+1 << " "
-      << std::setw(8) << n+2 << " "
-      << std::setiosflags(std::ios_base::fixed) << std::setprecision(6)
-      << std::setw(16) << d_sb << " "
-      << std::setprecision(1) << std::setw(8) << k_K_bond << " "
-      << "\n";
+    output_ff_bond_line(o, n + 1, n + 2, d_sb, k_K_bond);
     d_sp = atom_distance(v_residues_[1].get_cg_P(), v_residues_[0].get_cg_S());
-    o << std::setw(8) << n+1 << " "
-      << std::setw(8) << n+3 << " "
-      << std::setiosflags(std::ios_base::fixed)
-      << std::setprecision(6)
-      << std::setw(16) << d_sp << " "
-      << std::setprecision(1)
-      << std::setw(8) << k_K_bond << " "
-      << "\n";
-    for (i = 1; i < n_residue_ - 1; i++) {
+    output_ff_bond_line(o, n + 1, n + 3, d_sp, k_K_bond);
+    for (i = 1; i < n_residue_ - 1; ++i) {
       n += 3;
       d_ps = atom_distance(v_residues_[i].get_cg_P(), v_residues_[i].get_cg_S());
-      o << std::setw(8) << n << " "
-        << std::setw(8) << n+1 << " " << std::setiosflags(std::ios_base::fixed)
-        << std::setprecision(6) << std::setw(16) << d_ps << " "
-        << std::setprecision(1) << std::setw(8) << k_K_bond << " "
-        << "\n";
+      output_ff_bond_line(o, n, n + 1, d_ps, k_K_bond);
       d_sb = atom_distance(v_residues_[i].get_cg_S(), v_residues_[i].get_cg_B());
-      o << std::setw(8) << n+1 << " "
-        << std::setw(8) << n+2 << " "
-        << std::setiosflags(std::ios_base::fixed)
-        << std::setprecision(6) << std::setw(16) << d_sb << " "
-        << std::setprecision(1) << std::setw(8) << k_K_bond << " "
-        << "\n";
+      output_ff_bond_line(o, n + 1, n + 2, d_sb, k_K_bond);
       d_sp = atom_distance(v_residues_[i].get_cg_S(), v_residues_[i+1].get_cg_P());
-      o << std::setw(8) << n+1 << " "
-        << std::setw(8) << n+3 << " "
-        << std::setiosflags(std::ios_base::fixed)
-        << std::setprecision(6) << std::setw(16) << d_sp << " "
-        << std::setprecision(1) << std::setw(8) << k_K_bond << " "
-        << "\n";
+      output_ff_bond_line(o, n + 1, n + 3, d_sp, k_K_bond);
     }
     i = n_residue_ - 1;
     n += 3;
     d_ps = atom_distance(v_residues_[i].get_cg_P(), v_residues_[i].get_cg_S());
-    o << std::setw(8) << n << " "
-      << std::setw(8) << n+1 << " "
-      << std::setiosflags(std::ios_base::fixed)
-      << std::setprecision(6) << std::setw(16) << d_ps << " "
-      << std::setprecision(1) << std::setw(8) << k_K_bond << " "
-      << "\n";
+    output_ff_bond_line(o, n, n + 1, d_ps, k_K_bond);
     d_sb = atom_distance(v_residues_[i].get_cg_S(), v_residues_[i].get_cg_B());
-    o << std::setw(8) << n+1 << " "
-      << std::setw(8) << n+2 << " "
-      << std::setiosflags(std::ios_base::fixed)
-      << std::setprecision(6) << std::setw(16) << d_sb << " "
-      << std::setprecision(1) << std::setw(8) << k_K_bond << " "
-      << "\n";
+    output_ff_bond_line(o, n + 1, n + 2, d_sb, k_K_bond);
     n += 2;
   }
 }
 
-void Chain::output_top_angle(std::ostream& o, int& n)
+void output_ff_angle_line(std::ostream& o, int i, int j, int k, double a, double h)
+{
+  o << std::setw(8) << i << " " << std::setw(8) << j << " " << std::setw(8) << k << " "
+    << std::setiosflags(std::ios_base::fixed) << std::setprecision(6) << std::setw(12)
+    << a << " " << std::setprecision(1) << std::setw(8) << h << "\n";
+}
+void Chain::output_ffparm_angle(std::ostream& o, int& n)
 {
   if (chain_type_ == water || chain_type_ == other || chain_type_ == none)
     return;
@@ -301,127 +437,68 @@ void Chain::output_top_angle(std::ostream& o, int& n)
   Vec3d v1, v2;
   if (chain_type_ != DNA && chain_type_ != RNA && chain_type_ != na)
   {
-    for (i = 0; i < n_residue_-2; i++) {
-      v1 = v_residues_[i].get_cg_C_alpha().get_coordinate()
-           - v_residues_[i+1].get_cg_C_alpha().get_coordinate();
-      v2 = v_residues_[i+2].get_cg_C_alpha().get_coordinate()
-           - v_residues_[i+1].get_cg_C_alpha().get_coordinate();
+    for (i = 0; i < n_residue_-2; ++i) {
+      v1 = v_residues_[i].get_cg_C_alpha().get_coordinate() - v_residues_[i+1].get_cg_C_alpha().get_coordinate();
+      v2 = v_residues_[i+2].get_cg_C_alpha().get_coordinate() - v_residues_[i+1].get_cg_C_alpha().get_coordinate();
       a = vec_angle_deg (v1, v2);
-      o << std::setw(8) << i+1+n << " "
-        << std::setw(8) << i+2+n << " "
-        << std::setw(8) << i+3+n << " "
-        << std::setiosflags(std::ios_base::fixed)
-        << std::setprecision(6)
-        << std::setw(12) << a << " "
-        << std::setprecision(1)
-        << std::setw(8) << k_K_angle
-        << "\n";
+      output_ff_angle_line(o, i + n + 1, i + n + 2, i + n + 3, a, k_K_angle);
     }
     n += n_residue_;
   } else {
     // ---------- angle BSP ----------
-    v1 = v_residues_[0].get_cg_B().get_coordinate()
-         - v_residues_[0].get_cg_S().get_coordinate();
-    v2 = v_residues_[1].get_cg_P().get_coordinate()
-         - v_residues_[0].get_cg_S().get_coordinate();
+    v1 = v_residues_[0].get_cg_B().get_coordinate() - v_residues_[0].get_cg_S().get_coordinate();
+    v2 = v_residues_[1].get_cg_P().get_coordinate() - v_residues_[0].get_cg_S().get_coordinate();
     a = vec_angle_deg (v1, v2);
-    o << std::setw(8) << n+2 << " "
-      << std::setw(8) << n+1 << " "
-      << std::setw(8) << n+3 << " "
-      << std::setiosflags(std::ios_base::fixed) << std::setprecision(6)
-      << std::setw(12) << a << " "
-      << std::setprecision(1)
-      << std::setw(8) << k_K_angle << "\n";
+    output_ff_angle_line(o, n + 2, n + 1, n + 3, a, k_K_angle);
     // ---------- angle SPS ----------
-    v1 = v_residues_[0].get_cg_S().get_coordinate()
-         - v_residues_[1].get_cg_P().get_coordinate();
-    v2 = v_residues_[1].get_cg_S().get_coordinate()
-         - v_residues_[1].get_cg_P().get_coordinate();
+    v1 = v_residues_[0].get_cg_S().get_coordinate() - v_residues_[1].get_cg_P().get_coordinate();
+    v2 = v_residues_[1].get_cg_S().get_coordinate() - v_residues_[1].get_cg_P().get_coordinate();
     a = vec_angle_deg (v1, v2);
-    o << std::setw(8) << n+1 << " "
-      << std::setw(8) << n+3 << " "
-      << std::setw(8) << n+4 << " "
-      << std::setiosflags(std::ios_base::fixed) << std::setprecision(6)
-      << std::setw(12) << a << " "
-      << std::setprecision(1)
-      << std::setw(8) << k_K_angle << "\n";
-
+    output_ff_angle_line(o, n + 1, n + 3, n + 4, a, k_K_angle);
     // -------------------- loop --------------------
-    for (i = 1; i < n_residue_-1; i++) {
+    for (i = 1; i < n_residue_-1; ++i) {
       n += 3;
       // ---------- angle PSB ----------
-      v1 = v_residues_[i].get_cg_P().get_coordinate()
-           - v_residues_[i].get_cg_S().get_coordinate();
-      v2 = v_residues_[i].get_cg_B().get_coordinate()
-           - v_residues_[i].get_cg_S().get_coordinate();
+      v1 = v_residues_[i].get_cg_P().get_coordinate() - v_residues_[i].get_cg_S().get_coordinate();
+      v2 = v_residues_[i].get_cg_B().get_coordinate() - v_residues_[i].get_cg_S().get_coordinate();
       a = vec_angle_deg (v1, v2);
-      o << std::setw(8) << n << " "
-        << std::setw(8) << n+1 << " "
-        << std::setw(8) << n+2 << " "
-        << std::setiosflags(std::ios_base::fixed) << std::setprecision(6)
-        << std::setw(12) << a << " "
-        << std::setprecision(1)
-        << std::setw(8) << k_K_angle << "\n";
+      output_ff_angle_line(o, n, n + 1, n + 2, a, k_K_angle);
       // ---------- angle PSP ----------
-      v1 = v_residues_[i].get_cg_P().get_coordinate()
-           - v_residues_[i].get_cg_S().get_coordinate();
-      v2 = v_residues_[i+1].get_cg_P().get_coordinate()
-           - v_residues_[i].get_cg_S().get_coordinate();
+      v1 = v_residues_[i].get_cg_P().get_coordinate() - v_residues_[i].get_cg_S().get_coordinate();
+      v2 = v_residues_[i+1].get_cg_P().get_coordinate() - v_residues_[i].get_cg_S().get_coordinate();
       a = vec_angle_deg (v1, v2);
-      o << std::setw(8) << n << " "
-        << std::setw(8) << n+1 << " "
-        << std::setw(8) << n+3 << " "
-        << std::setiosflags(std::ios_base::fixed) << std::setprecision(6)
-        << std::setw(12) << a << " "
-        << std::setprecision(1)
-        << std::setw(8) << k_K_angle << "\n";
+      output_ff_angle_line(o, n, n + 1, n + 3, a, k_K_angle);
       // ---------- angle BSP ----------
-      v1 = v_residues_[i].get_cg_B().get_coordinate()
-           - v_residues_[i].get_cg_S().get_coordinate();
-      v2 = v_residues_[i+1].get_cg_P().get_coordinate()
-           - v_residues_[i].get_cg_S().get_coordinate();
+      v1 = v_residues_[i].get_cg_B().get_coordinate() - v_residues_[i].get_cg_S().get_coordinate();
+      v2 = v_residues_[i+1].get_cg_P().get_coordinate() - v_residues_[i].get_cg_S().get_coordinate();
       a = vec_angle_deg (v1, v2);
-      o << std::setw(8) << n+2 << " "
-        << std::setw(8) << n+1 << " "
-        << std::setw(8) << n+3 << " "
-        << std::setiosflags(std::ios_base::fixed) << std::setprecision(6)
-        << std::setw(12) << a << " "
-        << std::setprecision(1)
-        << std::setw(8) << k_K_angle << "\n";
+      output_ff_angle_line(o, n + 2, n + 1, n + 3, a, k_K_angle);
       // ---------- angle SPS ----------
-      v1 = v_residues_[i].get_cg_S().get_coordinate()
-           - v_residues_[i+1].get_cg_P().get_coordinate();
-      v2 = v_residues_[i+1].get_cg_S().get_coordinate()
-           - v_residues_[i+1].get_cg_P().get_coordinate();
+      v1 = v_residues_[i].get_cg_S().get_coordinate() - v_residues_[i+1].get_cg_P().get_coordinate();
+      v2 = v_residues_[i+1].get_cg_S().get_coordinate() - v_residues_[i+1].get_cg_P().get_coordinate();
       a = vec_angle_deg (v1, v2);
-      o << std::setw(8) << n+1 << " "
-        << std::setw(8) << n+3 << " "
-        << std::setw(8) << n+4 << " "
-        << std::setiosflags(std::ios_base::fixed) << std::setprecision(6)
-        << std::setw(12) << a << " "
-        << std::setprecision(1)
-        << std::setw(8) << k_K_angle << "\n";
+      output_ff_angle_line(o, n + 1, n + 3, n + 4, a, k_K_angle);
     }
     n += 3;
     i = n_residue_ - 1;
     // ---------- angle PSB ----------
-    v1 = v_residues_[i].get_cg_P().get_coordinate()
-         - v_residues_[i].get_cg_S().get_coordinate();
-    v2 = v_residues_[i].get_cg_B().get_coordinate()
-         - v_residues_[i].get_cg_S().get_coordinate();
+    v1 = v_residues_[i].get_cg_P().get_coordinate() - v_residues_[i].get_cg_S().get_coordinate();
+    v2 = v_residues_[i].get_cg_B().get_coordinate() - v_residues_[i].get_cg_S().get_coordinate();
     a = vec_angle_deg (v1, v2);
-    o << std::setw(8) << n << " "
-      << std::setw(8) << n+1 << " "
-      << std::setw(8) << n+2 << " "
-      << std::setiosflags(std::ios_base::fixed) << std::setprecision(6)
-      << std::setw(12) << a << " "
-      << std::setprecision(1)
-      << std::setw(8) << k_K_angle << "\n";
+    output_ff_angle_line(o, n, n + 1, n + 2, a, k_K_angle);
     n += 2;
   }
 }
 
-void Chain::output_top_dihedral(std::ostream& o, int& n)
+void output_ff_dihedral_line(std::ostream& o, int i, int j, int k, int l, double d, double f, double g)
+{
+  o << std::setw(8) << i << " " << std::setw(8) << j << " "
+    << std::setw(8) << k << " " << std::setw(8) << l << " "
+    << std::setiosflags(std::ios_base::fixed) << std::setprecision(6)
+    << std::setw(12) << d << " " << std::setprecision(1)
+    << std::setw(8) << f << " " << std::setw(8) << g << "\n";
+}
+void Chain::output_ffparm_dihedral(std::ostream& o, int& n)
 {
   if (chain_type_ == water || chain_type_ == other || chain_type_ == none)
     return;
@@ -431,27 +508,15 @@ void Chain::output_top_dihedral(std::ostream& o, int& n)
   Vec3d v1, v2, v3, n1, n2;
   if (chain_type_ != DNA && chain_type_ != RNA && chain_type_ != na)
   {
-    for (i = 0; i < n_residue_-3; i++) {
-      v1 = v_residues_[i].get_cg_C_alpha().get_coordinate()
-           - v_residues_[i+1].get_cg_C_alpha().get_coordinate();
-      v2 = v_residues_[i+2].get_cg_C_alpha().get_coordinate()
-           - v_residues_[i+1].get_cg_C_alpha().get_coordinate();
-      v3 = v_residues_[i+2].get_cg_C_alpha().get_coordinate()
-           - v_residues_[i+3].get_cg_C_alpha().get_coordinate();
+    for (i = 0; i < n_residue_-3; ++i) {
+      v1 = v_residues_[i].get_cg_C_alpha().get_coordinate() - v_residues_[i+1].get_cg_C_alpha().get_coordinate();
+      v2 = v_residues_[i+2].get_cg_C_alpha().get_coordinate() - v_residues_[i+1].get_cg_C_alpha().get_coordinate();
+      v3 = v_residues_[i+2].get_cg_C_alpha().get_coordinate() - v_residues_[i+3].get_cg_C_alpha().get_coordinate();
       n1 = v1 % v2;
       n2 = v2 % v3;
       d = vec_angle_deg (n1, n2);
-      o << std::setw(8) << i+1+n << " "
-        << std::setw(8) << i+2+n << " "
-        << std::setw(8) << i+3+n << " "
-        << std::setw(8) << i+4+n << " "
-        << std::setiosflags(std::ios_base::fixed)
-        << std::setprecision(6)
-        << std::setw(12) << d << " "
-        << std::setprecision(1)
-        << std::setw(8) << k_K_dihedral_1 << " "
-        << std::setw(8) << k_K_dihedral_3
-        << "\n";
+      int ni = i + n;
+      output_ff_dihedral_line(o, ni + 1, ni + 2, ni + 3, ni + 4, d, k_K_dihedral_1, k_K_dihedral_3);
     }
     n += n_residue_;
   } else {
@@ -459,90 +524,50 @@ void Chain::output_top_dihedral(std::ostream& o, int& n)
       n += 5;
       return;
     }
-    v1 = v_residues_[0].get_cg_S().get_coordinate()
-         - v_residues_[1].get_cg_P().get_coordinate();
-    v2 = v_residues_[1].get_cg_S().get_coordinate()
-         - v_residues_[1].get_cg_P().get_coordinate();
-    v3 = v_residues_[1].get_cg_S().get_coordinate()
-         - v_residues_[2].get_cg_P().get_coordinate();
-
+    v1 = v_residues_[0].get_cg_S().get_coordinate() - v_residues_[1].get_cg_P().get_coordinate();
+    v2 = v_residues_[1].get_cg_S().get_coordinate() - v_residues_[1].get_cg_P().get_coordinate();
+    v3 = v_residues_[1].get_cg_S().get_coordinate() - v_residues_[2].get_cg_P().get_coordinate();
     n1 = v1 % v2;
     n2 = v2 % v3;
     d = vec_angle_deg (n1, n2);
-    o << std::setw(8) << n + 1 << " "
-      << std::setw(8) << n + 3 << " "
-      << std::setw(8) << n + 4 << " "
-      << std::setw(8) << n + 6 << " "
-      << std::setiosflags(std::ios_base::fixed)
-      << std::setprecision(6)
-      << std::setw(12) << d << " "
-      << std::setprecision(1)
-      << std::setw(8) << k_K_dihedral_1 << " "
-      << std::setw(8) << k_K_dihedral_3
-      << "\n";
+    output_ff_dihedral_line(o, n + 1, n + 3, n + 4, n + 6, d, k_K_dihedral_1, k_K_dihedral_3);
 
-    for (i = 1; i < n_residue_-1; i++) {
+    for (i = 1; i < n_residue_-1; ++i) {
       n += 3;
       // ---------- PSPS ----------
-      v1 = v_residues_[i].get_cg_P().get_coordinate()
-           - v_residues_[i].get_cg_S().get_coordinate();
-      v2 = v_residues_[i+1].get_cg_P().get_coordinate()
-           - v_residues_[i].get_cg_S().get_coordinate();
-      v3 = v_residues_[i+1].get_cg_P().get_coordinate()
-           - v_residues_[i+1].get_cg_S().get_coordinate();
+      v1 = v_residues_[i].get_cg_P().get_coordinate() - v_residues_[i].get_cg_S().get_coordinate();
+      v2 = v_residues_[i+1].get_cg_P().get_coordinate() - v_residues_[i].get_cg_S().get_coordinate();
+      v3 = v_residues_[i+1].get_cg_P().get_coordinate() - v_residues_[i+1].get_cg_S().get_coordinate();
       n1 = v1 % v2;
       n2 = v2 % v3;
       d = vec_angle_deg (n1, n2);
-      o << std::setw(8) << n << " "
-        << std::setw(8) << n + 1 << " "
-        << std::setw(8) << n + 3 << " "
-        << std::setw(8) << 4 + n << " "
-        << std::setiosflags(std::ios_base::fixed)
-        << std::setprecision(6)
-        << std::setw(12) << d << " "
-        << std::setprecision(1)
-        << std::setw(8) << k_K_dihedral_1 << " "
-        << std::setw(8) << k_K_dihedral_3
-        << "\n";
+      output_ff_dihedral_line(o, n, n + 1, n + 3, n + 4, d, k_K_dihedral_1, k_K_dihedral_3);
 
       if (i == n_residue_ - 2)
         break;
       // ---------- SPSP ----------
-      v1 = v_residues_[i].get_cg_S().get_coordinate()
-           - v_residues_[i+1].get_cg_P().get_coordinate();
-      v2 = v_residues_[i+1].get_cg_S().get_coordinate()
-           - v_residues_[i+1].get_cg_P().get_coordinate();
-      v3 = v_residues_[i+1].get_cg_S().get_coordinate()
-           - v_residues_[i+2].get_cg_P().get_coordinate();
+      v1 = v_residues_[i].get_cg_S().get_coordinate() - v_residues_[i+1].get_cg_P().get_coordinate();
+      v2 = v_residues_[i+1].get_cg_S().get_coordinate() - v_residues_[i+1].get_cg_P().get_coordinate();
+      v3 = v_residues_[i+1].get_cg_S().get_coordinate() - v_residues_[i+2].get_cg_P().get_coordinate();
       n1 = v1 % v2;
       n2 = v2 % v3;
       d = vec_angle_deg (n1, n2);
-      o << std::setw(8) << n + 1 << " "
-        << std::setw(8) << n + 3 << " "
-        << std::setw(8) << n + 4 << " "
-        << std::setw(8) << n + 6 << " "
-        << std::setiosflags(std::ios_base::fixed)
-        << std::setprecision(6)
-        << std::setw(12) << d << " "
-        << std::setprecision(1)
-        << std::setw(8) << k_K_dihedral_1 << " "
-        << std::setw(8) << k_K_dihedral_3
-        << "\n";
+      output_ff_dihedral_line(o, n + 1, n + 3, n + 4, n + 6, d, k_K_dihedral_1, k_K_dihedral_3);
     }
     n += 5;
   }
 }
 
-void Chain::output_top_native(std::ostream& o)
+void Chain::output_ffparm_native(std::ostream& o)
 {
   int i = 0, j = 0;
   double d = -1, f = -1;
   ChainType cti, ctj;
-  for (i = 0; i < n_residue_-4; i++) {
+  for (i = 0; i < n_residue_-4; ++i) {
     cti = v_residues_[i].get_chain_type();
     if (cti == water || cti == DNA || cti == RNA || cti == na || cti == ion)
       continue;
-    for (j = i + 4; j < n_residue_; j++) {
+    for (j = i + 4; j < n_residue_; ++j) {
       ctj = v_residues_[j].get_chain_type();
       if (ctj == water || ctj == DNA || ctj == RNA || ctj == na || ctj == ion)
         continue;
@@ -559,28 +584,6 @@ void Chain::output_top_native(std::ostream& o)
   }
 }
 
-int Chain::get_native_contact_number()
-{
-  int i = 0, j = 0;
-  double d = -1;
-  int n = 0;
-  ChainType cti, ctj;
-
-  for (i = 0; i < n_residue_-4; i++) {
-    cti = v_residues_[i].get_chain_type();
-    if (cti == water || cti == DNA || cti == RNA || cti == na || cti == ion)
-      continue;
-    for (j = i + 4; j < n_residue_; j++) {
-      ctj = v_residues_[j].get_chain_type();
-      if (ctj == water || ctj == DNA || ctj == RNA || ctj == na || ctj == ion)
-        continue;
-      d = residue_min_distance(v_residues_[i], v_residues_[j]);
-      if ( d < g_cutoff)
-        n++;
-    }
-  }
-  return n;
-}
 
 // Chain -------------------------------------------------------------------
 Chain::Chain()
@@ -607,12 +610,12 @@ Chain operator+(const Chain& c1, const Chain& c2)
   int s1 = c1.n_residue_;
   int s2 = c2.n_residue_;
   if (s1 > 0)
-    for (i = 0; i < s1; i++) {
+    for (i = 0; i < s1; ++i) {
       c0.v_residues_.push_back(c1.v_residues_[i]);
       c0.n_residue_++;
     }
   if (s2 > 0)
-    for (i = 0; i < s2; i++) {
+    for (i = 0; i < s2; ++i) {
       c0.v_residues_.push_back(c2.v_residues_[i]);
       c0.n_residue_++;
     }
@@ -623,7 +626,7 @@ std::ostream& operator<<(std::ostream& o, Chain& c)
 {
   int i = 0;
   int s = c.n_residue_;
-  for (i = 0; i < s; i++) {
+  for (i = 0; i < s; ++i) {
     o << c.v_residues_[i];
   }
   o << "TER   " << "\n";

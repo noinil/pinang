@@ -63,7 +63,8 @@ class Model
   int get_size() const { return n_chain_; }
 
   //! @brief Output positions of CG beads.
-  void output_cg_pos(std::ostream&);
+  void output_cg_crd(std::ostream&);
+
   //! @brief Output physical properties to topology file.
   void output_top_mass(std::ostream&);
   //! @brief Output bonded interactions to topology file.
@@ -72,8 +73,15 @@ class Model
   void output_top_angle(std::ostream&);
   //! @brief Output dihedral angle interactions to topology file.
   void output_top_dihedral(std::ostream&);
-  //! @brief Output non-bonded interactions to topology file.
-  void output_top_nonbonded(std::ostream&);
+
+  //! @brief Output bonded interactions to forcefield parm file.
+  void output_ffparm_bond(std::ostream&);
+  //! @brief Output angle interactions to forcefield parm file.
+  void output_ffparm_angle(std::ostream&);
+  //! @brief Output dihedral angle interactions to forcefield parm file.
+  void output_ffparm_dihedral(std::ostream&);
+  //! @brief Output non-bonded native contact interactions to forcefield parm file.
+  void output_ffparm_nonbonded(std::ostream&);
 
   //! @brief Output PDB format information of Chain.
   friend std::ostream& operator<<(std::ostream&, Model&);

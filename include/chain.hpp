@@ -73,17 +73,26 @@ class Chain
   void self_check();
 
   //! @brief Output positions of CG beads.
-  void output_cg_pos(std::ostream&, int&);
+  void output_cg_crd(std::ostream&, int&);
+
   //! @brief Output physical properties to topology file.
   void output_top_mass(std::ostream&, int&);
   //! @brief Output bonded interactions to topology file.
-  void output_top_bond(std::ostream&, int&);
+  void output_top_bond(std::ostream&, int&, int&);
   //! @brief Output angle interactions to topology file.
-  void output_top_angle(std::ostream&, int&);
+  void output_top_angle(std::ostream&, int&, int&);
   //! @brief Output dihedral angle interactions to topology file.
-  void output_top_dihedral(std::ostream&, int&);
-  //! @brief Output non-bonded native contact interactions to topology file.
-  void output_top_native(std::ostream&);
+  void output_top_dihedral(std::ostream&, int&, int&);
+
+  //! @brief Output bonded interactions to forcefield parm file.
+  void output_ffparm_bond(std::ostream&, int&);
+  //! @brief Output angle interactions to forcefield parm file.
+  void output_ffparm_angle(std::ostream&, int&);
+  //! @brief Output dihedral angle interactions to forcefield parm file.
+  void output_ffparm_dihedral(std::ostream&, int&);
+  //! @brief Output non-bonded native contact interactions to forcefield parm file.
+  void output_ffparm_native(std::ostream&);
+
   //! @brief Get native contact number intra-chain.
   //! @return Native contact number.
   int get_native_contact_number();
