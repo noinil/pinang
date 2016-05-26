@@ -155,14 +155,13 @@ void Chain::output_cg_crd(std::ostream& o, int& n, int& m)
 void output_top_mass_line(std::ostream& o, int i, char s, int r, std::string rn,
                           std::string an, std::string at, double c, double m)
 {
-  o << std::setw(8) << i << std::setw(2) << s  << " " << std::setw(6) << r
+  o << std::setw(8) << i << std::setw(3) << s  << " " << std::setw(6) << r
     << " " << std::setw(3) << rn
     << std::setw(4) << an << " " << std::setw(4) << at << " " 
     << std::setiosflags(std::ios_base::fixed) << std::setprecision(6)
     << std::setw(12) << c << " " << std::setprecision(6)
-    << std::setw(12) << m << "             " << "0\n";
+    << std::setw(13) << m << "           " << "0 \n";
 }
-
 void Chain::output_top_mass(std::ostream& o, int& n, int& m)
 {
   if (chain_type_ == water || chain_type_ == other || chain_type_ == none)
@@ -174,18 +173,18 @@ void Chain::output_top_mass(std::ostream& o, int& n, int& m)
   {
     for (const Residue& r : v_residues_) {
       output_top_mass_line(o, ++n, cid, r.get_residue_serial(), r.get_residue_name(),
-                           "CA", "cC", r.get_residue_charge(), r.get_residue_mass());
+                           "CA", "C", r.get_residue_charge(), r.get_residue_mass());
     }
   } else {
     for (const Residue& r : v_residues_) {
       if (r.get_terminus_flag() != 5) {
         output_top_mass_line(o, ++n, cid, r.get_residue_serial(), r.get_residue_name(),
-                             "DP", "cP", -0.6, 94.93);
+                             "DP", "P", -0.6, 94.93);
       }
       output_top_mass_line(o, ++n, cid, r.get_residue_serial(), r.get_residue_name(),
-                           "DS", "cS", 0.0, 99.11);
+                           "DS", "S", 0.0, 99.11);
       output_top_mass_line(o, ++n, cid, r.get_residue_serial(), r.get_residue_name(),
-                           "DB", "cdB", 0.0, r.get_residue_mass() - 99.11 - 94.93);
+                           "DB", "B", 0.0, r.get_residue_mass() - 99.11 - 94.93);
     }
   }
   ++m;
