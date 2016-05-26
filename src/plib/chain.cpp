@@ -128,25 +128,7 @@ void Chain::output_cg_pos(std::ostream& o, int& n)
 
   o << " - Chain " << chain_ID_;
   o << " : " ;
-  switch (chain_type_) {
-    case protein:
-      o << "protein";
-      break;
-    case DNA:
-      o << "DNA";
-      break;
-    case RNA:
-      o << "RNA";
-      break;
-    case ion:
-      o << "ion";
-      break;
-    case na:
-      o << "na";
-      break;
-    default:
-      o << "unknown";
-  }
+  o << chainType_2_string(chain_type_);
   o << " : " << n_residue_
     << "\n";
 

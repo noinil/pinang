@@ -26,8 +26,8 @@ int main(int argc, char *argv[])
   int in_flag = 0;
 
   std::string infilename = "some.pdb";
-  std::string pos_name = "out.pos";
-  std::string top_name = "out.top";
+  std::string pos_name = "cg.pos";
+  std::string top_name = "cg.top";
 
   while ((opt = getopt(argc, argv, "p:t:m:f:h")) != -1) {
     switch (opt) {

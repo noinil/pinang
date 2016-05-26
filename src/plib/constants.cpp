@@ -9,11 +9,27 @@
   @copyright GNU Public License V3.0
 */
 
+#include <vector>
 #include "constants.hpp"
 
 namespace pinang {
 
 double g_cutoff = 6.5;
+
+std::string chainType_2_string(ChainType ct)
+{
+  std::string s;
+  std::vector<std::string> chainType_name;
+  chainType_name.push_back("Unknown");
+  chainType_name.push_back("Protein");
+  chainType_name.push_back("DNA");
+  chainType_name.push_back("RNA");
+  chainType_name.push_back("Water");
+  chainType_name.push_back("Ion");
+  chainType_name.push_back("Other");
+  chainType_name.push_back("NA");
+  return chainType_name[ct];
+}
 
 PhysicalProperty::PhysicalProperty()
 {

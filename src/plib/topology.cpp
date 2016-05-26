@@ -26,7 +26,7 @@ Topology::Topology(const std::string& s)
   std::ifstream ifile(s.c_str());
   if (!ifile.is_open())
   {
-    std::cout << " ~             PINANG :: TOPOLOGY             ~ " << "\n";
+    std::cout << " ~           PINANG :: TOPOLOGY          ~ " << "\n";
     std::cerr << " ERROR: Cannot read top file: " << s << "\n";
     exit(EXIT_FAILURE);
   }
@@ -42,17 +42,14 @@ Topology::Topology(const std::string& s)
       std::string stmp;
       std::istringstream tmp_sstr;
       tmp_sstr.str ( inp_line );
-      tmp_sstr >> stmp  >> stmp  >> stmp
-               >> n_particle_;
+      tmp_sstr >> stmp  >> stmp  >> stmp >> n_particle_;
       std::getline(ifile, inp_line);
       for (int i = 0; i < n_particle_ ; i++) {
         ifile >> p;
         v_particles_.push_back(p);
       }
-      std::cout << " Total particle number: "
-                << n_particle_
-                << " in top file: " << s
-                << "\n";
+      std::cout << " Total particle number: " << n_particle_
+                << " in top file: " << s << "\n";
       break;
     }
   }
