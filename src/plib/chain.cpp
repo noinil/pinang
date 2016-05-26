@@ -36,7 +36,7 @@ int Chain::add_residue(const Residue& r)
 {
   r.self_check();
   v_residues_.push_back(r);
-  n_residue_++;
+  ++n_residue_;
   return 0;
 }
 

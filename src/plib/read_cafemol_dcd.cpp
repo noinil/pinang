@@ -113,7 +113,7 @@ int read_cafemol_dcd(std::ifstream& dcd_file, std::vector<Conformation>& cfms)
   dcd_file.read((char*)&nunit, Si);
   // ---------------------------------------------------------------------
   // null
-  for (int i = 0; i < 3; i++) {
+  for (int i = 0; i < 3; ++i) {
     dcd_file.read((char*)&i_tmp, Si);
   }
   // ---------------------------------------------------------------------
@@ -127,7 +127,7 @@ int read_cafemol_dcd(std::ifstream& dcd_file, std::vector<Conformation>& cfms)
   dcd_file.read((char*)&xtc, Si);
   // ---------------------------------------------------------------------
   // null
-  for (int i = 0; i < 8; i++) {
+  for (int i = 0; i < 8; ++i) {
     dcd_file.read((char*)&i_tmp, Si);
   }
   // Store NVER, version of CHARMM
@@ -152,7 +152,7 @@ int read_cafemol_dcd(std::ifstream& dcd_file, std::vector<Conformation>& cfms)
   dcd_file.read((char*)&ntitle, Si);
   // ---------------------------------------------------------------------
   // Read in title
-  for (int i=0; i<ntitle; i++)
+  for (int i=0; i<ntitle; ++i)
     dcd_file.seekg(80, dcd_file.cur);
   // ---------------------------------------------------------------------
   // Block size of the second block

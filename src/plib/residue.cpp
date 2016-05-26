@@ -94,7 +94,7 @@ int Residue::add_atom(const Atom& a)
   {
     cg_C_alpha_ = a;
   }
-  n_atom_++;
+  ++n_atom_;
   return 0;
 }
 
@@ -242,12 +242,12 @@ void Residue::self_check() const
 //   {
 //     return;
 //   }
-//   for (i = 0; i < n_atom_; i++) {
+//   for (i = 0; i < n_atom_; ++i) {
 //     std::string aname = v_atoms_[i].get_atom_name();
 //     char c = aname[0];
 //     switch (c) {
 //       case 'C':
-//         if (aname == "C5'") {coor_C5p = v_atoms_[i].get_coordinate(); n_cs++;}
+//         if (aname == "C5'") {coor_C5p = v_atoms_[i].get_coordinate(); ++n_cs;}
 //         else if (aname == "C1'") {coor_C1p = v_atoms_[i].get_coordinate(); n_cs++;}
 //         else if (aname == "C2'") {coor_C2p = v_atoms_[i].get_coordinate(); n_cs++;}
 //         else if (aname == "C3'") {coor_C3p = v_atoms_[i].get_coordinate(); n_cs++;}
@@ -345,7 +345,7 @@ std::ostream& operator<<(std::ostream& o, Residue& r)
 {
   int i = 0;
   int s = r.n_atom_;
-  for (i = 0; i < s; i++) {
+  for (i = 0; i < s; ++i) {
     o << r.v_atoms_[i];
   }
   return o;
@@ -358,10 +358,10 @@ double residue_min_distance(const Residue& r1, const Residue& r2)
   double f = 0.0;           // tmp distance;
   int s1 = r1.n_atom_;
   int s2 = r2.n_atom_;
-  for (i = 0; i < s1; i++) {
+  for (i = 0; i < s1; ++i) {
     if (r1.v_atoms_[i].get_element() == "H")
       continue;
-    for (j = 0; j < s2; j++) {
+    for (j = 0; j < s2; ++j) {
       if (r2.v_atoms_[j].get_element() == "H")
         continue;
       f = atom_distance(r1.v_atoms_[i], r2.v_atoms_[j]);

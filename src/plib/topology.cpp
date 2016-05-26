@@ -44,7 +44,7 @@ Topology::Topology(const std::string& s)
       tmp_sstr.str ( inp_line );
       tmp_sstr >> stmp  >> stmp  >> stmp >> n_particle_;
       std::getline(ifile, inp_line);
-      for (int i = 0; i < n_particle_ ; i++) {
+      for (int i = 0; i < n_particle_ ; ++i) {
         ifile >> p;
         v_particles_.push_back(p);
       }

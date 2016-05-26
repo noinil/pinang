@@ -60,7 +60,7 @@ Selection::Selection(std::string inp_file_name, std::string keyword)
           std::string sub2 = sel_word.substr(q + 2);
           tmp_i = std::stoi(sub1);
           tmp_j = std::stoi(sub2);
-          for (int j = tmp_i; j <= tmp_j; j++) {
+          for (int j = tmp_i; j <= tmp_j; ++j) {
             v_serial_.push_back(j - 1);
           }
         } else {
@@ -139,7 +139,7 @@ int Selection::set_selection(std::string inp_file_name, std::string keyword)
           std::string sub2 = sel_word.substr(q + 2);
           tmp_i = std::stoi(sub1);
           tmp_j = std::stoi(sub2);
-          for (int j = tmp_i; j <= tmp_j; j++) {
+          for (int j = tmp_i; j <= tmp_j; ++j) {
             v_serial_.push_back(j - 1);
           }
         } else {

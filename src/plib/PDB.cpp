@@ -77,7 +77,7 @@ PDB::PDB(const std::string& s)
         model_tmp.add_chain(chain_tmp);
       }
       v_models_.push_back(model_tmp);
-      n_model_++;
+      ++n_model_;
 
       model_tmp.reset();
       chain_tmp.reset();
@@ -99,7 +99,7 @@ PDB::PDB(const std::string& s)
       if (model_tmp.get_size() != 0)
       {
         v_models_.push_back(model_tmp);
-        n_model_++;
+        ++n_model_;
       }
 
       model_tmp.reset();
@@ -191,7 +191,7 @@ void PDB::output_sequence(int n) const
 void PDB::output_sequence_fasta(std::ostream & f_fasta) const
 {
   std::string s = PDB_file_name_;
-  for (int i = 0; i < 4; i++) {
+  for (int i = 0; i < 4; ++i) {
     s.pop_back();
   }
 
@@ -202,7 +202,7 @@ std::ostream& operator<<(std::ostream& o, PDB& p)
 {
   int i = 0;
   int s = p.n_model_;
-  for (i = 0; i < s; i++) {
+  for (i = 0; i < s; ++i) {
     o << p.v_models_[i] << "\n";
   }
   return o;

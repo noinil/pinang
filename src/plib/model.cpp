@@ -37,7 +37,7 @@ void Model::add_chain(Chain& c)
 {
   c.self_check();
   v_chains_.push_back(c);
-  n_chain_++;
+  ++n_chain_;
 }
 
 
@@ -75,7 +75,7 @@ void Model::output_cg_crd(std::ostream& o)
 {
   int i = 0;
   int n = 0;
-  for (i = 0; i < n_chain_; i++) {
+  for (i = 0; i < n_chain_; ++i) {
     ChainType ct = v_chains_[i].get_chain_type();
     if (ct == water || ct == other || ct == none)
       continue;
@@ -89,7 +89,7 @@ void Model::output_top_mass(std::ostream& o)
   int i = 0;
   int n = 0;
 
-  for (i = 0; i < n_chain_; i++) {
+  for (i = 0; i < n_chain_; ++i) {
     ChainType ct = v_chains_[i].get_chain_type();
     if (ct == water || ct == other || ct == none)
       continue;
@@ -102,7 +102,7 @@ void Model::output_top_mass(std::ostream& o)
   o << std::setw(8) << n << " !NATOM \n";
 
   n = 0;
-  for (i = 0; i < n_chain_; i++) {
+  for (i = 0; i < n_chain_; ++i) {
     ChainType ct = v_chains_[i].get_chain_type();
     if (ct == water || ct == other || ct == none)
       continue;
@@ -117,7 +117,7 @@ void Model::output_top_bond(std::ostream& o)
   int n = 0;
   int m = 0;
 
-  for (i = 0; i < n_chain_; i++) {
+  for (i = 0; i < n_chain_; ++i) {
     ChainType ct = v_chains_[i].get_chain_type();
     if (ct == water || ct == other || ct == none)
       continue;
@@ -130,7 +130,7 @@ void Model::output_top_bond(std::ostream& o)
   o << std::setw(8) << n << " !NBOND: bonds \n";
 
   n = 0;
-  for (i = 0; i < n_chain_; i++) {
+  for (i = 0; i < n_chain_; ++i) {
     ChainType ct = v_chains_[i].get_chain_type();
     if (ct == water || ct == other || ct == none)
       continue;
@@ -145,7 +145,7 @@ void Model::output_top_angle(std::ostream& o)
   int n = 0;
   int m = 0;
 
-  for (i = 0; i < n_chain_; i++) {
+  for (i = 0; i < n_chain_; ++i) {
     ChainType ct = v_chains_[i].get_chain_type();
     if (ct == water || ct == other || ct == none)
       continue;
@@ -158,7 +158,7 @@ void Model::output_top_angle(std::ostream& o)
   o << std::setw(8) << n << " !NTHETA: angles \n";
 
   n = 0;
-  for (i = 0; i < n_chain_; i++) {
+  for (i = 0; i < n_chain_; ++i) {
     ChainType ct = v_chains_[i].get_chain_type();
     if (ct == water || ct == other || ct == none)
       continue;
@@ -173,7 +173,7 @@ void Model::output_top_dihedral(std::ostream& o)
   int n = 0;
   int m = 0;
 
-  for (i = 0; i < n_chain_; i++) {
+  for (i = 0; i < n_chain_; ++i) {
     ChainType ct = v_chains_[i].get_chain_type();
     if (ct == water || ct == other || ct == none)
       continue;
@@ -186,7 +186,7 @@ void Model::output_top_dihedral(std::ostream& o)
   o << std::setw(8) << n << " !NPHI: dihedrals \n";
 
   n = 0;
-  for (i = 0; i < n_chain_; i++) {
+  for (i = 0; i < n_chain_; ++i) {
     ChainType ct = v_chains_[i].get_chain_type();
     if (ct == water || ct == other || ct == none)
       continue;
@@ -200,7 +200,7 @@ void Model::output_ffparm_bond(std::ostream& o)
   int i = 0;
   int n = 0;
 
-  for (i = 0; i < n_chain_; i++) {
+  for (i = 0; i < n_chain_; ++i) {
     ChainType ct = v_chains_[i].get_chain_type();
     if (ct == water || ct == other || ct == none)
       continue;
@@ -215,7 +215,7 @@ void Model::output_ffparm_bond(std::ostream& o)
     << std::setw(17) << "r0" << std::setw(9) << "K_b" << "\n";
 
   n = 0;
-  for (i = 0; i < n_chain_; i++) {
+  for (i = 0; i < n_chain_; ++i) {
     ChainType ct = v_chains_[i].get_chain_type();
     if (ct == water || ct == other || ct == none)
       continue;
@@ -229,7 +229,7 @@ void Model::output_ffparm_angle(std::ostream& o)
   int i = 0;
   int n = 0;
 
-  for (i = 0; i < n_chain_; i++) {
+  for (i = 0; i < n_chain_; ++i) {
     ChainType ct = v_chains_[i].get_chain_type();
     if (ct == water || ct == other || ct == none)
       continue;
@@ -244,7 +244,7 @@ void Model::output_ffparm_angle(std::ostream& o)
     << std::setw(13) << "theta_0" << std::setw(9) << "K_a" << "\n";
 
   n = 0;
-  for (i = 0; i < n_chain_; i++) {
+  for (i = 0; i < n_chain_; ++i) {
     ChainType ct = v_chains_[i].get_chain_type();
     if (ct == water || ct == other || ct == none)
       continue;
@@ -258,7 +258,7 @@ void Model::output_ffparm_dihedral(std::ostream& o)
   int i = 0;
   int n = 0;
 
-  for (i = 0; i < n_chain_; i++) {
+  for (i = 0; i < n_chain_; ++i) {
     ChainType ct = v_chains_[i].get_chain_type();
     if (ct == water || ct == other || ct == none)
       continue;
@@ -275,7 +275,7 @@ void Model::output_ffparm_dihedral(std::ostream& o)
     << std::setw(9) << "K_d_3" << "\n";
 
   n = 0;
-  for (i = 0; i < n_chain_; i++) {
+  for (i = 0; i < n_chain_; ++i) {
     ChainType ct = v_chains_[i].get_chain_type();
     if (ct == water || ct == other || ct == none)
       continue;
@@ -291,7 +291,7 @@ void Model::output_ffparm_nonbonded(std::ostream& o)
   Chain c_tmp;
   Residue r_tmp;
 
-  for (i = 0; i < n_chain_; i++) {
+  for (i = 0; i < n_chain_; ++i) {
     ChainType ct = v_chains_[i].get_chain_type();
     if (ct == water || ct == other || ct == none)
       continue;
@@ -318,7 +318,7 @@ void Model::output_ffparm_nonbonded(std::ostream& o)
       r_tmp.set_chain_type(ct);
       c_tmp.add_residue(r_tmp);
 
-      for (int j = 1; j < v_chains_[i].get_size(); j++) {
+      for (int j = 1; j < v_chains_[i].get_size(); ++j) {
         P = v_chains_[i].get_residue(j).get_cg_P();
         S = v_chains_[i].get_residue(j).get_cg_S();
         B = v_chains_[i].get_residue(j).get_cg_B();
@@ -352,7 +352,6 @@ void Model::output_ffparm_nonbonded(std::ostream& o)
     }
     c0 = c0 + v_chains_[i];
   }
-  std::cout << "WTF!!!!!" << "\n";
 
   o << "[ native ]" << std::setw(8) << c0.get_native_contact_number() << "\n";
   o << "# " << std::setw(6) << "pi" << std::setw(9) << "pj"
@@ -370,7 +369,7 @@ std::ostream& operator<<(std::ostream& o, Model& m)
     << "\n";
   int i = 0;
   int s = m.n_chain_;
-  for (i = 0; i < s; i++) {
+  for (i = 0; i < s; ++i) {
     o << m.v_chains_[i];
   }
   o << "ENDMDL" << "\n";

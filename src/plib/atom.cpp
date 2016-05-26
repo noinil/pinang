@@ -36,7 +36,6 @@ void Atom::set_residue_name(const std::string& s)
   }
 }
 
-// Atom::Atom ==============================================================
 Atom::Atom()
 {
   record_name_ = "";
@@ -73,7 +72,6 @@ void Atom::reset()
   charge_ = "";
 }
 
-// outer functions +++++++++++++++++++++++++++++++++++++++++++++
 std::ostream& operator<<(std::ostream& o, const Atom& a)
 {
   if (a.get_record_name() == "ATOM  " || a.get_record_name() == "HETATM")
