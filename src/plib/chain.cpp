@@ -103,7 +103,8 @@ void Chain::self_check()
         if (aname == "O3' ") {
           tmp_O3p = ta.get_coordinate();
           O3p_flag = 1;
-        } else if (aname == "P   " || aname == "OP1 " || aname == "OP2 " || aname == "O5' ") {
+        } else if (aname == "P   " || aname == "OP1 " || aname == "OP2 " ||
+                   aname == "O5' " || aname == "O1P " || aname == "O2P ") {
           com_P += ta.get_coordinate() * mass_tmp_atom;
           mass_P += mass_tmp_atom;
         } else {
