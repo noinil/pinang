@@ -25,6 +25,12 @@ void Residue::set_residue_name(const std::string& s)
 }
 void Residue::set_residue_by_name(const std::string& s)
 {
+  if (s == "WTF") {
+    std::cout << " ~               PINANG :: residues.hpp         ~ " << "\n";
+    std::cerr << "ERROR: Atom or reisdue name error!" << " WTF?! \n";
+    exit(EXIT_SUCCESS);
+  }
+
   PhysicalProperty p;
   size_t sz = 3;
   residue_name_ = s;
@@ -190,9 +196,14 @@ void Residue::self_check() const
     if (a.get_chain_ID() != chain_ID_ || a.get_residue_serial() != residue_serial_
         || a.get_residue_name() != residue_name_)
     {
-      std::cout << " ~               PINANG :: residues.hpp         ~ " << "\n";
+      std::cout << " ~               PINANG :: residues.hpp self_check()         ~ " << "\n";
       std::cerr << "ERROR: Inconsistent chain ID or residue index or residue type in Residue "
                 << residue_serial_ << "\n";
+      std::cerr << " Atom  | Chain ID: " << a.get_chain_ID() << "; Res Serial: " << a.get_residue_serial()
+                << "; Res Name: " << a.get_residue_name() << "; Atom name: " << a.get_atom_name()
+                << "; Atom Serial: " << a.get_atom_serial() << ";   \n";
+      std::cerr << " Resid | Chain ID: " << chain_ID_ << "; Res Serial: " << residue_serial_
+                << "; Res Name: " << residue_name_ << ";   \n";
       exit(EXIT_SUCCESS);
     }
   }
@@ -201,10 +212,10 @@ void Residue::self_check() const
 
 Residue::Residue()
 {
-  residue_name_ = "";
-  short_name_ = "0";
-  chain_ID_ = -1;
-  residue_serial_ = -1;
+  residue_name_ = "WTF";
+  short_name_ = "?";
+  chain_ID_ = ' ';
+  residue_serial_ = -997;
   v_atoms_.clear();
   n_atom_ = 0;
   charge_ = 0.0;
@@ -221,10 +232,10 @@ Residue::Residue()
 
 void Residue::reset()
 {
-  residue_name_ = "";
-  short_name_ = "0";
-  chain_ID_ = -1;
-  residue_serial_ = -1;
+  residue_name_ = "WTF";
+  short_name_ = "?";
+  chain_ID_ = ' ';
+  residue_serial_ = -997;
   v_atoms_.clear();
   n_atom_ = 0;
   charge_ = 0.0;

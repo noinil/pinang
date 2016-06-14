@@ -39,12 +39,12 @@ void Atom::set_residue_name(const std::string& s)
 Atom::Atom()
 {
   record_name_ = "";
-  atom_serial_ = 0;
+  atom_serial_ = -9973;
   atom_name_ = "";
   alt_loc_ = ' ';
-  residue_name_ = "";
+  residue_name_ = "WTF";
   chain_ID_ = ' ';
-  residue_serial_ = 0;
+  residue_serial_ = -997;
   insert_code_ = ' ';
   coordinate_ = Vec3d(0.0, 0.0, 0.0);
   occupancy_ = 0.0;
@@ -57,12 +57,12 @@ Atom::Atom()
 void Atom::reset()
 {
   record_name_ = "";
-  atom_serial_ = 0;
+  atom_serial_ = -9973;
   atom_name_ = "";
   alt_loc_ = ' ';
-  residue_name_ = "";
+  residue_name_ = "WTF";
   chain_ID_ = ' ';
-  residue_serial_ = 0;
+  residue_serial_ = -997;
   insert_code_ = ' ';
   coordinate_ = Vec3d(0.0, 0.0, 0.0);
   occupancy_ = 0.0;
