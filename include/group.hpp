@@ -13,7 +13,6 @@
 #ifndef PINANG_GROUP_H
 #define PINANG_GROUP_H
 
-#include "geometry.hpp"
 #include "selection.hpp"
 #include "conformation.hpp"
 
@@ -66,13 +65,6 @@ class Group : public Conformation
   //! @param Group
   //! @return Radius of gyration of a Group.
   friend double get_radius_of_gyration(const Group&);
-  //! @brief Get the transform matrix from one Group to another.
-  //! @param Two Group's.
-  //! @param A Transform object to be calculated.
-  //! @return Status of finding the proper transform.
-  //! @retval 1: Failure.
-  //! @retval 0: Success.
-  friend int find_transform(const Group&, const Group&, Transform&);
   //! @brief Get the RMSD between two Groups (Conformatinos).
   //! @param Two Group's.
   //! @return RMSD.
@@ -84,7 +76,6 @@ class Group : public Conformation
 
 Vec3d get_center_of_mass(const Group&, std::vector<double>);
 double get_radius_of_gyration(const Group&);
-int find_transform(const Group&, const Group&, Transform&);
 double get_rmsd(const Group&, const Group&);
 
 }

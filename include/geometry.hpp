@@ -98,7 +98,13 @@ class Transform
   Vec3d rotv2_;  //!< The second row of rotation matrix converted from quaternion.
   Vec3d rotv3_;  //!< The third row of rotation matrix converted from quaternion.
 };
-
+//! @brief Get the transform matrix from one Group to another.
+//! @param Two Group's.
+//! @param A Transform object to be calculated.
+//! @return Status of finding the proper transform.
+//! @retval 1: Failure.
+//! @retval 0: Success.
+int find_transform(const Group&, const Group&, Transform&);
 }
 
 #endif

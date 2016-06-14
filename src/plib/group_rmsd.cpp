@@ -14,15 +14,15 @@
 
 #include <cmath>
 #include <Eigen/Geometry>
-#include "group.hpp"
+#include "geometry.hpp"
 
 namespace pinang {
 
 int find_transform(const Group& grp1, const Group& grp2, Transform& t)
 {
   // Simple check...
-  int m1 = grp1.n_atom_;
-  int m2 = grp2.n_atom_;
+  int m1 = grp1.get_size();
+  int m2 = grp2.get_size();
   if (m1 != m2) {
     std::cout << " ERROR: inconsistent number of atoms when calculating Rg! (group_rmsd.cpp)\n";
     exit(EXIT_SUCCESS);
@@ -37,16 +37,16 @@ int find_transform(const Group& grp1, const Group& grp2, Transform& t)
   double dist_in = 0, dist_out = 0;
   Vec3d vtmp;
   for (int i = 0; i < m1-1; ++i) {
-    vtmp = g1.coordinates_[i + 1] - g1.coordinates_[i];
+    vtmp = g1.get_coordinate(i + 1) - g1.get_coordinate(i);
     dist_in += vtmp.norm();
-    vtmp = g2.coordinates_[i + 1] - g2.coordinates_[i];
+    vtmp = g2.get_coordinate(i + 1) - g2.get_coordinate(i);
     dist_out += vtmp.norm();
   }
   if (dist_in <= 0 || dist_out <= 0)
     return 1;  // 1 means failure of superimposition;
   double scale = dist_out/dist_in;
   for (int i = 0; i < m1; ++i) {
-    g2.coordinates_[i] /= scale;
+    g2.get_coordinate(i) /= scale;
   }
   Vec3d pctr1 = g1.get_centroid();
   Vec3d pctr2 = g2.get_centroid();
@@ -55,8 +55,8 @@ int find_transform(const Group& grp1, const Group& grp2, Transform& t)
 
   // Find the centroids then shift to the origin
   for (int i = 0; i < m1; ++i) {
-    g1.coordinates_[i] -= pctr1;
-    g2.coordinates_[i] -= pctr2;
+    g1.get_coordinate(i) -= pctr1;
+    g2.get_coordinate(i) -= pctr2;
   }
 
   // pinang::Group ---> Eigen::Matrix
@@ -65,12 +65,14 @@ int find_transform(const Group& grp1, const Group& grp2, Transform& t)
   Eigen::Matrix3Xd in(3, m1);
   Eigen::Matrix3Xd out(3, m1);
   for (col = 0; col < m1; ++col) {
-    in(0, col) = g1.coordinates_[col][0];
-    in(1, col) = g1.coordinates_[col][1];
-    in(2, col) = g1.coordinates_[col][2];
-    out(0, col) = g2.coordinates_[col][0];
-    out(1, col) = g2.coordinates_[col][1];
-    out(2, col) = g2.coordinates_[col][2];
+    Vec3d coor_tmp1 = g1.get_coordinate(col);
+    Vec3d coor_tmp2 = g2.get_coordinate(col);
+    in(0, col)  = coor_tmp1[0];
+    in(1, col)  = coor_tmp1[1];
+    in(2, col)  = coor_tmp1[2];
+    out(0, col) = coor_tmp2[0];
+    out(1, col) = coor_tmp2[1];
+    out(2, col) = coor_tmp2[2];
   }
 
   // ==================== KEY!!! ====================
