@@ -27,10 +27,9 @@ int main(int argc, char *argv[])
   int in_flag = 0;
   int out_flag = 0;
 
-  while ((opt = getopt(argc, argv, "o:f:h")) != -1) {
+  while ((opt = getopt(argc, argv, "of:h")) != -1) {
     switch (opt) {
       case 'o':
-        out_name = optarg;
         out_flag = 1;
         break;
       case 'f':
@@ -52,6 +51,7 @@ int main(int argc, char *argv[])
   }
   pinang::PDB pdb1(infilename);
 
+
   std::cout << " Sequence of PDB " << pdb1.get_pdb_name() << " :" << "\n";
   std::cout << " Total number of chains: " << pdb1.get_model(0).get_size() << "\n";
   std::cout << "\n";
@@ -64,6 +64,8 @@ int main(int argc, char *argv[])
   cout << "\n";
 
   if (out_flag) {
+    out_name = infilename.substr(0, infilename.size()-4);
+    out_name += ".fasta";
     std::ofstream out_file(out_name.c_str());
     pdb1.output_sequence_fasta(out_file);
     out_file.close();

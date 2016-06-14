@@ -23,6 +23,7 @@ int main(int argc, char *argv[])
   int opt, mod_index = 0;
   int mod_flag = 0;
   int in_flag = 0;
+  int out_flag = 0;
 
   std::string infilename = "some.pdb";
   std::string outfilename = "out.pdb";
@@ -31,6 +32,7 @@ int main(int argc, char *argv[])
     switch (opt) {
       case 'o':
         outfilename = optarg;
+        out_flag = 1;
         break;
       case 'm':
         mod_index = atoi(optarg);
@@ -54,6 +56,12 @@ int main(int argc, char *argv[])
   }
   pinang::PDB pdb1(infilename);
 
+  if (!out_flag) {
+    outfilename = infilename.substr(0, infilename.size()-4);
+    outfilename += "_reoutput.pdb";
+  }
+
+  cout << " Re-output to file: " << outfilename << "... \n";
   std::ofstream ofile(outfilename.c_str());
   if (mod_flag != 1) {
     if (pdb1.get_size() == 1)

@@ -30,7 +30,7 @@ install:
 	cp -f p_* $(INSTALL_DIR)
 
 pinanglibs :
-	@cd plib; make
+	cd plib; make
 
 $(TARGETS) : p_% : %.o $(LIB_DIR)/libpinang.a
 	$(LINK) $< $(LIB_DIR)/libpinang.a -o $@
