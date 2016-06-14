@@ -9,7 +9,6 @@
   @copyright GNU Public License V3.0
 */
 
-
 #include "conformation.hpp"
 
 namespace pinang {
@@ -26,9 +25,25 @@ Conformation::Conformation(std::vector<Vec3d> v)
   n_atom_ = coordinates_.size();
 }
 
-Conformation::Conformation(const PDB& p)
+Conformation::Conformation(const std::string& fname)
 {
+  std::ifstream ifile(fname.c_str());
+  if (!ifile.is_open())
+  {
+    std::cout << " ~       PINANG :: Conformation.cpp        ~ " << "\n";
+    std::cerr << " ERROR: Cannot read file: " << s << "\n";
+    exit(EXIT_FAILURE);
+  }
 
+  n_atom_ = 0;
+  Vec3d coor_tmp;
+  while (ifile.good()) {
+    ifile >> coor_tmp;
+    if (ifile.fail())
+      break;
+    coordinates_.push_back(coor_tmp);
+    n_atom_ += 1;
+  }
 }
 
 void Conformation::reset()

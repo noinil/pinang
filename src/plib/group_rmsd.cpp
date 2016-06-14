@@ -9,7 +9,6 @@
   @copyright GNU Public License V3.0
 */
 
-
 // Based on https://github.com/oleg-alexandrov/projects/blob/master/eigen/Kabsch.cpp;
 
 #include <cmath>
@@ -67,9 +66,9 @@ int find_transform(const Group& grp1, const Group& grp2, Transform& t)
   for (col = 0; col < m1; ++col) {
     Vec3d coor_tmp1 = g1.get_coordinate(col);
     Vec3d coor_tmp2 = g2.get_coordinate(col);
-    in(0, col)  = coor_tmp1[0];
-    in(1, col)  = coor_tmp1[1];
-    in(2, col)  = coor_tmp1[2];
+    in(0, col) = coor_tmp1[0];
+    in(1, col) = coor_tmp1[1];
+    in(2, col) = coor_tmp1[2];
     out(0, col) = coor_tmp2[0];
     out(1, col) = coor_tmp2[1];
     out(2, col) = coor_tmp2[2];

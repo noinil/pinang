@@ -9,7 +9,6 @@
   @copyright GNU Public License V3.0
 */
 
-
 #include <fstream>
 #include "PDB.hpp"
 
@@ -29,7 +28,7 @@ PDB::PDB(const std::string& s)
   std::ifstream ifile(PDB_file_name_.c_str());
   if (!ifile.is_open())
   {
-    std::cout << " ~             PINANG :: PDB.h                ~ " << "\n";
+    std::cout << " ~         PINANG :: PDB.cpp          ~ " << "\n";
     std::cerr << " ERROR: Cannot read file: " << s << "\n";
     exit(EXIT_FAILURE);
   }
