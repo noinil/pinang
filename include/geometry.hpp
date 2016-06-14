@@ -14,7 +14,6 @@
 #ifndef PINANG_GEOMETRY_H
 #define PINANG_GEOMETRY_H
 
-#include "vec3d.hpp"
 #include "group.hpp"
 
 namespace pinang {
