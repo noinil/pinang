@@ -11,8 +11,6 @@
 
 #include <fstream>
 #include <unistd.h>
-#include "conformation.hpp"
-#include "selection.hpp"
 #include "geometry.hpp"
 
 using namespace std;

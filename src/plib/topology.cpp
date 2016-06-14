@@ -9,7 +9,6 @@
   @copyright GNU Public License V3.0
 */
 
-#include <iostream>
 #include <sstream>
 #include <fstream>
 #include "topology.hpp"
