@@ -68,7 +68,7 @@ class Selection
   //! @brief Get a index number of atom/residue from selection.
   //! @param Serial number of the selection.
   //! @return Index of atom/residue.
-  int get_selection(int);
+  int get_selection(int) const;
 
  protected:
   std::vector<int> v_serial_;       //!< A set of indecies (serial numbers).

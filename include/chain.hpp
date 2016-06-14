@@ -72,8 +72,10 @@ class Chain
   //! @brief Self check before additional operations.
   void self_check();
 
-  //! @brief Output positions of CG beads.
-  void output_cg_crd(std::ostream&, int&, int&);
+  //! @brief Output PDB of CG beads.
+  void output_cg_pdb(std::ostream&, int&, int&);
+  //! @brief Output coordinates of CG beads.
+  void output_cg_crd(std::ostream&);
 
   //! @brief Output physical properties to topology file.
   void output_top_mass(std::ostream&, int&, int&);

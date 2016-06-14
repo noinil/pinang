@@ -94,7 +94,7 @@ int Selection::set_selection(std::vector<int> v)
   return 1;
 }
 
-int Selection::get_selection(int n)
+int Selection::get_selection(int n) const
 {
   if (n >= n_atom_ || n < 0)
   {

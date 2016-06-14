@@ -26,6 +26,23 @@ Group::Group(std::vector<Vec3d> v)
   n_atom_ = coordinates_.size();
 }
 
+Group::Group(const Conformation& c, const Selection& s)
+{
+  if (s.get_size() > c.get_size()) {
+    std::cout << " ~             PINANG :: group.hpp            ~ " << "\n";
+    std::cerr << " ERROR: Sel number > conformation atom number." << "\n";
+    exit(EXIT_SUCCESS);
+  }
+
+  Conformation c1 = c;
+  int n = s.get_size();
+  for (int i = 0; i < n; ++i) {
+    int m = s.get_selection(i);
+    coordinates_.push_back(c1.get_coordinate(m));
+  }
+  n_atom_ = n;
+}
+
 int Group::set_conformation(std::vector<Vec3d> v)
 {
   int m = v.size();

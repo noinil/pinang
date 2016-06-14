@@ -14,6 +14,7 @@
 #define PINANG_GROUP_H
 
 #include "geometry.hpp"
+#include "selection.hpp"
 #include "conformation.hpp"
 
 namespace pinang {
@@ -38,7 +39,13 @@ class Group : public Conformation
   //! @param A set of Vec3d coordinates.
   //! @return A Group object.
   Group(std::vector<Vec3d>);
+  //! @brief Create a Group object by picking up selections from conformation.
+  //! @param One conformation; one selection.
+  //! @return A Group object.
+  Group(const Conformation&, const Selection&);
+
   virtual ~Group() {coordinates_.clear();}
+
   //! @brief Set Group conformation based on a set of coordinates.
   //! @param A set of Vec3d coordinates, whose size should be same as original Group.
   //! @return Status of setting up the Group.

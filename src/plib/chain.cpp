@@ -212,7 +212,35 @@ void Chain::output_sequence_fasta(std::ostream & f_fasta, std::string s0) const
   f_fasta << "\n";
 }
 
-void Chain::output_cg_crd(std::ostream& o, int& n, int& m)
+void Chain::output_cg_crd(std::ostream& o)
+{
+  if (chain_type_ == water || chain_type_ == other || chain_type_ == none)
+    return;
+
+  int i = 0;
+  if (chain_type_ != DNA && chain_type_ != RNA && chain_type_ != na)
+  {
+    for (Residue& r : v_residues_) {
+      Atom pseudo_ca = r.get_cg_C_alpha();
+      o << pseudo_ca.get_coordinate() << " \n";
+    }
+  } else {
+    for (Residue& r : v_residues_) {
+      Vec3d coor_B;
+      if (r.get_terminus_flag() != 5) {
+        Atom pseudo_P = r.get_cg_P();
+        o << pseudo_P.get_coordinate() << " \n";
+      }
+      Atom pseudo_S = r.get_cg_S();
+      o << pseudo_S.get_coordinate() << " \n";
+
+      Atom pseudo_B = r.get_cg_B();
+      o << pseudo_B.get_coordinate() << " \n";
+    }
+  }
+}
+
+void Chain::output_cg_pdb(std::ostream& o, int& n, int& m)
 {
   if (chain_type_ == water || chain_type_ == other || chain_type_ == none)
     return;
@@ -224,6 +252,7 @@ void Chain::output_cg_crd(std::ostream& o, int& n, int& m)
       Atom pseudo_ca = r.get_cg_C_alpha();
       pseudo_ca.set_atom_serial(++n);
       pseudo_ca.set_chain_ID(m + 97);
+      pseudo_ca.set_element("pC");
       o << pseudo_ca;
     }
   } else {
@@ -232,20 +261,20 @@ void Chain::output_cg_crd(std::ostream& o, int& n, int& m)
       if (r.get_terminus_flag() != 5) {
         Atom pseudo_P = r.get_cg_P();
         pseudo_P.set_atom_serial(++n);
-        // pseudo_P.set_atom_name("DP");
         pseudo_P.set_chain_ID(m + 97);
+        pseudo_P.set_element("dP");
         o << pseudo_P;
       }
       Atom pseudo_S = r.get_cg_S();
       pseudo_S.set_atom_serial(++n);
-      // pseudo_S.set_atom_name("DS");
       pseudo_S.set_chain_ID(m + 97);
+      pseudo_S.set_element("dS");
       o << pseudo_S;
 
       Atom pseudo_B = r.get_cg_B();
       pseudo_B.set_atom_serial(++n);
-      // pseudo_B.set_atom_name("DB");
       pseudo_B.set_chain_ID(m + 97);
+      pseudo_B.set_element("dB");
       o << pseudo_B;
     }
   }

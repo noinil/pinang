@@ -62,7 +62,9 @@ class Model
   //! @return Number of chains in the Model.
   int get_size() const { return n_chain_; }
 
-  //! @brief Output positions of CG beads.
+  //! @brief Output PDB of CG beads.
+  void output_cg_pdb(std::ostream&);
+  //! @brief Output coordinates of CG beads.
   void output_cg_crd(std::ostream&);
 
   //! @brief Output physical properties to topology file.

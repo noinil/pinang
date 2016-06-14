@@ -70,8 +70,18 @@ void Model::reset()
   n_chain_ = 0;
 }
 
-
 void Model::output_cg_crd(std::ostream& o)
+{
+  int i = 0;
+  for (i = 0; i < n_chain_; ++i) {
+    ChainType ct = v_chains_[i].get_chain_type();
+    if (ct == water || ct == other || ct == none)
+      continue;
+    v_chains_[i].output_cg_crd(o);
+  }
+}
+
+void Model::output_cg_pdb(std::ostream& o)
 {
   int i = 0;
   int n = 0;
@@ -80,7 +90,7 @@ void Model::output_cg_crd(std::ostream& o)
     ChainType ct = v_chains_[i].get_chain_type();
     if (ct == water || ct == other || ct == none)
       continue;
-    v_chains_[i].output_cg_crd(o, n, m);
+    v_chains_[i].output_cg_pdb(o, n, m);
   }
   o << "ENDMDL" << std::endl;
 }

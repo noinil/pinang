@@ -26,6 +26,11 @@ Conformation::Conformation(std::vector<Vec3d> v)
   n_atom_ = coordinates_.size();
 }
 
+Conformation::Conformation(const PDB& p)
+{
+
+}
+
 void Conformation::reset()
 {
   n_atom_ = 0;

@@ -25,27 +25,25 @@ int main(int argc, char *argv[])
   int mod_flag = 0;
   int in_flag = 0;
   int crd_flag = 0;
+  int pdb_flag = 0;
   int top_flag = 0;
   int parm_flag = 0;
 
   std::string basefilename = "";
   std::string infilename = "some.pdb";
-  std::string crd_name = "cg.pdb";
-  std::string top_name = "cg.psf";
-  std::string parm_name = "cg.ffp";
 
-  while ((opt = getopt(argc, argv, "p:t:c:m:f:h")) != -1) {
+  while ((opt = getopt(argc, argv, "ptcPm:f:h")) != -1) {
     switch (opt) {
-      case 'p':
-        parm_name = optarg;
+      case 'P':
         parm_flag = 1;
         break;
+      case 'p':
+        pdb_flag = 1;
+        break;
       case 'c':
-        crd_name = optarg;
         crd_flag = 1;
         break;
       case 't':
-        top_name = optarg;
         top_flag = 1;
         break;
       case 'm':
@@ -72,19 +70,6 @@ int main(int argc, char *argv[])
   }
   pinang::PDB pdb1(infilename);
 
-  if (!top_flag) {
-    top_name = basefilename + "_cg.psf";
-  }
-  if (!crd_flag) {
-    crd_name = basefilename + "_cg.pdb";
-  }
-  if (!parm_flag) {
-    parm_name = basefilename + "_cg.ffp";
-  }
-
-  std::ofstream crd_file(crd_name.c_str());
-  std::ofstream top_file(top_name.c_str());
-  std::ofstream parm_file(parm_name.c_str());
 
   if (mod_flag != 1) {
     if (pdb1.get_size() == 1)
@@ -98,22 +83,40 @@ int main(int argc, char *argv[])
   }
 
   pinang::Model m0 = pdb1.get_model(mod_index);
-  m0.output_cg_crd(crd_file);
-  crd_file << "END" << std::endl;
 
+  if (pdb_flag) {
+    std::string pdb_name = basefilename + "_cg.pdb";
+    std::ofstream pdb_file(pdb_name.c_str());
+    m0.output_cg_pdb(pdb_file);
+    pdb_file << "END" << std::endl;
+    pdb_file.close();
+  }
+
+  if (crd_flag) {
+    std::string crd_name = basefilename + "_cg.crd";
+    std::ofstream crd_file(crd_name.c_str());
+    m0.output_cg_crd(crd_file);
+    crd_file << "END" << std::endl;
+    crd_file.close();
+  }
+
+  if (parm_flag) {
+    std::string parm_name = basefilename + "_cg.ffp";
+    std::ofstream parm_file(parm_name.c_str());
+    m0.output_ffparm_bond(parm_file);
+    m0.output_ffparm_angle(parm_file);
+    m0.output_ffparm_dihedral(parm_file);
+    m0.output_ffparm_nonbonded(parm_file);
+    parm_file.close();
+  }
+
+  std::string top_name = basefilename + "_cg.psf";
+  std::ofstream top_file(top_name.c_str());
   m0.output_top_mass(top_file);
   m0.output_top_bond(top_file);
   m0.output_top_angle(top_file);
   m0.output_top_dihedral(top_file);
-
-  m0.output_ffparm_bond(parm_file);
-  m0.output_ffparm_angle(parm_file);
-  m0.output_ffparm_dihedral(parm_file);
-  m0.output_ffparm_nonbonded(parm_file);
-
-  crd_file.close();
   top_file.close();
-  parm_file.close();
 
   return 0;
 }
@@ -122,8 +125,8 @@ void print_usage(char* s)
 {
   std::cout << " Usage: "
             << s
-            << "\n\t -f some.pdb\n\t [-c out.pdb]\n\t"
-            << " [-t out.psf]\n\t [-p out.ffp]\n\t"
+            << "\n\t -f some.pdb\n\t [-c out.crd]\n\t"
+            << " [-t out.psf]\n\t [-P out.ffp]\n\t [-p out.pdb]\n\t"
             << " [-m module]\n\t [-h]"
             << "\n";
   exit(EXIT_SUCCESS);

@@ -16,7 +16,6 @@
 #include "particle.hpp"
 
 #include <vector>
-#include <string>
 
 namespace pinang {
 

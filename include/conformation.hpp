@@ -13,8 +13,8 @@
 #ifndef PINANG_CONFORMATION_H
 #define PINANG_CONFORMATION_H
 
-#include <vector>
-#include "vec3d.hpp"
+#include "PDB.hpp"
+#include "topology.hpp"
 
 namespace pinang {
 
@@ -35,6 +35,11 @@ class Conformation
   //! @param A set of Vec3d coordinates.
   //! @return A Conformation object.
   Conformation(std::vector<Vec3d>);
+  //! @brief Create a Conformation object based on a PDB structure.
+  //! @param A PDB object.
+  //! @return A Conformation object.
+  Conformation(const PDB&);
+
   virtual ~Conformation() {coordinates_.clear();}
 
   //! @brief Reset properties of Conformation.
