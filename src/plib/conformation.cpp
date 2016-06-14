@@ -9,6 +9,7 @@
   @copyright GNU Public License V3.0
 */
 
+#include <fstream>
 #include "conformation.hpp"
 
 namespace pinang {
@@ -31,7 +32,7 @@ Conformation::Conformation(const std::string& fname)
   if (!ifile.is_open())
   {
     std::cout << " ~       PINANG :: Conformation.cpp        ~ " << "\n";
-    std::cerr << " ERROR: Cannot read file: " << s << "\n";
+    std::cerr << " ERROR: Cannot read file: " << fname << "\n";
     exit(EXIT_FAILURE);
   }
 
