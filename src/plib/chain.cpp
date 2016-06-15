@@ -9,7 +9,6 @@
   @copyright GNU Public License V3.0
 */
 
-
 #include <iomanip>
 #include "chain.hpp"
 

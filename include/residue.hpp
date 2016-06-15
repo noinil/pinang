@@ -155,6 +155,7 @@ class Residue
   //! @brief Output PDB format information of Atom.
   friend std::ostream& operator<<(std::ostream&, Residue&);
   friend double residue_min_distance(const Residue&, const Residue&);
+  friend double residue_min_distance(const Residue&, const Residue&, Atom&, Atom&);
   friend double residue_ca_distance(const Residue&, const Residue&);
  protected:
   std::string residue_name_;   //!< Residue name from PDB.
@@ -181,6 +182,10 @@ class Residue
 //! @param Two Residue objects.
 //! @return Distance.
 double residue_min_distance(const Residue&, const Residue&);
+//! @brief Compute the minimal distance between two Residues.
+//! @param Two Residue objects, two atom objects to store min-distance paires.
+//! @return Distance.
+double residue_min_distance(const Residue&, const Residue&, Atom&, Atom&);
 //! @brief Compute the @f$C_\alpha@f$ distance between two Residues.
 //! @param Two Residue objects.
 //! @return @f$C_\alpha@f$ Distance.

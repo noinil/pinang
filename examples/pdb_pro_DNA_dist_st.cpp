@@ -1,6 +1,4 @@
 #include "PDB.hpp"
-#include "vec3d.hpp"
-#include "constants.hpp"
 
 #include <iostream>
 #include <iomanip>

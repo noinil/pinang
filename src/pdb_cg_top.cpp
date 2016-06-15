@@ -125,8 +125,8 @@ void print_usage(char* s)
 {
   std::cout << " Usage: "
             << s
-            << "\n\t -f some.pdb\n\t [-c out.crd]\n\t"
-            << " [-t out.psf]\n\t [-P out.ffp]\n\t [-p out.pdb]\n\t"
+            << "\n\t -f some.pdb\n\t [-c (out.crd)]\n\t"
+            << " [-t (out.psf)]\n\t [-P (out.ffp)]\n\t [-p (out.pdb)]\n\t"
             << " [-m module]\n\t [-h]"
             << "\n";
   exit(EXIT_SUCCESS);

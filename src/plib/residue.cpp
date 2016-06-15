@@ -266,17 +266,39 @@ double residue_min_distance(const Residue& r1, const Residue& r2)
   int i, j;
   double d = atom_distance(r1.v_atoms_[0], r2.v_atoms_[0]);  // min_distance;
   double f = 0.0;           // tmp distance;
-  int s1 = r1.n_atom_;
-  int s2 = r2.n_atom_;
-  for (i = 0; i < s1; ++i) {
-    if (r1.v_atoms_[i].get_element() == "H")
+  for (const Atom& a1 : r1.v_atoms_) {
+    if (a1.get_element() == "H")
       continue;
-    for (j = 0; j < s2; ++j) {
-      if (r2.v_atoms_[j].get_element() == "H")
+    for (const Atom& a2 : r2.v_atoms_) {
+      if (a2.get_element() == "H")
         continue;
-      f = atom_distance(r1.v_atoms_[i], r2.v_atoms_[j]);
+      f = atom_distance(a1, a2);
       if (d > f)
         d = f;
+    }
+  }
+  return d;
+}
+
+double residue_min_distance(const Residue& r1, const Residue& r2, Atom& atm1, Atom& atm2)
+{
+  int i, j;
+  double d = atom_distance(r1.v_atoms_[0], r2.v_atoms_[0]);  // min_distance;
+  atm1 = r1.v_atoms_[0];
+  atm2 = r2.v_atoms_[0];
+  double f = 0.0;           // tmp distance;
+  for (const Atom& a1 : r1.v_atoms_) {
+    if (a1.get_element() == "H")
+      continue;
+    for (const Atom& a2 : r2.v_atoms_) {
+      if (a2.get_element() == "H")
+        continue;
+      f = atom_distance(a1, a2);
+      if (d > f) {
+        d = f;
+        atm1 = a1;
+        atm2 = a2;
+      }
     }
   }
   return d;
