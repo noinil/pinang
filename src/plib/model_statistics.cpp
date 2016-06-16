@@ -149,7 +149,7 @@ void Model::output_statistics_pro_DNA_contact_pairs(std::ostream& o)
           << atmp1.get_residue_name() << " " << std::setw(4) << atmp1.get_residue_serial() << " : "
           << atmp1.get_atom_name() << "]  --  [ " << atmp2.get_chain_ID() << " "
           << atmp2.get_residue_name() << " " << std::setw(4) << atmp2.get_residue_serial() << " : "
-          << atmp2.get_atom_name() << "] \n";
+          << atmp2.get_atom_name() << "]    " << groove_info << "\n";
       }
     }
   }

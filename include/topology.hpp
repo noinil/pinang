@@ -32,7 +32,7 @@ class Topology
  public:
   //! @brief Create an "empty" Topology object.
   //! @return An Topology object.
-  Topology(const std::string& s);
+  Topology(const std::string&);
   virtual ~Topology() {v_particles_.clear();}
 
   //! @brief Reset properties of Topology.

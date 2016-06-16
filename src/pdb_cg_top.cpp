@@ -1,13 +1,13 @@
 /*!
-@file pdb_cg_top.cpp
-@brief Generate .psf and .pdb files from PDB structures.
+  @file pdb_cg_top.cpp
+  @brief Generate .psf and .pdb files from PDB structures.
 
-Read PDB file, extract information for molecules, and generate .psf / .pdb files
-for additional analysis.
+  Read PDB file, extract information for molecules, and generate .psf / .pdb files
+  for additional analysis.
 
-@author Cheng Tan (noinil@gmail.com)
-@date 2016-05-24 18:11
-@copyright GNU Public License V3.0
+  @author Cheng Tan (noinil@gmail.com)
+  @date 2016-05-24 18:11
+  @copyright GNU Public License V3.0
 */
 
 
@@ -30,8 +30,8 @@ int main(int argc, char *argv[])
   int parm_flag = 0;
   int stat_flag = 0;
 
-  std::string basefilename = "";
-  std::string infilename = "some.pdb";
+  string basefilename = "";
+  string infilename = "some.pdb";
 
   while ((opt = getopt(argc, argv, "sptcPm:f:h")) != -1) {
     switch (opt) {
@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
 
   if (!in_flag)
   {
-    std::cout << " ERROR: need parameter for option -f: " << "\n";
+    cout << " ERROR: need parameter for option -f: " << "\n";
     print_usage(argv[0]);
   }
   pinang::PDB pdb1(infilename);
@@ -80,8 +80,8 @@ int main(int argc, char *argv[])
     {
       mod_index = 0;
     } else {
-      std::cout << " Please choose a MODULE: " ;
-      std::cin >> mod_index;
+      cout << " Please choose a MODULE: " ;
+      cin >> mod_index;
       --mod_index;
     }
   }
@@ -89,24 +89,24 @@ int main(int argc, char *argv[])
   pinang::Model m0 = pdb1.get_model(mod_index);
 
   if (pdb_flag) {
-    std::string pdb_name = basefilename + "_cg.pdb";
-    std::ofstream pdb_file(pdb_name.c_str());
+    string pdb_name = basefilename + "_cg.pdb";
+    ofstream pdb_file(pdb_name.c_str());
     m0.output_cg_pdb(pdb_file);
-    pdb_file << "END" << std::endl;
+    pdb_file << "END" << endl;
     pdb_file.close();
   }
 
   if (crd_flag) {
-    std::string crd_name = basefilename + "_cg.crd";
-    std::ofstream crd_file(crd_name.c_str());
+    string crd_name = basefilename + "_cg.crd";
+    ofstream crd_file(crd_name.c_str());
     m0.output_cg_crd(crd_file);
-    crd_file << "END" << std::endl;
+    crd_file << "END" << endl;
     crd_file.close();
   }
 
   if (parm_flag) {
-    std::string parm_name = basefilename + "_cg.ffp";
-    std::ofstream parm_file(parm_name.c_str());
+    string parm_name = basefilename + "_cg.ffp";
+    ofstream parm_file(parm_name.c_str());
     m0.output_ffparm_bond(parm_file);
     m0.output_ffparm_angle(parm_file);
     m0.output_ffparm_dihedral(parm_file);
@@ -114,8 +114,8 @@ int main(int argc, char *argv[])
     parm_file.close();
   }
 
-  std::string top_name = basefilename + "_cg.psf";
-  std::ofstream top_file(top_name.c_str());
+  string top_name = basefilename + "_cg.psf";
+  ofstream top_file(top_name.c_str());
   m0.output_top_mass(top_file);
   m0.output_top_bond(top_file);
   m0.output_top_angle(top_file);
@@ -123,10 +123,10 @@ int main(int argc, char *argv[])
   top_file.close();
 
   if (stat_flag) {
-    std::string stat_name = basefilename + "_cg.stat";
-    std::ofstream stat_file(stat_name.c_str());
+    string stat_name = basefilename + "_cg.stat";
+    ofstream stat_file(stat_name.c_str());
     m0.output_statistics_pro_DNA_contact_pairs(stat_file);
-    stat_file << "END" << std::endl;
+    stat_file << "END" << endl;
     stat_file.close();
   }
 
@@ -135,11 +135,11 @@ int main(int argc, char *argv[])
 
 void print_usage(char* s)
 {
-  std::cout << " Usage: "
-            << s
-            << "\n\t -f some.pdb\n\t [-c (out.crd)]\n\t"
-            << " [-t (out.psf)]\n\t [-P (out.ffp)]\n\t [-p (out.pdb)]\n\t"
-            << " [-m module]\n\t [-h]"
-            << "\n";
+  cout << " Usage: "
+       << s
+       << "\n\t -f some.pdb\n\t [-c (out.crd)]\n\t"
+       << " [-t (out.psf)]\n\t [-P (out.ffp)]\n\t [-p (out.pdb)]\n\t"
+       << " [-m module]\n\t [-h]"
+       << "\n";
   exit(EXIT_SUCCESS);
 }

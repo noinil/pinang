@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
 {
   int opt;
   int in_flag = 0;
-  std::string inpname = "selection.in";
+  string inpname = "selection.in";
   while ((opt = getopt(argc, argv, "i:h")) != -1) {
     switch (opt) {
       case 'i':
@@ -36,8 +36,8 @@ int main(int argc, char *argv[])
     }
   }
 
-  std::string crd_name1 = argv[argc - 2];
-  std::string crd_name2 = argv[argc - 1];
+  string crd_name1 = argv[argc - 2];
+  string crd_name2 = argv[argc - 1];
   pinang::Conformation c1(crd_name1);
   pinang::Conformation c2(crd_name2);
 
@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
 
 void print_usage(char* s)
 {
-  std::cout << " Usage: " << s
-            << "\n\t -i some.in struct1.crd struct2.crd\n\t [-h] \n";
+  cout << " Usage: " << s
+       << "\n\t -i some.in struct1.crd struct2.crd\n\t [-h] \n";
   exit(EXIT_SUCCESS);
 }

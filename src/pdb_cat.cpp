@@ -1,12 +1,12 @@
 /*!
-@file pdb_cat.cpp
-@brief Re-output PDB structures.
+  @file pdb_cat.cpp
+  @brief Re-output PDB structures.
 
-Extract model from PDB, and reoutput the ATOM records to new PDB file.
+  Extract model from PDB, and reoutput the ATOM records to new PDB file.
 
-@author Cheng Tan (noinil@gmail.com)
-@date 2016-05-24 18:10
-@copyright GNU Public License V3.0
+  @author Cheng Tan (noinil@gmail.com)
+  @date 2016-05-24 18:10
+  @copyright GNU Public License V3.0
 */
 
 
@@ -25,8 +25,8 @@ int main(int argc, char *argv[])
   int in_flag = 0;
   int out_flag = 0;
 
-  std::string infilename = "some.pdb";
-  std::string outfilename = "out.pdb";
+  string infilename = "some.pdb";
+  string outfilename = "out.pdb";
 
   while ((opt = getopt(argc, argv, "o:m:f:h")) != -1) {
     switch (opt) {
@@ -62,14 +62,14 @@ int main(int argc, char *argv[])
   }
 
   cout << " Re-output to file: " << outfilename << "... \n";
-  std::ofstream ofile(outfilename.c_str());
+  ofstream ofile(outfilename.c_str());
   if (mod_flag != 1) {
     if (pdb1.get_size() == 1)
     {
       mod_index = 0;
     } else {
-      std::cout << " Please choose a MODULE: " ;
-      std::cin >> mod_index;
+      cout << " Please choose a MODULE: " ;
+      cin >> mod_index;
       --mod_index;
     }
   }
@@ -83,11 +83,11 @@ int main(int argc, char *argv[])
 
 void print_usage(char* s)
 {
-  std::cout << "  Usage: "
-            << s
-            << "\n\t -f some.pdb\n\t [-o output.pdb]\n\t [-m module]\n\t [-h]"
-            << "\n";
-  std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ "
-            << "\n";
+  cout << "  Usage: "
+       << s
+       << "\n\t -f some.pdb\n\t [-o output.pdb]\n\t [-m module]\n\t [-h]"
+       << "\n";
+  cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ "
+       << "\n";
   exit(EXIT_SUCCESS);
 }
