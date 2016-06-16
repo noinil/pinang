@@ -265,7 +265,7 @@ double residue_min_distance(const Residue& r1, const Residue& r2)
 {
   int i, j;
   double d = atom_distance(r1.v_atoms_[0], r2.v_atoms_[0]);  // min_distance;
-  double f = 0.0;           // tmp distance;
+  double f = -1.0;           // tmp distance;
   for (const Atom& a1 : r1.v_atoms_) {
     if (a1.get_element() == "H")
       continue;
@@ -286,7 +286,7 @@ double residue_min_distance(const Residue& r1, const Residue& r2, Atom& atm1, At
   double d = atom_distance(r1.v_atoms_[0], r2.v_atoms_[0]);  // min_distance;
   atm1 = r1.v_atoms_[0];
   atm2 = r2.v_atoms_[0];
-  double f = 0.0;           // tmp distance;
+  double f = -1.0;           // tmp distance;
   for (const Atom& a1 : r1.v_atoms_) {
     if (a1.get_element() == "H")
       continue;

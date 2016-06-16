@@ -77,6 +77,11 @@ class PhysicalProperty
   std::map<std::string, ChainType> map_resName_chainType;    //!< Mapping of residue name to chain type.
 };
 
+//! @brief Get classification of DNA atom position from residue name and atom name.
+//! @param Residue name, Atom name.
+//! @return "Major", "Minor", "Backbone", or "Unknown".
+std::string get_DNA_atom_position_info(const std::string&, const std::string&);
+
 }
 
 #endif

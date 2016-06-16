@@ -28,12 +28,16 @@ int main(int argc, char *argv[])
   int pdb_flag = 0;
   int top_flag = 0;
   int parm_flag = 0;
+  int stat_flag = 0;
 
   std::string basefilename = "";
   std::string infilename = "some.pdb";
 
-  while ((opt = getopt(argc, argv, "ptcPm:f:h")) != -1) {
+  while ((opt = getopt(argc, argv, "sptcPm:f:h")) != -1) {
     switch (opt) {
+      case 's':
+        stat_flag = 1;
+        break;
       case 'P':
         parm_flag = 1;
         break;
@@ -117,6 +121,14 @@ int main(int argc, char *argv[])
   m0.output_top_angle(top_file);
   m0.output_top_dihedral(top_file);
   top_file.close();
+
+  if (stat_flag) {
+    std::string stat_name = basefilename + "_cg.stat";
+    std::ofstream stat_file(stat_name.c_str());
+    m0.output_statistics_pro_DNA_contact_pairs(stat_file);
+    stat_file << "END" << std::endl;
+    stat_file.close();
+  }
 
   return 0;
 }

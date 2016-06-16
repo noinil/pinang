@@ -499,7 +499,7 @@ int Chain::get_native_contact_number()
       if (ctj == water || ctj == DNA || ctj == RNA || ctj == na || ctj == ion)
         continue;
       d = residue_min_distance(v_residues_[i], v_residues_[j]);
-      if ( d < g_cutoff)
+      if ( d < g_cutoff && d > 0)
         ++n;
     }
   }
@@ -707,7 +707,7 @@ void Chain::output_ffparm_native(std::ostream& o)
       if (ctj == water || ctj == DNA || ctj == RNA || ctj == na || ctj == ion)
         continue;
       d = residue_min_distance(v_residues_[i], v_residues_[j]);
-      if ( d < g_cutoff)
+      if ( d < g_cutoff && d > 0)
       {
         f = residue_ca_distance(v_residues_[i], v_residues_[j]);
         o << std::setw(8) << i+1 << " " << std::setw(8) << j+1 << " "

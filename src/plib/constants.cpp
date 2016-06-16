@@ -285,5 +285,55 @@ ChainType PhysicalProperty::get_chain_type(const std::string& s)
   }
 }
 
+std::string get_DNA_atom_position_info(const std::string& rname, const std::string& aname)
+{
+  if (aname == "P   " || aname == "OP1 " || aname == "OP2 " || aname == "O3' " ||
+      aname == "O5' " || aname == "O1P " || aname == "O2P ") {
+    return "Phosphate";
+  }
+  std::string::size_type np;
+  np = aname.find("'");
+  if (np != std::string::npos) {
+    return "Sugar";
+  }
+
+  if (rname == "DA ") {
+    if (aname == "N1  " || aname == "C2  " || aname == "N3  " || aname == "C4  " || aname == "N9  ") {
+      return "Minor";
+    } else if (aname == "C5  " || aname == "C6  " || aname == "N6  " || aname == "N7  " || aname == "C8  ") {
+      return "Major";
+    } else {
+      return "Unknown";
+    }
+  }
+  if (rname == "DG ") {
+    if (aname == "N2  " || aname == "C2  " || aname == "N3  " || aname == "C4  " || aname == "N9  ") {
+      return "Minor";
+    } else if (aname == "C5  " || aname == "C6  " || aname == "O6  " || aname == "N7  " || aname == "C8  ") {
+      return "Major";
+    } else {
+      return "Unknown";
+    }
+  }
+  if (rname == "DC ") {
+    if (aname == "C2  " || aname == "O2  " || aname == "N1  ") {
+      return "Minor";
+    } else if (aname == "C4  " || aname == "N4  " || aname == "C5  " || aname == "C6  ") {
+      return "Major";
+    } else {
+      return "Unknown";
+    }
+  }
+  if (rname == "DT ") {
+    if (aname == "C2  " || aname == "O2  " || aname == "N3  " || aname == "N1  ") {
+      return "Minor";
+    } else if (aname == "C4  " || aname == "O4  " || aname == "C5  " || aname == "C6  " || aname == "C7  ") {
+      return "Major";
+    } else {
+      return "Unknown";
+    }
+  }
+  return "Unknown";
+}
 
 }  // pinang
