@@ -137,8 +137,9 @@ void print_usage(char* s)
 {
   cout << " Usage: "
        << s
-       << "\n\t -f some.pdb\n\t [-c (out.crd)]\n\t"
-       << " [-t (out.psf)]\n\t [-P (out.ffp)]\n\t [-p (out.pdb)]\n\t"
+       << "\n\t -f some.pdb\n\t [-c (out_cg.crd)]\n\t"
+       << " [-t (out_cg.psf)]\n\t [-P (out_cg.ffp)]\n\t"
+       << " [-p (out_cg.pdb)]\n\t [-s (out_cg.stat)]\n\t"
        << " [-m module]\n\t [-h]"
        << "\n";
   exit(EXIT_SUCCESS);
