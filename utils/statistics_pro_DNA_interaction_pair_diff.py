@@ -33,6 +33,10 @@ def main(filename):
                 angle0_lst.append([local_dists[1], local_dists[7], local_dists[13]])
                 angle5_lst.append([local_dists[3], local_dists[9], local_dists[15]])
                 angle3_lst.append([local_dists[5], local_dists[11], local_dists[17]])
+            elif words[0] == 'No':
+                for i in range(6):
+                    local_dists[icount] = -1
+                    icount += 1
             else:
                 d = float(words[-1])
                 local_dists[icount] = d
@@ -64,13 +68,19 @@ def main(filename):
         axHx_local.xaxis.set_major_formatter(nullfmt)
         axHy_local.yaxis.set_major_formatter(nullfmt)
 
-        X = []
+        X0 = []
+        X1 = []
+        X2 = []
         Y1 = []
         Y2 = []
         for d in ql:
-            X.append(d[0])
-            Y1.append(d[1] - d[0])
-            Y2.append(d[2] - d[0])
+            X0.append(d[0])
+            if d[1] > 0:
+                X1.append(d[0])
+                Y1.append(d[1] - d[0])
+            if d[2] > 0:
+                X2.append(d[0])
+                Y2.append(d[2] - d[0])
         if m == 0:
             datamin_x, datamax_x = 4, 16
             databin_x = 4
@@ -84,8 +94,8 @@ def main(filename):
         bins_x = np.arange(datamin_x, datamax_x + (datamax_x - datamin_x)/40, (datamax_x - datamin_x)/40)
         bins_y = np.arange(datamin_y, datamax_y + (datamax_y - datamin_y)/40, (datamax_y - datamin_y)/40)
 
-        axS_local.plot(X, Y1, 'r.')
-        axS_local.plot(X, Y2, 'g.')
+        axS_local.plot(X1, Y1, 'r.')
+        axS_local.plot(X2, Y2, 'g.')
         axS_local.axhline(y=0, linestyle='--', color='black')
 
         axHx_local.set_title(quant_names[i])
@@ -96,7 +106,7 @@ def main(filename):
         axS_local.set_xlim(datamin_x, datamax_x)
         axS_local.set_ylim(datamin_y, datamax_y)
 
-        axHx_local.hist(X, bins=bins_x)
+        axHx_local.hist(X0, bins=bins_x)
         axHy_local.hist(Y1, bins=bins_y, orientation='horizontal', color='r', alpha=0.5)
         axHy_local.hist(Y2, bins=bins_y, orientation='horizontal', color='g', alpha=0.5)
         axHy_local.axhline(y=0, linestyle='--', color='black')
@@ -121,7 +131,7 @@ def main(filename):
             axHy_local.yaxis.set_tick_params(length=6, width=1.5)
 
     fig.subplots_adjust(hspace=0.2, right=0.79)
-    fig_name = filename[:-4] + "_plot.png"
+    fig_name = filename[:-4] + "_diff_plot.png"
     # fig.savefig(fig_name,  dpi=80)
     plt.show()
  

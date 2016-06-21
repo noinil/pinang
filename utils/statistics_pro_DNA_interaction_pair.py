@@ -30,6 +30,10 @@ def main(filename):
                 angle0_lst.append([local_dists[1], local_dists[7], local_dists[13]])
                 angle5_lst.append([local_dists[3], local_dists[9], local_dists[15]])
                 angle3_lst.append([local_dists[5], local_dists[11], local_dists[17]])
+            elif words[0] == 'No':
+                for i in range(6):
+                    local_dists[icount] = -1
+                    icount += 1
             else:
                 d = float(words[-1])
                 local_dists[icount] = d
@@ -41,13 +45,17 @@ def main(filename):
     fig, axes = plt.subplots(nrows=2, ncols=3, figsize=(20, 12.5))
     for i, ql in enumerate(quant_list):
         m, n = i // 3 , i % 3
-        X = []
+        X1 = []
         Y1 = []
+        X2 = []
         Y2 = []
         for d in ql:
-            X.append(d[0])
-            Y1.append(d[1])
-            Y2.append(d[2])
+            if d[1] > 0:
+                X1.append(d[0])
+                Y1.append(d[1])
+            if d[2] > 0:
+                X2.append(d[0])
+                Y2.append(d[2])
         if m == 0:
             datamin, datamax = 4, 20
             databin = 4
@@ -56,8 +64,8 @@ def main(filename):
             databin = 45
         x3 = np.arange(datamin, datamax + 1, databin)
         y3 = np.arange(datamin, datamax + 1, databin)
-        axes[m, n].plot(X, Y1, 'r.')
-        axes[m, n].plot(X, Y2, 'g.')
+        axes[m, n].plot(X1, Y1, 'r.')
+        axes[m, n].plot(X2, Y2, 'g.')
         axes[m, n].plot(x3, y3, 'k--')
 
         axes[m, n].set_aspect("equal")
