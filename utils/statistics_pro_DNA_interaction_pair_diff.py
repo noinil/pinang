@@ -37,6 +37,9 @@ def main(filename):
                 for i in range(6):
                     local_dists[icount] = -1
                     icount += 1
+            elif words[3] == "NaN":
+                local_dists[icount] = -1
+                icount += 1
             else:
                 d = float(words[-1])
                 local_dists[icount] = d
@@ -74,6 +77,8 @@ def main(filename):
         Y1 = []
         Y2 = []
         for d in ql:
+            if d[0] < 0:
+                continue
             X0.append(d[0])
             if d[1] > 0:
                 X1.append(d[0])
