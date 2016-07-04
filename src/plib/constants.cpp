@@ -240,9 +240,9 @@ std::string PhysicalProperty::get_short_name(const std::string& s)
     return search->second;
   } else {
     std::cout << " ~             PINANG :: constants.hpp          ~ " << "\n";
-    std::cerr << " ERROR: Cannot find residue name for short name: "
+    std::cerr << " WARNING: Cannot find residue name for short name: "
               << s << "\n";
-    exit(EXIT_FAILURE);
+    return "__";
   }
 }
 
@@ -253,9 +253,9 @@ double PhysicalProperty::get_charge(const std::string& s)
     return search->second;
   } else {
     std::cout << " ~             PINANG :: constants.hpp          ~ " << "\n";
-    std::cerr << " ERROR: Cannot find residue name for charge: "
+    std::cerr << " WARNING: Cannot find residue name for charge: "
               << s << "\n";
-    exit(EXIT_FAILURE);
+    return -100000;
   }
 }
 
@@ -266,9 +266,9 @@ double PhysicalProperty::get_mass(const std::string& s)
     return search->second;
   } else {
     std::cout << " ~             PINANG :: constants.hpp          ~ " << "\n";
-    std::cerr << " ERROR: Cannot find residue name for mass: "
+    std::cerr << " WARNING: Cannot find residue name for mass: "
               << s << "\n";
-    exit(EXIT_FAILURE);
+    return -100000;
   }
 }
 
@@ -279,9 +279,9 @@ ChainType PhysicalProperty::get_chain_type(const std::string& s)
     return search->second;
   } else {
     std::cout << " ~             PINANG :: constants.hpp          ~ " << "\n";
-    std::cerr << " ERROR: Cannot find residue name for chain type: "
+    std::cerr << " WARNING: Cannot find residue name for chain type: "
               << s << "\n";
-    exit(EXIT_FAILURE);
+    return none;
   }
 }
 
