@@ -359,14 +359,14 @@ void Chain::output_top_bond(std::ostream& o, int& n, int& m)
   int i = 0;
   std::vector<int> out_bond_list;
 
-  if (chain_type_ != DNA && chain_type_ != RNA && chain_type_ != na)
-  {
+  // if (chain_type_ != DNA && chain_type_ != RNA && chain_type_ != na)
+  if (chain_type_ == protein) {
     for (i = 0; i < n_residue_ - 1; ++i) {
       out_bond_list.push_back(++n);
       out_bond_list.push_back(n + 1);
     }
     ++n;
-  } else {
+  } else if (chain_type_ == DNA || chain_type_ == RNA || chain_type_ == na) {
     out_bond_list.push_back(n + 1);
     out_bond_list.push_back(n + 2);
     out_bond_list.push_back(n + 1);
@@ -386,6 +386,8 @@ void Chain::output_top_bond(std::ostream& o, int& n, int& m)
     out_bond_list.push_back(n + 1);
     out_bond_list.push_back(n + 2);
     n += 2;
+  } else if (chain_type_ == ion) {
+    ++n;
   }
 
   for (int j : out_bond_list) {
@@ -405,8 +407,7 @@ void Chain::output_top_angle(std::ostream& o, int& n, int& m)
   std::vector<int> out_angle_list;
   int i = 0;
 
-  if (chain_type_ != DNA && chain_type_ != RNA && chain_type_ != na)
-  {
+  if (chain_type_ == protein) {
     for (i = 0; i < n_residue_-2; ++i) {
       int ni = i + n;
       out_angle_list.push_back(ni + 1);
@@ -414,7 +415,7 @@ void Chain::output_top_angle(std::ostream& o, int& n, int& m)
       out_angle_list.push_back(ni + 3);
     }
     n += n_residue_;
-  } else {
+  } else if (chain_type_ == DNA || chain_type_ == RNA || chain_type_ == na) {
     // ---------- angle BSP ----------
     out_angle_list.push_back(n + 2);
     out_angle_list.push_back(n + 1);
@@ -450,7 +451,10 @@ void Chain::output_top_angle(std::ostream& o, int& n, int& m)
     out_angle_list.push_back(n + 1);
     out_angle_list.push_back(n + 2);
     n += 2;
+  } else if (chain_type_ == ion) {
+    ++n;
   }
+
   for (int j : out_angle_list) {
     o << std::setw(8) << j;
     if (++m == 9) {
@@ -468,8 +472,7 @@ void Chain::output_top_dihedral(std::ostream& o, int& n, int& m)
   int i = 0;
   std::vector<int> out_dih_list;
 
-  if (chain_type_ != DNA && chain_type_ != RNA && chain_type_ != na)
-  {
+  if (chain_type_ == protein) {
     for (i = 0; i < n_residue_-3; ++i) {
       int ni = i + n;
       out_dih_list.push_back(ni + 1);
@@ -478,7 +481,7 @@ void Chain::output_top_dihedral(std::ostream& o, int& n, int& m)
       out_dih_list.push_back(ni + 4);
     }
     n += n_residue_;
-  } else {
+  } else if (chain_type_ == DNA || chain_type_ == RNA || chain_type_ == na) {
     if (n_residue_ <= 2) {
       n += 5;
       return;
@@ -505,7 +508,10 @@ void Chain::output_top_dihedral(std::ostream& o, int& n, int& m)
       out_dih_list.push_back(n + 6);
     }
     n += 5;
+  } else if (chain_type_ == ion) {
+    ++n;
   }
+
   for (int j : out_dih_list) {
     o << std::setw(8) << j;
     if (++m == 8) {

@@ -26,14 +26,13 @@ int main(int argc, char *argv[])
   int in_flag = 0;
   int crd_flag = 0;
   int pdb_flag = 0;
-  int top_flag = 0;
   int parm_flag = 0;
   int stat_flag = 0;
 
   string basefilename = "";
   string infilename = "some.pdb";
 
-  while ((opt = getopt(argc, argv, "sptcPm:f:h")) != -1) {
+  while ((opt = getopt(argc, argv, "spcPm:f:h")) != -1) {
     switch (opt) {
       case 's':
         stat_flag = 1;
@@ -46,9 +45,6 @@ int main(int argc, char *argv[])
         break;
       case 'c':
         crd_flag = 1;
-        break;
-      case 't':
-        top_flag = 1;
         break;
       case 'm':
         mod_index = atoi(optarg);
@@ -138,7 +134,7 @@ void print_usage(char* s)
   cout << " Usage: "
        << s
        << "\n\t -f some.pdb\n\t [-c (out_cg.crd)]\n\t"
-       << " [-t (out_cg.psf)]\n\t [-P (out_cg.ffp)]\n\t"
+       << " [-P (out_cg.ffp)]\n\t"
        << " [-p (out_cg.pdb)]\n\t [-s (out_cg.stat)]\n\t"
        << " [-m module]\n\t [-h]"
        << "\n";

@@ -132,7 +132,7 @@ void Model::output_top_bond(std::ostream& o)
 
   for (i = 0; i < n_chain_; ++i) {
     ChainType ct = v_chains_[i].get_chain_type();
-    if (ct == water || ct == other || ct == none)
+    if (ct == water || ct == other || ct == none || ct == ion)
       continue;
     else if (ct == DNA || ct == RNA || ct == na)
       n += v_chains_[i].get_size() * 3 - 2;
@@ -160,7 +160,7 @@ void Model::output_top_angle(std::ostream& o)
 
   for (i = 0; i < n_chain_; ++i) {
     ChainType ct = v_chains_[i].get_chain_type();
-    if (ct == water || ct == other || ct == none)
+    if (ct == water || ct == other || ct == none || ct == ion)
       continue;
     else if (ct == DNA || ct == RNA || ct == na)
       n += v_chains_[i].get_size() * 4 - 5;
@@ -188,7 +188,7 @@ void Model::output_top_dihedral(std::ostream& o)
 
   for (i = 0; i < n_chain_; ++i) {
     ChainType ct = v_chains_[i].get_chain_type();
-    if (ct == water || ct == other || ct == none)
+    if (ct == water || ct == other || ct == none || ct == ion)
       continue;
     else if (ct == DNA || ct == RNA || ct == na)
       n += v_chains_[i].get_size() * 2 - 4;

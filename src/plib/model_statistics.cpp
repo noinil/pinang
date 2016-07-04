@@ -25,7 +25,6 @@ void Model::output_statistics_pro_DNA_contact_pairs(std::ostream& o)
   double cg_dist = 0;
   double aa_dist_min = 0;
   std::string groove_info;
-  const double aa_dist_cutoff = 6.5;
 
   std::vector<Atom> tmp_cg_pro_group;
   std::vector<Atom> tmp_cg_dna_group;
@@ -134,7 +133,7 @@ void Model::output_statistics_pro_DNA_contact_pairs(std::ostream& o)
       atmp2 = tmp_cg_dna_group[j];
       rtmp2 = tmp_residue_dna_group[j];
       aa_dist_min = residue_min_distance(rtmp1, rtmp2, atmp3, atmp4);
-      if (aa_dist_min < aa_dist_cutoff && aa_dist_min > 0) {
+      if (aa_dist_min < g_cutoff && aa_dist_min > 0) {
         cg_dist = atom_distance(atmp1, atmp2);
         groove_info = get_DNA_atom_position_info(atmp4.get_residue_name(), atmp4.get_atom_name());
 
