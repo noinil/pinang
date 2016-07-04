@@ -71,6 +71,11 @@ void Chain::self_check()
     v_residues_[0].set_terminus_flag(-1);
     v_residues_[n_residue_ - 1].set_terminus_flag(1);
   }
+  if (chain_type_ == RNA || chain_type_ == na) {
+    v_residues_[0].set_terminus_flag(5);
+    v_residues_[n_residue_ - 1].set_terminus_flag(3);
+    // missing coordinate settings...
+  }
   if (chain_type_ == DNA) {
     v_residues_[0].set_terminus_flag(5);
     v_residues_[n_residue_ - 1].set_terminus_flag(3);
@@ -246,8 +251,7 @@ void Chain::output_cg_pdb(std::ostream& o, int& n, int& m)
     return;
 
   int i = 0;
-  if (chain_type_ != DNA && chain_type_ != RNA && chain_type_ != na)
-  {
+  if (chain_type_ == protein) {
     for (Residue& r : v_residues_) {
       Atom pseudo_ca = r.get_cg_C_alpha();
       pseudo_ca.set_atom_serial(++n);
@@ -255,7 +259,7 @@ void Chain::output_cg_pdb(std::ostream& o, int& n, int& m)
       pseudo_ca.set_element("pC");
       o << pseudo_ca;
     }
-  } else {
+  } else if (chain_type_ == DNA || chain_type_ == RNA || chain_type_ == na) {
     for (Residue& r : v_residues_) {
       Vec3d coor_B;
       if (r.get_terminus_flag() != 5) {
@@ -276,6 +280,13 @@ void Chain::output_cg_pdb(std::ostream& o, int& n, int& m)
       pseudo_B.set_chain_ID(m + 97);
       pseudo_B.set_element("dB");
       o << pseudo_B;
+    }
+  } else if (chain_type_ == ion) {
+    for (Residue& r : v_residues_) {
+      Atom pseudo_ca = r.get_cg_C_alpha();
+      pseudo_ca.set_atom_serial(++n);
+      pseudo_ca.set_chain_ID(m + 97);
+      o << pseudo_ca;
     }
   }
   ++m;
@@ -299,7 +310,6 @@ void Chain::output_top_mass(std::ostream& o, int& n, int& m)
 
   int i = 0;
   char cid = m + 97;
-  // if (chain_type_ != DNA && chain_type_ != RNA && chain_type_ != na)
   if (chain_type_ == protein) {
     for (const Residue& r : v_residues_) {
       output_top_mass_line(o, ++n, cid, r.get_residue_serial(), r.get_residue_name(),
