@@ -223,13 +223,13 @@ void Chain::output_cg_crd(std::ostream& o)
     return;
 
   int i = 0;
-  if (chain_type_ != DNA && chain_type_ != RNA && chain_type_ != na)
-  {
+  if (chain_type_ == protein) {
     for (Residue& r : v_residues_) {
       Atom pseudo_ca = r.get_cg_C_alpha();
       o << pseudo_ca.get_coordinate() << " \n";
     }
-  } else {
+  }
+  if (chain_type_ == DNA || chain_type_ == RNA || chain_type_ == na) {
     for (Residue& r : v_residues_) {
       Vec3d coor_B;
       if (r.get_terminus_flag() != 5) {
@@ -242,6 +242,11 @@ void Chain::output_cg_crd(std::ostream& o)
       Atom pseudo_B = r.get_cg_B();
       o << pseudo_B.get_coordinate() << " \n";
     }
+  }
+  if (chain_type_ == ion) {
+    Residue r = v_residues_[0];
+    Atom pseudo_a = r.get_atom(0);
+    o << pseudo_a.get_coordinate() << " \n";
   }
 }
 
