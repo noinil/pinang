@@ -116,8 +116,9 @@ void Model::output_top_mass(std::ostream& o)
   n = 0;
   for (i = 0; i < n_chain_; ++i) {
     ChainType ct = v_chains_[i].get_chain_type();
-    if (ct == water || ct == other || ct == none)
+    if (ct == water || ct == other || ct == none) {
       continue;
+    }
     v_chains_[i].output_top_mass(o, n, m);
   }
   o << std::endl;
@@ -365,11 +366,11 @@ void Model::output_ffparm_nonbonded(std::ostream& o)
     c0 = c0 + v_chains_[i];
   }
 
-  o << "[ native ]" << std::setw(8) << c0.get_native_contact_number() << "\n";
+  o << "[ native ]" << std::setw(8) << c0.get_protein_native_contact_number() << "\n";
   o << "# " << std::setw(6) << "pi" << std::setw(9) << "pj"
     << std::setw(17) << "sigma" << std::setw(13) << "eps" << "\n";
 
-  c0.output_ffparm_native(o);
+  c0.output_ffparm_protein_native(o);
   o << "\n" << std::endl;
 }
 

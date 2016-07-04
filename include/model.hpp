@@ -82,7 +82,7 @@ class Model
   void output_ffparm_angle(std::ostream&);
   //! @brief Output dihedral angle interactions to forcefield parm file.
   void output_ffparm_dihedral(std::ostream&);
-  //! @brief Output non-bonded native contact interactions to forcefield parm file.
+  //! @brief Output non-bonded interactions to forcefield parm file.
   void output_ffparm_nonbonded(std::ostream&);
 
   //! @brief Output statistics of protein-DNA pairwise residue-residue distances.

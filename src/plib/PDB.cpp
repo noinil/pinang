@@ -143,8 +143,8 @@ PDB::PDB(const std::string& s)
           chain_tmp.reset();
           resid_tmp.reset();
         }
+        resid_tmp.set_residue_by_name(atom_tmp.get_residue_name());
         resid_tmp.set_residue_serial(atom_tmp.get_residue_serial());
-        resid_tmp.set_residue_name(atom_tmp.get_residue_name());
         resid_tmp.set_chain_ID(atom_tmp.get_chain_ID());
         resid_tmp.add_atom(atom_tmp);
       }

@@ -57,6 +57,7 @@ double get_mass_from_atom_name_tmp(const std::string& s)
       return 0.000;
   }
 }
+
 void Chain::self_check()
 {
   for (Residue& r : v_residues_) {
@@ -298,13 +299,13 @@ void Chain::output_top_mass(std::ostream& o, int& n, int& m)
 
   int i = 0;
   char cid = m + 97;
-  if (chain_type_ != DNA && chain_type_ != RNA && chain_type_ != na)
-  {
+  // if (chain_type_ != DNA && chain_type_ != RNA && chain_type_ != na)
+  if (chain_type_ == protein) {
     for (const Residue& r : v_residues_) {
       output_top_mass_line(o, ++n, cid, r.get_residue_serial(), r.get_residue_name(),
                            "CA", "C", r.get_residue_charge(), r.get_residue_mass());
     }
-  } else {
+  } else if (chain_type_ == DNA) {
     for (const Residue& r : v_residues_) {
       if (r.get_terminus_flag() != 5) {
         output_top_mass_line(o, ++n, cid, r.get_residue_serial(), r.get_residue_name(),
@@ -315,7 +316,23 @@ void Chain::output_top_mass(std::ostream& o, int& n, int& m)
       output_top_mass_line(o, ++n, cid, r.get_residue_serial(), r.get_residue_name(),
                            "DB", "B", 0.0, r.get_residue_mass() - 83.11 - 94.97);
     }
-  }
+  } else if (chain_type_ == RNA || chain_type_ == na) {
+    for (const Residue& r : v_residues_) {
+      if (r.get_terminus_flag() != 5) {
+        output_top_mass_line(o, ++n, cid, r.get_residue_serial(), r.get_residue_name(),
+                             "RP", "P", -0.6, 94.97);
+      }
+      output_top_mass_line(o, ++n, cid, r.get_residue_serial(), r.get_residue_name(),
+                           "RS", "S", 0.0, 99.11);
+      output_top_mass_line(o, ++n, cid, r.get_residue_serial(), r.get_residue_name(),
+                           "RB", "B", 0.0, r.get_residue_mass() - 83.11 - 94.97);
+    }
+  } else if (chain_type_ == ion) {
+    Residue r = v_residues_[0];
+    output_top_mass_line(o, ++n, cid, r.get_residue_serial(), r.get_residue_name(),
+                         r.get_residue_name(), "i", r.get_residue_charge(), r.get_residue_mass());
+  } 
+
   ++m;
 }
 
@@ -483,7 +500,7 @@ void Chain::output_top_dihedral(std::ostream& o, int& n, int& m)
   }
 }
 
-int Chain::get_native_contact_number()
+int Chain::get_protein_native_contact_number()
 {
   int i = 0, j = 0;
   double d = -1;
@@ -505,6 +522,7 @@ int Chain::get_native_contact_number()
   }
   return n;
 }
+
 
 void output_ff_bond_line(std::ostream& o, int i, int j, double d, double k)
 {
@@ -693,24 +711,28 @@ void Chain::output_ffparm_dihedral(std::ostream& o, int& n)
   }
 }
 
-void Chain::output_ffparm_native(std::ostream& o)
+void Chain::output_ffparm_protein_native(std::ostream& o)
 {
   int i = 0, j = 0;
+  char ri = '_', rj = '_';
   double d = -1, f = -1;
   ChainType cti, ctj;
   for (i = 0; i < n_residue_-4; ++i) {
     cti = v_residues_[i].get_chain_type();
+    ri = v_residues_[i].get_chain_ID();
     if (cti == water || cti == DNA || cti == RNA || cti == na || cti == ion)
       continue;
     for (j = i + 4; j < n_residue_; ++j) {
       ctj = v_residues_[j].get_chain_type();
+      rj = v_residues_[j].get_chain_ID();
       if (ctj == water || ctj == DNA || ctj == RNA || ctj == na || ctj == ion)
         continue;
       d = residue_min_distance(v_residues_[i], v_residues_[j]);
       if ( d < g_cutoff && d > 0)
       {
         f = residue_ca_distance(v_residues_[i], v_residues_[j]);
-        o << std::setw(8) << i+1 << " " << std::setw(8) << j+1 << " "
+        o << std::setw(8) << i + 1 << " " << std::setw(8) << j + 1 << " "
+          << std::setw(3) << char(ri + 32) << " " << std::setw(3) << char(rj + 32) << " "
           << std::setiosflags(std::ios_base::fixed) << std::setprecision(6)
           << std::setw(16) << f << " " << std::setprecision(5)
           << std::setw(12) << k_K_native << " " << "\n";
@@ -718,6 +740,7 @@ void Chain::output_ffparm_native(std::ostream& o)
     }
   }
 }
+
 
 
 // Chain -------------------------------------------------------------------

@@ -66,7 +66,7 @@ Atom& Residue::get_atom(int n)
 
 int Residue::add_atom(const Atom& a)
 {
-  if (a.get_residue_serial() != residue_serial_)
+  if (a.get_residue_serial() != residue_serial_ || a.get_chain_ID() != chain_ID_)
   {
     return 1;
   }
@@ -144,7 +144,7 @@ Atom& Residue::get_cg_P()
   if (cg_P_.get_atom_name() == "") {
     std::cout << " ~               PINANG :: residues.hpp         ~ " << "\n";
     std::cerr << "ERROR: CG Phosphate not set in Residue: "
-              << residue_serial_ << "\n";
+              << residue_serial_ << " in Chain: " << chain_ID_ << "\n";
     exit(EXIT_SUCCESS);
   }
   return cg_P_;
