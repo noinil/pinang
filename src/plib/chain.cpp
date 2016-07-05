@@ -74,7 +74,7 @@ void Chain::self_check()
   if (chain_type_ == RNA || chain_type_ == na) {
     v_residues_[0].set_terminus_flag(5);
     v_residues_[n_residue_ - 1].set_terminus_flag(3);
-    // missing coordinate settings...
+    //! @todo missing coordinate settings for RNA...
   }
   if (chain_type_ == DNA) {
     v_residues_[0].set_terminus_flag(5);

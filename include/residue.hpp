@@ -26,8 +26,6 @@ namespace pinang {
 
   A few atoms comprises a residue.  The class Residue records the coordinates of
   atoms, the atom names, residue name, residue serial number and other properties.
-
-  @todo initialization or settings of CG particles in Residue (cg_P_, cg_S_, cg_B_).
 */
 class Residue
 {
