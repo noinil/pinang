@@ -45,3 +45,9 @@ By default, all the tools will be moved to the =bin/= directory.
 | p_pdb_get_sequence            | Output sequence of molecules in PDB.                               |
 
 
+
+* Dangerous Traps
+** PDB format
+   - DNA residues should have name "DA", "DT", "DC", or "DG".
+   - If the user want to include ions into CG models, change atom record name
+     from "HETATM" to "ATOM".

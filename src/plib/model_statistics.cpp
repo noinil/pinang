@@ -76,10 +76,15 @@ void Model::output_statistics_pro_DNA_contact_pairs(std::ostream& o)
         tmp_cg_dna_group.push_back(atmp1);
 
         rtmp_P = rtmp_P_1;
+        rtmp_P_1.reset();
         rtmp_P.set_residue_serial(rtmp1.get_residue_serial());
+        rtmp_P_1.set_residue_serial(rtmp1.get_residue_serial());
         rtmp_S.set_residue_serial(rtmp1.get_residue_serial());
         rtmp_B.set_residue_serial(rtmp1.get_residue_serial());
-        rtmp_P_1.reset();
+        rtmp_P.set_chain_ID(rtmp1.get_chain_ID());
+        rtmp_P_1.set_chain_ID(rtmp1.get_chain_ID());
+        rtmp_S.set_chain_ID(rtmp1.get_chain_ID());
+        rtmp_B.set_chain_ID(rtmp1.get_chain_ID());
 
         for (int k = 0; k < rtmp1.get_size(); ++k) {
           atmp1 = rtmp1.get_atom(k);
@@ -107,6 +112,16 @@ void Model::output_statistics_pro_DNA_contact_pairs(std::ostream& o)
         rtmp_S.reset();
         rtmp_B.reset();
       }
+    } else if (ct_tmp == RNA || ct_tmp == na) {
+      for (j = 0; j < m_chain_size; ++j) {
+        if (j != 0) {
+          tmp_resid_serial += 3;
+        } else {
+          tmp_resid_serial += 2;
+        }
+      }
+    } else if (ct_tmp == ion) {
+      ++tmp_resid_serial;
     }
   }
 
@@ -152,7 +167,6 @@ void Model::output_statistics_pro_DNA_contact_pairs(std::ostream& o)
       }
     }
   }
-
 }
 
 }

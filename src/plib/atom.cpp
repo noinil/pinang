@@ -42,7 +42,7 @@ Atom::Atom()
   atom_serial_ = -9973;
   atom_name_ = "";
   alt_loc_ = ' ';
-  residue_name_ = "WTF";
+  residue_name_ = "wtf";
   chain_ID_ = ' ';
   residue_serial_ = -997;
   insert_code_ = ' ';
@@ -60,7 +60,7 @@ void Atom::reset()
   atom_serial_ = -9973;
   atom_name_ = "";
   alt_loc_ = ' ';
-  residue_name_ = "WTF";
+  residue_name_ = "wtf";
   chain_ID_ = ' ';
   residue_serial_ = -997;
   insert_code_ = ' ';
