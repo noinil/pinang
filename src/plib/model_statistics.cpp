@@ -398,9 +398,9 @@ void Model::output_ffparm_nonbonded(std::ostream& o)
     }
   }
   o << "[ protein-DNA seq-specific ]" << std::setw(8) << pro_DNA_contact_cg_distance.size() << "\n";
-  o << "# " << std::setw(6) << "pi" << std::setw(9) << "pj"
-    << std::setw(17) << "sigma" << std::setw(9) << "angle0"
-    << std::setw(9) << "angle5" << std::setw(9) << "angle3"
+  o << "# " << std::setw(6) << "pro_i" << std::setw(9) << "dna_j"
+    << std::setw(17) << "sigma" << std::setw(9) << "angle_0"
+    << std::setw(9) << "angle_5" << std::setw(9) << "angle_3"
     << std::setw(13) << "eps" << "\n";
   for (i = 0; i < pro_DNA_contact_cg_distance.size(); ++i) {
     o << std::setw(8) << pro_DNA_contact_pro_atom_serial[i] << " "
