@@ -232,28 +232,22 @@ void Chain::output_cg_crd(std::ostream& o)
   int i = 0;
   if (chain_type_ == protein) {
     for (Residue& r : v_residues_) {
-      Atom pseudo_ca = r.get_cg_C_alpha();
-      o << pseudo_ca.get_coordinate() << " \n";
+      o << r.get_cg_C_alpha().get_coordinate() << " \n";
     }
   }
   if (chain_type_ == DNA || chain_type_ == RNA || chain_type_ == na) {
     for (Residue& r : v_residues_) {
       Vec3d coor_B;
       if (r.get_terminus_flag() != 5) {
-        Atom pseudo_P = r.get_cg_P();
-        o << pseudo_P.get_coordinate() << " \n";
+        o << r.get_cg_P().get_coordinate() << " \n";
       }
-      Atom pseudo_S = r.get_cg_S();
-      o << pseudo_S.get_coordinate() << " \n";
-
-      Atom pseudo_B = r.get_cg_B();
-      o << pseudo_B.get_coordinate() << " \n";
+      o << r.get_cg_S().get_coordinate() << " \n";
+      o << r.get_cg_B().get_coordinate() << " \n";
     }
   }
   if (chain_type_ == ion) {
     Residue r = v_residues_[0];
-    Atom pseudo_a = r.get_atom(0);
-    o << pseudo_a.get_coordinate() << " \n";
+    o << r.get_atom(0).get_coordinate() << " \n";
   }
 }
 
@@ -739,35 +733,6 @@ void Chain::output_ffparm_dihedral(std::ostream& o, int& n)
     n += 5;
   } else if (chain_type_ == ion) {
     ++n;
-  }
-}
-
-void Chain::output_ffparm_protein_native(std::ostream& o)
-{
-  if (chain_type_ == water || chain_type_ == other || chain_type_ == none)
-    return;
-
-  int i = 0, j = 0;
-  double d = -1, f = -1;
-  ChainType cti, ctj;
-  for (i = 0; i < n_residue_-4; ++i) {
-    cti = v_residues_[i].get_chain_type();
-    if (cti != protein)
-      continue;
-    for (j = i + 4; j < n_residue_; ++j) {
-      ctj = v_residues_[j].get_chain_type();
-      if (ctj != protein)
-        continue;
-      d = residue_min_distance(v_residues_[i], v_residues_[j]);
-      if ( d < g_cutoff && d > 0)
-      {
-        f = residue_ca_distance(v_residues_[i], v_residues_[j]);
-        o << std::setw(8) << i + 1 << " " << std::setw(8) << j + 1 << " "
-          << std::setiosflags(std::ios_base::fixed) << std::setprecision(6)
-          << std::setw(16) << f << " " << std::setprecision(5)
-          << std::setw(12) << k_K_native << " " << "\n";
-      }
-    }
   }
 }
 
