@@ -168,8 +168,15 @@ void Model::output_statistics_pro_DNA_contact_pairs(std::ostream& o)
         if (atmp2.get_atom_name() == "DB  ") {
           o << "REMARK      : " << atmp1.get_residue_name() << " - " << atmp2.get_residue_name() << " \n";
           o << tmp_residue_dna_group[j - 1];
+          o << "TER \n";
           o << rtmp2;
+          o << "TER \n";
           o << rtmp1;
+          o << "TER \n";
+          o << atmp2;
+          o << "TER \n";
+          o << atmp1;
+          o << "TER \n";
           o << "ENDMDL \n";
         }
       }
