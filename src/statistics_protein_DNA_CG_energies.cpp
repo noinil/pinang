@@ -1,8 +1,8 @@
 /*!
-  @file statistics_protein_DNA_CG_quantities.cpp
-  @brief Statistics of protein-DNA interacting quantities.
+  @file statistics_protein_DNA_CG_energies.cpp
+  @brief Statistics of protein-DNA sequence-specific interaction energies.
 
-  Calculate protein-DNA interacting pairwise distances, angles, etc...
+  Calculate protein-DNA sequence-specific interaction energies.
 
   @author Cheng Tan (noinil@gmail.com)
   @date 2016-06-16 14:33
@@ -256,20 +256,20 @@ int main(int argc, char *argv[])
     tmp_c_B0 = conf.get_coordinate(dnai);
     tmp_distance = pinang::vec_distance(tmp_c_CA, tmp_c_B0);
     tmp_c_S0 = conf.get_coordinate(dnai - 1);
-    tmp_angle_0 = vec_angle_deg(tmp_c_S0 - tmp_c_B0, tmp_c_CA - tmp_c_B0);
+    tmp_angle_0 = pinang::vec_angle_deg(tmp_c_S0 - tmp_c_B0, tmp_c_CA - tmp_c_B0);
     // ---------- 5' Base ----------
     if (angle_5 < -600) {
       tmp_angle_5 = angle_5;
     } else {
       tmp_c_B5 = conf.get_coordinate(dnai - 3);
-      tmp_angle_5 = vec_angle_deg(tmp_c_B5 - tmp_c_B0, tmp_c_CA - tmp_c_B0);
+      tmp_angle_5 = pinang::vec_angle_deg(tmp_c_B5 - tmp_c_B0, tmp_c_CA - tmp_c_B0);
     }
     // ---------- 3' Base ----------
     if (angle_3 < -600) {
       tmp_angle_3 = angle_3;
     } else {
       tmp_c_B3 = conf.get_coordinate(dnai + 3);
-      tmp_angle_3 = vec_angle_deg(tmp_c_B3 - tmp_c_B0, tmp_c_CA - tmp_c_B0);
+      tmp_angle_3 = pinang::vec_angle_deg(tmp_c_B3 - tmp_c_B0, tmp_c_CA - tmp_c_B0);
     }
     energy_tmp = pro_DNA_specific_energy(tmp_distance, tmp_angle_0, tmp_angle_5, tmp_angle_3, sigma, angle_0, angle_5, angle_3);
     total_energy_3 += energy_tmp;
@@ -317,7 +317,7 @@ double factorize_theta(double theta, double theta_0, int i)
 {
   double fct = 0;
   double theta_cutoff;
-  double delta_theta = theta - theta_0;
+  double delta_theta = abs(theta - theta_0);
   if (i == 0) {
     theta_cutoff = d_theta0;
   } else if (i == 5) {
@@ -329,9 +329,9 @@ double factorize_theta(double theta, double theta_0, int i)
     exit(EXIT_SUCCESS);
   }
 
-  if (abs(delta_theta) < theta_cutoff) {
+  if (delta_theta < theta_cutoff) {
     fct = 1;
-  } else if (abs(delta_theta) < theta_cutoff * 2) {
+  } else if (delta_theta < theta_cutoff * 2) {
     double cos_theta = cos(delta_theta / 180.0 * 3.14159);
     fct = 1 - cos_theta * cos_theta;
   } else {
