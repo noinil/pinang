@@ -232,6 +232,9 @@ int main(int argc, char *argv[])
     outfile << "END PAIR \n";
   }
 
+  stat_file.close();
+  outfile.close();
+
   return 0;
 }
 

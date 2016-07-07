@@ -90,8 +90,6 @@ class Chain
   void output_ffparm_angle(std::ostream&, int&);
   //! @brief Output dihedral angle interactions to forcefield parm file.
   void output_ffparm_dihedral(std::ostream&, int&);
-  //! @brief Output non-bonded native contact interactions to forcefield parm file.
-  void output_ffparm_protein_native(std::ostream&);
 
   //! @brief Get protein native contact number intra-chain.
   //! @return Native contact number.

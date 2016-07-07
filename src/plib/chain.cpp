@@ -67,6 +67,13 @@ void Chain::self_check()
       exit(EXIT_SUCCESS);
     }
   }
+  if (chain_type_ == ion) {
+    if (n_residue_ >= 2) {
+      std::cout << " ~             PINANG :: chain.hpp              ~ " << "\n";
+      std::cerr << "ERROR: more than one ion in Chain: " << chain_ID_ << "\n";
+      exit(EXIT_SUCCESS);
+    }
+  }
   if (chain_type_ == protein) {
     v_residues_[0].set_terminus_flag(-1);
     v_residues_[n_residue_ - 1].set_terminus_flag(1);
@@ -225,28 +232,22 @@ void Chain::output_cg_crd(std::ostream& o)
   int i = 0;
   if (chain_type_ == protein) {
     for (Residue& r : v_residues_) {
-      Atom pseudo_ca = r.get_cg_C_alpha();
-      o << pseudo_ca.get_coordinate() << " \n";
+      o << r.get_cg_C_alpha().get_coordinate() << " \n";
     }
   }
   if (chain_type_ == DNA || chain_type_ == RNA || chain_type_ == na) {
     for (Residue& r : v_residues_) {
       Vec3d coor_B;
       if (r.get_terminus_flag() != 5) {
-        Atom pseudo_P = r.get_cg_P();
-        o << pseudo_P.get_coordinate() << " \n";
+        o << r.get_cg_P().get_coordinate() << " \n";
       }
-      Atom pseudo_S = r.get_cg_S();
-      o << pseudo_S.get_coordinate() << " \n";
-
-      Atom pseudo_B = r.get_cg_B();
-      o << pseudo_B.get_coordinate() << " \n";
+      o << r.get_cg_S().get_coordinate() << " \n";
+      o << r.get_cg_B().get_coordinate() << " \n";
     }
   }
   if (chain_type_ == ion) {
     Residue r = v_residues_[0];
-    Atom pseudo_a = r.get_atom(0);
-    o << pseudo_a.get_coordinate() << " \n";
+    o << r.get_atom(0).get_coordinate() << " \n";
   }
 }
 
@@ -346,7 +347,7 @@ void Chain::output_top_mass(std::ostream& o, int& n, int& m)
     Residue r = v_residues_[0];
     output_top_mass_line(o, ++n, cid, r.get_residue_serial(), r.get_residue_name(),
                          r.get_residue_name(), "i", r.get_residue_charge(), r.get_residue_mass());
-  } 
+  }
 
   ++m;
 }
@@ -359,7 +360,6 @@ void Chain::output_top_bond(std::ostream& o, int& n, int& m)
   int i = 0;
   std::vector<int> out_bond_list;
 
-  // if (chain_type_ != DNA && chain_type_ != RNA && chain_type_ != na)
   if (chain_type_ == protein) {
     for (i = 0; i < n_residue_ - 1; ++i) {
       out_bond_list.push_back(++n);
@@ -530,11 +530,11 @@ int Chain::get_protein_native_contact_number()
 
   for (i = 0; i < n_residue_-4; ++i) {
     cti = v_residues_[i].get_chain_type();
-    if (cti == water || cti == DNA || cti == RNA || cti == na || cti == ion)
+    if (cti != protein)
       continue;
     for (j = i + 4; j < n_residue_; ++j) {
       ctj = v_residues_[j].get_chain_type();
-      if (ctj == water || ctj == DNA || ctj == RNA || ctj == na || ctj == ion)
+      if (ctj != protein)
         continue;
       d = residue_min_distance(v_residues_[i], v_residues_[j]);
       if ( d < g_cutoff && d > 0)
@@ -563,15 +563,14 @@ void Chain::output_ffparm_bond(std::ostream& o, int& n)
   double d_sb = 0;
   double d_sp = 0;
 
-  if (chain_type_ != DNA && chain_type_ != RNA && chain_type_ != na)
-  {
+  if (chain_type_ == protein) {
     for (i = 0; i < n_residue_ - 1; ++i) {
       d = residue_ca_distance(v_residues_[i], v_residues_[i+1]);
       ++n;
       output_ff_bond_line(o, n, n + 1, d, k_K_bond);
     }
     ++n;
-  } else {
+  } else if (chain_type_ == DNA || chain_type_ == RNA || chain_type_ == na) {
     d_sb = atom_distance(v_residues_[0].get_cg_S(), v_residues_[0].get_cg_B());
     output_ff_bond_line(o, n + 1, n + 2, d_sb, k_K_bond);
     d_sp = atom_distance(v_residues_[1].get_cg_P(), v_residues_[0].get_cg_S());
@@ -592,6 +591,8 @@ void Chain::output_ffparm_bond(std::ostream& o, int& n)
     d_sb = atom_distance(v_residues_[i].get_cg_S(), v_residues_[i].get_cg_B());
     output_ff_bond_line(o, n + 1, n + 2, d_sb, k_K_bond);
     n += 2;
+  } else if (chain_type_ == ion) {
+    ++n;
   }
 }
 
@@ -609,8 +610,8 @@ void Chain::output_ffparm_angle(std::ostream& o, int& n)
   int i = 0;
   double a = 0;
   Vec3d v1, v2;
-  if (chain_type_ != DNA && chain_type_ != RNA && chain_type_ != na)
-  {
+
+  if (chain_type_ == protein) {
     for (i = 0; i < n_residue_-2; ++i) {
       v1 = v_residues_[i].get_cg_C_alpha().get_coordinate() - v_residues_[i+1].get_cg_C_alpha().get_coordinate();
       v2 = v_residues_[i+2].get_cg_C_alpha().get_coordinate() - v_residues_[i+1].get_cg_C_alpha().get_coordinate();
@@ -618,7 +619,7 @@ void Chain::output_ffparm_angle(std::ostream& o, int& n)
       output_ff_angle_line(o, i + n + 1, i + n + 2, i + n + 3, a, k_K_angle);
     }
     n += n_residue_;
-  } else {
+  } else if (chain_type_ == DNA || chain_type_ == RNA || chain_type_ == na) {
     // ---------- angle BSP ----------
     v1 = v_residues_[0].get_cg_B().get_coordinate() - v_residues_[0].get_cg_S().get_coordinate();
     v2 = v_residues_[1].get_cg_P().get_coordinate() - v_residues_[0].get_cg_S().get_coordinate();
@@ -661,6 +662,8 @@ void Chain::output_ffparm_angle(std::ostream& o, int& n)
     a = vec_angle_deg (v1, v2);
     output_ff_angle_line(o, n, n + 1, n + 2, a, k_K_angle);
     n += 2;
+  } else if (chain_type_ == ion) {
+    ++n;
   }
 }
 
@@ -680,8 +683,7 @@ void Chain::output_ffparm_dihedral(std::ostream& o, int& n)
   int i = 0;
   double d = 0;           // dihedral
   Vec3d v1, v2, v3, n1, n2;
-  if (chain_type_ != DNA && chain_type_ != RNA && chain_type_ != na)
-  {
+  if (chain_type_ == protein) {
     for (i = 0; i < n_residue_-3; ++i) {
       v1 = v_residues_[i].get_cg_C_alpha().get_coordinate() - v_residues_[i+1].get_cg_C_alpha().get_coordinate();
       v2 = v_residues_[i+2].get_cg_C_alpha().get_coordinate() - v_residues_[i+1].get_cg_C_alpha().get_coordinate();
@@ -693,7 +695,7 @@ void Chain::output_ffparm_dihedral(std::ostream& o, int& n)
       output_ff_dihedral_line(o, ni + 1, ni + 2, ni + 3, ni + 4, d, k_K_dihedral_1, k_K_dihedral_3);
     }
     n += n_residue_;
-  } else {
+  } else if (chain_type_ == DNA || chain_type_ == RNA || chain_type_ == na) {
     if (n_residue_ <= 2) {
       n += 5;
       return;
@@ -729,39 +731,10 @@ void Chain::output_ffparm_dihedral(std::ostream& o, int& n)
       output_ff_dihedral_line(o, n + 1, n + 3, n + 4, n + 6, d, k_K_dihedral_1, k_K_dihedral_3);
     }
     n += 5;
+  } else if (chain_type_ == ion) {
+    ++n;
   }
 }
-
-void Chain::output_ffparm_protein_native(std::ostream& o)
-{
-  int i = 0, j = 0;
-  char ri = '_', rj = '_';
-  double d = -1, f = -1;
-  ChainType cti, ctj;
-  for (i = 0; i < n_residue_-4; ++i) {
-    cti = v_residues_[i].get_chain_type();
-    ri = v_residues_[i].get_chain_ID();
-    if (cti == water || cti == DNA || cti == RNA || cti == na || cti == ion)
-      continue;
-    for (j = i + 4; j < n_residue_; ++j) {
-      ctj = v_residues_[j].get_chain_type();
-      rj = v_residues_[j].get_chain_ID();
-      if (ctj == water || ctj == DNA || ctj == RNA || ctj == na || ctj == ion)
-        continue;
-      d = residue_min_distance(v_residues_[i], v_residues_[j]);
-      if ( d < g_cutoff && d > 0)
-      {
-        f = residue_ca_distance(v_residues_[i], v_residues_[j]);
-        o << std::setw(8) << i + 1 << " " << std::setw(8) << j + 1 << " "
-          << std::setw(3) << char(ri + 32) << " " << std::setw(3) << char(rj + 32) << " "
-          << std::setiosflags(std::ios_base::fixed) << std::setprecision(6)
-          << std::setw(16) << f << " " << std::setprecision(5)
-          << std::setw(12) << k_K_native << " " << "\n";
-      }
-    }
-  }
-}
-
 
 
 // Chain -------------------------------------------------------------------
