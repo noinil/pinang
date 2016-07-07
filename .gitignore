@@ -34,3 +34,8 @@ data/*
 
 # Documentation
 share/doc/html/
+
+# GTAGS
+GPATH
+GRTAGS
+GTAGS
