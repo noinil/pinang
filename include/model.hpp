@@ -85,7 +85,7 @@ class Model
   //! @brief Output non-bonded interactions to forcefield parm file.
   void output_ffparm_nonbonded(std::ostream&);
 
-  //! @brief Output statistics of protein-DNA pairwise residue-residue distances.
+  //! @brief Output statistics of protein-DNA pairwise interaction quantities.
   void output_statistics_pro_DNA_contact_pairs(std::ostream&);
 
   //! @brief Output PDB format information of Chain.
