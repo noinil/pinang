@@ -173,6 +173,8 @@ void Model::output_statistics_pro_DNA_contact_pairs(std::ostream& o)
           o << "TER \n";
           o << rtmp1;
           o << "TER \n";
+          o << tmp_cg_dna_group[j - 1];
+          o << "TER \n";
           o << atmp2;
           o << "TER \n";
           o << atmp1;
