@@ -438,7 +438,7 @@ void Model::output_ffparm_nonbonded(std::ostream& o)
       if (atmp2.get_residue_serial() <= atmp1.get_residue_serial() + 3 && atmp1.get_chain_ID() == atmp2.get_chain_ID())
         continue;
       aa_dist_min = residue_min_distance(rtmp1, rtmp2);
-      if (aa_dist_min < g_cutoff && aa_dist_min > 0) {
+      if (aa_dist_min < g_pro_pro_aa_cutoff && aa_dist_min > 0) {
         cg_dist = atom_distance(atmp1, atmp2);
         pro_contact_part_1_atom_serial.push_back(atmp1.get_residue_serial());
         pro_contact_part_2_atom_serial.push_back(atmp2.get_residue_serial());
@@ -481,7 +481,7 @@ void Model::output_ffparm_nonbonded(std::ostream& o)
       if (atmp2.get_atom_name() != "DB  ")
         continue;
       aa_dist_min = residue_min_distance(rtmp1, rtmp2);
-      if (aa_dist_min < g_cutoff && aa_dist_min > 0) {
+      if (aa_dist_min < g_pro_DNA_aa_cutoff && aa_dist_min > 0) {
         cg_dist = atom_distance(atmp1, atmp2);
         tmp_c_CA = atmp1.get_coordinate();  // Coor of CA
         tmp_c_B0 = atmp2.get_coordinate();  // Coor of B

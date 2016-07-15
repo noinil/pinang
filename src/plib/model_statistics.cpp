@@ -148,7 +148,7 @@ void Model::output_statistics_pro_DNA_contact_pairs(std::ostream& o)
       atmp2 = tmp_cg_dna_group[j];
       rtmp2 = tmp_residue_dna_group[j];
       aa_dist_min = residue_min_distance(rtmp1, rtmp2, atmp3, atmp4);
-      if (aa_dist_min < g_cutoff && aa_dist_min > 0) {
+      if (aa_dist_min < g_pro_DNA_aa_cutoff && aa_dist_min > 0) {
         cg_dist = atom_distance(atmp1, atmp2);
         groove_info = get_DNA_atom_position_info(atmp4.get_residue_name(), atmp4.get_atom_name());
 

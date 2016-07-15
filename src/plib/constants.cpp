@@ -14,7 +14,8 @@
 
 namespace pinang {
 
-double g_cutoff = 6.5;
+double g_pro_pro_aa_cutoff = 6.5;
+double g_pro_DNA_aa_cutoff = 4.0;
 
 std::string chainType_2_string(ChainType ct)
 {

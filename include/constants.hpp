@@ -19,7 +19,8 @@
 
 namespace pinang {
 
-extern double g_cutoff;  //!< Cutoff for atomistic distances.
+extern double g_pro_pro_aa_cutoff;  //!< Cutoff for atomistic distances between C_alphas.
+extern double g_pro_DNA_aa_cutoff;  //!< Cutoff for atomistic distances between C and DNA particles.
 
 const long double k_pi = 3.14159265358979323846;  //!< @f$\pi@f$.
 
