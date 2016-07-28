@@ -148,11 +148,11 @@ int main(int argc, char *argv[])
         cout << " Wrong interaction pair for 3'DB!!! \n";
         exit(EXIT_SUCCESS);
       }
-      tmp_c_B3 = conf.get_coordinate(tmp_i4);  // Coor of 5' B
-      // ---------- 5' Base -- CA distance ----------
+      tmp_c_B3 = conf.get_coordinate(tmp_i4);  // Coor of 3' B
+      // ---------- 3' Base -- CA distance ----------
       tmp_dist_3 = pinang::vec_distance(tmp_c_CA, tmp_c_B3);
       outfile << " Distance DB3'-CA : " << tmp_dist_3 << "\n";
-      // ---------- 5' Base -- Base -- CA angle ----------
+      // ---------- 3' Base -- Base -- CA angle ----------
       tmp_angle_3 = pinang::vec_angle_deg(tmp_c_B3 - tmp_c_B0, tmp_c_CA - tmp_c_B0);
       outfile << " Angle DB3'-DB0-CA : " << tmp_angle_3 << "\n";
     }

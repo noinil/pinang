@@ -537,7 +537,7 @@ int Chain::get_protein_native_contact_number()
       if (ctj != protein)
         continue;
       d = residue_min_distance(v_residues_[i], v_residues_[j]);
-      if ( d < g_cutoff && d > 0)
+      if ( d < g_pro_pro_aa_cutoff && d > 0)
         ++n;
     }
   }
