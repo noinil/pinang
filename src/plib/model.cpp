@@ -536,19 +536,21 @@ void Model::output_ffparm_nonbonded(std::ostream& o)
   }
   o << "[ protein-DNA seq-specific ]" << std::setw(8) << pro_DNA_contact_cg_distance.size() << "\n";
   o << "# " << std::setw(6) << "pro_i" << std::setw(9) << "dna_j"
-    << std::setw(17) << "sigma" << std::setw(9) << "angle_0"
-    << std::setw(9) << "angle_53" << std::setw(10) << "groove"
-    << std::setw(13) << "eps" << "\n";
+    << std::setw(12) << "r_0" << std::setw(9) << "angle_0"
+    // << std::setw(9) << "angle_53" << std::setw(10) << "groove"
+    << std::setw(9) << "angle_53" 
+    << std::setw(9) << "sigma" << std::setw(9) << "phi" << "\n";
   for (i = 0; i < pro_DNA_contact_cg_distance.size(); ++i) {
     o << std::setw(8) << pro_DNA_contact_pro_atom_serial[i] << " "
       << std::setw(8) << pro_DNA_contact_DNA_atom_serial[i] << " "
       << std::setiosflags(std::ios_base::fixed) << std::setprecision(6)
-      << std::setw(16) << pro_DNA_contact_cg_distance[i] << " "
+      << std::setw(11) << pro_DNA_contact_cg_distance[i] << " "
       << std::setiosflags(std::ios_base::fixed) << std::setprecision(3)
       << std::setw(8) << pro_DNA_contact_cg_angle_0[i] << " "
       << std::setw(8) << pro_DNA_contact_cg_angle_53[i] << " "
-      << std::setw(9) << pro_DNA_contact_cg_groove_info[i] << " "
-      << std::setprecision(5) << std::setw(12) << k_K_pro_DNA_specific << " " << "\n";
+      // << std::setw(9) << pro_DNA_contact_cg_groove_info[i] << " "
+      << std::setprecision(3) << std::setw(8)
+      << 1.0 << " " << std::setw(8) << 10.0 << " " << "\n";
   }
   o << std::endl;
 }
