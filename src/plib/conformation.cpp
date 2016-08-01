@@ -43,7 +43,7 @@ Conformation::Conformation(const std::string& fname)
     if (ifile.fail())
       break;
     coordinates_.push_back(coor_tmp);
-    n_atom_ += 1;
+    n_atom_++;
   }
 }
 
