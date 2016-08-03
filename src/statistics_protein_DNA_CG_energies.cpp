@@ -16,16 +16,9 @@
 #include <unistd.h>
 #include "geometry.hpp"
 #include "topology.hpp"
+#include "ff_protein_DNA_specific.hpp"
 
 using namespace std;
-
-const double d_theta0 = 20;
-const double d_theta5 = 20;
-const double d_theta3 = 20;
-
-double factorize_theta(double theta, double theta_0, int i);
-double pro_DNA_specific_energy(double r, double theta0, double theta5, double theta3,
-                               double r0, double theta0_0, double theta5_0, double theta3_0);
 
 void print_usage(char* s);
 
@@ -123,6 +116,7 @@ int main(int argc, char *argv[])
       }
     }
   }
+  ffp_file.close();
 
 
   // Choose the reference group...
@@ -154,128 +148,47 @@ int main(int argc, char *argv[])
   // Preparing for shifting...
   vector<int> sel_ref1;
   vector<int> sel_ref2;
+  vector<int> sel_all;
   int refg_s = reference_g.size();
   for (int i = reference_g[0] - 1; i <= reference_g[refg_s - 1] - 3; ++i) 
     sel_ref1.push_back(i);
   for (int i = reference_g[0] + 2; i <= reference_g[refg_s - 1]; ++i) 
     sel_ref2.push_back(i);
+  for (int i = 0; i < conf.get_size(); ++i) 
+    sel_all.push_back(i);
+
   pinang::Selection sref1(sel_ref1);
   pinang::Selection sref2(sel_ref2);
+  pinang::Selection sall(sel_all);
   pinang::Group gref1(conf, sref1);
   pinang::Group gref2(conf, sref2);
+  pinang::Group group0(conf, sall);
   pinang::Transform t;
   pinang::Vec3d tmp_c_CA0, tmp_c_CA, tmp_c_B0, tmp_c_S0, tmp_c_B5, tmp_c_B3;
   double tmp_distance, tmp_angle_0, tmp_angle_5, tmp_angle_3;
 
   // 0 energy ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  pinang::FFProteinDNASpecific ff_ss(ffp_name);
   cout << " ============================================================" << "\n";
   double total_energy_0 = 0;
-  double energy_tmp = 0;
-  for (int i = 0; i < interaction_pairs.size(); ++i) {
-    int proi = interaction_pairs[i][0];
-    int dnai = interaction_pairs[i][1];
-    double sigma = interaction_sigma[i];
-    double angle_0 = interaction_angle_0[i];
-    double angle_5 = interaction_angle_5[i];
-    double angle_3 = interaction_angle_3[i];
-    tmp_c_CA = conf.get_coordinate(proi);
-    tmp_c_B0 = conf.get_coordinate(dnai);
-    tmp_distance = pinang::vec_distance(tmp_c_CA, tmp_c_B0);
-    tmp_c_S0 = conf.get_coordinate(dnai - 1);
-    tmp_angle_0 = vec_angle_deg(tmp_c_S0 - tmp_c_B0, tmp_c_CA - tmp_c_B0);
-    // ---------- 5' Base ----------
-    if (angle_5 < -600) {
-      tmp_angle_5 = angle_5;
-    } else {
-      tmp_c_B5 = conf.get_coordinate(dnai - 3);
-      tmp_angle_5 = vec_angle_deg(tmp_c_B5 - tmp_c_B0, tmp_c_CA - tmp_c_B0);
-    }
-    // ---------- 3' Base ----------
-    if (angle_3 < -600) {
-      tmp_angle_3 = angle_3;
-    } else {
-      tmp_c_B3 = conf.get_coordinate(dnai + 3);
-      tmp_angle_3 = vec_angle_deg(tmp_c_B3 - tmp_c_B0, tmp_c_CA - tmp_c_B0);
-    }
-    energy_tmp = pro_DNA_specific_energy(tmp_distance, tmp_angle_0, tmp_angle_5, tmp_angle_3, sigma, angle_0, angle_5, angle_3);
-    total_energy_0 += energy_tmp;
-    cout << "   " << proi << " - " << dnai << "   " << energy_tmp << "\n";
-  }
+  total_energy_0 += ff_ss.compute_energy_protein_DNA_specific(top, conf);
   cout << "Total energy (native): " << total_energy_0 << "\n";
 
   // 5' shifting... ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  cout << " ============================================================" << "\n";
-  double total_energy_5 = 0;
-  pinang::find_transform(gref2, gref1, t);
-  for (int i = 0; i < interaction_pairs.size(); ++i) {
-    int proi = interaction_pairs[i][0];
-    int dnai = interaction_pairs[i][1];
-    double sigma = interaction_sigma[i];
-    double angle_0 = interaction_angle_0[i];
-    double angle_5 = interaction_angle_5[i];
-    double angle_3 = interaction_angle_3[i];
-    tmp_c_CA0 = conf.get_coordinate(proi);
-    tmp_c_CA = t.apply(tmp_c_CA0);
-    tmp_c_B0 = conf.get_coordinate(dnai);
-    tmp_distance = pinang::vec_distance(tmp_c_CA, tmp_c_B0);
-    tmp_c_S0 = conf.get_coordinate(dnai - 1);
-    tmp_angle_0 = vec_angle_deg(tmp_c_S0 - tmp_c_B0, tmp_c_CA - tmp_c_B0);
-    // ---------- 5' Base ----------
-    if (angle_5 < -600) {
-      tmp_angle_5 = angle_5;
-    } else {
-      tmp_c_B5 = conf.get_coordinate(dnai - 3);
-      tmp_angle_5 = vec_angle_deg(tmp_c_B5 - tmp_c_B0, tmp_c_CA - tmp_c_B0);
-    }
-    // ---------- 3' Base ----------
-    if (angle_3 < -600) {
-      tmp_angle_3 = angle_3;
-    } else {
-      tmp_c_B3 = conf.get_coordinate(dnai + 3);
-      tmp_angle_3 = vec_angle_deg(tmp_c_B3 - tmp_c_B0, tmp_c_CA - tmp_c_B0);
-    }
-    energy_tmp = pro_DNA_specific_energy(tmp_distance, tmp_angle_0, tmp_angle_5, tmp_angle_3, sigma, angle_0, angle_5, angle_3);
-    total_energy_5 += energy_tmp;
-    cout << "   " << proi << " - " << dnai << "   " << energy_tmp << "\n";
-  }
-  cout << "Total energy (5' shifting): " << total_energy_5 << "\n";
+  // cout << " ============================================================" << "\n";
+  // double total_energy_5 = 0;
+  // pinang::find_transform(gref2, gref1, t);
+  // pinang::Group conf_new5 = t.apply(group0);
+  // total_energy_5 += ff_ss.compute_energy_protein_DNA_specific(top, conf_new5);
+  // cout << "Total energy (5' shifting): " << total_energy_5 << "\n";
 
   // 3' shifting... ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  cout << " ============================================================" << "\n";
-  double total_energy_3 = 0;
-  pinang::find_transform(gref1, gref2, t);
-  for (int i = 0; i < interaction_pairs.size(); ++i) {
-    int proi = interaction_pairs[i][0];
-    int dnai = interaction_pairs[i][1];
-    double sigma = interaction_sigma[i];
-    double angle_0 = interaction_angle_0[i];
-    double angle_5 = interaction_angle_5[i];
-    double angle_3 = interaction_angle_3[i];
-    tmp_c_CA0 = conf.get_coordinate(proi);
-    tmp_c_CA = t.apply(tmp_c_CA0);
-    tmp_c_B0 = conf.get_coordinate(dnai);
-    tmp_distance = pinang::vec_distance(tmp_c_CA, tmp_c_B0);
-    tmp_c_S0 = conf.get_coordinate(dnai - 1);
-    tmp_angle_0 = pinang::vec_angle_deg(tmp_c_S0 - tmp_c_B0, tmp_c_CA - tmp_c_B0);
-    // ---------- 5' Base ----------
-    if (angle_5 < -600) {
-      tmp_angle_5 = angle_5;
-    } else {
-      tmp_c_B5 = conf.get_coordinate(dnai - 3);
-      tmp_angle_5 = pinang::vec_angle_deg(tmp_c_B5 - tmp_c_B0, tmp_c_CA - tmp_c_B0);
-    }
-    // ---------- 3' Base ----------
-    if (angle_3 < -600) {
-      tmp_angle_3 = angle_3;
-    } else {
-      tmp_c_B3 = conf.get_coordinate(dnai + 3);
-      tmp_angle_3 = pinang::vec_angle_deg(tmp_c_B3 - tmp_c_B0, tmp_c_CA - tmp_c_B0);
-    }
-    energy_tmp = pro_DNA_specific_energy(tmp_distance, tmp_angle_0, tmp_angle_5, tmp_angle_3, sigma, angle_0, angle_5, angle_3);
-    total_energy_3 += energy_tmp;
-    cout << "   " << proi << " - " << dnai << "   " << energy_tmp << "\n";
-  }
-  cout << "Total energy (3' shifting): " << total_energy_3 << "\n";
+  // cout << " ============================================================" << "\n";
+  // double total_energy_3 = 0;
+  // pinang::find_transform(gref1, gref2, t);
+  // pinang::Group conf_new3 = t.apply(group0);
+  // total_energy_3 += ff_ss.compute_energy_protein_DNA_specific(top, conf_new3);
+  // cout << "Total energy (3' shifting): " << total_energy_3 << "\n";
 
   return 0;
 }
@@ -291,52 +204,3 @@ void print_usage(char* s)
 }
 
 
-double pro_DNA_specific_energy(double r, double theta0, double theta5, double theta3,
-                               double r0, double theta0_0, double theta5_0, double theta3_0)
-{
-  double ene = 0;
-  double r0_over_r = r0 / r;
-  double r0_over_r_2 = r0_over_r * r0_over_r;
-  double r0_over_r_4 = r0_over_r_2 * r0_over_r_2;
-  double r0_over_r_6 = r0_over_r_4 * r0_over_r_2;
-  double r0_over_r_12 = r0_over_r_6 * r0_over_r_6;
-  double r0_over_r_10 = r0_over_r_6 * r0_over_r_4;
-
-  ene = factorize_theta(theta0, theta0_0, 0)
-        * factorize_theta(theta5, theta5_0, 5)
-        * factorize_theta(theta3, theta3_0, 3)
-        * (5 * r0_over_r_12 - 6 * r0_over_r_10);
-
-  if (ene > 0) {
-    return 0;
-  }
-  return ene;
-}
-
-double factorize_theta(double theta, double theta_0, int i)
-{
-  double fct = 0;
-  double theta_cutoff;
-  double delta_theta = abs(theta - theta_0);
-  if (i == 0) {
-    theta_cutoff = d_theta0;
-  } else if (i == 5) {
-    theta_cutoff = d_theta5;
-  } else if (i == 3) {
-    theta_cutoff = d_theta3;
-  } else {
-    cout << " ERROR: Wrong factorization_theta code!..." << "\n";
-    exit(EXIT_SUCCESS);
-  }
-
-  if (delta_theta < theta_cutoff) {
-    fct = 1;
-  } else if (delta_theta < theta_cutoff * 2) {
-    double cos_theta = cos(delta_theta / 180.0 * 3.14159);
-    fct = 1 - cos_theta * cos_theta;
-  } else {
-    fct = 0;
-  }
-
-  return fct;
-}
