@@ -22,6 +22,7 @@ PairProteinDNASpecific::PairProteinDNASpecific()
   r_0_ = 9973.0;
   angle_0_0_ = -997.0;
   angle_53_0_ = -997.0;
+  angle_NC_0_ = -997.0;
   sigma_ = 1.0;
   twice_sigma_square_ = 2.0;
   phi_ = 180.0;
@@ -29,12 +30,13 @@ PairProteinDNASpecific::PairProteinDNASpecific()
 
 std::istream& operator>>(std::istream& i, PairProteinDNASpecific& pairSS)
 {
-  double r0, ang0, ang53, sig, p;
+  double r0, angNC, ang0, ang53, sig, p;
   int serp, serd;
-  i >> serp >> serd >> r0 >> ang0 >> ang53 >> sig >> p;
+  i >> serp >> serd >> r0 >> angNC >> ang0 >> ang53 >> sig >> p;
   if (!i) return i;
   pairSS.protein_serial_ = serp - 1;
   pairSS.r_0_ = r0;
+  pairSS.angle_NC_0_ = angNC;
   pairSS.angle_0_0_ = ang0;
   pairSS.angle_53_0_ = ang53;
   pairSS.sigma_ = sig;
@@ -105,18 +107,15 @@ FFProteinDNASpecific::FFProteinDNASpecific(std::string ffp_file_name)
     if (ffp_file.fail())
       break;
 
-    m = ffp_line.find("[ protein-DNA seq-specific ]");
     std::istringstream tmp_sstr;
-    tmp_sstr.str(ffp_line);
+    m = ffp_line.find("[ protein-DNA seq-specific ]");
     if (m != std::string::npos) {
+      tmp_sstr.str(ffp_line);
       for (int i = 0; i < 4; ++i)
         tmp_sstr >> tmp_s;
       tmp_sstr >> tmp_i0;  // read in total number of pro-DNA interactions;
       getline(ffp_file, ffp_line);  // read in a comment line;
       for (int i = 0; i < tmp_i0; ++i) {  // read in all interaction details...;
-        // getline(ffp_file, ffp_line);
-        // std::istringstream tmp_sstr1;
-        // tmp_sstr1.str(ffp_line);
         ffp_file >> pair_tmp;
         if (pair_com_tmp.add_interaction_pair(pair_tmp)) {
           if (pair_com_tmp.n_inter_pair_ > 0) {

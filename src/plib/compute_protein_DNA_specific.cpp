@@ -36,6 +36,29 @@ double FFProteinDNASpecific::compute_energy_protein_DNA_specific(Topology &top, 
     int proi = tmp_pair.protein_serial_;  // protein particle index;
     std::cout << " protein particle: " << i << "   serial: " << proi + 1 << "\n";
     Vec3d tmp_c_CA = conf.get_coordinate(proi);         // protein Calpha coordinates;
+    Vec3d tmp_c_CA_N, tmp_c_CA_C;
+    int calpha_term_N, calpha_term_C;
+    k = proi - 1;
+    if (k < 0 || top.get_particle(k).get_chain_ID() != top.get_particle(proi).get_chain_ID()) {
+      tmp_c_CA_N = tmp_c_CA;
+      calpha_term_N = 1;
+    } else {
+      calpha_term_N = 0;
+      tmp_c_CA_N = conf.get_coordinate(k);  // Coor of N' CA
+    }
+    k = proi + 1;
+    if (k >= top.get_size() || top.get_particle(k).get_chain_ID() != top.get_particle(proi).get_chain_ID()) {
+      tmp_c_CA_C = tmp_c_CA;
+      calpha_term_C = 1;
+    } else {
+      calpha_term_C = 0;
+      tmp_c_CA_C = conf.get_coordinate(k);  // Coor of C' CA
+    }
+    if (calpha_term_N * calpha_term_C > 0) {
+      std::cout << " Single residue Chain!!! WTF!!! \n";
+      exit(EXIT_SUCCESS);
+    }
+    Vec3d tmp_CCA_NCA = tmp_c_CA_N - tmp_c_CA_C;
     double dist_cutoff = tmp_pair.d_cutoff_;
     for (j = 0; j < dna_index.size(); ++j) {
       int dnai = dna_index[j];                          // DNA particle index;
@@ -65,16 +88,18 @@ double FFProteinDNASpecific::compute_energy_protein_DNA_specific(Topology &top, 
         continue;
       } 
       double tmp_angle_53 = vec_angle_deg(tmp_B5_B3, tmp_B0_CA);
+      double tmp_angle_NC = vec_angle_deg(tmp_CCA_NCA,  tmp_B0_CA);
       // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ CORE CALCULATION! ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       double tmp_angle_factor = 0;
       double tmp_factor = 0;
-      double best_d = 0, best_a0 = 0, best_a53 = 0;
+      double best_d = 0, best_aNC = 0, best_a0 = 0, best_a53 = 0;
       for (k = 0; k < tmp_pair.n_inter_pair_; ++k) {
         PairProteinDNASpecific p = tmp_pair.interaction_pairs_[k];
-        double f1, f2, f3;
+        double f1, f2, f3, f4;  // f1: bond; f2: angle 0; f3: angle NC; f4: angle 53;
         double dr = tmp_distance - p.r_0_;
         f1 = exp(- (dr * dr) / p.twice_sigma_square_);
         double delta_theta_0 = std::abs(tmp_angle_0 - p.angle_0_0_);
+        double delta_theta_NC = std::abs(tmp_angle_NC - p.angle_NC_0_);
         double delta_theta_53 = std::abs(tmp_angle_53 - p.angle_53_0_);
         if (delta_theta_0 < p.phi_) {
           f2 = 1;
@@ -84,28 +109,39 @@ double FFProteinDNASpecific::compute_energy_protein_DNA_specific(Topology &top, 
         } else {
           f2 = 0;
         }
-        if (delta_theta_53 < p.phi_) {
+        if (delta_theta_NC < p.phi_) {
           f3 = 1;
-        } else if (delta_theta_53 < p.phi_ * 2.0) {
-          double cos_theta_53 = cos(delta_theta_53 / 180.0 * 3.14159265);
-          f3 = 1 - cos_theta_53 * cos_theta_53;
+        } else if (delta_theta_NC < p.phi_ * 2.0) {
+          double cos_theta_NC = cos(delta_theta_NC / 180.0 * 3.14159265);
+          f3 = 1 - cos_theta_NC * cos_theta_NC;
         } else {
           f3 = 0;
         }
-        double f = f1 * f2 * f3;
-        double fangle = f2 * f3;
-        if (fangle > tmp_angle_factor) {
+        if (delta_theta_53 < p.phi_) {
+          f4 = 1;
+        } else if (delta_theta_53 < p.phi_ * 2.0) {
+          double cos_theta_53 = cos(delta_theta_53 / 180.0 * 3.14159265);
+          f4 = 1 - cos_theta_53 * cos_theta_53;
+        } else {
+          f4 = 0;
+        }
+        double f = f1 * f2 * f3 * f4;
+        double fangle = f2 * f3 * f4;
+        if (fangle >= tmp_angle_factor) {
           tmp_factor = f;
           tmp_angle_factor = fangle;
           best_d = tmp_distance;
           best_a0 = tmp_angle_0;
+          best_aNC = tmp_angle_NC;
           best_a53 = tmp_angle_53;
         }
       }
       double tmp_energy = -1.0 * tmp_factor;
       total_energy += tmp_energy;
       std::cout << "   " << proi + 1 << " - " << dnai + 1 << "   " << tmp_energy
-                << "     d: " << best_d << "      a0: " << best_a0 << "      a53: " << best_a53
+                << "     d: " << best_d << "      aNC: " << best_aNC
+                << "      a0: " << best_a0
+                << "      a53: " << best_a53
                 << "\n";
     }
   }
