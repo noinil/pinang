@@ -94,15 +94,21 @@ class PairProteinDNASpecific
   friend std::istream& operator>>(std::istream&, PairProteinDNASpecific&);
   friend class PairProteinDNASpecificCombination;
   friend class FFProteinDNASpecific;
+
  protected:
-  int protein_serial_;          //!< protein particle serial number.
-  double r_0_;                  //!< distance in the native structure.
-  double angle_0_0_;            //!< angle sugar-base-Calpha in the native structure.
-  double angle_53_0_;           //!< angle (5'base-3'base)--(base-Calpha) in the native structure.
-  double angle_NC_0_;           //!< angle (N'CA-C'CA)--(Calpha-base) in the native structure.
-  double sigma_;                //!< sigma in the Gaussian potential function of distance.
-  double twice_sigma_square_;   //!< 2 * sigma * sigma
-  double phi_;                  //!< angle threshold in the potential of angles.
+  int    protein_serial_;               //!< protein particle serial number.
+  double r_0_;                          //!< distance in the native structure.
+  double angle_0_0_;                    //!< angle sugar-base-Calpha in the native structure.
+  double angle_53_0_;                   //!< angle (5'base-3'base)--(base-Calpha) in the native structure.
+  double angle_NC_0_;                   //!< angle (N'CA-C'CA)--(Calpha-base) in the native structure.
+  double sigma_;                        //!< sigma in the Gaussian potential function of distance.
+  double twice_sigma_square_;           //!< 2 * sigma * sigma.
+  double phi_;                          //!< angle threshold in the potential of angles.
+
+  double ene_pwm_A_;                    //!< PWM energy for base A.
+  double ene_pwm_C_;                    //!< PWM energy for base C.
+  double ene_pwm_G_;                    //!< PWM energy for base G.
+  double ene_pwm_T_;                    //!< PWM energy for base T.
 };
 
 }  // pinang

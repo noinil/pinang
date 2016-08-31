@@ -18,30 +18,42 @@ namespace pinang {
 
 PairProteinDNASpecific::PairProteinDNASpecific()
 {
-  protein_serial_ = -997;
-  r_0_ = 9973.0;
-  angle_0_0_ = -997.0;
-  angle_53_0_ = -997.0;
-  angle_NC_0_ = -997.0;
-  sigma_ = 1.0;
+  protein_serial_     = -997;
+  r_0_                = 9973.0;
+  angle_0_0_          = -997.0;
+  angle_53_0_         = -997.0;
+  angle_NC_0_         = -997.0;
+  sigma_              = 1.0;
   twice_sigma_square_ = 2.0;
-  phi_ = 180.0;
+  phi_                = 180.0;
+  ene_pwm_A_          = 9973.0;
+  ene_pwm_C_          = 9973.0;
+  ene_pwm_G_          = 9973.0;
+  ene_pwm_T_          = 9973.0;
 }
 
 std::istream& operator>>(std::istream& i, PairProteinDNASpecific& pairSS)
 {
-  double r0, angNC, ang0, ang53, sig, p;
-  int serp, serd;
-  i >> serp >> serd >> r0 >> angNC >> ang0 >> ang53 >> sig >> p;
+  double r0, angNC, ang0, ang53, sig, p, eneA, eneC, eneG, eneT;
+  int serp;
+
+  i >> serp >> r0 >> angNC >> ang0 >> ang53
+    >> sig >> p >> eneA >> eneC >> eneG >> eneT;
   if (!i) return i;
-  pairSS.protein_serial_ = serp - 1;
-  pairSS.r_0_ = r0;
-  pairSS.angle_NC_0_ = angNC;
-  pairSS.angle_0_0_ = ang0;
-  pairSS.angle_53_0_ = ang53;
-  pairSS.sigma_ = sig;
+
+  pairSS.protein_serial_     = serp - 1;
+  pairSS.r_0_                = r0;
+  pairSS.angle_NC_0_         = angNC;
+  pairSS.angle_0_0_          = ang0;
+  pairSS.angle_53_0_         = ang53;
+  pairSS.sigma_              = sig;
   pairSS.twice_sigma_square_ = 2.0 * sig * sig;
-  pairSS.phi_ = p;
+  pairSS.phi_                = p;
+  pairSS.ene_pwm_A_          = eneA;
+  pairSS.ene_pwm_C_          = eneC;
+  pairSS.ene_pwm_G_          = eneG;
+  pairSS.ene_pwm_T_          = eneT;
+
   return i;
 }
 
@@ -108,10 +120,10 @@ FFProteinDNASpecific::FFProteinDNASpecific(std::string ffp_file_name)
       break;
 
     std::istringstream tmp_sstr;
-    m = ffp_line.find("[ protein-DNA seq-specific ]");
+    m = ffp_line.find("[ protein-DNA seq-specific w/ PWM ]");
     if (m != std::string::npos) {
       tmp_sstr.str(ffp_line);
-      for (int i = 0; i < 4; ++i)
+      for (int i = 0; i < 6; ++i)
         tmp_sstr >> tmp_s;
       tmp_sstr >> tmp_i0;  // read in total number of pro-DNA interactions;
       getline(ffp_file, ffp_line);  // read in a comment line;
@@ -129,6 +141,13 @@ FFProteinDNASpecific::FFProteinDNASpecific(std::string ffp_file_name)
         ss_pairwise_params_.push_back(pair_com_tmp);
       }
       break;
+    } else {
+      m = ffp_line.find("[ protein-DNA seq-specific ]");
+      if (m != std::string::npos) {
+        std::cout << " Please apply patch of PWM to protein-DNA seq-specific interactions ! "
+                  << "\n";
+        exit(EXIT_SUCCESS);
+      }
     }
   }
   ffp_file.close();

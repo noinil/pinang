@@ -10,6 +10,7 @@
 */
 
 #include <cmath>
+#include <iomanip>
 #include "ff_protein_DNA_specific.hpp"
 
 namespace pinang {
@@ -31,6 +32,7 @@ double FFProteinDNASpecific::compute_energy_protein_DNA_specific(Topology &top, 
     }
   }
 
+  std::cout << "n_protein_particle_ :  " << n_protein_particle_ << "\n";
   for (i = 0; i < n_protein_particle_; ++i) {
     PairProteinDNASpecificCombination tmp_pair = ss_pairwise_params_[i];
     int proi = tmp_pair.protein_serial_;  // protein particle index;
@@ -63,6 +65,7 @@ double FFProteinDNASpecific::compute_energy_protein_DNA_specific(Topology &top, 
     for (j = 0; j < dna_index.size(); ++j) {
       int dnai = dna_index[j];                          // DNA particle index;
       char tmp_chain_id = top.get_particle(dnai).get_chain_ID();
+      std::string tmp_base_name = top.get_particle(dnai).get_residue_name();
       Vec3d tmp_c_B0 = conf.get_coordinate(dnai);       // DNA Base coordinates;
       Vec3d tmp_B0_CA = tmp_c_CA - tmp_c_B0;            // vector from Base to Calpha;
       double tmp_distance = tmp_B0_CA.norm();
@@ -90,8 +93,8 @@ double FFProteinDNASpecific::compute_energy_protein_DNA_specific(Topology &top, 
       double tmp_angle_53 = vec_angle_deg(tmp_B5_B3, tmp_B0_CA);
       double tmp_angle_NC = vec_angle_deg(tmp_CCA_NCA,  tmp_B0_CA);
       // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ CORE CALCULATION! ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      double tmp_angle_factor = 0;
-      double tmp_factor = 0;
+      double tmp_energy = 1000000.0;
+      int in_cutoff_flag = 0;
       double best_d = 0, best_aNC = 0, best_a0 = 0, best_a53 = 0;
       for (k = 0; k < tmp_pair.n_inter_pair_; ++k) {
         PairProteinDNASpecific p = tmp_pair.interaction_pairs_[k];
@@ -108,6 +111,7 @@ double FFProteinDNASpecific::compute_energy_protein_DNA_specific(Topology &top, 
           f2 = 1 - cos_theta_0 * cos_theta_0;
         } else {
           f2 = 0;
+          continue;
         }
         if (delta_theta_NC < p.phi_) {
           f3 = 1;
@@ -116,6 +120,7 @@ double FFProteinDNASpecific::compute_energy_protein_DNA_specific(Topology &top, 
           f3 = 1 - cos_theta_NC * cos_theta_NC;
         } else {
           f3 = 0;
+          continue;
         }
         if (delta_theta_53 < p.phi_) {
           f4 = 1;
@@ -124,25 +129,43 @@ double FFProteinDNASpecific::compute_energy_protein_DNA_specific(Topology &top, 
           f4 = 1 - cos_theta_53 * cos_theta_53;
         } else {
           f4 = 0;
+          continue;
         }
+        in_cutoff_flag = 1;
         double f = f1 * f2 * f3 * f4;
-        double fangle = f2 * f3 * f4;
-        if (fangle >= tmp_angle_factor) {
-          tmp_factor = f;
-          tmp_angle_factor = fangle;
+        double ene_pwm_base = 0;
+        if (tmp_base_name == "DA ") {
+          ene_pwm_base = p.ene_pwm_A_;
+        } else if (tmp_base_name == "DC ") {
+          ene_pwm_base = p.ene_pwm_C_;
+        } else if (tmp_base_name == "DG ") {
+          ene_pwm_base = p.ene_pwm_G_;
+        } else if (tmp_base_name == "DT ") {
+          ene_pwm_base = p.ene_pwm_T_;
+        }
+        double e = ene_pwm_base * f;
+        if (tmp_energy >= e) {
+          tmp_energy = e;
           best_d = tmp_distance;
           best_a0 = tmp_angle_0;
           best_aNC = tmp_angle_NC;
           best_a53 = tmp_angle_53;
         }
       }
-      double tmp_energy = -1.0 * tmp_factor;
+      if (in_cutoff_flag == 0) {
+        tmp_energy = 0;
+      } else {
+        std::cout << "   " << std::setw(5) << proi + 1 << " - "
+                  << std::setw(5) << dnai + 1 << "  | E = "
+                  << std::setw(12) << tmp_energy << "   | "
+                  << std::setw(6) << tmp_base_name
+                  << "     d: " << std::setw(8) << best_d
+                  << "      aNC: " << std::setw(7) << best_aNC
+                  << "      a0: " << std::setw(7) << best_a0
+                  << "      a53: " << std::setw(7) << best_a53
+                  << "\n";
+      }
       total_energy += tmp_energy;
-      std::cout << "   " << proi + 1 << " - " << dnai + 1 << "   " << tmp_energy
-                << "     d: " << best_d << "      aNC: " << best_aNC
-                << "      a0: " << best_a0
-                << "      a53: " << best_a53
-                << "\n";
     }
   }
   std::cout << " ============~~~~~~~~~~~~~~~==============" << "\n";
