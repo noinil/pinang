@@ -134,7 +134,7 @@ int main(int argc, char *argv[])
       exit(EXIT_SUCCESS);
     }
     tmp_angle_NC = pinang::vec_angle_deg(tmp_c_CA_C - tmp_c_CA_N, tmp_c_B0 - tmp_c_CA);
-    outfile << " Angle NCA-CCA -- CA-DB0 : " << tmp_angle_NC << "\n";
+    outfile << " Angle NCA-CCA--CA-DB0 : " << tmp_angle_NC << "\n";
 
     // ---------- Sugar -- Base -- CA angle ----------
     tmp_i3 = tmp_i2 - 1;
@@ -146,10 +146,11 @@ int main(int argc, char *argv[])
     tmp_angle_0 = pinang::vec_angle_deg(tmp_c_S0 - tmp_c_B0, tmp_c_CA - tmp_c_B0);
     outfile << " Angle DS0-DB0-CA : " << tmp_angle_0 << "\n";
 
+    int term_5 = 0, term_3 = 0;
     // ---------- 5' Base ----------
     tmp_i4 = tmp_i2 - 3;
     if (tmp_i4 < 0 || top.get_particle(tmp_i4).get_chain_ID() != top.get_particle(tmp_i2).get_chain_ID()) {
-      outfile << " Angle DB5'-DB3'--DB0-CA : NaN ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \n";
+      term_5 = 1;
     } else {
       if (top.get_particle(tmp_i4).get_atom_name() != "DB  ") {
         cout << " Wrong interaction pair for 5'DB!!! \n";
@@ -160,7 +161,7 @@ int main(int argc, char *argv[])
     // ---------- 3' Base ----------
     tmp_i4 = tmp_i2 + 3;
     if (tmp_i4 >= top.get_size() || top.get_particle(tmp_i4).get_chain_ID() != top.get_particle(tmp_i2).get_chain_ID()) {
-      outfile << " Angle DB5'-DB3'--DB0-CA : NaN ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \n";
+      term_3 = 1;
     } else {
       if (top.get_particle(tmp_i4).get_atom_name() != "DB  ") {
         cout << " Wrong interaction pair for 3'DB!!! \n";
@@ -168,8 +169,13 @@ int main(int argc, char *argv[])
       }
       tmp_c_B3 = conf.get_coordinate(tmp_i4);  // Coor of 3' B
     }
-    tmp_angle_53 = pinang::vec_angle_deg(tmp_c_B3 - tmp_c_B5, tmp_c_CA - tmp_c_B0);
-    outfile << " Angle DB5'-DB3' -- DB0-CA : " << tmp_angle_53 << "\n";
+    if (term_5 + term_3 == 0) {
+      tmp_angle_53 = pinang::vec_angle_deg(tmp_c_B3 - tmp_c_B5, tmp_c_CA - tmp_c_B0);
+      outfile << " Angle DB5'-DB3'--DB0-CA : " << tmp_angle_53 << "\n";
+    } else {
+      outfile << " Angle DB5'-DB3'--DB0-CA : NaN ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \n";
+    }
+
 
     // ------------------------------ Shifting... ------------------------------
     tmp_i4 = tmp_i2 - 6;
@@ -197,13 +203,17 @@ int main(int argc, char *argv[])
       outfile << " 5'-Shifted Distance DB0-CA : " << tmp_dist_0 << "\n";
 
       tmp_angle_NC = pinang::vec_angle_deg(tmp_c_new_CA_C - tmp_c_new_CA_N, tmp_c_B0 - tmp_c_new_CA);
-      outfile << " 5'-Shifted Angle NCA-CCA -- CA-DB0 : " << tmp_angle_NC << "\n";
+      outfile << " 5'-Shifted Angle NCA-CCA--CA-DB0 : " << tmp_angle_NC << "\n";
 
       tmp_angle_0 = pinang::vec_angle_deg(tmp_c_S0 - tmp_c_B0, tmp_c_new_CA - tmp_c_B0);
       outfile << " 5'-Shifted Angle DS0-DB0-CA : " << tmp_angle_0 << "\n";
 
-      tmp_angle_53 = pinang::vec_angle_deg(tmp_c_B3 - tmp_c_B5, tmp_c_new_CA - tmp_c_B0);
-      outfile << " 5'-Shifted Angle DB5'-DB3' -- DB0-CA : " << tmp_angle_53 << "\n";
+      if (term_5 + term_3 == 0) {
+        tmp_angle_53 = pinang::vec_angle_deg(tmp_c_B3 - tmp_c_B5, tmp_c_new_CA - tmp_c_B0);
+        outfile << " 5'-Shifted Angle DB5'-DB3'--DB0-CA : " << tmp_angle_53 << "\n";
+      } else {
+        outfile << " 5'-Shifted DB5'-DB3'--DB0-CA : NaN ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \n";
+      }
     }
     tmp_i4 = tmp_i2 - 3;
     tmp_i5 = tmp_i2 + 6;
@@ -230,13 +240,17 @@ int main(int argc, char *argv[])
       outfile << " 3'-Shifted Distance DB0-CA : " << tmp_dist_0 << "\n";
 
       tmp_angle_NC = pinang::vec_angle_deg(tmp_c_new_CA_C - tmp_c_new_CA_N, tmp_c_B0 - tmp_c_new_CA);
-      outfile << " 3'-Shifted Angle NCA-CCA -- CA-DB0 : " << tmp_angle_NC << "\n";
+      outfile << " 3'-Shifted Angle NCA-CCA--CA-DB0 : " << tmp_angle_NC << "\n";
 
       tmp_angle_0 = pinang::vec_angle_deg(tmp_c_S0 - tmp_c_B0, tmp_c_new_CA - tmp_c_B0);
       outfile << " 3'-Shifted Angle DS0-DB0-CA : " << tmp_angle_0 << "\n";
 
-      tmp_angle_53 = pinang::vec_angle_deg(tmp_c_B3 - tmp_c_B5, tmp_c_new_CA - tmp_c_B0);
-      outfile << " 3'-Shifted Angle DB5'-DB3' -- DB0-CA : " << tmp_angle_53 << "\n";
+      if (term_5 + term_3 == 0) {
+        tmp_angle_53 = pinang::vec_angle_deg(tmp_c_B3 - tmp_c_B5, tmp_c_new_CA - tmp_c_B0);
+        outfile << " 3'-Shifted Angle DB5'-DB3'--DB0-CA : " << tmp_angle_53 << "\n";
+      } else {
+        outfile << " 3'-Shifted DB5'-DB3'--DB0-CA : NaN ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \n";
+      }
     }
 
     outfile << "END PAIR \n";
