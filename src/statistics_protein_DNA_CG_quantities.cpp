@@ -253,7 +253,7 @@ int main(int argc, char *argv[])
       }
     }
 
-    outfile << "END PAIR \n";
+    outfile << "END PAIR " << std::endl;
   }
 
   stat_file.close();
