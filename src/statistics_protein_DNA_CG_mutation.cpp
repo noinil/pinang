@@ -126,8 +126,9 @@ int main(int argc, char *argv[])
 
   // -------------------- Calculating... --------------------
   pinang::Vec3d tmp_c_CA, tmp_c_B0, tmp_c_S0, tmp_c_B5, tmp_c_B3, tmp_c_new_DB;
+  pinang::Vec3d tmp_c_CA_N, tmp_c_CA_C;
   double tmp_dist_0;
-  double tmp_angle_0, tmp_angle_5, tmp_angle_3;
+  double tmp_angle_0, tmp_angle_53, tmp_angle_NC;
   for (int i = 0; i < interaction_pairs.size(); ++i) {
     tmp_i1 = interaction_pairs[i][0];
     tmp_i2 = interaction_pairs[i][1];
@@ -144,6 +145,30 @@ int main(int argc, char *argv[])
     tmp_dist_0 = pinang::vec_distance(tmp_c_CA, tmp_c_B0);
     outfile << " Distance DB0-CA : " << tmp_dist_0 << "\n";
 
+    int k = tmp_i1 - 1;
+    int calpha_term_N = 0, calpha_term_C = 0;
+    if (k < 0 || top.get_particle(k).get_chain_ID() != top.get_particle(tmp_i1).get_chain_ID()) {
+      tmp_c_CA_N = tmp_c_CA;
+      calpha_term_N = 1;
+    } else {
+      calpha_term_N = 0;
+      tmp_c_CA_N = conf.get_coordinate(k);  // Coor of N' CA
+    }
+    k = i + 1;
+    if (k >= top.get_size() || top.get_particle(k).get_chain_ID() != top.get_particle(tmp_i1).get_chain_ID()) {
+      tmp_c_CA_C = tmp_c_CA;
+      calpha_term_C = 1;
+    } else {
+      calpha_term_C = 0;
+      tmp_c_CA_C = conf.get_coordinate(k);  // Coor of C' CA
+    }
+    if (calpha_term_N * calpha_term_C > 0) {
+      std::cout << " Single Residue Protein Chain!!! WTF!!! \n";
+      exit(EXIT_SUCCESS);
+    }
+    tmp_angle_NC = pinang::vec_angle_deg(tmp_c_CA_C - tmp_c_CA_N, tmp_c_B0 - tmp_c_CA);
+    outfile << " Angle NCA-CCA--CA-DB0 : " << tmp_angle_NC << "\n";
+
     // ---------- Sugar -- Base -- CA angle ----------
     tmp_i3 = tmp_i2 - 1;
     if (top.get_particle(tmp_i3).get_atom_name() != "DS  ") {
@@ -154,33 +179,34 @@ int main(int argc, char *argv[])
     tmp_angle_0 = pinang::vec_angle_deg(tmp_c_S0 - tmp_c_B0, tmp_c_CA - tmp_c_B0);
     outfile << " Angle DS0-DB0-CA : " << tmp_angle_0 << "\n";
 
+    int term_5 = 0, term_3 = 0;
     // ---------- 5' Base ----------
     tmp_i4 = tmp_i2 - 3;
     if (tmp_i4 < 0 || top.get_particle(tmp_i4).get_chain_ID() != top.get_particle(tmp_i2).get_chain_ID()) {
-      outfile << " Angle DB5'-DB0-CA : NaN ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \n";
+      term_5 = 1;
     } else {
       if (top.get_particle(tmp_i4).get_atom_name() != "DB  ") {
         cout << " Wrong interaction pair for 5'DB!!! \n";
         exit(EXIT_SUCCESS);
       }
       tmp_c_B5 = conf.get_coordinate(tmp_i4);  // Coor of 5' B
-      // ---------- 5' Base -- Base -- CA angle ----------
-      tmp_angle_5 = pinang::vec_angle_deg(tmp_c_B5 - tmp_c_B0, tmp_c_CA - tmp_c_B0);
-      outfile << " Angle DB5'-DB0-CA : " << tmp_angle_5 << "\n";
     }
     // ---------- 3' Base ----------
     tmp_i5 = tmp_i2 + 3;
     if (tmp_i5 >= top.get_size() || top.get_particle(tmp_i5).get_chain_ID() != top.get_particle(tmp_i2).get_chain_ID()) {
-      outfile << " Angle DB3'-DB0-CA : NaN ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \n";
+      term_3 = 1;
     } else {
       if (top.get_particle(tmp_i5).get_atom_name() != "DB  ") {
         cout << " Wrong interaction pair for 3'DB!!! \n";
         exit(EXIT_SUCCESS);
       }
       tmp_c_B3 = conf.get_coordinate(tmp_i5);  // Coor of 3' B
-      // ---------- 3' Base -- Base -- CA angle ----------
-      tmp_angle_3 = pinang::vec_angle_deg(tmp_c_B3 - tmp_c_B0, tmp_c_CA - tmp_c_B0);
-      outfile << " Angle DB3'-DB0-CA : " << tmp_angle_3 << "\n";
+    }
+    if (term_5 + term_3 == 0) {
+      tmp_angle_53 = pinang::vec_angle_deg(tmp_c_B3 - tmp_c_B5, tmp_c_CA - tmp_c_B0);
+      outfile << " Angle DB5'-DB3'--DB0-CA : " << tmp_angle_53 << "\n";
+    } else {
+      outfile << " Angle DB5'-DB3'--DB0-CA : NaN ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \n";
     }
 
     // ------------------------------ Mutating... ------------------------------
@@ -207,12 +233,16 @@ int main(int argc, char *argv[])
         tmp_c_new_DB = t.apply(std_cg_Base);
         tmp_dist_0 = pinang::vec_distance(tmp_c_CA, tmp_c_new_DB);
         outfile << " DA - Mutated Distance DB0-CA : " << tmp_dist_0 << "\n";
+        tmp_angle_NC = pinang::vec_angle_deg(tmp_c_CA_C - tmp_c_CA_N, tmp_c_new_DB - tmp_c_CA);
+        outfile << " DA - Mutated Angle NCA-CCA--CA-DB0 : " << tmp_angle_NC << "\n";
         tmp_angle_0 = pinang::vec_angle_deg(tmp_c_S0 - tmp_c_new_DB, tmp_c_CA - tmp_c_new_DB);
         outfile << " DA - Mutated Angle DS0-DB0-CA : " << tmp_angle_0 << "\n";
-        tmp_angle_5 = pinang::vec_angle_deg(tmp_c_B5 - tmp_c_new_DB, tmp_c_CA - tmp_c_new_DB);
-        outfile << " DA - Mutated Angle DB5'-DB0-CA : " << tmp_angle_5 << "\n";
-        tmp_angle_3 = pinang::vec_angle_deg(tmp_c_B3 - tmp_c_new_DB, tmp_c_CA - tmp_c_new_DB);
-        outfile << " DA - Mutated Angle DB3'-DB0-CA : " << tmp_angle_3 << "\n";
+        if (term_5 + term_3 == 0) {
+          tmp_angle_53 = pinang::vec_angle_deg(tmp_c_B3 - tmp_c_B5, tmp_c_CA - tmp_c_new_DB);
+          outfile << " DA - Mutated Angle DB5'-DB3'--DB0-CA : " << tmp_angle_53 << "\n";
+        } else {
+          outfile << " DA - Mutated DB5'-DB3'--DB0-CA : NaN ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \n";
+        }
       }
       // ------ C mutant ------
       if (top.get_particle(tmp_i2).get_residue_name() != "DC ") {
@@ -221,12 +251,16 @@ int main(int argc, char *argv[])
         tmp_c_new_DB = t.apply(std_cg_Base);
         tmp_dist_0 = pinang::vec_distance(tmp_c_CA, tmp_c_new_DB);
         outfile << " DC - Mutated Distance DB0-CA : " << tmp_dist_0 << "\n";
+        tmp_angle_NC = pinang::vec_angle_deg(tmp_c_CA_C - tmp_c_CA_N, tmp_c_new_DB - tmp_c_CA);
+        outfile << " DC - Mutated Angle NCA-CCA--CA-DB0 : " << tmp_angle_NC << "\n";
         tmp_angle_0 = pinang::vec_angle_deg(tmp_c_S0 - tmp_c_new_DB, tmp_c_CA - tmp_c_new_DB);
         outfile << " DC - Mutated Angle DS0-DB0-CA : " << tmp_angle_0 << "\n";
-        tmp_angle_5 = pinang::vec_angle_deg(tmp_c_B5 - tmp_c_new_DB, tmp_c_CA - tmp_c_new_DB);
-        outfile << " DC - Mutated Angle DB5'-DB0-CA : " << tmp_angle_5 << "\n";
-        tmp_angle_3 = pinang::vec_angle_deg(tmp_c_B3 - tmp_c_new_DB, tmp_c_CA - tmp_c_new_DB);
-        outfile << " DC - Mutated Angle DB3'-DB0-CA : " << tmp_angle_3 << "\n";
+        if (term_5 + term_3 == 0) {
+          tmp_angle_53 = pinang::vec_angle_deg(tmp_c_B3 - tmp_c_B5, tmp_c_CA - tmp_c_new_DB);
+          outfile << " DC - Mutated Angle DB5'-DB3'--DB0-CA : " << tmp_angle_53 << "\n";
+        } else {
+          outfile << " DC - Mutated DB5'-DB3'--DB0-CA : NaN ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \n";
+        }
       }
       // ------ G mutant ------
       if (top.get_particle(tmp_i2).get_residue_name() != "DG ") {
@@ -235,12 +269,16 @@ int main(int argc, char *argv[])
         tmp_c_new_DB = t.apply(std_cg_Base);
         tmp_dist_0 = pinang::vec_distance(tmp_c_CA, tmp_c_new_DB);
         outfile << " DG - Mutated Distance DB0-CA : " << tmp_dist_0 << "\n";
+        tmp_angle_NC = pinang::vec_angle_deg(tmp_c_CA_C - tmp_c_CA_N, tmp_c_new_DB - tmp_c_CA);
+        outfile << " DG - Mutated Angle NCA-CCA--CA-DB0 : " << tmp_angle_NC << "\n";
         tmp_angle_0 = pinang::vec_angle_deg(tmp_c_S0 - tmp_c_new_DB, tmp_c_CA - tmp_c_new_DB);
         outfile << " DG - Mutated Angle DS0-DB0-CA : " << tmp_angle_0 << "\n";
-        tmp_angle_5 = pinang::vec_angle_deg(tmp_c_B5 - tmp_c_new_DB, tmp_c_CA - tmp_c_new_DB);
-        outfile << " DG - Mutated Angle DB5'-DB0-CA : " << tmp_angle_5 << "\n";
-        tmp_angle_3 = pinang::vec_angle_deg(tmp_c_B3 - tmp_c_new_DB, tmp_c_CA - tmp_c_new_DB);
-        outfile << " DG - Mutated Angle DB3'-DB0-CA : " << tmp_angle_3 << "\n";
+        if (term_5 + term_3 == 0) {
+          tmp_angle_53 = pinang::vec_angle_deg(tmp_c_B3 - tmp_c_B5, tmp_c_CA - tmp_c_new_DB);
+          outfile << " DG - Mutated Angle DB5'-DB3'--DB0-CA : " << tmp_angle_53 << "\n";
+        } else {
+          outfile << " DG - Mutated DB5'-DB3'--DB0-CA : NaN ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \n";
+        }
       }
       // ------ T mutant ------
       if (top.get_particle(tmp_i2).get_residue_name() != "DT ") {
@@ -249,12 +287,16 @@ int main(int argc, char *argv[])
         tmp_c_new_DB = t.apply(std_cg_Base);
         tmp_dist_0 = pinang::vec_distance(tmp_c_CA, tmp_c_new_DB);
         outfile << " DT - Mutated Distance DB0-CA : " << tmp_dist_0 << "\n";
+        tmp_angle_NC = pinang::vec_angle_deg(tmp_c_CA_C - tmp_c_CA_N, tmp_c_new_DB - tmp_c_CA);
+        outfile << " DT - Mutated Angle NCA-CCA--CA-DB0 : " << tmp_angle_NC << "\n";
         tmp_angle_0 = pinang::vec_angle_deg(tmp_c_S0 - tmp_c_new_DB, tmp_c_CA - tmp_c_new_DB);
         outfile << " DT - Mutated Angle DS0-DB0-CA : " << tmp_angle_0 << "\n";
-        tmp_angle_5 = pinang::vec_angle_deg(tmp_c_B5 - tmp_c_new_DB, tmp_c_CA - tmp_c_new_DB);
-        outfile << " DT - Mutated Angle DB5'-DB0-CA : " << tmp_angle_5 << "\n";
-        tmp_angle_3 = pinang::vec_angle_deg(tmp_c_B3 - tmp_c_new_DB, tmp_c_CA - tmp_c_new_DB);
-        outfile << " DT - Mutated Angle DB3'-DB0-CA : " << tmp_angle_3 << "\n";
+        if (term_5 + term_3 == 0) {
+          tmp_angle_53 = pinang::vec_angle_deg(tmp_c_B3 - tmp_c_B5, tmp_c_CA - tmp_c_new_DB);
+          outfile << " DT - Mutated Angle DB5'-DB3'--DB0-CA : " << tmp_angle_53 << "\n";
+        } else {
+          outfile << " DT - Mutated DB5'-DB3'--DB0-CA : NaN ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \n";
+        }
       }
     }
     outfile << "END PAIR \n";
