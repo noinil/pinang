@@ -53,6 +53,19 @@ void Conformation::reset()
   coordinates_.clear();
 }
 
+int Conformation::set_coordinate(int i, Vec3d c)
+{
+  if (i >= n_atom_)
+  {
+    std::cout << " ~             PINANG :: conformation.hpp       ~ " << "\n";
+    std::cerr << " ERROR: Wrong atom index when set coordinate. " << "\n";
+    return 1;
+  } else {
+    coordinates_[i] = c;
+    return 0;
+  }
+}
+
 int Conformation::set_conformation(std::vector<Vec3d> v)
 {
   int m = v.size();

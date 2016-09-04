@@ -32,11 +32,11 @@ double FFProteinDNASpecific::compute_energy_protein_DNA_specific(Topology &top, 
     }
   }
 
-  std::cout << "n_protein_particle_ :  " << n_protein_particle_ << "\n";
+  // std::cout << "n_protein_particle_ :  " << n_protein_particle_ << "\n";
   for (i = 0; i < n_protein_particle_; ++i) {
     PairProteinDNASpecificCombination tmp_pair = ss_pairwise_params_[i];
     int proi = tmp_pair.protein_serial_;  // protein particle index;
-    std::cout << " protein particle: " << i << "   serial: " << proi + 1 << "\n";
+    // std::cout << " protein particle: " << i << "   serial: " << proi + 1 << "\n";
     Vec3d tmp_c_CA = conf.get_coordinate(proi);         // protein Calpha coordinates;
     Vec3d tmp_c_CA_N, tmp_c_CA_C;
     int calpha_term_N, calpha_term_C;
@@ -89,7 +89,7 @@ double FFProteinDNASpecific::compute_energy_protein_DNA_specific(Topology &top, 
       double tmp_dist_B5_B3 = tmp_B5_B3.norm();
       if (tmp_dist_B5_B3 < 0.0001) {
         continue;
-      } 
+      }
       double tmp_angle_53 = vec_angle_deg(tmp_B5_B3, tmp_B0_CA);
       double tmp_angle_NC = vec_angle_deg(tmp_CCA_NCA,  tmp_B0_CA);
       // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ CORE CALCULATION! ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -155,21 +155,23 @@ double FFProteinDNASpecific::compute_energy_protein_DNA_specific(Topology &top, 
       if (in_cutoff_flag == 0) {
         tmp_energy = 0;
       } else {
-        std::cout << "   " << std::setw(5) << proi + 1 << " - "
-                  << std::setw(5) << dnai + 1 << "  | E = "
-                  << std::setw(12) << tmp_energy << "   | "
-                  << std::setw(6) << tmp_base_name
-                  << "     d: " << std::setw(8) << best_d
-                  << "      aNC: " << std::setw(7) << best_aNC
-                  << "      a0: " << std::setw(7) << best_a0
-                  << "      a53: " << std::setw(7) << best_a53
-                  << "\n";
+        if (0) {
+          std::cout << "   " << std::setw(5) << proi + 1 << " - "
+                    << std::setw(5) << dnai + 1 << "  | E = "
+                    << std::setw(12) << tmp_energy << "   | "
+                    << std::setw(6) << tmp_base_name
+                    << "     d: " << std::setw(8) << best_d
+                    << "      aNC: " << std::setw(7) << best_aNC
+                    << "      a0: " << std::setw(7) << best_a0
+                    << "      a53: " << std::setw(7) << best_a53
+                    << "\n";
+        }
       }
       total_energy += tmp_energy;
     }
   }
-  std::cout << " ============~~~~~~~~~~~~~~~==============" << "\n";
-  std::cout << total_energy << "\n";
+  // std::cout << " ============~~~~~~~~~~~~~~~==============" << "\n";
+  // std::cout << total_energy << "\n";
 
   return total_energy;
 }
