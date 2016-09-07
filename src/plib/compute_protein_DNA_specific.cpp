@@ -98,7 +98,7 @@ double FFProteinDNASpecific::compute_energy_protein_DNA_specific(Topology &top, 
       double best_d = 0, best_aNC = 0, best_a0 = 0, best_a53 = 0;
       for (k = 0; k < tmp_pair.n_inter_pair_; ++k) {
         PairProteinDNASpecific p = tmp_pair.interaction_pairs_[k];
-        double f1, f2, f3, f4;  // f1: bond; f2: angle 0; f3: angle NC; f4: angle 53;
+        double f1 = 0, f2 = 0, f3 = 0, f4 = 0;  // f1: bond; f2: angle 0; f3: angle NC; f4: angle 53;
         double dr = tmp_distance - p.r_0_;
         f1 = exp(- (dr * dr) / p.twice_sigma_square_);
         double delta_theta_0 = std::abs(tmp_angle_0 - p.angle_0_0_);
@@ -110,7 +110,6 @@ double FFProteinDNASpecific::compute_energy_protein_DNA_specific(Topology &top, 
           double cos_theta_0 = cos(delta_theta_0 / 180.0 * 3.14159265);
           f2 = 1 - cos_theta_0 * cos_theta_0;
         } else {
-          f2 = 0;
           continue;
         }
         if (delta_theta_NC < p.phi_) {
@@ -119,7 +118,6 @@ double FFProteinDNASpecific::compute_energy_protein_DNA_specific(Topology &top, 
           double cos_theta_NC = cos(delta_theta_NC / 180.0 * 3.14159265);
           f3 = 1 - cos_theta_NC * cos_theta_NC;
         } else {
-          f3 = 0;
           continue;
         }
         if (delta_theta_53 < p.phi_) {
@@ -128,7 +126,6 @@ double FFProteinDNASpecific::compute_energy_protein_DNA_specific(Topology &top, 
           double cos_theta_53 = cos(delta_theta_53 / 180.0 * 3.14159265);
           f4 = 1 - cos_theta_53 * cos_theta_53;
         } else {
-          f4 = 0;
           continue;
         }
         in_cutoff_flag = 1;
