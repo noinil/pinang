@@ -172,6 +172,7 @@ double FFProteinDNASpecific::compute_energy_protein_DNA_specific(Topology &top, 
   }
   // std::cout << " ============~~~~~~~~~~~~~~~==============" << "\n";
   // std::cout << total_energy << "\n";
+  // std::cout << " ============~~~~~~~~~~~~~~~==============" << "\n";
 
   return total_energy;
 }

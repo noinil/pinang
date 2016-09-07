@@ -74,8 +74,8 @@ int main(int argc, char *argv[])
   pinang::FFProteinDNASpecific ff_ss(ffp_name);
 
   vector<string> mutat_seq;
-  vector<int> strand1 = {133, 136, 139, 142, 145};
-  vector<int> strand2 = {116, 113, 110, 107, 104};
+  vector<int> strand1 = {93, 96, 99, 102, 105, 108, 111, 114, 117, 120, 123};
+  vector<int> strand2 = {167, 164, 161, 158, 155, 152, 149, 146, 143, 140, 137};
 
   ifstream seq_file(seqfilename.c_str());
   outfilename = basefilename + "_pro_DNA_muta_ene.dat";
@@ -139,12 +139,13 @@ int main(int argc, char *argv[])
   total_energy_0 = ff_ss.compute_energy_protein_DNA_specific(top0, conf0);
   outfile << " Native Total energy (native): " << total_energy_0 << "\n";
 
-  for (int i = 0; i < mutat_seq.size(); ++i) {
+ (int i = 0; i < mutat_seq.size(); ++i) {
     outfile << " SEQ: " << mutat_seq[i] << " : ";
+    // cout << " SEQ: " << mutat_seq[i] << " : \n";
     pinang::Topology top = top0;
     pinang::Conformation conf = conf0;
     pinang::Vec3d tmp_c_new_B1, tmp_c_new_B2;
-    for (int j = 0; j < 5; ++j) {
+    for (int j = 0; j < 11; ++j) {
       string tmp_base_name;
       if (mutat_seq[i][j] == 'A') {
         tmp_base_name = "DA ";
