@@ -78,6 +78,6 @@ void print_usage(char* s)
   cout << " Input file example: \n"
        << " ~~~~~~~~~~~~~~~~~~~~ \n REFERENCE1: 1 to 100 \n REFERENCE2: 2 to 50, 55 to 106 \n"
        << " CALCULATE1: 1 to 200 \n CALCULATE2 2 to 201 \n ~~~~~~~~~~~~~~~~~~~~ "
-       << std::endl;
+       << endl;
   exit(EXIT_SUCCESS);
 }

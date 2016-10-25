@@ -30,10 +30,10 @@ int main(int argc, char *argv[])
 {
   int opt;
 
-  std::string dcd_name = "please_provide_name.dcd";
-  std::string top_name = "please_provide_name.top";
-  std::string inp_name = "please_provide_name.inp";
-  std::string dis_name = "please_provide_name.dis";
+  string dcd_name = "please_provide_name.dcd";
+  string top_name = "please_provide_name.psf";
+  string inp_name = "please_provide_name.in";
+  string dis_name = "please_provide_name.dat";
 
   while ((opt = getopt(argc, argv, "f:s:i:o:h")) != -1) {
     switch (opt) {
@@ -58,35 +58,35 @@ int main(int argc, char *argv[])
   }
 
   // ------------------------------ prepare files ------------------------------
-  std::ifstream dcd_file(dcd_name.c_str(), std::ifstream::binary);
-  std::ofstream dis_file(dis_name.c_str());
+  ifstream dcd_file(dcd_name.c_str(), ifstream::binary);
+  ofstream dis_file(dis_name.c_str());
   pinang::Topology top(top_name);
 
   // ------------------------------ get selections -----------------------------
   pinang::Selection sel_lig(inp_name, "LIG");
   pinang::Selection sel_rec(inp_name, "REC");
 
-  std::cout << " Number of particles in GROUP LIG: " << sel_lig.get_size() << "\n";
-  std::cout << " Number of particles in GROUP REC: " << sel_rec.get_size() << "\n";
+  cout << " Number of particles in GROUP LIG: " << sel_lig.get_size() << "\n";
+  cout << " Number of particles in GROUP REC: " << sel_rec.get_size() << "\n";
 
-  std::vector<double> masses_lig;
+  vector<double> masses_lig;
   for (int i = 0; i < sel_lig.get_size(); ++i) {
     masses_lig.push_back(top.get_particle(sel_lig.get_selection(i)).get_mass());
   }
 
   // ------------------------------ Reading DCD --------------------------------
-  std::vector<pinang::Conformation> conformations;
+  vector<pinang::Conformation> conformations;
   pinang::read_cafemol_dcd(dcd_file, conformations);
   int nframe = conformations.size();
 
   if (nframe == 0)
   {
-    std::cout << " ERROR: Empty DCD file!  Please check! " << "\n";
+    cout << " ERROR: Empty DCD file!  Please check! " << "\n";
     return 1;
   }
   if (top.get_size() != conformations[0].get_size())
   {
-    std::cout << " ERROR: Particle number don't match in top and dcd! "
+    cout << " ERROR: Particle number don't match in top and dcd! "
               << " Please check! " << "\n";
     return 1;
   }
@@ -96,7 +96,7 @@ int main(int argc, char *argv[])
   double d_tmp;
   pinang::Vec3d com_lig;
   pinang::Vec3d coor_rec;
-  std::cout << " Calculating distance_min from LIG(COM) to REC : ..." << std::endl;
+  cout << " Calculating distance_min from LIG(COM) to REC : ..." << endl;
   for (int i= 0; i < nframe; ++i) {
     pinang::Group grp_lig(conformations[i], sel_lig);
     com_lig = pinang::get_center_of_mass(grp_lig, masses_lig);
@@ -109,10 +109,11 @@ int main(int argc, char *argv[])
       if (dist < 0 || dist > d_tmp) dist = d_tmp;
     }
 
-    dis_file << std::setw(6) << i
-             << "   " << std::setw(8) << dist
+    dis_file << setw(6) << i
+             << "   " << setw(8) << dist
              << "\n"; // Output the distance!
   }
+  cout << " Done! " << "\n";
 
   dcd_file.close();
   dis_file.close();
@@ -122,9 +123,12 @@ int main(int argc, char *argv[])
 
 void print_usage(char* s)
 {
-  std::cout << " Usage: "
+  cout << " Usage: "
             << s
-            << " -f some.dcd -s some.top -i some.inp [-o some.dis] [-h]"
+            << " -f xxx.dcd -s xxx.psf -i xxx.in [-o distance.dat] [-h]"
             << "\n";
+  cout << " Input file example: \n"
+       << " ~~~~~~~~~~~~~~~~~~~~ \n REC: 1 to 100 \n LIG: 2 to 50, 55 to 106 \n"
+       << endl;
   exit(EXIT_SUCCESS);
 }
