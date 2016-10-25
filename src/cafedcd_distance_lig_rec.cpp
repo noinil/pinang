@@ -1,5 +1,18 @@
+/*!
+  @file cafedcd_distance_lig_rec.cpp
+  @brief Get minimum distance from COM of lig to rec from MD trajectory (dcd file).
+
+  Read DCD (CafeMol) file, extract minimum distance from COM of lig to rec.
+
+  @author Cheng Tan (noinil@gmail.com)
+  @date 2016-10-25 17:00
+  @copyright GNU Public License V3.0
+*/
+
 #include "read_cafemol_dcd.hpp"
 #include "topology.hpp"
+#include "group.hpp"
+#include "selection.hpp"
 
 #include <iostream>
 #include <iomanip>
@@ -11,236 +24,107 @@
 
 using namespace std;
 
+void print_usage(char* s);
+
 int main(int argc, char *argv[])
 {
-    std::cout << " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ "
-              << "\n";
-    std::cout << " ~           PINANG DCD distances calculation             ~ "
-              << "\n";
-    std::cout << " ========================================================== "
-              << "\n";
+  int opt;
 
-    int opt;
-    int inp_flag = 0;
-    int dcd_flag = 0;
-    int top_flag = 0;
+  std::string dcd_name = "please_provide_name.dcd";
+  std::string top_name = "please_provide_name.top";
+  std::string inp_name = "please_provide_name.inp";
+  std::string dis_name = "please_provide_name.dis";
 
-    std::string dcd_name = "some.dcd";
-    std::string top_name = "some.top";
-    std::string inp_name = "some.inp";
-    std::string dis_name = "some.dis";
+  while ((opt = getopt(argc, argv, "f:s:i:o:h")) != -1) {
+    switch (opt) {
+      case 'f':
+        dcd_name = optarg;
+        break;
+      case 's':
+        top_name = optarg;
+        break;
+      case 'i':
+        inp_name = optarg;
+        break;
+      case 'o':
+        dis_name = optarg;
+        break;
+      case 'h':
+        print_usage(argv[0]);
+        break;
+      default: /* '?' */
+        print_usage(argv[0]);
+    }
+  }
 
-    while ((opt = getopt(argc, argv, "f:s:i:o:h")) != -1) {
-        switch (opt) {
-        case 'f':
-            dcd_name = optarg;
-            dcd_flag = 1;
-            break;
-        case 's':
-            top_name = optarg;
-            top_flag = 1;
-            break;
-        case 'i':
-            inp_name = optarg;
-            inp_flag = 1;
-            break;
-        case 'o':
-            dis_name = optarg;
-            break;
-        case 'h':
-            std::cout << " Usage: "
-                      << argv[0]
-                      << " -f some.dcd -s some.top -i some.inp [-o some.dis] [-h]"
-                      << "\n";
-            exit(EXIT_SUCCESS);
-            break;
-        default: /* '?' */
-            std::cout << " Usage: "
-                      << argv[0]
-                      << " -f some.dcd -s some.top -i some.inp [-o some.dis] [-h]"
-                      << "\n";
-            exit(EXIT_FAILURE);
-        }
+  // ------------------------------ prepare files ------------------------------
+  std::ifstream dcd_file(dcd_name.c_str(), std::ifstream::binary);
+  std::ofstream dis_file(dis_name.c_str());
+  pinang::Topology top(top_name);
+
+  // ------------------------------ get selections -----------------------------
+  pinang::Selection sel_lig(inp_name, "LIG");
+  pinang::Selection sel_rec(inp_name, "REC");
+
+  std::cout << " Number of particles in GROUP LIG: " << sel_lig.get_size() << "\n";
+  std::cout << " Number of particles in GROUP REC: " << sel_rec.get_size() << "\n";
+
+  std::vector<double> masses_lig;
+  for (int i = 0; i < sel_lig.get_size(); ++i) {
+    masses_lig.push_back(top.get_particle(sel_lig.get_selection(i)).get_mass());
+  }
+
+  // ------------------------------ Reading DCD --------------------------------
+  std::vector<pinang::Conformation> conformations;
+  pinang::read_cafemol_dcd(dcd_file, conformations);
+  int nframe = conformations.size();
+
+  if (nframe == 0)
+  {
+    std::cout << " ERROR: Empty DCD file!  Please check! " << "\n";
+    return 1;
+  }
+  if (top.get_size() != conformations[0].get_size())
+  {
+    std::cout << " ERROR: Particle number don't match in top and dcd! "
+              << " Please check! " << "\n";
+    return 1;
+  }
+
+  // ------------------------------ Calculating distance ----------------------
+  double dist;
+  double d_tmp;
+  pinang::Vec3d com_lig;
+  pinang::Vec3d coor_rec;
+  std::cout << " Calculating distance_min from LIG(COM) to REC : ..." << std::endl;
+  for (int i= 0; i < nframe; ++i) {
+    pinang::Group grp_lig(conformations[i], sel_lig);
+    com_lig = pinang::get_center_of_mass(grp_lig, masses_lig);
+
+    dist = -1.0;
+    d_tmp = 0.0;
+    for (int j = 0; j < sel_rec.get_size(); ++j) {
+      coor_rec = conformations[i].get_coordinate(sel_rec.get_selection(j));
+      d_tmp = pinang::vec_distance(com_lig, coor_rec);
+      if (dist < 0 || dist > d_tmp) dist = d_tmp;
     }
 
-    if (dcd_flag == 0)
-    {
-        std::cout << " ERROR: Please provide the DCD file. " << "\n";
-        exit(EXIT_SUCCESS);
-    }
-    if (top_flag == 0)
-    {
-        std::cout << " ERROR: Please provide the top file. " << "\n";
-        exit(EXIT_SUCCESS);
-    }
-    if (inp_flag == 0)
-    {
-        std::cout << " ERROR: Please provide the input file. " << "\n";
-        exit(EXIT_SUCCESS);
-    }
-    // -------------------------------------------------------------------------
+    dis_file << std::setw(6) << i
+             << "   " << std::setw(8) << dist
+             << "\n"; // Output the distance!
+  }
 
-    std::ifstream dcd_file(dcd_name.c_str(), std::ifstream::binary);
-    std::ifstream inp_file(inp_name.c_str());
-    std::ofstream dis_file(dis_name.c_str());
+  dcd_file.close();
+  dis_file.close();
 
-    pinang::Topology top(top_name);
-    if (top.get_size() == 0)
-    {
-        std::cout << " ERROR: No particles found in top file. " << "\n";
-        exit(EXIT_SUCCESS);
-    }
+  return 0;
+}
 
-    // ==================== input particle index ====================
-    std::istringstream tmp_sstr;
-    int flg_grp_1 = 0;
-    int flg_grp_2 = 0;
-    std::string tmp_str;
-    std::string inp_line;
-
-    std::vector<int> atom_group1_idx;
-    std::vector<int> atom_group2_idx;
-
-    while (inp_file.good()) {
-        std::getline(inp_file, inp_line);
-
-        if (inp_file.fail())
-        {
-            break;
-        }
-
-        tmp_str = inp_line.substr(0,4);
-
-        if (tmp_str == "LIG:")
-        {
-            std::string tmp_s;
-            std::istringstream tmp_sstr;
-            flg_grp_1 = 1;
-            inp_line.erase(0,4);
-            std::vector<std::string> strs;
-            boost::split(strs, inp_line, boost::is_any_of(","));
-            for (int i = 0; i < int(strs.size()); i++) {
-                tmp_s = strs[i];
-                std::size_t found = tmp_s.find("to");
-                if (found!=std::string::npos){
-                    int tmp_i = 0;
-                    int tmp_j = 0;
-                    tmp_s.erase(found, 2);
-                    tmp_sstr.str(tmp_s);
-                    tmp_sstr >> tmp_i;
-                    tmp_sstr >> tmp_j;
-                    for (int j = tmp_i; j <= tmp_j; j++) {
-                        atom_group1_idx.push_back(j-1);
-                    }
-                    tmp_sstr.clear();
-                } else {
-                    int tmp_i = 0;
-                    tmp_sstr.str(tmp_s);
-                    tmp_sstr >> tmp_i;
-                    atom_group1_idx.push_back(tmp_i-1);
-                    tmp_sstr.clear();
-                }
-            }
-        }
-        if (tmp_str == "REC:")
-        {
-            std::string tmp_s;
-            std::istringstream tmp_sstr;
-            flg_grp_2 = 1;
-            inp_line.erase(0,4);
-            std::vector<std::string> strs;
-            boost::split(strs, inp_line, boost::is_any_of(","));
-            for (int i = 0; i < int(strs.size()); i++) {
-                tmp_s = strs[i];
-                std::size_t found = tmp_s.find("to");
-                if (found!=std::string::npos){
-                    int tmp_i = 0;
-                    int tmp_j = 0;
-                    tmp_s.erase(found, 2);
-                    tmp_sstr.str(tmp_s);
-                    tmp_sstr >> tmp_i;
-                    tmp_sstr >> tmp_j;
-                    for (int j = tmp_i; j <= tmp_j; j++) {
-                        atom_group2_idx.push_back(j-1);
-                    }
-                    tmp_sstr.clear();
-                } else {
-                    int tmp_i = 0;
-                    tmp_sstr.str(tmp_s);
-                    tmp_sstr >> tmp_i;
-                    atom_group2_idx.push_back(tmp_i-1);
-                    tmp_sstr.clear();
-                }
-            }
-        }
-    }
-    if (flg_grp_1 == 0)
-    {
-        std::cout << " ERROR: LIGAND not found!" << "\n";
-    }
-    if (flg_grp_2 == 0)
-    {
-        std::cout << " ERROR: RECEPTOR not found!" << "\n";
-    }
-    inp_file.close();
-
-    // -------------------------------------------------------------------------
-    // ---------- Reading DCD ----------
-    std::vector<pinang::Conformation> conformations;
-
-    pinang::read_cafemol_dcd(dcd_file, conformations);
-    int nframe = conformations.size();
-
-    if (nframe == 0)
-    {
-        std::cout << " ERROR: Empty DCD file!  Please check! " << "\n";
-        return 1;
-    }
-
-    if (top.get_size() != conformations[0].get_size())
-    {
-        std::cout << " ERROR: Particle number don't match in top and dcd! "
-                  << " Please check! " << "\n";
-        return 1;
-    }
-
-    /*                  _         _
-    //  _ __ ___   __ _(_)_ __   | | ___   ___  _ __
-    // | '_ ` _ \ / _` | | '_ \  | |/ _ \ / _ \| '_ \
-    // | | | | | | (_| | | | | | | | (_) | (_) | |_) |
-    // |_| |_| |_|\__,_|_|_| |_| |_|\___/ \___/| .__/
-    //                                         |_|
-    */
-    for (int i= 0; i < nframe; i++) {
-        pinang::Vec3d com1(0,0,0);
-        pinang::Vec3d v(0,0,0);
-        int k = 0;
-        double total_mass = 0;
-        double dist = -1.0;
-        double d_tmp = 0;
-
-        for (int j = 0; j < int(atom_group1_idx.size()); j++) {
-            k = atom_group1_idx[j];
-            v = v + conformations[i].get_coordinate(k) * top.get_particle(k).get_mass();
-            total_mass += top.get_particle(k).get_mass();
-        }
-        com1 = v * (1/total_mass);
-
-        for (int j = 0; j < int(atom_group2_idx.size()); j++) {
-            k = atom_group2_idx[j];
-            v = conformations[i].get_coordinate(k);
-            d_tmp = vec_distance(com1, v);
-            // std::cout << d_tmp << "\n";
-            if (dist < 0 || dist > d_tmp) dist = d_tmp;
-        }
-
-        dis_file << std::setw(6) << i
-                 << "   " << std::setw(8) << dist
-                 << "\n"; // Output the distance!
-    }
-
-    dcd_file.close();
-    dis_file.close();
-
-    return 0;
+void print_usage(char* s)
+{
+  std::cout << " Usage: "
+            << s
+            << " -f some.dcd -s some.top -i some.inp [-o some.dis] [-h]"
+            << "\n";
+  exit(EXIT_SUCCESS);
 }

@@ -24,7 +24,10 @@ Vec3d get_center_of_mass(const Group& grp, std::vector<double> masses)
   int m1 = grp.n_atom_;
   int m2 = masses.size();
   if (m1 != m2) {
-    std::cout << " ERROR: inconsistent number of atoms when calculating Rg! (group.hpp)\n";
+    std::cout << " ERROR: inconsistent number of atoms when calculating COM!"
+              << " (group_physical_quantities.cpp)\n";
+    std::cout << " Number of atoms in group: " << m1 << "\n";
+    std::cout << " Number of atoms in masses: " << m2 << "\n";
     exit(EXIT_SUCCESS);
   }
   if (m2 == 0) {
