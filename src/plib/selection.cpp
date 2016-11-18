@@ -36,6 +36,7 @@ Selection::Selection(std::string inp_file_name, std::string keyword)
   int check_flag = 1;
   std::string::size_type m;
   std::string::size_type n;
+  std::string::size_type p;
   std::string::size_type q;
 
   while (inp_file.good()) {
@@ -53,14 +54,23 @@ Selection::Selection(std::string inp_file_name, std::string keyword)
       std::vector<std::string> sels = split_str(select_str, ',');
       int tmp_i = 0;
       int tmp_j = 0;
+      int tmp_k = 1;
       for (const std::string& sel_word : sels){
+        p = sel_word.find("every");
         q = sel_word.find("to");
         if (q != std::string::npos){
           std::string sub1 = sel_word.substr(0, q);
-          std::string sub2 = sel_word.substr(q + 2);
+          if (p != std::string::npos){
+            std::string sub2 = sel_word.substr(q + 2, p);
+            std::string sub3 = sel_word.substr(p + 5);
+            tmp_j = std::stoi(sub2);
+            tmp_k = std::stoi(sub3);
+          } else {
+            std::string sub2 = sel_word.substr(q + 2);
+            tmp_j = std::stoi(sub2);
+          }
           tmp_i = std::stoi(sub1);
-          tmp_j = std::stoi(sub2);
-          for (int j = tmp_i; j <= tmp_j; ++j) {
+          for (int j = tmp_i; j <= tmp_j; j += tmp_k) {
             v_serial_.push_back(j - 1);
           }
         } else {
@@ -115,6 +125,7 @@ int Selection::set_selection(std::string inp_file_name, std::string keyword)
   int check_flag = 1;
   std::string::size_type m;
   std::string::size_type n;
+  std::string::size_type p;
   std::string::size_type q;
 
   while (inp_file.good()) {
@@ -132,14 +143,23 @@ int Selection::set_selection(std::string inp_file_name, std::string keyword)
       std::vector<std::string> sels = split_str(select_str, ',');
       int tmp_i = 0;
       int tmp_j = 0;
+      int tmp_k = 1;
       for (const std::string& sel_word : sels){
+        p = sel_word.find("every");
         q = sel_word.find("to");
         if (q != std::string::npos){
           std::string sub1 = sel_word.substr(0, q);
-          std::string sub2 = sel_word.substr(q + 2);
+          if (p != std::string::npos){
+            std::string sub2 = sel_word.substr(q + 2, p);
+            std::string sub3 = sel_word.substr(p + 5);
+            tmp_j = std::stoi(sub2);
+            tmp_k = std::stoi(sub3);
+          } else {
+            std::string sub2 = sel_word.substr(q + 2);
+            tmp_j = std::stoi(sub2);
+          }
           tmp_i = std::stoi(sub1);
-          tmp_j = std::stoi(sub2);
-          for (int j = tmp_i; j <= tmp_j; ++j) {
+          for (int j = tmp_i; j <= tmp_j; j += tmp_k) {
             v_serial_.push_back(j - 1);
           }
         } else {
