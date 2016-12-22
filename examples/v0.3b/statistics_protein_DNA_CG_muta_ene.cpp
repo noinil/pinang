@@ -1,8 +1,8 @@
 /*!
   @file statistics_protein_DNA_CG_mutation.cpp
-  @brief Statistics of protein-DNA interacting quantities with mutation.
+  @brief Statistics of protein-DNA interacting energies with mutation.
 
-  Calculate protein-DNA interacting pairwise distances, angles, etc...
+  Calculate protein-DNA interacting energies.
 
   @author Cheng Tan (noinil@gmail.com)
   @date 2016-06-16 14:33
@@ -14,6 +14,7 @@
 #include <unistd.h>
 #include "geometry.hpp"
 #include "topology.hpp"
+#include "selection.hpp"
 #include "ff_protein_DNA_specific.hpp"
 
 using namespace std;
@@ -27,11 +28,12 @@ int main(int argc, char *argv[])
   int seq_flag = 0;
 
   string basefilename = "";
-  string infilename = "some.psf";
+  string psffilename = "some.psf";
+  string infilename = "some.in";
   string outfilename;
   string seqfilename;
 
-  while ((opt = getopt(argc, argv, "o:f:h:p:")) != -1) {
+  while ((opt = getopt(argc, argv, "o:f:i:h:p:")) != -1) {
     switch (opt) {
       case 'o':
         outfilename = optarg;
@@ -40,10 +42,13 @@ int main(int argc, char *argv[])
         seqfilename = optarg;
         seq_flag = 1;
         break;
-      case 'f':
+      case 'i':
         infilename = optarg;
+        break;
+      case 'f':
+        psffilename = optarg;
         in_flag = 1;
-        basefilename = infilename.substr(0, infilename.size()-4);
+        basefilename = psffilename.substr(0, psffilename.size()-4);
         break;
       case 'h':
         print_usage(argv[0]);
@@ -64,18 +69,19 @@ int main(int argc, char *argv[])
   }
 
   // -------------------- READ IN --------------------
-  pinang::Topology top0(infilename);
+  pinang::Topology top0(psffilename);
 
   string crd_name = basefilename + ".crd";
   pinang::Conformation conf0(crd_name);
-
 
   string ffp_name = basefilename + ".ffp";
   pinang::FFProteinDNASpecific ff_ss(ffp_name);
 
   vector<string> mutat_seq;
-  vector<int> strand1 = {133, 136, 139, 142, 145};
-  vector<int> strand2 = {116, 113, 110, 107, 104};
+  // vector<int> strand1 = {133, 136, 139, 142, 145};
+  // vector<int> strand2 = {116, 113, 110, 107, 104};
+  pinang::Selection sel_strnd_1(infilename, "STRAND1");
+  pinang::Selection sel_strnd_2(infilename, "STRAND2");
 
   ifstream seq_file(seqfilename.c_str());
   outfilename = basefilename + "_pro_DNA_muta_ene.dat";
@@ -156,8 +162,8 @@ int main(int argc, char *argv[])
       } else if (mutat_seq[i][j] == 'T') {
         tmp_base_name = "DT ";
       } 
-      tmp_i1 = strand1[j] - 1;
-      tmp_i2 = strand2[j] - 1;
+      tmp_i1 = sel_strnd_1.get_selection(j);
+      tmp_i2 = sel_strnd_2.get_selection(j);
       tmp_i3 = tmp_i1 - 1;
       tmp_i4 = tmp_i2 - 1;
       tmp_i5 = tmp_i1 - 2;
