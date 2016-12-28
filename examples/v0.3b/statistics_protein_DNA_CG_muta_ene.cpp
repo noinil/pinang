@@ -151,7 +151,8 @@ int main(int argc, char *argv[])
     pinang::Topology top = top0;
     pinang::Conformation conf = conf0;
     pinang::Vec3d tmp_c_new_B1, tmp_c_new_B2;
-    for (int j = 0; j < 5; ++j) {
+    int seq_length = mutat_seq[i].length();
+    for (int j = 0; j < seq_length; ++j) {
       string tmp_base_name;
       if (mutat_seq[i][j] == 'A') {
         tmp_base_name = "DA ";

@@ -93,9 +93,6 @@ double FFProteinDNASpecific::compute_energy_protein_DNA_specific(Topology &top, 
       double tmp_angle_53 = vec_angle_deg(tmp_B5_B3, tmp_B0_CA);
       double tmp_angle_NC = vec_angle_deg(tmp_CCA_NCA,  tmp_B0_CA);
       // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ CORE CALCULATION! ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      double tmp_energy = 1000000.0;
-      // int in_cutoff_flag = 0;
-      // double best_d = 0, best_aNC = 0, best_a0 = 0, best_a53 = 0;
       for (k = 0; k < tmp_pair.n_inter_pair_; ++k) {
         PairProteinDNASpecific p = tmp_pair.interaction_pairs_[k];
         double f1 = 0, f2 = 0, f3 = 0, f4 = 0;  // f1: bond; f2: angle 0; f3: angle NC; f4: angle 53;
@@ -128,7 +125,6 @@ double FFProteinDNASpecific::compute_energy_protein_DNA_specific(Topology &top, 
         } else {
           continue;
         }
-        // in_cutoff_flag = 1;
         double f = f1 * f2 * f3 * f4;
         double ene_pwm_base = 0;
         if (tmp_base_name == "DA ") {
@@ -140,33 +136,9 @@ double FFProteinDNASpecific::compute_energy_protein_DNA_specific(Topology &top, 
         } else if (tmp_base_name == "DT ") {
           ene_pwm_base = p.ene_pwm_T_;
         }
-        // double e = ene_pwm_base * f;
-        tmp_energy = ene_pwm_base * f1;
-        // if (tmp_energy >= e) {
-        //   tmp_energy = e;
-        //   best_d = tmp_distance;
-        //   best_a0 = tmp_angle_0;
-        //   best_aNC = tmp_angle_NC;
-        //   best_a53 = tmp_angle_53;
-        // }
-        total_energy += tmp_energy;
+        double e = ene_pwm_base * f;
+        total_energy += e;
       }
-      // if (in_cutoff_flag == 0) {
-      //   tmp_energy = 0;
-      // } else {
-      //   if (0) {
-      //     std::cout << "   " << std::setw(5) << proi + 1 << " - "
-      //               << std::setw(5) << dnai + 1 << "  | E = "
-      //               << std::setw(12) << tmp_energy << "   | "
-      //               << std::setw(6) << tmp_base_name
-      //               << "     d: " << std::setw(8) << best_d
-      //               << "      aNC: " << std::setw(7) << best_aNC
-      //               << "      a0: " << std::setw(7) << best_a0
-      //               << "      a53: " << std::setw(7) << best_a53
-      //               << "\n";
-      //   }
-      // }
-      // total_energy += tmp_energy;
     }
   }
   // std::cout << " ============~~~~~~~~~~~~~~~==============" << "\n";
