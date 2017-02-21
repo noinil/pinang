@@ -26,6 +26,7 @@ int main(int argc, char *argv[])
 {
   int opt;
   int out_flag = 0;
+  double ene_pdss_shift = 0.0;
 
   string dcd_name = "please_provide_name.dcd";
   string top_name = "please_provide_name.psf";
@@ -33,7 +34,7 @@ int main(int argc, char *argv[])
   string ene_name = "please_provide_name.dat";
   string basefilename = "";
 
-  while ((opt = getopt(argc, argv, "f:s:p:o:h")) != -1) {
+  while ((opt = getopt(argc, argv, "f:s:p:o:S:h")) != -1) {
     switch (opt) {
       case 'f':
         dcd_name = optarg;
@@ -48,6 +49,9 @@ int main(int argc, char *argv[])
       case 'o':
         ene_name = optarg;
         out_flag = 1;
+        break;
+      case 'S':
+        ene_pdss_shift = atof(optarg);
         break;
       case 'h':
         print_usage(argv[0]);
@@ -88,6 +92,7 @@ int main(int argc, char *argv[])
   double ene_ele = 0;
 
   pinang::FFProteinDNASpecific ff_ss(ffp_name);
+  ff_ss.set_energy_shift(ene_pdss_shift);
 
   cout << " Calculating energies from dcd file : " << dcd_name << " ... " << endl;
   for (int i= 0; i < nframe; ++i) {

@@ -100,6 +100,8 @@ FFProteinDNASpecific::FFProteinDNASpecific()
 {
   ss_pairwise_params_.clear();
   n_protein_particle_ = 0;
+  energy_scaling_ = 1.0;
+  energy_shift_ = 0.0;
 }
 
 FFProteinDNASpecific::FFProteinDNASpecific(std::string ffp_file_name)
@@ -153,6 +155,18 @@ FFProteinDNASpecific::FFProteinDNASpecific(std::string ffp_file_name)
   ffp_file.close();
 
   n_protein_particle_ = ss_pairwise_params_.size();
+  energy_scaling_ = 1.0;
+  energy_shift_ = 0.0;
+}
+
+void FFProteinDNASpecific::set_energy_scaling_factor(double s)
+{
+  energy_scaling_ = s;
+}
+
+void FFProteinDNASpecific::set_energy_shift(double s)
+{
+  energy_shift_ = s;
 }
 
 }  // pinang

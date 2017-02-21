@@ -4,7 +4,7 @@
 
   In this file we define a class that describe force field parameter and formula
   of protein-DNA sequence specific interactions.
-  
+
   @author Cheng Tan (noinil@gmail.com)
   @date 2016-08-01 11:07
   @copyright GNU Public License V3.0
@@ -38,12 +38,22 @@ class FFProteinDNASpecific
   FFProteinDNASpecific(std::string);
   virtual ~FFProteinDNASpecific() {ss_pairwise_params_.clear();}
 
+  //! @brief Set energy scaling factor for protein-DNA sequence-specific interactions.
+  //! @param Energy scaling factor (double).
+  void set_energy_scaling_factor(double);
+
+  //! @brief Set energy shift for protein-DNA sequence-specific interactions.
+  //! @param Energy shift (double).
+  void set_energy_shift(double);
+
   //! @brief Compute protein-DNA sequence specific interaction energy.
   //! @param Topology and conformation.
   //! @retval Energy.
   double compute_energy_protein_DNA_specific(Topology&, Conformation&);
  protected:
   int n_protein_particle_;
+  double energy_scaling_;
+  double energy_shift_;
   std::vector<PairProteinDNASpecificCombination> ss_pairwise_params_;
 };
 
