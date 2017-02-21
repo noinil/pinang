@@ -12,11 +12,8 @@
 #include "read_cafemol_dcd.hpp"
 #include "topology.hpp"
 #include "group.hpp"
-#include "selection.hpp"
 
-#include <iostream>
 #include <iomanip>
-#include <fstream>
 #include <sstream>
 #include <cstdlib>
 #include <unistd.h>
