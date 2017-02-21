@@ -73,25 +73,22 @@ double FFProteinDNASpecific::compute_energy_protein_DNA_specific(Topology &top, 
         continue;
       }
       Vec3d tmp_c_S0 = conf.get_coordinate(dnai - 1);
-      double tmp_angle_0 = vec_angle_deg(tmp_c_S0 - tmp_c_B0, tmp_B0_CA);
+      double tmp_angle_0 = vec_angle(tmp_c_S0 - tmp_c_B0, tmp_B0_CA);
       Vec3d tmp_c_B5, tmp_c_B3;
       if (dnai - 3 < 0 || top.get_particle(dnai - 3).get_chain_ID() != tmp_chain_id) {
-        tmp_c_B5 = conf.get_coordinate(dnai);
+        continue;
       } else {
         tmp_c_B5 = conf.get_coordinate(dnai - 3);
       }
       if (dnai + 3 >= top.get_size() || top.get_particle(dnai + 3).get_chain_ID() != tmp_chain_id) {
-        tmp_c_B3 = conf.get_coordinate(dnai);
+        continue;
       } else {
         tmp_c_B3 = conf.get_coordinate(dnai + 3);
       }
       Vec3d tmp_B5_B3 = tmp_c_B3 - tmp_c_B5;
       double tmp_dist_B5_B3 = tmp_B5_B3.norm();
-      if (tmp_dist_B5_B3 < 0.0001) {
-        continue;
-      }
-      double tmp_angle_53 = vec_angle_deg(tmp_B5_B3, tmp_B0_CA);
-      double tmp_angle_NC = vec_angle_deg(tmp_CCA_NCA,  tmp_B0_CA);
+      double tmp_angle_53 = vec_angle(tmp_B5_B3, tmp_B0_CA);
+      double tmp_angle_NC = vec_angle(tmp_CCA_NCA,  tmp_B0_CA);
       // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ CORE CALCULATION! ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       for (k = 0; k < tmp_pair.n_inter_pair_; ++k) {
         PairProteinDNASpecific p = tmp_pair.interaction_pairs_[k];
@@ -101,26 +98,27 @@ double FFProteinDNASpecific::compute_energy_protein_DNA_specific(Topology &top, 
         double delta_theta_0 = std::abs(tmp_angle_0 - p.angle_0_0_);
         double delta_theta_NC = std::abs(tmp_angle_NC - p.angle_NC_0_);
         double delta_theta_53 = std::abs(tmp_angle_53 - p.angle_53_0_);
+        double pi_over_2phi = 3.14159265 / (p.phi_ + p.phi_);
         if (delta_theta_0 < p.phi_) {
           f2 = 1;
-        } else if (delta_theta_0 < p.phi_ * 2.0) {
-          double cos_theta_0 = cos(delta_theta_0 / 180.0 * 3.14159265);
+        } else if (delta_theta_0 < p.phi_ + p.phi_) {
+          double cos_theta_0 = cos(pi_over_2phi * delta_theta_0);
           f2 = 1 - cos_theta_0 * cos_theta_0;
         } else {
           continue;
         }
         if (delta_theta_NC < p.phi_) {
           f3 = 1;
-        } else if (delta_theta_NC < p.phi_ * 2.0) {
-          double cos_theta_NC = cos(delta_theta_NC / 180.0 * 3.14159265);
+        } else if (delta_theta_NC < p.phi_ + p.phi_) {
+          double cos_theta_NC = cos(pi_over_2phi * delta_theta_NC);
           f3 = 1 - cos_theta_NC * cos_theta_NC;
         } else {
           continue;
         }
         if (delta_theta_53 < p.phi_) {
           f4 = 1;
-        } else if (delta_theta_53 < p.phi_ * 2.0) {
-          double cos_theta_53 = cos(delta_theta_53 / 180.0 * 3.14159265);
+        } else if (delta_theta_53 < p.phi_ + p.phi_) {
+          double cos_theta_53 = cos(pi_over_2phi * delta_theta_53);
           f4 = 1 - cos_theta_53 * cos_theta_53;
         } else {
           continue;

@@ -43,12 +43,12 @@ std::istream& operator>>(std::istream& i, PairProteinDNASpecific& pairSS)
 
   pairSS.protein_serial_     = serp - 1;
   pairSS.r_0_                = r0;
-  pairSS.angle_NC_0_         = angNC;
-  pairSS.angle_0_0_          = ang0;
-  pairSS.angle_53_0_         = ang53;
+  pairSS.angle_0_0_          = ang0 / 180.0 * 3.14159265;
+  pairSS.angle_NC_0_         = angNC / 180.0 * 3.14159265;
+  pairSS.angle_53_0_         = ang53 / 180.0 * 3.14159265;
   pairSS.sigma_              = sig;
   pairSS.twice_sigma_square_ = 2.0 * sig * sig;
-  pairSS.phi_                = p;
+  pairSS.phi_                = p / 180.0 * 3.14159265;
   pairSS.ene_pwm_A_          = eneA * k_u_kB_T;
   pairSS.ene_pwm_C_          = eneC * k_u_kB_T;
   pairSS.ene_pwm_G_          = eneG * k_u_kB_T;
