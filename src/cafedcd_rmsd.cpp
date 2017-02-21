@@ -2,7 +2,7 @@
   @file cafedcd_rmsd.cpp
   @brief Calculate RMSD from MD trajectory (dcd file).
 
-  Read DCD (CafeMol) file, caalculate RMSD for a group of particles.
+  Read DCD (CafeMol) file, calculate RMSD for a group of particles.
 
   @author Cheng Tan (noinil@gmail.com)
   @date 2016-10-25 20:48
