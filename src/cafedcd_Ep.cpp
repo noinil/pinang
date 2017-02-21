@@ -10,8 +10,6 @@
 */
 
 #include "read_cafemol_dcd.hpp"
-#include "topology.hpp"
-#include "geometry.hpp"
 #include "ff_protein_DNA_specific.hpp"
 
 #include <iomanip>
@@ -96,7 +94,9 @@ int main(int argc, char *argv[])
     conf_tmp = conformations[i];
     // ------------------------------ PDSS ------------------------------
     ene_pdss = ff_ss.compute_energy_protein_DNA_specific(top, conf_tmp);
-    cout << "Protein-DNA sequence-specific energy: " << ene_pdss << "\n";
+    ene_file << setw(6) << i
+             << "   " << setw(8) << ene_pdss
+             << "\n";
   }
 
   dcd_file.close();

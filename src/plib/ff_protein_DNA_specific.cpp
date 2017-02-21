@@ -49,10 +49,10 @@ std::istream& operator>>(std::istream& i, PairProteinDNASpecific& pairSS)
   pairSS.sigma_              = sig;
   pairSS.twice_sigma_square_ = 2.0 * sig * sig;
   pairSS.phi_                = p;
-  pairSS.ene_pwm_A_          = eneA;
-  pairSS.ene_pwm_C_          = eneC;
-  pairSS.ene_pwm_G_          = eneG;
-  pairSS.ene_pwm_T_          = eneT;
+  pairSS.ene_pwm_A_          = eneA * k_u_kB_T;
+  pairSS.ene_pwm_C_          = eneC * k_u_kB_T;
+  pairSS.ene_pwm_G_          = eneG * k_u_kB_T;
+  pairSS.ene_pwm_T_          = eneT * k_u_kB_T;
 
   return i;
 }
