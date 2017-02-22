@@ -134,7 +134,7 @@ double FFProteinDNASpecific::compute_energy_protein_DNA_specific(Topology &top, 
         } else if (tmp_base_name == "DT ") {
           ene_pwm_base = p.ene_pwm_T_;
         }
-        double e = (energy_scaling_ * ene_pwm_base + energy_shift_) * f;
+        double e = energy_scaling_ * (ene_pwm_base + energy_shift_) * f;
         total_energy += e;
       }
     }
