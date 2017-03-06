@@ -4,7 +4,7 @@ import sys
 import numpy as np
 import operator
 
-def main(pwm_file_name):
+def main(pwm_opt, pwm_file_name):
     # ---------- read in probability matrix ----------
     p_pwm = {}
     with open(pwm_file_name, 'r') as pwm_fin:
@@ -49,7 +49,15 @@ def main(pwm_file_name):
     x, y = 20, 20
     for i in range(len_DNA):
         y = 0
-        pA, pC, pG, pT = p_pwm['A'][i], p_pwm['C'][i], p_pwm['G'][i], p_pwm['T'][i]
+        if pwm_opt == '-f':
+            fA, fC, fG, fT = p_pwm['A'][i], p_pwm['C'][i], p_pwm['G'][i], p_pwm['T'][i]
+            f_sum = fA + fC + fG + fT
+            pA, pC, pG, pT = fA / f_sum, fC / f_sum, fG / f_sum, fT / f_sum, 
+        elif pwm_opt == '-p':
+            pA, pC, pG, pT = p_pwm['A'][i], p_pwm['C'][i], p_pwm['G'][i], p_pwm['T'][i]
+        else:
+            print("Usage: ", sys.argv[0], "[-p xxx.ppm] [-f xxx.pfm]")
+            exit()
         eA, eC, eG, eT = np.log2(pA/0.25), np.log2(pC/0.25), np.log2(pG/0.25), np.log2(pT/0.25)
         IC = pA * eA + pC * eC + pG * eG + pT * eT
         p_base_dict_local['A'] = pA
@@ -72,8 +80,9 @@ def main(pwm_file_name):
 
 if __name__ == '__main__':
     try:
-        pwm_file_name = sys.argv[1]
+        pwm_opt = sys.argv[1]
+        pwm_file_name = sys.argv[2]
     except:
-        print("Usage: ", sys.argv[0], " xxx.ppm")
+        print("Usage: ", sys.argv[0], "[-p xxx.ppm] [-f xxx.pfm]")
         exit()
-    main(pwm_file_name)
+    main(pwm_opt, pwm_file_name)
