@@ -77,7 +77,7 @@ void print_usage(char* s)
        << "\n\t -i some.in struct1.crd struct2.crd\n\t [-h] \n";
   cout << " Input file example: \n"
        << " ~~~~~~~~~~~~~~~~~~~~ \n REFERENCE1: 1 to 100 \n REFERENCE2: 2 to 50, 55 to 106 \n"
-       << " CALCULATE1: 1 to 200 \n CALCULATE2 2 to 201 \n ~~~~~~~~~~~~~~~~~~~~ "
+       << " CALCULATE1: 1 to 200 \n CALCULATE2: 2 to 201 \n ~~~~~~~~~~~~~~~~~~~~ "
        << endl;
   exit(EXIT_SUCCESS);
 }
