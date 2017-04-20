@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
-def main():
+def main(filename):
     en_pwm = {}
-    with open('en.pwm', 'r') as pwm_fin:
+    with open(filename, 'r') as pwm_fin:
         for line in pwm_fin:
             words = line.split()
             if len(words) < 1:
@@ -35,4 +35,6 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    import sys
+    fname = sys.argv[1]
+    main(fname)
