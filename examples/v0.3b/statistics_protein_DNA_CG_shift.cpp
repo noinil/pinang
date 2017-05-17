@@ -1,11 +1,11 @@
 /*!
-  @file statistics_protein_DNA_CG_quantities.cpp
-  @brief Statistics of protein-DNA interacting quantities.
+  @file statistics_protein_DNA_CG_shift.cpp
+  @brief Statistics of protein-DNA interacting quantities with shifting test
 
-  Calculate protein-DNA interacting pairwise distances, angles, etc...
+  Calculate protein-DNA interacting pairwise distances, angles, etc... under shifting tests.
 
   @author Cheng Tan (noinil@gmail.com)
-  @date 2016-06-16 14:33
+  @date 2017-05-17 14:33
   @copyright GNU Public License V3.0
 */
 
@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
 
   string stat_name = basefilename + ".stat";
   ifstream stat_file(stat_name.c_str());
-  outfilename = basefilename + "_pro_DNA_stat.dat";
+  outfilename = basefilename + "_pro_DNA_shift.dat";
   ofstream outfile(outfilename.c_str());
 
   string stat_line;
