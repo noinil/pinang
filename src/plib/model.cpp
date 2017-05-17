@@ -499,7 +499,7 @@ void Model::output_ffparm_nonbonded(std::ostream& o)
       std::cout << " Single residue Chain!!! WTF!!! \n";
       exit(EXIT_SUCCESS);
     }
- 
+
     for (j = 0; j < dg_size; ++j) {
       atmp2 = tmp_cg_dna_group[j];
       rtmp2 = tmp_residue_dna_group[j];
@@ -556,9 +556,9 @@ void Model::output_ffparm_nonbonded(std::ostream& o)
   o << "[ protein-DNA seq-specific ]" << std::setw(8) << pro_DNA_contact_cg_distance.size() << "\n";
   o << "# " << std::setw(6) << "pro_i" << std::setw(9) << "dna_j"
     << std::setw(12) << "r_0" << std::setw(9) << "angle_NC"
-    // << std::setw(9) << "angle_53" << std::setw(10) << "groove"
-    << std::setw(9) << "angle_0" 
-    << std::setw(9) << "angle_53" 
+      // << std::setw(9) << "angle_53" << std::setw(10) << "groove"
+    << std::setw(9) << "angle_0"
+    << std::setw(9) << "angle_53"
     << std::setw(9) << "sigma" << std::setw(9) << "phi" << "\n";
   for (i = 0; i < pro_DNA_contact_cg_distance.size(); ++i) {
     o << std::setw(8) << pro_DNA_contact_pro_atom_serial[i] << " "
@@ -569,11 +569,128 @@ void Model::output_ffparm_nonbonded(std::ostream& o)
       << std::setw(8) << pro_DNA_contact_cg_angle_NC[i] << " "
       << std::setw(8) << pro_DNA_contact_cg_angle_0[i] << " "
       << std::setw(8) << pro_DNA_contact_cg_angle_53[i] << " "
-      // << std::setw(9) << pro_DNA_contact_cg_groove_info[i] << " "
+        // << std::setw(9) << pro_DNA_contact_cg_groove_info[i] << " "
       << std::setprecision(3) << std::setw(8)
       << 1.0 << " " << std::setw(8) << 10.0 << " " << "\n";
   }
   o << std::endl;
+
+  // -- 2017-05-17 BRIDGING
+  // -- calculating all possible pseudo contacts that will possibly cause
+  // -- problem, and give warning...
+  int pg_size_pdss = int(pro_DNA_contact_pro_atom_serial.size());
+  int pdss_pi = 0;
+  int pdss_pi_tmp = -97;
+  std::vector<int>    pro_DNA_pseudo_contact_pro_atom_serial;
+  std::vector<int>    pro_DNA_pseudo_contact_DNA_atom_serial;
+  std::vector<double> pro_DNA_pseudo_contact_cg_distance;
+  std::vector<double> pro_DNA_pseudo_contact_cg_angle_NC;
+  std::vector<double> pro_DNA_pseudo_contact_cg_angle_0;
+  std::vector<double> pro_DNA_pseudo_contact_cg_angle_53;
+  for (i = 0; i < pg_size_pdss; ++i) {
+    pdss_pi = pro_DNA_contact_pro_atom_serial[i] - 1;
+    if (pdss_pi > pdss_pi_tmp) {
+      pdss_pi_tmp = pdss_pi;
+    } else {
+      continue;
+    }
+    atmp1 = tmp_cg_pro_group[pdss_pi];
+    tmp_c_CA = atmp1.get_coordinate();  // Coor of CA
+    k = pdss_pi - 1;
+    if (k < 0 || tmp_cg_pro_group[k].get_chain_ID() != atmp1.get_chain_ID()) {
+      tmp_c_CA_N = tmp_c_CA;
+      calpha_term_N = 1;
+    } else {
+      calpha_term_N = 0;
+      tmp_c_CA_N = tmp_cg_pro_group[k].get_coordinate();  // Coor of N' CA
+    }
+    k = pdss_pi + 1;
+    if (k >= tmp_cg_pro_group.size() || tmp_cg_pro_group[k].get_chain_ID() != atmp1.get_chain_ID()) {
+      tmp_c_CA_C = tmp_c_CA;
+      calpha_term_C = 1;
+    } else {
+      calpha_term_C = 0;
+      tmp_c_CA_C = tmp_cg_pro_group[k].get_coordinate();  // Coor of C' CA
+    }
+    if (calpha_term_N * calpha_term_C > 0) {
+      std::cout << " Single residue Chain!!! WTF!!! \n";
+      exit(EXIT_SUCCESS);
+    }
+
+    for (j = 0; j < dg_size; ++j) {
+      atmp2 = tmp_cg_dna_group[j];
+      if (atmp2.get_atom_name() != "DB  ")
+        continue;
+      cg_dist = atom_distance(atmp1, atmp2);
+      if (cg_dist >= 14.0) {
+        continue;
+      }
+
+      // ---------- 5' Base ----------
+      k = j - 3;
+      if (k < 0 || tmp_cg_dna_group[k].get_chain_ID() != tmp_cg_dna_group[j].get_chain_ID()) {
+        continue;
+      } else {
+        if (tmp_cg_dna_group[k].get_atom_name() != "DB  ") {
+          std::cout << " Wrong interaction pair for 5'DB!!! \n";
+          exit(EXIT_SUCCESS);
+        }
+        tmp_c_B5 = tmp_cg_dna_group[k].get_coordinate();  // Coor of 5' B
+      }
+      // ---------- 3' Base ----------
+      k = j + 3;
+      if (k > tmp_cg_dna_group.size() || tmp_cg_dna_group[k].get_chain_ID() != tmp_cg_dna_group[j].get_chain_ID()) {
+        continue;
+      } else {
+        if (tmp_cg_dna_group[k].get_atom_name() != "DB  ") {
+          std::cout << " Wrong interaction pair for 3'DB!!! \n";
+          exit(EXIT_SUCCESS);
+        }
+        tmp_c_B3 = tmp_cg_dna_group[k].get_coordinate();  // Coor of 5' B
+      }
+      tmp_c_B0 = atmp2.get_coordinate();  // Coor of B
+      // ---------- Sugar -- Base -- CA angle ----------
+      if (tmp_cg_dna_group[j - 1].get_atom_name() != "DS  ") {
+        std::cout << " Wrong interaction pair for DS in DS-DB-CA!!! \n";
+        exit(EXIT_SUCCESS);
+      }
+      tmp_c_S0 = tmp_cg_dna_group[j-1].get_coordinate();  // Coor of S connected to B
+      // ---------------------------------------- CALCULATIONS! ----------------------------------------
+      tmp_angle_53 = vec_angle_deg(tmp_c_B3 - tmp_c_B5, tmp_c_CA - tmp_c_B0);
+      tmp_angle_0 = vec_angle_deg(tmp_c_S0 - tmp_c_B0, tmp_c_CA - tmp_c_B0);
+      tmp_angle_NC = vec_angle_deg(tmp_c_CA_C - tmp_c_CA_N, tmp_c_B0 - tmp_c_CA);
+
+      pro_DNA_pseudo_contact_pro_atom_serial.push_back(atmp1.get_residue_serial());
+      pro_DNA_pseudo_contact_DNA_atom_serial.push_back(atmp2.get_residue_serial());
+      pro_DNA_pseudo_contact_cg_distance.push_back(cg_dist);
+      pro_DNA_pseudo_contact_cg_angle_NC.push_back(tmp_angle_NC);
+      pro_DNA_pseudo_contact_cg_angle_0.push_back(tmp_angle_0);
+      pro_DNA_pseudo_contact_cg_angle_53.push_back(tmp_angle_53);
+    }
+  }
+
+  o << "\n[ protein-DNA seq-specific \"pseudo candidates\" ]" << std::setw(8) << pro_DNA_pseudo_contact_cg_distance.size() << "\n";
+  o << "# " << std::setw(6) << "pro_i" << std::setw(9) << "dna_j"
+    << std::setw(12) << "r_0" << std::setw(9) << "angle_NC"
+      // << std::setw(9) << "angle_53" << std::setw(10) << "groove"
+    << std::setw(9) << "angle_0"
+    << std::setw(9) << "angle_53"
+    << std::setw(9) << "sigma" << std::setw(9) << "phi" << "\n";
+  for (i = 0; i < pro_DNA_pseudo_contact_cg_distance.size(); ++i) {
+    o << "# "
+      << std::setw(6) << pro_DNA_pseudo_contact_pro_atom_serial[i] << " "
+      << std::setw(8) << pro_DNA_pseudo_contact_DNA_atom_serial[i] << " "
+      << std::setiosflags(std::ios_base::fixed) << std::setprecision(6)
+      << std::setw(11) << pro_DNA_pseudo_contact_cg_distance[i] << " "
+      << std::setiosflags(std::ios_base::fixed) << std::setprecision(3)
+      << std::setw(8) << pro_DNA_pseudo_contact_cg_angle_NC[i] << " "
+      << std::setw(8) << pro_DNA_pseudo_contact_cg_angle_0[i] << " "
+      << std::setw(8) << pro_DNA_pseudo_contact_cg_angle_53[i] << " "
+      << std::setprecision(3) << std::setw(8)
+      << 1.0 << " " << std::setw(8) << 10.0 << " " << "\n";
+  }
+  o << std::endl;
+
 }
 
 std::ostream& operator<<(std::ostream& o, Model& m)
