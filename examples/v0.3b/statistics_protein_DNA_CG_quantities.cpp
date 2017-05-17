@@ -121,7 +121,7 @@ int main(int argc, char *argv[])
       calpha_term_N = 0;
       tmp_c_CA_N = conf.get_coordinate(k);  // Coor of N' CA
     }
-    k = i + 1;
+    k = tmp_i1 + 1;
     if (k >= top.get_size() || top.get_particle(k).get_chain_ID() != top.get_particle(tmp_i1).get_chain_ID()) {
       tmp_c_CA_C = tmp_c_CA;
       calpha_term_C = 1;
