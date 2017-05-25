@@ -84,8 +84,8 @@ def main(pwm_option, pwm_name, ffp_name):
     new_ffp = open(new_ffp_name, 'w')
 
     new_ffpf_section = "[ protein-DNA seq-specific w/ PWM ]  {0:6d} \n"
-    new_ffpf_desc = "#  pro_i         r_0 angle_NC  angle_0 angle_53    sigma      phi     ene_A     ene_C     ene_G     ene_T \n"
-    new_ffpf_pwm = "{0:8d} {1:11.6f} {2:8.3f} {3:8.3f} {4:8.3f} {5:8.3f} {6:8.3f} {7:9.6f} {8:9.6f} {9:9.6f} {10:9.6f} \n"
+    new_ffpf_desc = "#  pro_i         r_0 angle_NC  angle_0 angle_53     ene_A     ene_C     ene_G     ene_T    sigma      phi \n"
+    new_ffpf_pwm = "{0:8d} {1:11.6f} {2:8.3f} {3:8.3f} {4:8.3f} {7:9.6f} {8:9.6f} {9:9.6f} {10:9.6f} {5:8.3f} {6:8.3f} \n"
     rewrite_flag = 0
     interaction_pair_num = 0
     ffp_data = []
