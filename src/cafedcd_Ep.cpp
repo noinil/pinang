@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
   int opt;
   int out_flag = 0;
   double ene_pdss_shift = 0.0;
-  double ene_pdss_scale = 0.0;
+  double ene_pdss_scale = 1.0;
 
   string dcd_name = "please_provide_name.dcd";
   string top_name = "please_provide_name.psf";
