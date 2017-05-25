@@ -38,7 +38,7 @@ std::istream& operator>>(std::istream& i, PairProteinDNASpecific& pairSS)
   int serp;
 
   i >> serp >> r0 >> angNC >> ang0 >> ang53
-    >> sig >> p >> eneA >> eneC >> eneG >> eneT;
+    >> eneA >> eneC >> eneG >> eneT >> sig >> p;
   if (!i) return i;
 
   pairSS.protein_serial_     = serp - 1;
