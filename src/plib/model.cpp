@@ -719,6 +719,51 @@ void Model::output_ffparm_nonbonded(std::ostream& o)
   }
   o << std::endl;
 
+
+
+  // -- 2017-12-06 all contacts including base and sugar and phosphate
+  std::vector<int>    pro_DNA_all_contact_pro_atom_serial;
+  std::vector<std::string>    pro_DNA_all_contact_pro_atom_name;
+  std::vector<int>    pro_DNA_all_contact_DNA_atom_serial;
+  std::vector<std::string>    pro_DNA_all_contact_DNA_atom_name;
+  std::vector<double> pro_DNA_all_contact_cg_distance;
+  int pro_DNA_all_contact_number = 0;
+  for (i = 0; i < pg_size - 1; ++i) {
+    Atom &atmp8 = tmp_cg_pro_group[i];
+    Residue &rtmp1 = tmp_residue_pro_group[i];
+    
+    for (j = 0; j < dg_size; ++j) {
+      Atom &atmp9 = tmp_cg_dna_group[j];
+      Residue &rtmp2 = tmp_residue_dna_group[j];
+      aa_dist_min = residue_min_distance(rtmp1, rtmp2);
+      if (aa_dist_min < g_pro_pro_aa_cutoff && aa_dist_min > 0) {
+        pro_DNA_all_contact_pro_atom_serial.push_back(atmp8.get_residue_serial());
+        pro_DNA_all_contact_DNA_atom_serial.push_back(atmp9.get_residue_serial());
+        pro_DNA_all_contact_pro_atom_name.push_back(atmp8.get_residue_name());
+        pro_DNA_all_contact_DNA_atom_name.push_back(atmp9.get_residue_name());
+        cg_dist = atom_distance(atmp8, atmp9);
+        pro_DNA_all_contact_cg_distance.push_back(cg_dist);
+        pro_DNA_all_contact_number ++;
+      }
+    }
+  }
+
+  o << "\n[ protein-DNA all contacts ]" << std::setw(8) << pro_DNA_all_contact_number << "\n";
+  o << "# " << std::setw(6) << "pro_i" << std::setw(9) << "dna_j"
+    << std::setw(12) << "r_0" << std::setw(9) << "aa_name"
+    << std::setw(9) << "b_name" << "\n";
+  for (i = 0; i < pro_DNA_all_contact_number; ++i) {
+    o << "# "
+      << std::setw(6) << pro_DNA_all_contact_pro_atom_serial[i] << " "
+      << std::setw(8) << pro_DNA_all_contact_DNA_atom_serial[i] << " "
+      << std::setiosflags(std::ios_base::fixed) << std::setprecision(6)
+      << std::setw(11) << pro_DNA_all_contact_cg_distance[i] << " "
+      << std::setw(8) << pro_DNA_all_contact_pro_atom_name[i] << " "
+      << std::setw(8) << pro_DNA_all_contact_DNA_atom_name[i] << " "
+      << "\n";
+  }
+  o << std::endl;
+
 }
 
 std::ostream& operator<<(std::ostream& o, Model& m)
