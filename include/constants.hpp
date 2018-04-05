@@ -19,20 +19,21 @@
 
 namespace pinang {
 
-extern double g_pro_pro_aa_cutoff;  //!< Cutoff for atomistic distances between C_alphas.
-extern double g_pro_DNA_aa_cutoff;  //!< Cutoff for atomistic distances between C and DNA particles.
+extern double g_pro_pro_aa_cutoff;      //!< Cutoff for atomistic distances between C_alphas.
+extern double g_pro_DNA_aa_cutoff;      //!< Cutoff for atomistic distances between C and DNA particles.
 
-const long double k_pi = 3.14159265358979323846;  //!< @f$\pi@f$.
+const long double k_pi = 3.14159265358979323846; //!< @f$\pi@f$.
 
-const double k_u_mass = 1.0;  //!< Unit of mass.
+const double k_u_mass = 1.0;            //!< Unit of mass.
+const double k_u_kB_T = 0.593;          //!< Unit of kB * T at T=300K.
 
-const double k_K_bond = 100.0;              //!< Energy function parameter for bonds.
-const double k_K_angle = 20.0;              //!< Energy function parameter for angles.
-const double k_K_dihedral_1 = 1.0;          //!< Energy function parameter for dihedral angles.
-const double k_K_dihedral_3 = 0.5;          //!< Energy function parameter for dihedral angles (optional).
-const double k_K_native = 1.0;              //!< Energy function parameter for native contacts.
-const double k_K_nonnative = 0.5;           //!< Energy function parameter for non-native contacts.
-const double k_K_pro_DNA_specific = 10.0;   //!< Energy function parameter for non-native contacts.
+const double k_K_bond             = 100.0; //!< Energy function parameter for bonds.
+const double k_K_angle            = 20.0; //!< Energy function parameter for angles.
+const double k_K_dihedral_1       = 1.0; //!< Energy function parameter for dihedral angles.
+const double k_K_dihedral_3       = 0.5; //!< Energy function parameter for dihedral angles (optional).
+const double k_K_native           = 1.0; //!< Energy function parameter for native contacts.
+const double k_K_nonnative        = 0.5; //!< Energy function parameter for non-native contacts.
+const double k_K_pro_DNA_specific = 10.0; //!< Energy function parameter for non-native contacts.
 
 //! Chain chemical types.
 enum ChainType {none=0, protein=1, DNA=2, RNA=3, water=4, ion=5, other=6, na=7};

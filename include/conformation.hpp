@@ -55,6 +55,13 @@ class Conformation
   //! @retval 0: Success.
   int set_conformation(std::vector<Vec3d>);
 
+  //! @brief Set coordinate for a particle.
+  //! @param A Vec3d coordinate.
+  //! @return Status of setting up the Coordinate.
+  //! @retval 1: Failure.
+  //! @retval 0: Success.
+  int set_coordinate(int, Vec3d);
+
   //! @brief Get a coordinate from conformation.
   //! @param Serial number of the coordinate.
   //! @return Vec3d type coordinate.

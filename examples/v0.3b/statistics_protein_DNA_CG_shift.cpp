@@ -1,11 +1,11 @@
 /*!
-  @file statistics_protein_DNA_CG_quantities.cpp
-  @brief Statistics of protein-DNA interacting quantities.
+  @file statistics_protein_DNA_CG_shift.cpp
+  @brief Statistics of protein-DNA interacting quantities with shifting test
 
-  Calculate protein-DNA interacting pairwise distances, angles, etc...
+  Calculate protein-DNA interacting pairwise distances, angles, etc... under shifting tests.
 
   @author Cheng Tan (noinil@gmail.com)
-  @date 2016-06-16 14:33
+  @date 2017-05-17 14:33
   @copyright GNU Public License V3.0
 */
 
@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
 
   string stat_name = basefilename + ".stat";
   ifstream stat_file(stat_name.c_str());
-  outfilename = basefilename + "_pro_DNA_stat.dat";
+  outfilename = basefilename + "_pro_DNA_shift.dat";
   ofstream outfile(outfilename.c_str());
 
   string stat_line;
@@ -96,8 +96,10 @@ int main(int argc, char *argv[])
 
   // -------------------- Calculating... --------------------
   pinang::Vec3d tmp_c_CA, tmp_c_B0, tmp_c_S0, tmp_c_B5, tmp_c_B3, tmp_c_new_CA;
-  double tmp_dist_0, tmp_dist_5, tmp_dist_3;
-  double tmp_angle_0, tmp_angle_5, tmp_angle_3;
+  pinang::Vec3d tmp_c_CA_N, tmp_c_CA_C;
+  pinang::Vec3d tmp_c_new_CA_N, tmp_c_new_CA_C;
+  double tmp_dist_0;
+  double tmp_angle_0, tmp_angle_53, tmp_angle_NC;
   for (int i = 0; i < interaction_pairs.size(); ++i) {
     tmp_i1 = interaction_pairs[i][0];
     tmp_i2 = interaction_pairs[i][1];
@@ -110,6 +112,30 @@ int main(int argc, char *argv[])
     tmp_dist_0 = pinang::vec_distance(tmp_c_CA, tmp_c_B0);
     outfile << " Distance DB0-CA : " << tmp_dist_0 << "\n";
 
+    int k = tmp_i1 - 1;
+    int calpha_term_N = 0, calpha_term_C = 0;
+    if (k < 0 || top.get_particle(k).get_chain_ID() != top.get_particle(tmp_i1).get_chain_ID()) {
+      tmp_c_CA_N = tmp_c_CA;
+      calpha_term_N = 1;
+    } else {
+      calpha_term_N = 0;
+      tmp_c_CA_N = conf.get_coordinate(k);  // Coor of N' CA
+    }
+    k = tmp_i1 + 1;
+    if (k >= top.get_size() || top.get_particle(k).get_chain_ID() != top.get_particle(tmp_i1).get_chain_ID()) {
+      tmp_c_CA_C = tmp_c_CA;
+      calpha_term_C = 1;
+    } else {
+      calpha_term_C = 0;
+      tmp_c_CA_C = conf.get_coordinate(k);  // Coor of C' CA
+    }
+    if (calpha_term_N * calpha_term_C > 0) {
+      std::cout << " Single Residue Protein Chain!!! WTF!!! \n";
+      exit(EXIT_SUCCESS);
+    }
+    tmp_angle_NC = pinang::vec_angle_deg(tmp_c_CA_C - tmp_c_CA_N, tmp_c_B0 - tmp_c_CA);
+    outfile << " Angle NCA-CCA--CA-DB0 : " << tmp_angle_NC << "\n";
+
     // ---------- Sugar -- Base -- CA angle ----------
     tmp_i3 = tmp_i2 - 1;
     if (top.get_particle(tmp_i3).get_atom_name() != "DS  ") {
@@ -120,42 +146,36 @@ int main(int argc, char *argv[])
     tmp_angle_0 = pinang::vec_angle_deg(tmp_c_S0 - tmp_c_B0, tmp_c_CA - tmp_c_B0);
     outfile << " Angle DS0-DB0-CA : " << tmp_angle_0 << "\n";
 
+    int term_5 = 0, term_3 = 0;
     // ---------- 5' Base ----------
     tmp_i4 = tmp_i2 - 3;
     if (tmp_i4 < 0 || top.get_particle(tmp_i4).get_chain_ID() != top.get_particle(tmp_i2).get_chain_ID()) {
-      outfile << " Distance DB5'-CA : NaN ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \n";
-      outfile << " Angle DB5'-DB0-CA : NaN ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \n";
+      term_5 = 1;
     } else {
       if (top.get_particle(tmp_i4).get_atom_name() != "DB  ") {
         cout << " Wrong interaction pair for 5'DB!!! \n";
         exit(EXIT_SUCCESS);
       }
       tmp_c_B5 = conf.get_coordinate(tmp_i4);  // Coor of 5' B
-      // ---------- 5' Base -- CA distance ----------
-      tmp_dist_5 = pinang::vec_distance(tmp_c_CA, tmp_c_B5);
-      outfile << " Distance DB5'-CA : " << tmp_dist_5 << "\n";
-      // ---------- 5' Base -- Base -- CA angle ----------
-      tmp_angle_5 = pinang::vec_angle_deg(tmp_c_B5 - tmp_c_B0, tmp_c_CA - tmp_c_B0);
-      outfile << " Angle DB5'-DB0-CA : " << tmp_angle_5 << "\n";
     }
     // ---------- 3' Base ----------
     tmp_i4 = tmp_i2 + 3;
     if (tmp_i4 >= top.get_size() || top.get_particle(tmp_i4).get_chain_ID() != top.get_particle(tmp_i2).get_chain_ID()) {
-      outfile << " Distance DB3'-CA : NaN ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \n";
-      outfile << " Angle DB3'-DB0-CA : NaN ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \n";
+      term_3 = 1;
     } else {
       if (top.get_particle(tmp_i4).get_atom_name() != "DB  ") {
         cout << " Wrong interaction pair for 3'DB!!! \n";
         exit(EXIT_SUCCESS);
       }
       tmp_c_B3 = conf.get_coordinate(tmp_i4);  // Coor of 3' B
-      // ---------- 3' Base -- CA distance ----------
-      tmp_dist_3 = pinang::vec_distance(tmp_c_CA, tmp_c_B3);
-      outfile << " Distance DB3'-CA : " << tmp_dist_3 << "\n";
-      // ---------- 3' Base -- Base -- CA angle ----------
-      tmp_angle_3 = pinang::vec_angle_deg(tmp_c_B3 - tmp_c_B0, tmp_c_CA - tmp_c_B0);
-      outfile << " Angle DB3'-DB0-CA : " << tmp_angle_3 << "\n";
     }
+    if (term_5 + term_3 == 0) {
+      tmp_angle_53 = pinang::vec_angle_deg(tmp_c_B3 - tmp_c_B5, tmp_c_CA - tmp_c_B0);
+      outfile << " Angle DB5'-DB3'--DB0-CA : " << tmp_angle_53 << "\n";
+    } else {
+      outfile << " Angle DB5'-DB3'--DB0-CA : NaN ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \n";
+    }
+
 
     // ------------------------------ Shifting... ------------------------------
     tmp_i4 = tmp_i2 - 6;
@@ -176,22 +196,24 @@ int main(int argc, char *argv[])
       pinang::Transform t;
       find_transform(g0, g5, t);
       tmp_c_new_CA = t.apply(tmp_c_CA);
+      tmp_c_new_CA_C = t.apply(tmp_c_CA_C);
+      tmp_c_new_CA_N = t.apply(tmp_c_CA_N);
       // Calculation....
       tmp_dist_0 = pinang::vec_distance(tmp_c_new_CA, tmp_c_B0);
       outfile << " 5'-Shifted Distance DB0-CA : " << tmp_dist_0 << "\n";
 
+      tmp_angle_NC = pinang::vec_angle_deg(tmp_c_new_CA_C - tmp_c_new_CA_N, tmp_c_B0 - tmp_c_new_CA);
+      outfile << " 5'-Shifted Angle NCA-CCA--CA-DB0 : " << tmp_angle_NC << "\n";
+
       tmp_angle_0 = pinang::vec_angle_deg(tmp_c_S0 - tmp_c_B0, tmp_c_new_CA - tmp_c_B0);
       outfile << " 5'-Shifted Angle DS0-DB0-CA : " << tmp_angle_0 << "\n";
 
-      tmp_dist_5 = pinang::vec_distance(tmp_c_new_CA, tmp_c_B5);
-      outfile << " 5'-Shifted Distance DB5'-CA : " << tmp_dist_5 << "\n";
-      tmp_angle_5 = pinang::vec_angle_deg(tmp_c_B5 - tmp_c_B0, tmp_c_new_CA - tmp_c_B0);
-      outfile << " 5'-Shifted Angle DB5'-DB0-CA : " << tmp_angle_5 << "\n";
-
-      tmp_dist_3 = pinang::vec_distance(tmp_c_new_CA, tmp_c_B3);
-      outfile << " 5'-Shifted Distance DB3'-CA : " << tmp_dist_3 << "\n";
-      tmp_angle_3 = pinang::vec_angle_deg(tmp_c_B3 - tmp_c_B0, tmp_c_new_CA - tmp_c_B0);
-      outfile << " 5'-Shifted Angle DB3'-DB0-CA : " << tmp_angle_3 << "\n";
+      if (term_5 + term_3 == 0) {
+        tmp_angle_53 = pinang::vec_angle_deg(tmp_c_B3 - tmp_c_B5, tmp_c_new_CA - tmp_c_B0);
+        outfile << " 5'-Shifted Angle DB5'-DB3'--DB0-CA : " << tmp_angle_53 << "\n";
+      } else {
+        outfile << " 5'-Shifted DB5'-DB3'--DB0-CA : NaN ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \n";
+      }
     }
     tmp_i4 = tmp_i2 - 3;
     tmp_i5 = tmp_i2 + 6;
@@ -211,25 +233,27 @@ int main(int argc, char *argv[])
       pinang::Transform t;
       find_transform(g0, g3, t);
       tmp_c_new_CA = t.apply(tmp_c_CA);
+      tmp_c_new_CA_C = t.apply(tmp_c_CA_C);
+      tmp_c_new_CA_N = t.apply(tmp_c_CA_N);
       // Calculation....
       tmp_dist_0 = pinang::vec_distance(tmp_c_new_CA, tmp_c_B0);
       outfile << " 3'-Shifted Distance DB0-CA : " << tmp_dist_0 << "\n";
 
+      tmp_angle_NC = pinang::vec_angle_deg(tmp_c_new_CA_C - tmp_c_new_CA_N, tmp_c_B0 - tmp_c_new_CA);
+      outfile << " 3'-Shifted Angle NCA-CCA--CA-DB0 : " << tmp_angle_NC << "\n";
+
       tmp_angle_0 = pinang::vec_angle_deg(tmp_c_S0 - tmp_c_B0, tmp_c_new_CA - tmp_c_B0);
       outfile << " 3'-Shifted Angle DS0-DB0-CA : " << tmp_angle_0 << "\n";
 
-      tmp_dist_5 = pinang::vec_distance(tmp_c_new_CA, tmp_c_B5);
-      outfile << " 3'-Shifted Distance DB5'-CA : " << tmp_dist_5 << "\n";
-      tmp_angle_5 = pinang::vec_angle_deg(tmp_c_B5 - tmp_c_B0, tmp_c_new_CA - tmp_c_B0);
-      outfile << " 3'-Shifted Angle DB5'-DB0-CA : " << tmp_angle_5 << "\n";
-
-      tmp_dist_3 = pinang::vec_distance(tmp_c_new_CA, tmp_c_B3);
-      outfile << " 3'-Shifted Distance DB3'-CA : " << tmp_dist_3 << "\n";
-      tmp_angle_3 = pinang::vec_angle_deg(tmp_c_B3 - tmp_c_B0, tmp_c_new_CA - tmp_c_B0);
-      outfile << " 3'-Shifted Angle DB3'-DB0-CA : " << tmp_angle_3 << "\n";
+      if (term_5 + term_3 == 0) {
+        tmp_angle_53 = pinang::vec_angle_deg(tmp_c_B3 - tmp_c_B5, tmp_c_new_CA - tmp_c_B0);
+        outfile << " 3'-Shifted Angle DB5'-DB3'--DB0-CA : " << tmp_angle_53 << "\n";
+      } else {
+        outfile << " 3'-Shifted DB5'-DB3'--DB0-CA : NaN ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \n";
+      }
     }
 
-    outfile << "END PAIR \n";
+    outfile << "END PAIR " << std::endl;
   }
 
   stat_file.close();
