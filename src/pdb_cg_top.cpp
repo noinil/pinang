@@ -112,6 +112,11 @@ int main(int argc, char *argv[])
 
   string top_name = basefilename + "_cg.psf";
   ofstream top_file(top_name.c_str());
+  top_file << "PSF CMAP " << endl << endl;
+  top_file << "      3 !NTITLE" << endl;
+  top_file << "REMARKS Created by pinang." << endl;
+  top_file << "REMARKS Based on " << basefilename << endl;
+  top_file << "REMARKS Enjoy " << endl << endl;
   m0.output_top_mass(top_file);
   m0.output_top_bond(top_file);
   m0.output_top_angle(top_file);
