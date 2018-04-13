@@ -576,10 +576,10 @@ void Model::output_ffparm_nonbonded(std::ostream& o)
 
   o << "[ protein-DNA seq-specific ]" << std::setw(8) << pro_DNA_contact_cg_distance.size() << "\n";
   o << "# " << std::setw(6) << "pro_i" << std::setw(9) << "dna_j"
-    << std::setw(12) << "r_0" << std::setw(9) << "angle_NC"
-      // << std::setw(9) << "angle_53" << std::setw(10) << "groove"
+    << std::setw(12) << "r_0"
     << std::setw(9) << "angle_0"
     << std::setw(9) << "angle_53"
+    << std::setw(9) << "angle_NC"
     << std::setw(9) << "sigma" << std::setw(9) << "phi"
     << std::setw(9) << "base" << "\n";
   for (i = 0; i < pro_DNA_contact_cg_distance.size(); ++i) {
@@ -588,10 +588,9 @@ void Model::output_ffparm_nonbonded(std::ostream& o)
       << std::setiosflags(std::ios_base::fixed) << std::setprecision(6)
       << std::setw(11) << pro_DNA_contact_cg_distance[i] << " "
       << std::setiosflags(std::ios_base::fixed) << std::setprecision(3)
-      << std::setw(8) << pro_DNA_contact_cg_angle_NC[i] << " "
       << std::setw(8) << pro_DNA_contact_cg_angle_0[i] << " "
       << std::setw(8) << pro_DNA_contact_cg_angle_53[i] << " "
-        // << std::setw(9) << pro_DNA_contact_cg_groove_info[i] << " "
+      << std::setw(8) << pro_DNA_contact_cg_angle_NC[i] << " "
       << std::setprecision(3) << std::setw(8)
       << 1.0 << " " << std::setw(8) << 10.0 << " " 
       << std::setw(8) << pro_DNA_contact_DNA_atom_name[i] << " "
@@ -603,7 +602,6 @@ void Model::output_ffparm_nonbonded(std::ostream& o)
   // -- calculating all possible pseudo contacts that will possibly cause
   // -- problem, and give warning...
   int pg_size_pdss = int(pro_DNA_contact_pro_atom_i.size());
-  // std::cout << pg_size_pdss << "\n";
   int pdss_pi = 0;
   int pdss_pi_tmp = -97;
   std::vector<int>    pro_DNA_pseudo_contact_pro_atom_serial;

@@ -119,6 +119,9 @@ class PairProteinDNASpecific
   double ene_pwm_C_;                    //!< PWM energy for base C.
   double ene_pwm_G_;                    //!< PWM energy for base G.
   double ene_pwm_T_;                    //!< PWM energy for base T.
+
+  double gamma_;                        //!< Local energy scaling factor.
+  double epsilon_;                      //!< Local energy shift factor.
 };
 
 }  // pinang

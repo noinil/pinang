@@ -318,7 +318,8 @@ def main(PDB_name, PFM_name, flag_psf_output, flag_native_contact_list, gamma=1.
                     PWMcos_native_contact_list.append((i_pro + 1,
                                                        cg_pro_r_ID[i_pro],
                                                        cg_dna_r_ID[i_dna],
-                                                       r0, theta1, theta2, theta3))
+                                                       r0, theta1, theta2, theta3,
+                                                       cg_pro_p_ID[i_pro]))
     # Temporary output
     if flag_native_contact_list:
         contact_pair_output_head = "# I_AA   i_pro   i_dna         r0    theta_1    theta_2    theta_3 "
@@ -403,7 +404,49 @@ def main(PDB_name, PFM_name, flag_psf_output, flag_native_contact_list, gamma=1.
         ninfo_file.write(ninfo_output_tail)
         ninfo_file.close()
 
+
+    # =========================
+    # Output PINANG ffp file
+    # =========================
+    def write_ffp():
+        pwm_len = len(dna_pwm_a_id)
+        ip_count = np.zeros((pwm_len, 1), dtype=np.int) 
+
+        ffp_name = protein_name + "_PWMcos.ffp"
+        ffp_file = open(ffp_name, 'w')
+
+        ffp_output_head = "[ PWMcos ] {0:6d} \n"
+        ffp_output_tail = " \n"
+        ffp_output_line = "{pwmcos[7]:>6d} {pwmcos[3]:>6.4f} {pwmcos[4]:>6.3f} {pwmcos[5]:>6.3f} {pwmcos[6]:>6.3f} {pwm[0]:>7.4f} {pwm[1]:>7.4f} {pwm[2]:>7.4f} {pwm[3]:>7.4f} {g:>7.4f} {e:>7.4f} 1.0  10.0 \n"
+
+        contact_pair_to_pwm = []
+        for nat_contact in PWMcos_native_contact_list:
+            i_dna = nat_contact[2]
+            if i_dna in dna_pwm_a_id:
+                contact_pair_to_pwm.append((dna_pwm_a_id.index(i_dna), 1))
+                ip_count[dna_pwm_a_id.index(i_dna)] += 1
+            elif i_dna in dna_pwm_b_id:
+                contact_pair_to_pwm.append((dna_pwm_b_id.index(i_dna), -1))
+                ip_count[dna_pwm_b_id.index(i_dna)] += 1
+            else:
+                print(" Index error in CHAIN_id s!   Please Check!")
+                return
+        for i, k in enumerate(ip_count):
+            if k == 0:
+                ip_count[i] = -1
+        pwm_decomposed = pwm / ip_count
+
+        ffp_file.write(ffp_output_head)
+        for i, nat_contact in enumerate(PWMcos_native_contact_list):
+            pwm_i, pwm_v = contact_pair_to_pwm[i][0], contact_pair_to_pwm[i][1]
+            pwm_line = pwm_decomposed[pwm_i][::pwm_v]
+            ffp_file.write(ffp_output_line.format(pwmcos=nat_contact, pwm=pwm_line, g=gamma, e=epsilon_prime))
+        ffp_file.write(ffp_output_tail)
+        ffp_file.close()
+
+    write_ffp()
     write_ninfo()
+
 
 if __name__ == '__main__':
     import argparse
