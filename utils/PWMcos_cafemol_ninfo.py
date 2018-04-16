@@ -318,8 +318,7 @@ def main(PDB_name, PFM_name, flag_psf_output, flag_native_contact_list, gamma=1.
                     PWMcos_native_contact_list.append((i_pro + 1,
                                                        cg_pro_r_ID[i_pro],
                                                        cg_dna_r_ID[i_dna],
-                                                       r0, theta1, theta2, theta3,
-                                                       cg_pro_p_ID[i_pro]))
+                                                       r0, theta1, theta2, theta3))
     # Temporary output
     if flag_native_contact_list:
         contact_pair_output_head = "# I_AA   i_pro   i_dna         r0    theta_1    theta_2    theta_3 "
@@ -417,7 +416,7 @@ def main(PDB_name, PFM_name, flag_psf_output, flag_native_contact_list, gamma=1.
 
         ffp_output_head = "[ PWMcos ] {0:6d} \n"
         ffp_output_tail = " \n"
-        ffp_output_line = "{pwmcos[7]:>6d} {pwmcos[3]:>8.4f} {pwmcos[4]:>8.3f} {pwmcos[5]:>8.3f} {pwmcos[6]:>8.3f} {pwm[0]:>9.4f} {pwm[1]:>9.4f} {pwm[2]:>9.4f} {pwm[3]:>9.4f} {g:>9.4f} {e:>9.4f}    1.0  10.0 \n"
+        ffp_output_line = "{pwmcos[0]:>6d} {pwmcos[3]:>8.4f} {pwmcos[4]:>8.3f} {pwmcos[5]:>8.3f} {pwmcos[6]:>8.3f} {pwm[0]:>9.4f} {pwm[1]:>9.4f} {pwm[2]:>9.4f} {pwm[3]:>9.4f} {g:>9.4f} {e:>9.4f}    1.0  10.0 \n"
 
         contact_pair_to_pwm = []
         for nat_contact in PWMcos_native_contact_list:

@@ -158,8 +158,8 @@ FFProteinDNASpecific::FFProteinDNASpecific(std::string ffp_file_name)
                   // << "\n";
         // exit(EXIT_SUCCESS);
       // }
-      std::cout << " [ PWMcos ] block not found!" << std::endl;
-      exit(EXIT_SUCCESS);
+      // std::cout << " [ PWMcos ] block not found!" << std::endl;
+      // exit(EXIT_SUCCESS);
     }
   }
   ffp_file.close();
