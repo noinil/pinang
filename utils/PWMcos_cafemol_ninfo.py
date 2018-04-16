@@ -417,7 +417,7 @@ def main(PDB_name, PFM_name, flag_psf_output, flag_native_contact_list, gamma=1.
 
         ffp_output_head = "[ PWMcos ] {0:6d} \n"
         ffp_output_tail = " \n"
-        ffp_output_line = "{pwmcos[7]:>6d} {pwmcos[3]:>6.4f} {pwmcos[4]:>6.3f} {pwmcos[5]:>6.3f} {pwmcos[6]:>6.3f} {pwm[0]:>7.4f} {pwm[1]:>7.4f} {pwm[2]:>7.4f} {pwm[3]:>7.4f} {g:>7.4f} {e:>7.4f} 1.0  10.0 \n"
+        ffp_output_line = "{pwmcos[7]:>6d} {pwmcos[3]:>8.4f} {pwmcos[4]:>8.3f} {pwmcos[5]:>8.3f} {pwmcos[6]:>8.3f} {pwm[0]:>9.4f} {pwm[1]:>9.4f} {pwm[2]:>9.4f} {pwm[3]:>9.4f} {g:>9.4f} {e:>9.4f}    1.0  10.0 \n"
 
         contact_pair_to_pwm = []
         for nat_contact in PWMcos_native_contact_list:
@@ -436,7 +436,7 @@ def main(PDB_name, PFM_name, flag_psf_output, flag_native_contact_list, gamma=1.
                 ip_count[i] = -1
         pwm_decomposed = pwm / ip_count
 
-        ffp_file.write(ffp_output_head)
+        ffp_file.write(ffp_output_head.format(len(PWMcos_native_contact_list)))
         for i, nat_contact in enumerate(PWMcos_native_contact_list):
             pwm_i, pwm_v = contact_pair_to_pwm[i][0], contact_pair_to_pwm[i][1]
             pwm_line = pwm_decomposed[pwm_i][::pwm_v]
