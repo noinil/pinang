@@ -43,8 +43,13 @@ def main(pwm_file_name, reverse_option):
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {0} {1}" version="1.1">
 '''
     svg_title_line = '<title>{0} LOGO</title> \n'
-    svg_desc_line = '<desc>LOGO of motif: {0}, generated from PPM</desc> \n'
+    svg_desc_line = '<desc>LOGO of motif: {0}, generated with PINANG.  Copyright: Cheng Tan, https://c-tan.com </desc> \n'
     svg_pwm_text_char_line = '<text x="{0}" y="{1:4.2f}" fill="{2}" style="font-weight: bold; font-family: \'{3}\'; font-size: {4:4.2f}pt" textLength="20" lengthAdjust="spacingAndGlyphs">{5}</text> \n'
+    svg_pwm_straight_vline = '<line x1="20" y1="0" x2="20" y2="40" style="stroke:rgb(0,0,0);stroke-width:0.5" /> \n'
+    svg_pwm_straight_vtic2 = '<line x1="17" y1="0" x2="20" y2="0" style="stroke:rgb(0,0,0);stroke-width:0.5" /> \n'
+    svg_pwm_straight_vtic1 = '<line x1="17" y1="20" x2="20" y2="20" style="stroke:rgb(0,0,0);stroke-width:0.5" /> \n'
+    svg_pwm_straight_vtic0 = '<line x1="17" y1="40" x2="20" y2="40" style="stroke:rgb(0,0,0);stroke-width:0.5" /> \n'
+    svg_pwm_straight_hline = '<line x1="20" y1="40" x2="{0}" y2="40" style="stroke:rgb(0,0,0);stroke-width:0.5" /> \n'
     svg_pwm_height = 40
     svg_pwm_width = 20
     svg_color_dict = {'A': "#4cdef5", 'C': "#a4d555", 'G': "#ff5992", 'T': "#841983"}
@@ -54,6 +59,11 @@ def main(pwm_file_name, reverse_option):
     svg_file.write(svg_header_line.format((len_DNA + 2) * svg_pwm_width, 2 * svg_pwm_height))
     svg_file.write(svg_title_line.format(pwm_file_name[:-4]))
     svg_file.write(svg_desc_line.format(pwm_file_name[:-4]))
+    svg_file.write(svg_pwm_straight_vline)
+    svg_file.write(svg_pwm_straight_vtic2)
+    svg_file.write(svg_pwm_straight_vtic1)
+    svg_file.write(svg_pwm_straight_vtic0)
+    svg_file.write(svg_pwm_straight_hline.format((len_DNA + 1) * svg_pwm_width))
 
     p_base_dict_local = {}
     x, y = 20, 20
