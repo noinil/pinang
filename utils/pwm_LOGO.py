@@ -52,7 +52,7 @@ def main(pwm_file_name, reverse_option):
     svg_pwm_straight_hline = '<line x1="20" y1="40" x2="{0}" y2="40" style="stroke:rgb(0,0,0);stroke-width:0.5" /> \n'
     svg_pwm_height = 40
     svg_pwm_width = 20
-    svg_color_dict = {'A': "#4cdef5", 'C': "#a4d555", 'G': "#ff5992", 'T': "#841983"}
+    svg_color_dict = {'A': "#b50804", 'C': "#83bcc3", 'G': "#eaa612", 'T': "#3e4079"}
 
     svg_file_name = pwm_file_name[:-3] + 'svg'
     svg_file = open(svg_file_name, 'w')
