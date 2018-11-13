@@ -267,17 +267,19 @@ int main(int argc, char *argv[])
   char chainID_tmp = '?';
   string resName_tmp = "Whatever";
   int resSerial_tmp = -10000;
+  int atmSerial_tmp = -10000;
   for (i = 0; i < n_f_atoms; ++i) {
     if (surface_residue_flag[i]) {
-      if (chainID_tmp == f_atoms[i].get_chain_ID()
-          && resName_tmp.compare(f_atoms[i].get_residue_name()) == 0
-          && resSerial_tmp == f_atoms[i].get_residue_serial()) 
-        continue;
+      // if (chainID_tmp == f_atoms[i].get_chain_ID()
+      //     && resName_tmp.compare(f_atoms[i].get_residue_name()) == 0
+      //     && resSerial_tmp == f_atoms[i].get_residue_serial()) 
+      //   continue;
       chainID_tmp = f_atoms[i].get_chain_ID();
       resName_tmp = f_atoms[i].get_residue_name();
       resSerial_tmp = f_atoms[i].get_residue_serial();
-      // cout << chainID_tmp << "   " << resSerial_tmp << "  " << resName_tmp << endl;
-      out_file << chainID_tmp << "   " << resSerial_tmp << "  " << resName_tmp << endl;
+      atmSerial_tmp = f_atoms[i].get_atom_serial();
+      // cout << chainID_tmp << "   " << resSerial_tmp << "  " << resName_tmp << "   " << atmSerial_tmp << endl;
+      out_file << chainID_tmp << "   " << resSerial_tmp << "  " << resName_tmp << "   " << atmSerial_tmp << endl;
     }
   }
   cout << " Finish! " << endl;
